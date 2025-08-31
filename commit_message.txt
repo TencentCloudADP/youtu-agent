@@ -1,1 +1,1 @@
-Fix: Make bash_toolkit work on Windows
+Fix: Prioritize kwargs model over env var in SimplifiedAsyncOpenAI

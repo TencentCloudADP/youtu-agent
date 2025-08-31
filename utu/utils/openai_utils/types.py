@@ -13,10 +13,10 @@ from openai.types.shared import ChatModel, Reasoning, ReasoningEffort, Responses
 class OpenAICreateBaseParams(TypedDict):
     stream: bool | None = False
     # from openai.resources.chat.completions.Completions.create
-    extra_headers: Headers | None = (None,)
-    extra_query: Query | None = (None,)
-    extra_body: Body | None = (None,)
-    timeout: float | httpx.Timeout | None | NotGiven = (NOT_GIVEN,)
+    extra_headers: Headers | None = None
+    extra_query: Query | None = None
+    extra_body: Body | None = None
+    timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN
 
 
 # CompletionCreateParams | https://platform.openai.com/docs/api-reference/chat/create
