@@ -30,8 +30,9 @@ async def main():
         config.model.model = args.agent_model
     if args.tools:
         # load toolkits from config
+        config.toolkits = []
         for tool_name in args.tools:
-            config.toolkits[tool_name] = ConfigLoader.load_toolkit_config(tool_name)
+            config.toolkits.append(ConfigLoader.load_toolkit_config(tool_name))
 
     async with SimpleAgent(config=config) as agent:
         while True:
