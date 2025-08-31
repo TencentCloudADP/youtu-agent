@@ -62,19 +62,22 @@ class BrowserEnv(BaseEnv):
 
             return on_invoke_tool
 
+        tool_defs = []
         async with MCPClient.get_mcp_client(self.mcp_url) as client:
             # NOTE: check `MCPUtil` in @agents
             res = await client.list_tools()
             assert res.nextCursor is None
-            for tool in res.tools:
-                if tool.name not in activated_tools:
-                    continue
-                tools.append(
-                    FunctionTool(
-                        name=tool.name,
-                        description=tool.description,
-                        params_json_schema=tool.inputSchema,
-                        on_invoke_tool=create_on_invoke_tool(tool.name),
-                    )
+            tool_defs.extend(res.tools)
+
+        for tool_def in tool_defs:
+            if tool_def.name not in activated_tools:
+                continue
+            tools.append(
+                FunctionTool(
+                    name=tool_def.name,
+                    description=tool_def.description,
+                    params_json_schema=tool_def.inputSchema,
+                    on_invoke_tool=create_on_invoke_tool(tool_def.name),
                 )
-            return tools
+            )
+        return tools

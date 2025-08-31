@@ -1,1 +1,1 @@
-Fix: Handle ToolCallItem, ToolCallOutputItem, and ReasoningItem in items_to_dict
+Fix: Iterate over toolkits list correctly
