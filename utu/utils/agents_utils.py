@@ -74,15 +74,23 @@ class ChatCompletionConverter(Converter):
             elif msg := Converter.maybe_file_search_call(item):
                 msg.update({"role": "tool", "content": msg["results"]})
                 result.append(msg)
-            elif msg := Converter.maybe_function_tool_call(item):
-                msg.update({"role": "assistant", "content": f"{msg['name']}({msg['arguments']})"})
-                result.append(msg)
-            elif msg := Converter.maybe_function_tool_call_output(item):
-                msg.update({"role": "tool", "content": msg["output"], "tool_call_id": msg["call_id"]})
-                result.append(msg)
-            elif msg := Converter.maybe_reasoning_message(item):
-                msg.update({"role": "assistant", "content": msg["summary"]})
-                result.append(msg)
+            elif isinstance(item, ToolCallItem):
+                result.append(
+                    {
+                        "role": "assistant",
+                        "content": f'{item.tool_name}({json.dumps(item.tool_input, ensure_ascii=False)})',
+                    }
+                )
+            elif isinstance(item, ToolCallOutputItem):
+                result.append(
+                    {
+                        "role": "tool",
+                        "content": item.output,
+                        "tool_call_id": item.call_id,
+                    }
+                )
+            elif isinstance(item, ReasoningItem):
+                result.append({"role": "assistant", "content": item.summary})
             else:
                 logger.warning(f"Unknown message type: {item}")
                 result.append({"role": "assistant", "content": f"Unknown message type: {item}"})
