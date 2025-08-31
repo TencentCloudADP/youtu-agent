@@ -126,7 +126,7 @@ class SimpleAgent(BaseAgent):
         tools_list: list[Tool] = []
         tools_list += await self.env.get_tools()  # add env tools
         # TODO: handle duplicate tool names
-        for _, toolkit_config in self.config.toolkits.items():
+        for toolkit_config in self.config.toolkits:
             if toolkit_config.mode == "mcp":
                 await self._load_mcp_server(toolkit_config)
             elif toolkit_config.mode == "builtin":

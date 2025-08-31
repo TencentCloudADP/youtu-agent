@@ -1,1 +1,1 @@
-Fix: Toolkit loading in cli_chat.py
+Fix: Handle ToolCallItem, ToolCallOutputItem, and ReasoningItem in items_to_dict
