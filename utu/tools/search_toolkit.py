@@ -34,7 +34,7 @@ class SearchToolkit(AsyncBaseToolkit):
 
     @async_file_cache(expire_time=None)
     async def search_google(self, query: str):
-        params = {"q": query, "gl": "cn", "hl": "zh-cn", "num": 100}
+        params = {"q": query, "num": 100}
         async with aiohttp.ClientSession() as session:
             async with session.post(self.serper_url, headers=self.serper_header, json=params) as response:
                 response.raise_for_status()  # avoid cache error!

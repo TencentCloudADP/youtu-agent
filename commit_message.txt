@@ -1,1 +1,1 @@
-Fix: Iterate over toolkits list correctly
+Fix: Correctly capture tool_name in closure
