@@ -45,7 +45,8 @@ class SimplifiedAsyncOpenAI(AsyncOpenAI):
         for k, v in kwargs.items():
             if k in self.type_create_params:
                 default_config[k] = v
-        default_config["model"] = default_config.get("model", os.getenv("UTU_LLM_MODEL"))
+        if "model" not in default_config:
+            default_config["model"] = os.getenv("UTU_LLM_MODEL")
         return default_config
 
     async def query_one(self, **kwargs) -> str:
