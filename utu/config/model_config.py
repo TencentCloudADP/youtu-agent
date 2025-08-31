@@ -4,8 +4,8 @@ from typing import Literal
 from agents import ModelSettings
 from pydantic import ConfigDict, Field
 
-from .base_config import ConfigBaseModel
 from ..utils import EnvUtils
+from .base_config import ConfigBaseModel
 
 
 class ModelProviderConfig(ConfigBaseModel):
