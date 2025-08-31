@@ -1,1 +1,1 @@
-Fix: Remove hardcoded geolocation in search_google
+Fix: Use with statement to open files
