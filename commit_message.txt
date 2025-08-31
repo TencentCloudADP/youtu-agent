@@ -1,1 +1,1 @@
-Fix: Correctly capture tool_name in closure
+Fix: Remove hardcoded geolocation in search_google
