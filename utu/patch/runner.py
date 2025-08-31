@@ -58,7 +58,7 @@ class UTUAgentRunner(AgentRunner):
         # ADD: context manager
         context_manager: BaseContextManager | None = context_wrapper.context.get("context_manager", None)
         if context_manager:
-            input = context_manager.preprocess(input, context_wrapper)
+            input = await _coro.run_in_executor(context_manager.preprocess, input, context_wrapper)
         # print(f"< [DEBUG] input: {input}")
         new_response = await cls._get_new_response(
             agent,
@@ -92,5 +92,5 @@ class UTUAgentRunner(AgentRunner):
         )
         # ADD: postprocess
         if context_manager:
-            single_turn_result = context_manager.process(single_turn_result)
+            single_turn_result = await _coro.run_in_executor(context_manager.postprocess, single_turn_result)
         return single_turn_result
