@@ -58,17 +58,23 @@ class BashToolkit(AsyncBaseToolkit):
             child.sendline(f"prompt {custom_prompt}")
             child.expect(custom_prompt)
         else:
-            child = pexpect.spawn("/bin/bash", encoding="utf-8", echo=False, timeout=timeout)
-            # Set a known, unique prompt
-            # We use a random string that is unlikely to appear otherwise
-            # so we can detect the prompt reliably.
-            custom_prompt = "PEXPECT_PROMPT>> "
-            child.sendline("stty -onlcr")
-            child.sendline("unset PROMPT_COMMAND")
-            child.sendline(f"PS1='{custom_prompt}'")
-            # Force an initial read until the newly set prompt shows up
-            child.expect(custom_prompt)
-        return child, custom_prompt
+            if sys.platform == "win32":
+                        child = pexpect.spawn("cmd.exe", encoding="utf-8", echo=False, timeout=timeout)
+                        custom_prompt = "PROMPT_>"
+                        child.sendline(f"prompt {custom_prompt}")
+                        child.expect(custom_prompt)
+            else:
+                child = pexpect.spawn("/bin/bash", encoding="utf-8", echo=False, timeout=timeout)
+                # Set a known, unique prompt
+                # We use a random string that is unlikely to appear otherwise
+                # so we can detect the prompt reliably.
+                custom_prompt = "PEXPECT_PROMPT>> "
+                child.sendline("stty -onlcr")
+                child.sendline("unset PROMPT_COMMAND")
+                child.sendline(f"PS1='{custom_prompt}'")
+                # Force an initial read until the newly set prompt shows up
+                child.expect(custom_prompt)
+            return child, custom_prompt
 
     @staticmethod
     def run_command(child, custom_prompt: str, cmd: str) -> str:
