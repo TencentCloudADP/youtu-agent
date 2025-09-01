@@ -37,6 +37,7 @@ async def search_wide(task: str, subtasks: list[str], output_schema: dict, outpu
           {"properties": {"provider": {"description": "The model provider", "title": "Provider", "type": "string"}, "model_name": {"description": "The model name", "title": "Model Name", "type": "string"}, "context_window": {"description": "The context window", "type": "integer"}, "required": ["provider", "model_name", "context_window"], "title": "LLM", "type": "object"}
         output_fn (str): The file name to save the output, in JSONL format. e.g. `output.jsonl`
     """
+    # NOTE: we don't use output_type here for compatibility of APIs without structured output feature, you can open the output_type if your LLM provider supports it
     output_type = schema_to_basemodel(output_schema)  # noqa: F841
     print(f"Processing {len(subtasks)} subtasks for task: {task}\nOutput schema: {output_schema}")
     try:

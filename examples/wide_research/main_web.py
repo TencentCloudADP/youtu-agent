@@ -9,7 +9,7 @@ import json
 import pathlib
 import traceback
 
-from agents import AgentOutputSchema, function_tool
+from agents import function_tool
 
 from utu.agents import SimpleAgent
 from utu.config import ConfigLoader
@@ -23,28 +23,30 @@ CONCURRENCY = 20
 
 
 @function_tool(strict_mode=False)
-async def wide_research(task: str, subtasks: list[str], output_schema: dict, output_fn: str) -> str:
-    """Perform wide research. Given subtasks of the root task, this tool will perform subtasks simultaneously, saving to a jsonl file.
+async def search_wide(task: str, subtasks: list[str], output_schema: dict, output_fn: str) -> str:
+    """Perform structured wide research. Given task with several search subtasks, this tool will perform research simultaneously.
+    It is helpful when you need to collect several homogeneous information of the same topic.
 
     NOTEs:
-    - Only call this tool when you are sure that 1) it has >= 5 subtasks; 2) the subtasks are homogeneous that can be completed by the same procedure.
+    - Use this tool when the root task has >= 5 subtasks and the subtasks are homogeneous (have the same output schema).
+    - The output will be saved to a jsonl file.
 
     Args:
         task (str): The root task to perform research on.
-        subtasks (list[str]): Subtasks contained in the root task. They should be homogeneous that can be completed by the same procedure.
+        subtasks (list[str]): Homogeneous subtasks contained in the root task.
         output_schema (dict): The desired output format of each subtask, MUST be valid JSON Schema. e.g.
           {"properties": {"provider": {"description": "The model provider", "title": "Provider", "type": "string"}, "model_name": {"description": "The model name", "title": "Model Name", "type": "string"}, "context_window": {"description": "The context window", "type": "integer"}, "required": ["provider", "model_name", "context_window"], "title": "LLM", "type": "object"}
         output_fn (str): The file name to save the output, in JSONL format. e.g. `output.jsonl`
     """
-    # print(f"task: {task}\nsubtasks: {subtasks}\noutput_schema: {output_schema}")
-    output_type = schema_to_basemodel(output_schema)
+    # NOTE: we don't use output_type here for compatibility of APIs without structured output feature, you can open the output_type if your LLM provider supports it
+    output_type = schema_to_basemodel(output_schema)  # noqa: F841
     print(f"Processing {len(subtasks)} subtasks for task: {task}\nOutput schema: {output_schema}")
     try:
         searcher = SimpleAgent(
             name="SearcherAgent",
-            instructions=PROMPTS["searcher"],
+            instructions=PROMPTS["searcher"].format(schema=output_schema),
             tools=await SEARCH_TOOLKIT.get_tools_in_agents(),
-            output_type=AgentOutputSchema(output_type=output_type, strict_json_schema=False),
+            # output_type=AgentOutputSchema(output_type=output_type, strict_json_schema=False),
         )
         semaphore = asyncio.Semaphore(CONCURRENCY)
 
@@ -55,7 +57,7 @@ async def wide_research(task: str, subtasks: list[str], output_schema: dict, out
                         res = await searcher.run(task)
                         final_output = res.get_run_result().final_output
                     print(f"{idx}: `{task}` task finished!")
-                    return final_output.model_dump()
+                    return final_output
                 except Exception as e:
                     print(f"Error: {e}")
                     traceback.print_exc()
@@ -81,7 +83,7 @@ class WideResearch:
         self.planner_agent = SimpleAgent(
             name="PlannerAgent",
             instructions=PROMPTS["planner"],
-            tools=[wide_research] + await SEARCH_TOOLKIT.get_tools_in_agents(),
+            tools=[search_wide] + await SEARCH_TOOLKIT.get_tools_in_agents(),
         )
 
     async def run(self, task: str):

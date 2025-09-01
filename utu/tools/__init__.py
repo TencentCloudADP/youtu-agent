@@ -9,6 +9,7 @@ from .document_toolkit import DocumentToolkit
 from .file_edit_toolkit import FileEditToolkit
 from .github_toolkit import GitHubToolkit
 from .image_toolkit import ImageToolkit
+from .memory_toolkit import SimpleMemoryToolkit
 from .python_executor_toolkit import PythonExecutorToolkit
 from .search_toolkit import SearchToolkit
 from .serper_toolkit import SerperToolkit
@@ -33,10 +34,11 @@ TOOLKIT_MAP = {
     "audio": AudioToolkit,
     "serper": SerperToolkit,
     "tabular": TabularDataToolkit,
+    "memory_simple": SimpleMemoryToolkit,
 }
 
 
-def get_toolkits_map(names: list[str] = None) -> dict[str, AsyncBaseToolkit]:
+def get_toolkits_map(names: list[str] | None = None) -> dict[str, AsyncBaseToolkit]:
     toolkits = {}
     if names is None:
         names = list(TOOLKIT_MAP.keys())
