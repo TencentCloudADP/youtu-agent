@@ -1,4 +1,5 @@
 import React, { type FC, type KeyboardEvent, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type ChatInputLoadingState = "loading" | "ready" | "hide";
 
@@ -40,6 +41,7 @@ const ChatInput: FC<ChatInputProps> = ({
   setChatInputLoadingState,
   availableConfigs,
 }) => {
+  const { t } = useTranslation();
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !isModelResponding) {
       e.preventDefault();
@@ -122,14 +124,14 @@ const ChatInput: FC<ChatInputProps> = ({
             value={inputValue}
             onChange={(e) => onInputChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isModelResponding ? 'AI is thinking...' : 'Type a message...'}
+            placeholder={isModelResponding ? t('app.aiThinking') : t('app.inputPlaceholder')}
             disabled={isModelResponding}
           />
           <button
             className="send-button"
             onClick={onSendMessage}
             disabled={isModelResponding}
-            title={isModelResponding ? 'AI is thinking...' : 'Send message'}
+            title={isModelResponding ? t('app.aiThinking') : t('app.sendMessage')}
           >
             {isModelResponding ? (
               <i className="breathing-circle fa fa-circle"></i>

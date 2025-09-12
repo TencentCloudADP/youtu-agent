@@ -2,6 +2,7 @@
   /* Light Theme Colors */
   --color-text: #213547;
   --color-bg: #ffffff;
+  --color-input-bg: #ffffff;
   
   /* Agent Component Colors */
   --agent-bg: #f8fbff;
@@ -849,6 +850,7 @@ details[open] > .message-detail-content:has(.report-content) {
   :root {
     --color-text: #f0f0f0;
     --color-bg: #1e1e1e;
+    --color-input-bg: #2d2d2d;
     --color-border: #444;
     --color-header-bg: #2d2d2d;
     --color-header-text: #f0f0f0;
@@ -883,6 +885,59 @@ details[open] > .message-detail-content:has(.report-content) {
     --action-button-primary-hover: rgba(102, 187, 106, 0.3);
     --config-display-color: rgba(13, 13, 13);
   }
+}
+
+/* Enable manual dark theme via .dark class (same variables as prefers-color-scheme: dark) */
+.dark {
+  --color-text: #f0f0f0;
+  --color-bg: #1e1e1e;
+  --color-input-bg: #2d2d2d;
+  --color-border: #444;
+  --color-header-bg: #2d2d2d;
+  --color-header-text: #f0f0f0;
+  --color-row-even: #2a2a2a;
+  --color-row-hover: #3a3a3a;
+  --color-subtle-text: #a0a0a0;
+  --color-button-hover: #5d6bff;
+  --color-button-bg: #2d2d2d;
+  --color-chat-bg: #252526;
+  --color-detail-bg: #2d2d2d;
+  --color-detail-border: #3a3a3a;
+  --color-detail-hover: #3a3a3a;
+  --color-accent: #6c79ff;
+  --color-error-bg: #3a1f1f;
+  --color-error-border: #d32f2f;
+  --color-error-text: #ff9e9e;
+  --color-error-icon: #ff6b6b;
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-example-bg: #3a3a3a;
+  --color-example-text: #f0f0f0;
+
+  --color-message-confirm-bg: #484848;
+  --agent-bg: #293753;
+  --agent-border: rgba(0, 0, 0, 0);
+  --agent-name-color: #c3e0ff;
+  --agent-status-color: #c7eeff;
+
+  --action-button-primary-bg: rgba(102, 187, 106, 0.3);
+  --action-button-primary-text: #81c784;
+  --action-button-primary-border: rgba(102, 187, 106, 0.4);
+  --action-button-primary-hover: rgba(102, 187, 106, 0.3);
+  --config-display-color: rgba(13, 13, 13);
+}
+
+/* Modal variables for manual dark theme */
+.dark {
+  --modal-bg: #2d3748;
+  --modal-text: #e2e8f0;
+  --modal-border: #4a5568;
+  --modal-button-bg: #4a5568;
+  --modal-button-hover: #2d3748;
+  --modal-button-primary: #4a6cf7;
+  --modal-button-primary-hover: #3a5bd9;
+  --modal-input-bg: #2d3748;
+  --modal-input-border: #4a5568;
+  --modal-input-text: #e2e8f0;
 }
 
 .title-logo {
@@ -1000,6 +1055,38 @@ details[open] > .message-detail-content:has(.report-content) {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
   outline: none;
+}
+
+/* Make selects look like the text input in the Settings modal */
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--modal-input-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--modal-input-bg);
+  color: var(--modal-input-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Chevron indicator (light theme) */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 16px;
+  padding-right: 2.2rem; /* space for chevron */
+}
+
+.form-group select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+  outline: none;
+}
+
+/* Chevron color for manual dark theme */
+.dark .form-group select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
 }
 
 .modal-actions {

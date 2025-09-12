@@ -8,6 +8,7 @@ import HamburgerButton from './components/HamburgerButton';
 import { simulateEvents } from './placeholderData';
 import logoUrl from './assets/pic.png';
 import logoSquareUrl from './assets/logo-square.png';
+import { useTranslation } from 'react-i18next';
 import type {
   Event,
   TextDeltaContent,
@@ -31,14 +32,7 @@ import type {
 } from './types/message';
 import type { ChatInputLoadingState } from './components/ChatInput';
 
-const initialMessages: Message[] = [
-  {
-    id: 1,
-    content: 'Hello! I am your AI assistant. How can I help you today?',
-    sender: 'assistant',
-    timestamp: new Date()
-  }
-];
+// Initial messages will be created inside the component using i18n
 
 // 根据当前协议自动选择 ws:// 或 wss://
 const defaultProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -46,9 +40,18 @@ const defaultWsUrl = import.meta.env.VITE_WS_URL || `${defaultProtocol}//${windo
 
 
 const App: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const getSystemPrefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const getInitialTheme = () => (localStorage.getItem('theme') as 'light' | 'dark' | null) || (getSystemPrefersDark() ? 'dark' : 'light');
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // Track mobile view for responsive behavior
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([{
+    id: 1,
+    content: t('app.welcome'),
+    sender: 'assistant',
+    timestamp: new Date()
+  }]);
   const [exampleQuery, setExampleQuery] = useState<string[]>([]);
   const [hideExampleQuery, setHideExampleQuery] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -286,7 +289,12 @@ const App: React.FC = () => {
         setSubAgents(data.sub_agents);
         setIsGeneratingAgent(false);
         // clear messages
-        setMessages(initialMessages);
+        setMessages([{
+          id: Date.now(),
+          content: t('app.welcome'),
+          sender: 'assistant',
+          timestamp: new Date()
+        }]);
       } else {
         console.error('Switch agent failed');
       }
@@ -333,7 +341,7 @@ const App: React.FC = () => {
       // add a prompt message
       const message: Message = {
         id: Date.now(),
-        content: "Hello, please let me know your requirement. What agent do you want to generate?",
+        content: t('app.agentGenerationPrompt'),
         sender: 'assistant',
         timestamp: new Date(),
         type: 'text',
@@ -357,6 +365,33 @@ const App: React.FC = () => {
   useEffect(() => {
     // Focus input on mount
     inputRef.current?.focus();
+  }, []);
+
+  // Apply theme class to document root
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // Set favicon using logoSquareUrl on mount
+  useEffect(() => {
+    try {
+      let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement | null;
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.type = 'image/png';
+      link.href = logoSquareUrl;
+    } catch (e) {
+      console.error('Failed to set favicon', e);
+    }
   }, []);
 
   useEffect(() => {
@@ -402,7 +437,7 @@ const App: React.FC = () => {
       console.error("WebSocket is not connected");
       const message: Message = {
         id: Date.now() + 1,
-        content: "WebSocket is not connected",
+        content: t('app.notConnected'),
         sender: 'assistant',
         timestamp: new Date(),
         type: 'error',
@@ -583,7 +618,7 @@ const App: React.FC = () => {
         <button 
           className="settings-button"
           onClick={handleOpenSettings}
-          title="Settings"
+          title={t('app.settingsButtonTitle')}
         >
           <i className="fas fa-cog"></i>
         </button>
@@ -591,9 +626,9 @@ const App: React.FC = () => {
         {settingsOpen && (
           <div className="modal-overlay" onClick={handleCloseSettings}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
-              <h3>Settings</h3>
+              <h3>{t('app.settingsModalTitle')}</h3>
               <div className="form-group">
-                <label htmlFor="wsUrl">WebSocket URL</label>
+                <label htmlFor="wsUrl">{t('app.websocketUrlLabel')}</label>
                 <input
                   id="wsUrl"
                   type="text"
@@ -602,12 +637,34 @@ const App: React.FC = () => {
                   placeholder="ws://localhost:8848/ws"
                 />
               </div>
+              <div className="form-group">
+                <label htmlFor="languageSelect">{t('app.languageLabel')}</label>
+                <select
+                  id="languageSelect"
+                  value={i18n.language?.startsWith('zh') ? 'zh' : 'en'}
+                  onChange={(e) => i18n.changeLanguage(e.target.value)}
+                >
+                  <option value="en">{t('language.en')}</option>
+                  <option value="zh">{t('language.zh')}</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="themeSelect">{t('app.themeLabel')}</label>
+                <select
+                  id="themeSelect"
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value as 'light' | 'dark')}
+                >
+                  <option value="light">{t('app.themeLight')}</option>
+                  <option value="dark">{t('app.themeDark')}</option>
+                </select>
+              </div>
               <div className="modal-actions">
                 <button onClick={handleCloseSettings}>
-                  Cancel
+                  {t('app.cancel')}
                 </button>
                 <button onClick={handleSaveSettings} className="primary">
-                  Save
+                  {t('app.save')}
                 </button>
               </div>
             </div>
@@ -650,7 +707,7 @@ const App: React.FC = () => {
             
             {!hideExampleQuery && exampleQuery.length > 0 && (
               <div className="example-queries">
-                <div className="example-queries-title">Try asking:</div>
+                <div className="example-queries-title">{t('app.tryAsking')}</div>
                 {exampleQuery.map((query, idx) => (
                   <div key={idx} className="example-query" onClick={() => {
                     setInputValue(query);
