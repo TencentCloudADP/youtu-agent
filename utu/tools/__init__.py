@@ -7,6 +7,7 @@ from .bash_toolkit import BashToolkit
 from .codesnip_toolkit import CodesnipToolkit
 from .document_toolkit import DocumentToolkit
 from .file_edit_toolkit import FileEditToolkit
+from .game_config_toolkit import GameConfigToolkit
 from .github_toolkit import GitHubToolkit
 from .image_toolkit import ImageToolkit
 from .memory_toolkit import SimpleMemoryToolkit
@@ -36,6 +37,7 @@ TOOLKIT_MAP = {
     "serper": SerperToolkit,
     "tabular": TabularDataToolkit,
     "memory_simple": SimpleMemoryToolkit,
+    "game_config": GameConfigToolkit,
 }
 
 

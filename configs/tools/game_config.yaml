@@ -1,0 +1,11 @@
+name: game_config
+mode: builtin
+activated_tools: null
+config:
+  schema_dir: ./json_schemas
+  export_dir: ./output/game_configs
+  table_files:
+    c礼包普通掉落项数据表: 01_c礼包投放数据表_礼包普通掉落项数据表.json
+    c礼包投放数据表: 01_c礼包投放数据表_礼包投放数据表.json
+    c系统玩法物品数据表: 01_c系统玩法物品数据表_物品数据表.json
+    物品使用参数表: 02_物品使用参数表_物品使用参数表.json
