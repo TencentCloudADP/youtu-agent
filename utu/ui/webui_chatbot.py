@@ -15,6 +15,7 @@ from utu.utils import EnvUtils
 from .common import (
     Event,
     ExampleContent,
+    UserQuery,
     UserRequest,
     handle_new_agent,
     handle_orchestra_events,
@@ -47,6 +48,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     async def on_message(self, message: str):
         try:
             data = json.loads(message)
+            t = data['type']
+            q = data[t]
+            data.pop(t)
+            data['content'] = UserQuery(query=q)
             user_request = UserRequest(**data)
             if user_request.type == "query":
                 try:
