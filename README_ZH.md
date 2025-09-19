@@ -88,7 +88,7 @@
 python scripts/gen_simple_agent.py
 
 # Run the generated config
-python scripts/cli_chat.py --stream --config generated/xxx
+python scripts/cli_chat.py --config generated/xxx
 ```
 
 <table border="1" style="border-collapse: collapse;">
@@ -222,9 +222,9 @@ agent:
 
 ```bash
 # NOTE: 你需要在 .env 中配置 `SERPER_API_KEY` 和 `JINA_API_KEY` (我们计划在未来替换为免费工具)
-python scripts/cli_chat.py --stream --config simple/base_search
+python scripts/cli_chat.py --config simple/base_search
 # 如果你不想使用搜索工具，可以运行
-python scripts/cli_chat.py --stream --config simple/base
+python scripts/cli_chat.py --config simple/base
 ```
 
 📖 更多内容请参考：[快速开始文档](https://tencentcloudadp.github.io/youtu-agent/quickstart)

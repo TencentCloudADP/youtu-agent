@@ -1,19 +1,6 @@
 from ...config import AgentConfig
-from ...utils import AgentsUtils
 from ..simple_agent import SimpleAgent
 from .common import OrchestraTaskRecorder, Subtask, WorkerResult
-
-
-class BaseWorkerAgent:
-    async def build(self):
-        pass
-
-    async def work(self, task_recorder: OrchestraTaskRecorder, subtask: Subtask) -> WorkerResult:
-        raise NotImplementedError
-
-    def work_streamed(self, task_recorder: OrchestraTaskRecorder, subtask: Subtask) -> WorkerResult:
-        raise NotImplementedError
-
 
 TEMPLATE = r"""Original Problem:
 {problem}
@@ -29,7 +16,7 @@ Current Task:
 """.strip()
 
 
-class SimpleWorkerAgent(BaseWorkerAgent):
+class SimpleWorkerAgent:
     def __init__(self, config: AgentConfig):
         self.agent = SimpleAgent(config=config)
 
@@ -46,17 +33,8 @@ class SimpleWorkerAgent(BaseWorkerAgent):
             task=subtask.task,
         )
 
-    async def work(self, task_recorder: OrchestraTaskRecorder, subtask: Subtask) -> WorkerResult:
-        """search webpages for a specific subtask, return a report"""
-        aug_task = self._format_task(task_recorder, subtask)
-        recorder = await self.agent.run(aug_task, trace_id=task_recorder.trace_id)
-        return WorkerResult(
-            task=subtask.task,
-            output=recorder.final_output,
-            trajectory=AgentsUtils.get_trajectory_from_agent_result(recorder.get_run_result()),
-        )
-
     def work_streamed(self, task_recorder: OrchestraTaskRecorder, subtask: Subtask) -> WorkerResult:
+        # TODO: wrap WorkerResult with DataClassWithStreamEvents
         aug_task = self._format_task(task_recorder, subtask)
         run_result_streaming = self.agent.run_streamed(aug_task, trace_id=task_recorder.trace_id)
         result = WorkerResult(

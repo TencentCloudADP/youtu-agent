@@ -39,7 +39,7 @@ Run a simple agent defined by a configuration file. For example, to run an agent
 
 ```sh
 # python scripts/cli_chat.py --help
-python scripts/cli_chat.py --config_name simple/search_agent.yaml --stream
+python scripts/cli_chat.py --config_name simple/search_agent.yaml
 ```
 
 ### Orchestra Agent

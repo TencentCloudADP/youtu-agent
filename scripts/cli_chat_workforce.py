@@ -1,3 +1,4 @@
+# TODO: remove this file after fully migrating to cli_chat.py
 import argparse
 import asyncio
 
@@ -20,7 +21,6 @@ async def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config_name", type=str, default="workforce/base", help="Configuration name")
-    parser.add_argument("--stream", action="store_true", help="Stream the output.")
     args = parser.parse_args()
 
     config: AgentConfig = ConfigLoader.load_agent_config(args.config_name)
@@ -30,10 +30,7 @@ async def main():
         user_input = await PrintUtils.async_print_input("> ")
         if user_input.lower() in ["exit", "quit", "q"]:
             break
-        if args.stream:
-            await agent.run_streamed(user_input)
-        else:
-            await agent.run(user_input)
+        await agent.run_streamed(user_input)
 
 
 if __name__ == "__main__":

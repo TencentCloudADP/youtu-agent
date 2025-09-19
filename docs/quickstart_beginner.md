@@ -145,7 +145,7 @@ Let's verify that the installation was successful:
 ```sh
 # Run a simple agent with search capabilities as startup test
 # python scripts/cli_chat.py --help
-python scripts/cli_chat.py --config_name simple/search_agent.yaml --stream
+python scripts/cli_chat.py --config_name simple/search_agent.yaml
 ```
 
 If everything is working correctly, you should see:

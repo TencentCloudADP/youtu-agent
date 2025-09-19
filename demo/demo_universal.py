@@ -3,7 +3,7 @@ import argparse
 from utu.ui.webui_agents import WebUIAgents
 from utu.utils.env import EnvUtils
 
-DEFAULT_CONFIG = "base.yaml"
+DEFAULT_CONFIG = "simple/base.yaml"
 DEFAULT_IP = EnvUtils.get_env("UTU_WEBUI_IP", "127.0.0.1")
 DEFAULT_PORT = EnvUtils.get_env("UTU_WEBUI_PORT", "8848")
 DEFAULT_AUTOLOAD = EnvUtils.get_env("UTU_WEBUI_AUTOLOAD", "false") == "true"

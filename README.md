@@ -111,7 +111,7 @@ A standout feature of `Youtu-Agent` is its ability to **automatically generate a
 python scripts/gen_simple_agent.py
 
 # Run the generated config
-python scripts/cli_chat.py --stream --config generated/xxx
+python scripts/cli_chat.py --config generated/xxx
 ```
 
 <table>
@@ -256,9 +256,9 @@ You can launch an interactive CLI chatbot with this agent by running:
 ```bash
 # NOTE: You need to set `SERPER_API_KEY` and `JINA_API_KEY` in `.env` for web search access.
 # (We plan to replace these with free alternatives in the future)
-python scripts/cli_chat.py --stream --config simple/base_search
+python scripts/cli_chat.py --config simple/base_search
 # To avoid using the search toolkit, you can run:
-python scripts/cli_chat.py --stream --config simple/base
+python scripts/cli_chat.py --config simple/base
 ```
 
 📖 More details: [Quickstart Documentation](https://tencentcloudadp.github.io/youtu-agent/quickstart)

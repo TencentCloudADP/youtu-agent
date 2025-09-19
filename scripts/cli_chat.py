@@ -22,27 +22,21 @@ async def main():
     parser.add_argument("--config_name", type=str, default="simple/base", help="Configuration name")
     parser.add_argument("--agent_model", type=str, default=None, help="Agent model.")
     parser.add_argument("--tools", type=str, nargs="*", help="List of tool names to load")
-    parser.add_argument("--stream", action="store_true", help="Stream the output.")
     args = parser.parse_args()
 
     config: AgentConfig = ConfigLoader.load_agent_config(args.config_name)
-    if args.agent_model:
-        config.model.model = args.agent_model
-    if args.tools:
-        # load toolkits from config
-        for tool_name in args.tools:
-            config.toolkits[tool_name] = ConfigLoader.load_toolkit_config(tool_name)
 
-    async with SimpleAgent(config=config) as agent:
-        # TODO: use an unified trace_id, or use session
-        while True:
-            user_input = await PrintUtils.async_print_input("> ")
-            if user_input.lower() in ["exit", "quit", "q"]:
-                break
-            if args.stream:
-                await agent.chat_streamed(user_input)
-            else:
-                await agent.chat(user_input)
+    agent = SimpleAgent(config=config)
+    while True:
+        user_input = await PrintUtils.async_print_input("> ")
+        if user_input.strip().lower() in ["exit", "quit", "q"]:
+            break
+        if not user_input.strip():
+            continue
+        if hasattr(agent, "build"):
+            await agent.build()
+        # TODO: use a unified .run_streamed interface
+        await agent.chat_streamed(user_input)
 
 
 if __name__ == "__main__":
