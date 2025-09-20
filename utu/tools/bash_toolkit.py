@@ -51,7 +51,7 @@ class BashToolkit(AsyncBaseToolkit):
         self.run_command(self.child, self.custom_prompt, f"cd {workspace_root}")
 
     @staticmethod
-    def start_persistent_shell(timeout: int) -> tuple[pexpect.spawn, str]:
+    def start_persistent_shell(timeout: int):
         # https://github.com/pexpect/pexpect/issues/321
 
         # Start a new Bash shell
@@ -74,7 +74,7 @@ class BashToolkit(AsyncBaseToolkit):
             return child, custom_prompt
 
     @staticmethod
-    def run_command(child: pexpect.spawn, custom_prompt: str, cmd: str) -> str:
+    def run_command(child, custom_prompt: str, cmd: str) -> str:
         # Send the command
         child.sendline(cmd)
         # Wait until we see the prompt again
