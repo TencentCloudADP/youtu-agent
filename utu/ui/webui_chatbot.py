@@ -146,7 +146,9 @@ class WebUIChatbot:
         )
 
     async def __launch(self, port: int = 8848, ip: str = "127.0.0.1", autoload: bool | None = None):
-        await self.agent.build()
+        # 兼容性检查：某些版本的OrchestraAgent可能没有build方法
+        if hasattr(self.agent, 'build'):
+            await self.agent.build()
         app = self.make_app()
         app.listen(port, address=ip)
         print(f"Server started at http://{ip}:{port}/")
