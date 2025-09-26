@@ -65,7 +65,7 @@ wheels/
 
 # Misc
 # temp files
-_*
+# _*
 # temp config
 test.yaml
 pgs

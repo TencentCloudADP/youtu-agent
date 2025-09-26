@@ -4,24 +4,25 @@ defaults:
   - /agents/orchestrator/router@orchestrator_router  # router
   - /agents/simple/search_agent@orchestrator_workers.SearchAgent
   - /agents/simple/data_analysis_agent@orchestrator_workers.DataAnalysisAgent
+  - /agents/simple/svg_generator@orchestrator_workers.SVGGenerator
   - /agents/simple/html_generator@orchestrator_workers.HTMLGenerator
   - _self_
-
 
 type: orchestrator
 
 orchestrator_config:
-  # examples_path: planner_examples_data.json
-  name: DataAnalysisAgent
-  additional_instructions: |-
-    Your main object is generating HTML according to user's request. So,
-    - If user's request is not clear enough, use the ChitchatAgent to help clarify user's request. (If available)
-    - Else, use the HTMLGeneratorAgent to generate HTML code after other agents provides enough information.
+  name: UniversalOrchestratorAgent
+  examples_path: plan_examples/chain.json  # default examples for task-decomposition. (in /utu/data/)
+  add_chitchat_subagent: true  # add chitchat subagent
+  additional_instructions: ""
 
 orchestrator_workers_info:
   - name: SearchAgent
     desciption: Performs focused, in-depth information retrieval. Excels at locating reliable sources, synthesizing knowledge from multiple references, and answering research-oriented queries.
   - name: DataAnalysisAgent
     description: Exploring and analyzing tabular data files (CSV, Excel, etc.), performing automated field extraction, statistical analysis, pattern discovery, and generating data insights
+  # 
+  - name: SVGGenerator
+    description: Creates an exquisite SVG card based on provided information.
   - name: HTMLGenerator
     description: Generates HTML reports based on provided information

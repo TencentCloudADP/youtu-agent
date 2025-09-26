@@ -7,9 +7,10 @@ import agents as ag
 import tornado.web
 import tornado.websocket
 
+from utu.agents import OrchestratorAgent, SimpleAgent
 from utu.agents.orchestra import OrchestraStreamEvent
 from utu.agents.orchestra_agent import OrchestraAgent
-from utu.agents.simple_agent import SimpleAgent
+from utu.agents.orchestrator import OrchestratorStreamEvent
 from utu.utils import EnvUtils
 
 from .common import (
@@ -24,8 +25,9 @@ from .common import (
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
-    def initialize(self, agent: SimpleAgent | OrchestraAgent, example_query: str = ""):
-        self.agent: SimpleAgent | OrchestraAgent = agent
+    def initialize(self, agent: SimpleAgent | OrchestraAgent | OrchestratorAgent, example_query: str = ""):
+        self.agent: SimpleAgent | OrchestraAgent | OrchestratorAgent = agent
+        self.history = None  # recorder for multi-turn chat. Now only used for OrchestraAgent
         self.example_query = example_query
 
     def check_origin(self, origin):
@@ -41,7 +43,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
     async def send_event(self, event: Event):
         # print in green color
-        print(f"\033[92mSending event: {event.model_dump()}\033[0m")
+        # print(f"\033[92mSending event: {event.model_dump()}\033[0m")
         self.write_message(event.model_dump())
 
     async def on_message(self, message: str):
@@ -64,12 +66,15 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                         # print in red color
                         print(f"\033[91mInput items: {self.agent.input_items}\033[0m")
                         stream = self.agent.run_streamed(self.agent.input_items)
+                    elif isinstance(self.agent, OrchestratorAgent):
+                        stream = self.agent.run_streamed(content.query, self.history)
+                        self.history = stream
                     else:
                         raise ValueError(f"Unsupported agent type: {type(self.agent).__name__}")
 
                     async for event in stream.stream_events():
                         event_to_send = None
-                        print(f"--------------------\n{event}")
+                        # print(f"--------------------\n{event}")
                         if isinstance(event, ag.RawResponsesStreamEvent):
                             event_to_send = await handle_raw_stream_events(event)
                         elif isinstance(event, ag.RunItemStreamEvent):
@@ -78,6 +83,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                             event_to_send = await handle_new_agent(event)
                         elif isinstance(event, OrchestraStreamEvent):
                             event_to_send = await handle_orchestra_events(event)
+                        elif isinstance(event, OrchestratorStreamEvent):
+                            print(f"> {event}")
                         else:
                             pass
                         if event_to_send:

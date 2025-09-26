@@ -9,13 +9,15 @@ from typing import Literal
 from sqlmodel import select
 
 from ..db import ToolCacheModel
-from ..utils import SQLModelUtils, get_logger
+from ..utils import EnvUtils, SQLModelUtils, get_logger
 from .path import DIR_ROOT
 
 logger = get_logger(__name__)
 
 DIR_CACHE = DIR_ROOT / ".cache"
 DIR_CACHE.mkdir(exist_ok=True)
+
+USE_CACHE = EnvUtils.get_env("UTU_DISABLE_TOOL_CACHE", "").lower() not in ("true", "1")
 
 
 def create_cached_file(cache_path: pathlib.Path, expire_time: int | None = None):
@@ -29,7 +31,7 @@ def create_cached_file(cache_path: pathlib.Path, expire_time: int | None = None)
             cache_file = cache_path / f"{func_name}" / f"{func_name}_{cache_key}.json"
             cache_file.parent.mkdir(exist_ok=True, parents=True)
 
-            if cache_file.exists():
+            if USE_CACHE and cache_file.exists():
                 with open(cache_file) as f:
                     cache_data = json.load(f)
 
@@ -70,31 +72,32 @@ def create_cached_db(expire_time: int | None = None):
             cache_key = hashlib.md5(args_str.encode()).hexdigest()
 
             with SQLModelUtils.create_session() as session:
-                stmt = select(ToolCacheModel).where(
-                    ToolCacheModel.function == func_name, ToolCacheModel.cache_key == cache_key
-                )
-                if_exist = session.exec(stmt).first()  # one_or_none
-                if if_exist and (expire_time is None or (time.time() - if_exist.timestamp) < expire_time):
-                    logger.debug(f"🔄 Using cached result for {func_name} from db")
-                    return if_exist.result
-                else:
-                    start_time = time.time()
-                    result = await func(*args, **kwargs)
-                    execution_time = time.time() - start_time
-                    data = ToolCacheModel(
-                        function=func_name,
-                        args=args_str,
-                        kwargs=str(kwargs),
-                        result=result,
-                        cache_key=cache_key,
-                        execution_time=execution_time,
-                        timestamp=time.time(),
-                        datetime=datetime.now().isoformat(),
+                if USE_CACHE:
+                    stmt = select(ToolCacheModel).where(
+                        ToolCacheModel.function == func_name, ToolCacheModel.cache_key == cache_key
                     )
-                    session.add(data)
-                    session.commit()
-                    logger.debug(f"💾 Cached result for {func_name} to db")
-                    return result
+                    if_exist = session.exec(stmt).first()  # one_or_none
+                    if if_exist and (expire_time is None or (time.time() - if_exist.timestamp) < expire_time):
+                        logger.debug(f"🔄 Using cached result for {func_name} from db")
+                        return if_exist.result
+
+                start_time = time.time()
+                result = await func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                data = ToolCacheModel(
+                    function=func_name,
+                    args=args_str,
+                    kwargs=str(kwargs),
+                    result=result,
+                    cache_key=cache_key,
+                    execution_time=execution_time,
+                    timestamp=time.time(),
+                    datetime=datetime.now().isoformat(),
+                )
+                session.add(data)
+                session.commit()
+                logger.debug(f"💾 Cached result for {func_name} to db")
+                return result
 
         return wrapper
 

@@ -83,7 +83,7 @@ class PrintUtils:
         msg: str,
         color: str = "red",
         add_prefix: bool = False,
-        prefix: str = "[ERROR]",
+        prefix: str = "",
         end: str = "\n",
         flush: bool = True,
     ):

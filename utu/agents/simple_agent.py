@@ -88,7 +88,7 @@ class SimpleAgent:
             return model_settings
         return config.model.model_settings
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "SimpleAgent":
         await self.build()
         return self
 

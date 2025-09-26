@@ -272,8 +272,10 @@ class AgentsUtils:
                     PrintUtils.print_info(f"  >>> Skipping item: {item.__class__.__name__}")
             elif isinstance(event, AgentUpdatedStreamEvent):
                 PrintUtils.print_info(f">> new agent: {event.new_agent.name}")
+            # skip events from youtu-agent
+            elif event.type in ("orchestrator_stream_event", "orchestra_stream_event"):
+                pass
             else:
-                # TODO: support OrchestraStreamEvent?
                 logger.warning(f"Unknown event type: {event.type}! {event}")
         print()  # Newline after stream?
 

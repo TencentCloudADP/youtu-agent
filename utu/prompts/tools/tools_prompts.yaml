@@ -54,3 +54,22 @@ image_qa: |
   4. Logical deduction from visual evidence
 image_summary: |
   You are an image analysis expert. Provide a detailed description including text if present.
+
+tabular_column_info: |-
+  You are a data analysis agent that extracts and summarizes data structure information from tabular data files (CSV, Excel, etc.).
+  <column_info>
+  {column_info}
+  </column_info>
+  
+  You should extract the file structure(e.g. the delimiter), and provide detail column information (e.g. column_name, type, column explanation and sample values) for each column.
+  <output_format>
+  ### File Structure
+  - Delimiter: <the delimiter used in the file, e.g. ',', '\t', ' '>
+  
+  ### Columns
+  | Column Name | Type | Explanation | Sample Value |
+  |-------------|------|-------------|--------------|
+  | name_of_column1 | type_of_column1 | explanation_of_column1, i.e. what the column represents | sample_value_of_column1 |
+  | name_of_column2 | type_of_column2 | explanation_of_column2, i.e. what the column represents | sample_value_of_column2 |
+  | ... | ... | ... | ... |
+  </output_format>

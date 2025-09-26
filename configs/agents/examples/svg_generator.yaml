@@ -1,18 +1,22 @@
 # @package _global_
 defaults:
-  - /model/base@planner_model
-  - /model/base@reporter_model
-  - /agents/simple/search_agent@workers.SearchAgent
+  - /model/base@orchestrator_model
+  - /agents/orchestrator/router@orchestrator_router  # router
+  - /agents/simple/search_agent@orchestrator_workers.SearchAgent
+  - /agents/simple/svg_generator@orchestrator_workers.SVGGenerator
   - _self_
 
+type: orchestrator
 
-type: orchestra
+orchestrator_config:
+  name: SVGGeneratorAgent
+  additional_instructions: |-
+    Your main object is generating SVG code according to user's request. So,
+    - If user's request is not clear enough, use the ChitchatAgent to help clarify user's request. (If available)
+    - Else, use the SVGGeneratorAgent to generate SVG code after SearchAgent provides information.
 
-planner_config:
-  examples_path: planner_examples_data.json
-
-workers_info:
+orchestrator_workers_info:
   - name: SearchAgent
-    desc: information retrieval and data collection.
-    strengths: Web search, information retrieval, research material collection, API data fetching
-    weaknesses: No access to private databases, retrieval only (no content creation/modification)
+    desciption: Performs focused, in-depth information retrieval. Excels at locating reliable sources, synthesizing knowledge from multiple references, and answering research-oriented queries.
+  - name: SVGGenerator
+    description: Creates an exquisite SVG card.

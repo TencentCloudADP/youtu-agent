@@ -50,8 +50,8 @@ class EnvConfig(ConfigBaseModel):
 class AgentConfig(ConfigBaseModel):
     """Overall agent config"""
 
-    type: Literal["simple", "orchestra", "workforce"] = "simple"
-    """Agent type, "simple" or "orchestra". """
+    type: Literal["simple", "orchestra", "orchestrator", "workforce"] = "simple"
+    """Agent type"""
 
     # simple agent config
     model: ModelConfigs = Field(default_factory=ModelConfigs)
@@ -106,3 +106,18 @@ class AgentConfig(ConfigBaseModel):
     """Workforce executor config (dict)"""
     workforce_executor_infos: list[dict] = Field(default_factory=list)
     """Workforce executor infos, list of {name, desc, strengths, weaknesses}"""
+
+    # orchestrator agent config
+    orchestrator_router: "AgentConfig" = None
+    """Orchestrator router agent config"""
+    orchestrator_config: dict = Field(default_factory=dict)
+    """Orchestrator config (dict)\n
+    - `name`: name of the orchestrator-workers system
+    - `examples_path`: path to orchestrator examples json file. default utu/data/plan_examples/chain.json
+    - `add_chitchat_subagent`: whether to add chitchat subagent. default True"""
+    orchestrator_model: ModelConfigs = Field(default_factory=ModelConfigs)
+    """Planner model config"""
+    orchestrator_workers: dict[str, "AgentConfig"] = Field(default_factory=dict)
+    """Workers config"""
+    orchestrator_workers_info: list[dict] = Field(default_factory=list)
+    """Workers info, list of {name, description}"""

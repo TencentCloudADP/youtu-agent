@@ -1,0 +1,19 @@
+name: Block WIP PRs
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  check-title:
+    name: Check for WIP in title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if title contains [WIP]
+        run: |
+          if [[ "${{ github.event.pull_request.title }}" == *"[WIP]"* ]]; then
+            echo "PR title contains [WIP]. Blocking merge."
+            exit 1
+          else
+            echo "PR title is clean. Allowing merge."
+          fi

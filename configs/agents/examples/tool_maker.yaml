@@ -1,8 +1,0 @@
-# @package _global_
-defaults:
-  - /model/base@model
-  - _self_
-
-agent:
-    name: utu-tool-maker
-    instructions: "You are a helpful assistant."

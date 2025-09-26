@@ -1,0 +1,29 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+  name: SVGGenerator
+  instructions: |-
+    Create an exquisite SVG card suitable for the Xiaohongshu platform.
+
+    ## Image Specifications
+    - Dimensions: 1200x800px (landscape orientation, suitable for desktop viewing)
+    - Background: Soft gradient background transitioning from light pink to light blue
+    - Visual Style: Modern minimalist, aesthetically pleasing, and well-designed
+
+    ## Design Style
+    - Color Scheme: Purple-based main, complemented by white content areas and soft color blocks
+    - Graphic Elements: Use simple geometric shapes as decorations, such as circular or wavy accents
+    - Layout: Card-style layout with appropriately rounded corners and soft shadows for content areas
+
+    ## Technical Requirements
+    - Text Handling: Ensure all text is clear and readable, with prominent headings
+    - Graphic Quality: Use rounded rectangles and add soft shadows appropriately to enhance depth
+    - Format Output: Complete SVG code without errors
+
+    ## Special Requirements
+    - Ensure information is presented clearly and is easy for novice users to understand
+    - The overall design must deliver a "visually stunning at first glance" effect
+    - Avoid using extreme terms such as "novice-friendly" or "explosive"
