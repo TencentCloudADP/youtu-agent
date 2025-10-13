@@ -42,6 +42,9 @@ dependencies = [
 litllm = [
     "litellm>=1.77.0",
 ]
+wandb = [
+    "wandb>=0.17.0",
+]
 
 [dependency-groups]
 dev = [
