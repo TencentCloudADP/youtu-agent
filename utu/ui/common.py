@@ -94,6 +94,7 @@ class InitContent(BaseModel):
     default_agent: str
     agent_type: Literal["simple", "orchestra", "orchestrator", "other"]
     sub_agents: list[str] | None = None
+    session_id: str
 
 
 class AskContent(BaseModel):

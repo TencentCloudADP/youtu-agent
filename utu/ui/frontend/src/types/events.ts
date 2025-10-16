@@ -33,6 +33,7 @@ export interface InitContent {
   default_agent: string;
   agent_type: "simple" | "orchestra" | "other";
   sub_agents: string[] | null;
+  session_id: string;
 }
 
 export interface PlanItemOrchestrator {

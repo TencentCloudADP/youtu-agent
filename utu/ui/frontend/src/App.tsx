@@ -56,6 +56,7 @@ const App: React.FC = () => {
     sender: 'assistant',
     timestamp: new Date()
   }]);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [exampleQuery, setExampleQuery] = useState<string[]>([]);
   const [hideExampleQuery, setHideExampleQuery] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -551,6 +552,8 @@ const App: React.FC = () => {
       setSubAgents(initData.sub_agents);
       setShowNewChatButton(true);
       setShowAgentConfigs(true);
+      setSessionId(initData.session_id);
+      console.log("initData", initData)
       
       // Send list_agents command on init
       sendRequest({
@@ -1037,6 +1040,7 @@ const App: React.FC = () => {
             availableConfigs={availableConfigs}
             getConfigList={getConfigList}
             uploadEndpoint={uploadEndpoint}
+            sessionId={sessionId}
           />
 
           {/* Footer with pic.png */}

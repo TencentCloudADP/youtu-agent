@@ -17,6 +17,7 @@ interface ChatInputProps {
   setChatInputLoadingState: (state: ChatInputLoadingState) => void;
   availableConfigs: string[];
   uploadEndpoint?: string;
+  sessionId: string | null;
 }
 
 type FileStatus = 'uploading' | 'uploaded';
@@ -52,6 +53,7 @@ const ChatInput: FC<ChatInputProps> = ({
   setChatInputLoadingState,
   availableConfigs,
   uploadEndpoint,
+  sessionId,
 }) => {
   const { t } = useTranslation();
   const sendWithRelated = () => {
@@ -108,12 +110,19 @@ const ChatInput: FC<ChatInputProps> = ({
   };
 
   const uploadFile = async (item: SelectedFileItem) => {
+    if (!sessionId) {
+      console.error('Session ID is not available');
+      return;
+    }
     try {
       const form = new FormData();
       form.append('file', item.file);
       const uploadUrl = uploadEndpoint ?? `${window.location.origin}/upload`;
       const res = await fetch(uploadUrl, {
         method: 'POST',
+        headers: {
+          'X-Session-ID': sessionId,
+        },
         body: form,
       });
       if (!res.ok) {
