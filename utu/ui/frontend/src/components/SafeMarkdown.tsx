@@ -42,7 +42,7 @@ const ImageWithErrorHandling = memo(({ src, alt, ...props }: { src?: string; alt
 ImageWithErrorHandling.displayName = 'ImageWithErrorHandling';
 
 // SafeMarkdown component with error boundary and type checking
-const SafeMarkdown: React.FC<{ children: React.ReactNode, messageId: String }> = memo(({ children, messageId }) => {
+const SafeMarkdown: React.FC<{ children: React.ReactNode, messageId: String, staticFileEndpoint: string }> = memo(({ children, messageId, staticFileEndpoint }) => {
   // const [mermaidCount, setMermaidCount] = useState(0);
   const [markdownParts, setMarkdownParts] = useState<Array<MarkdownContentPart>>([]);
   
@@ -128,7 +128,22 @@ const SafeMarkdown: React.FC<{ children: React.ReactNode, messageId: String }> =
   try {
     const components: Components = {
       // Use memoized image component
-      img: ImageWithErrorHandling,
+      img: ({node, src, alt, ...props}) => {
+        // pattern: /tmp/utu_webui_workspace/<session_id>/path/to/file
+        if (src && src.startsWith('/tmp/utu_webui_workspace/')) {
+          src = src.replace('/tmp/utu_webui_workspace/', '/');
+          src = staticFileEndpoint + src;
+        }
+        return <ImageWithErrorHandling key={src} src={src} alt={alt} {...props} />;
+      },
+      a: ({node, href, ...props}) => {
+        // pattern: /tmp/utu_webui_workspace/<session_id>/path/to/file
+        if (href && href.startsWith('/tmp/utu_webui_workspace/')) {
+          href = href.replace('/tmp/utu_webui_workspace/', '/');
+          href = staticFileEndpoint + href;
+        }
+        return <a key={href} {...props} href={href} />;
+      },
       // Custom heading component to avoid conflicts with Mermaid
       h1: ({node, ...props}) => <h1 className="markdown-h1" {...props} />,
       h2: ({node, ...props}) => <h2 className="markdown-h2" {...props} />,

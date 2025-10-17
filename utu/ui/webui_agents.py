@@ -353,6 +353,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             logging.error(traceback.format_exc())
 
     def on_close(self):
+        self.session.clean_up_workspace()
         logging.error("WebSocket closed")
 
 
@@ -390,6 +391,63 @@ class FileUploadHandler(tornado.web.RequestHandler):
             self.set_status(500)
             self.write({"error": str(e)})
 
+class StaticFileHandler(tornado.web.RequestHandler):
+    """
+    Handler for serving static files from session workspaces.
+    Expected URL format: /static/<session_id>/path/to/file
+    """
+    
+    def set_default_headers(self):
+        # Allow CORS from any origin
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.set_header("Access-Control-Allow-Headers", "*")
+    
+    async def get(self, session_id, file_path):
+        """
+        Serve a static file from the session's workspace.
+        
+        Args:
+            session_id: The session ID from the URL
+            file_path: The path to the file relative to the session's workspace
+        """
+        # Build the full path to the requested file
+        workspace = os.path.join(WORKSPACE_ROOT, session_id)
+        full_path = os.path.abspath(os.path.join(workspace, file_path))
+        
+        # Security check: ensure the path is within the workspace
+        if not full_path.startswith(os.path.abspath(workspace)):
+            raise tornado.web.HTTPError(403, "Forbidden: Access denied")
+        
+        # Check if file exists and is a file
+        if not os.path.exists(full_path):
+            raise tornado.web.HTTPError(404, "File not found")
+        if not os.path.isfile(full_path):
+            raise tornado.web.HTTPError(400, "Path is not a file")
+        
+        # Set appropriate content type based on file extension
+        content_type = self._get_content_type(full_path)
+        if content_type:
+            self.set_header('Content-Type', content_type)
+            
+        # Set cache control headers
+        self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        
+        # Stream the file content
+        with open(full_path, 'rb') as f:
+            while True:
+                chunk = f.read(4096)  # 4KB chunks
+                if not chunk:
+                    break
+                self.write(chunk)
+                await self.flush()
+    
+    def _get_content_type(self, file_path):
+        """Get content type based on file extension"""
+        import mimetypes
+        mime_type, _ = mimetypes.guess_type(file_path)
+        return mime_type or 'application/octet-stream'
+
 class WebUIAgents:
     def __init__(self, default_config: str):
         self.default_config = default_config
@@ -412,6 +470,7 @@ class WebUIAgents:
                     tornado.web.RedirectHandler,
                     {"url": "/index.html"},
                 ),
+                (r"/static/([^/]+)/(.*)", StaticFileHandler),
                 (r"/upload", FileUploadHandler, {"workspace": self.workspace}),
                 (
                     r"/(.*)",
