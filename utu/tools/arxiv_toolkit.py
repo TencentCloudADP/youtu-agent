@@ -26,13 +26,14 @@ class ArxivToolkit(AsyncBaseToolkit):
         query: str,
         paper_ids: list[str] | None = None,
         max_results: int | None = 5,
+        sort_by: arxiv.SortCriterion = arxiv.SortCriterion.Relevance,
     ) -> Generator[arxiv.Result, None, None]:
         paper_ids = paper_ids or []
         search_query = arxiv.Search(
             query=query,
             id_list=paper_ids,
             max_results=max_results,
-            sort_by=arxiv.SortCriterion.Relevance,  # TODO: configurable, support advanced search
+            sort_by=sort_by,
         )
         return self.client.results(search_query)
 
@@ -41,6 +42,7 @@ class ArxivToolkit(AsyncBaseToolkit):
         query: str,
         paper_ids: list[str] | None = None,
         max_results: int | None = 5,
+        sort_by: str = "Relevance",
     ) -> list[dict[str, str]]:
         r"""Searches for academic papers on arXiv using a query string and optional paper IDs.
 
@@ -48,6 +50,8 @@ class ArxivToolkit(AsyncBaseToolkit):
             query (str): The search query string.
             paper_ids (List[str], optional): A list of specific arXiv paper IDs to search for. (default None)
             max_results (int, optional): The maximum number of search results to return. (default 5)
+            sort_by (str, optional): The sorting criterion for the search results.
+                Can be "Relevance", "LastUpdatedDate", or "SubmittedDate". (default "Relevance")
 
         Tips:
             1. Use customized query for advanced search, including filtering and operators.
@@ -59,7 +63,8 @@ class ArxivToolkit(AsyncBaseToolkit):
         # https://info.arxiv.org/help/api/user-manual.html#query_details
         # Returns:
         #     List[Dict[str, str]]: A list of dictionaries, each containing information about a paper, including title, published date, authors, entry ID, summary.
-        search_results = self._get_search_results(query, paper_ids, max_results)
+        sort_by_enum = getattr(arxiv.SortCriterion, sort_by)
+        search_results = self._get_search_results(query, paper_ids, max_results, sort_by_enum)
         papers_data = []
 
         for paper in search_results:

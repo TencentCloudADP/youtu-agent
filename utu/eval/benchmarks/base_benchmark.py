@@ -38,6 +38,15 @@ class BaseBenchmark:
         if len(_samples) == 0:
             raise ValueError(f"No samples found for data config '{self.config.data}'! Please check the data config.")
 
+        # wandb
+        self._wandb_run = None
+        if hasattr(self.config, "wandb") and self.config.wandb.get("enable", False):
+            try:
+                import wandb
+                self._wandb_run = wandb.init(**self.config.wandb.get("init_kwargs", {}))
+            except ImportError:
+                logger.warning("wandb is not installed. Please install it with `pip install youtu-agent[wandb]`")
+
     async def main(self):
         logger.info(f"> Running with config: \n{json.dumps(self.config.model_dump(), indent=2, ensure_ascii=False)}")
         self.preprocess()
@@ -151,7 +160,6 @@ class BaseBenchmark:
 
     async def stat(self) -> list[dict]:
         # TODO: wrap the data like @verl / @torch
-        # TODO: log to wandb
         judged_samples = self.dataset.get_samples(stage="judged")
         logger.info(f"Stat from {len(judged_samples)} samples:")
 
@@ -163,6 +171,11 @@ class BaseBenchmark:
             overall_results.append(result)
 
         logger.info(json.dumps(overall_results, indent=4, ensure_ascii=False))
+
+        if self._wandb_run:
+            for result in overall_results:
+                self._wandb_run.log(result)
+
         return overall_results
 
     def _get_processer(self, source: str) -> BaseProcesser:
@@ -182,4 +195,5 @@ class BaseBenchmark:
         return data_by_benchmark
 
     async def cleanup(self):
-        pass
+        if self._wandb_run:
+            self._wandb_run.finish()
