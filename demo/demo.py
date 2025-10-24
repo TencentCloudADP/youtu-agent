@@ -1,37 +1,21 @@
-import agents as ag
+import argparse
 
-from utu.agents import SimpleAgent
-from utu.config import ConfigLoader
-from utu.ui.gradio_chatbot import GradioChatbot
+from utu.ui.webui_agents import WebUIAgents
+from utu.utils.env import EnvUtils
 
-
-@ag.function_tool
-def fibonacci(n: int) -> int:
-    """Calculate the nth Fibonacci number."""
-    if n <= 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        a, b = 0, 1
-        for _ in range(2, n + 1):
-            a, b = b, a + b
-        return b
-
-
-config = ConfigLoader.load_agent_config("base")
-config.max_turns = 100
-
-
-def main():
-    simple_agent = SimpleAgent(config=config, name="gradio-demo", tools=[fibonacci])
-
-    chatbot = GradioChatbot(
-        simple_agent,
-        example_query="斐波那契数列的第10个数是多少？记这个数为x，数列的第x个数是多少？",
-    )
-    chatbot.launch(port=8848)
-
+DEFAULT_CONFIG = "simple/base.yaml"
+DEFAULT_IP = EnvUtils.get_env("UTU_WEBUI_IP", "127.0.0.1")
+DEFAULT_PORT = EnvUtils.get_env("UTU_WEBUI_PORT", "8848")
+DEFAULT_AUTOLOAD = EnvUtils.get_env("UTU_WEBUI_AUTOLOAD", "false") == "true"
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, default=DEFAULT_CONFIG)
+    parser.add_argument("--ip", type=str, default=DEFAULT_IP)
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--autoload", type=bool, default=DEFAULT_AUTOLOAD)
+    args = parser.parse_args()
+
+    webui = WebUIAgents(default_config=args.config)
+    print(f"Server started at http://{args.ip}:{args.port}/")
+    webui.launch(ip=args.ip, port=args.port, autoload=args.autoload)

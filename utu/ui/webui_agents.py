@@ -26,6 +26,7 @@ from .common import (
     AskContent,
     ErrorContent,
     Event,
+    ExampleContent,
     InitContent,
     ListAgentsContent,
     SwitchAgentContent,
@@ -44,8 +45,8 @@ from .common import (
 CONFIG_PATH = DIR_ROOT / "configs" / "agents"
 WORKSPACE_ROOT = "/tmp/utu_webui_workspace"
 
-class Session:
 
+class Session:
     def __init__(self, session_id: str = None):
         if session_id is None:
             session_id = Session.gen_session_id()
@@ -63,13 +64,16 @@ class Session:
     def clean_up_workspace(self):
         os.rmdir(self.workspace)
 
+
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
-    def initialize(self, default_config_filename: str):
+    def initialize(self, default_config_filename: str, example_query: str = ""):
         self.default_config_filename = default_config_filename
         logging.info(f"initialize websocket, default config: {default_config_filename}")
         self.agent: SimpleAgent | OrchestraAgent | OrchestratorAgent | None = None
+        self.history = None  # recorder for multi-turn chat. Now only used for OrchestraAgent
         self.default_config = None
         self.session = None
+        self.example_query = example_query
 
     async def prepare(self):
         if self.default_config_filename:
@@ -147,6 +151,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         content = self._get_current_agent_content()
         content["session_id"] = self.session.session_id
         await self.send_event(Event(type="init", data=InitContent(**content)))
+        if self.example_query != "":
+            await self.send_event(Event(type="example", data=ExampleContent(type="example", query=self.example_query)))
 
     async def send_event(self, event: Event):
         logging.debug(f"Sending event: {event.model_dump()}")
@@ -168,12 +174,13 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         if isinstance(self.agent, OrchestraAgent):
             stream = self.agent.run_streamed(query.query)
         elif isinstance(self.agent, SimpleAgent):
-            self.agent.input_items.append({"role": "user", "content": query.query})
-            stream = self.agent.run_streamed(self.agent.input_items)
+            # self.agent.input_items.append({"role": "user", "content": query.query})
+            stream = self.agent.run_streamed(query.query, save=True)
         elif isinstance(self.agent, SimpleAgentGenerator):
             stream = self.agent.run_streamed(query.query)
         elif isinstance(self.agent, OrchestratorAgent):
-            stream = self.agent.run_streamed(query.query)
+            stream = self.agent.run_streamed(query.query, self.history)
+            self.history = stream
         else:
             raise ValueError(f"Unsupported agent type: {type(self.agent).__name__}")
 
@@ -353,6 +360,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             logging.error(traceback.format_exc())
 
     def on_close(self):
+        self.session.clean_up_workspace()
         logging.error("WebSocket closed")
 
 
@@ -390,8 +398,65 @@ class FileUploadHandler(tornado.web.RequestHandler):
             self.set_status(500)
             self.write({"error": str(e)})
 
+class StaticFileHandler(tornado.web.RequestHandler):
+    """
+    Handler for serving static files from session workspaces.
+    Expected URL format: /static/<session_id>/path/to/file
+    """
+    
+    def set_default_headers(self):
+        # Allow CORS from any origin
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.set_header("Access-Control-Allow-Headers", "*")
+    
+    async def get(self, session_id, file_path):
+        """
+        Serve a static file from the session's workspace.
+        
+        Args:
+            session_id: The session ID from the URL
+            file_path: The path to the file relative to the session's workspace
+        """
+        # Build the full path to the requested file
+        workspace = os.path.join(WORKSPACE_ROOT, session_id)
+        full_path = os.path.abspath(os.path.join(workspace, file_path))
+        
+        # Security check: ensure the path is within the workspace
+        if not full_path.startswith(os.path.abspath(workspace)):
+            raise tornado.web.HTTPError(403, "Forbidden: Access denied")
+        
+        # Check if file exists and is a file
+        if not os.path.exists(full_path):
+            raise tornado.web.HTTPError(404, "File not found")
+        if not os.path.isfile(full_path):
+            raise tornado.web.HTTPError(400, "Path is not a file")
+        
+        # Set appropriate content type based on file extension
+        content_type = self._get_content_type(full_path)
+        if content_type:
+            self.set_header('Content-Type', content_type)
+            
+        # Set cache control headers
+        self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        
+        # Stream the file content
+        with open(full_path, 'rb') as f:
+            while True:
+                chunk = f.read(4096)  # 4KB chunks
+                if not chunk:
+                    break
+                self.write(chunk)
+                await self.flush()
+    
+    def _get_content_type(self, file_path):
+        """Get content type based on file extension"""
+        import mimetypes
+        mime_type, _ = mimetypes.guess_type(file_path)
+        return mime_type or 'application/octet-stream'
+
 class WebUIAgents:
-    def __init__(self, default_config: str):
+    def __init__(self, default_config: str, example_query: str = ""):
         self.default_config = default_config
         self.workspace = EnvUtils.get_env("UTU_WEBUI_WORKSPACE_ROOT", WORKSPACE_ROOT)
         if not os.path.exists(self.workspace):
@@ -400,18 +465,24 @@ class WebUIAgents:
         # hack
         with resources.as_file(resources.files("utu_agent_ui.static").joinpath("index.html")) as static_dir:
             self.static_path = str(static_dir).replace("index.html", "")
+        self.example_query = example_query
 
     def make_app(self, autoload: bool | None = None) -> tornado.web.Application:
         if autoload is None:
             autoload = EnvUtils.get_env("UTU_WEBUI_AUTOLOAD", "false") == "true"
         return tornado.web.Application(
             [
-                (r"/ws", WebSocketHandler, {"default_config_filename": self.default_config}),
+                (
+                    r"/ws",
+                    WebSocketHandler,
+                    {"default_config_filename": self.default_config, "example_query": self.example_query},
+                ),
                 (
                     r"/",
                     tornado.web.RedirectHandler,
                     {"url": "/index.html"},
                 ),
+                (r"/static/([^/]+)/(.*)", StaticFileHandler),
                 (r"/upload", FileUploadHandler, {"workspace": self.workspace}),
                 (
                     r"/(.*)",

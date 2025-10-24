@@ -1,0 +1,19 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  # - /tools/search@toolkits.search
+  - _self_
+
+agent:
+  name: utu-base
+  instructions: "You are a helpful assistant."
+
+toolkits:
+  ncnn:
+    mode: mcp
+    activated_tools: null
+    mcp_transport: stdio
+    mcp_client_session_timeout_seconds: 20
+    config:
+      command: uvx
+      args: ["--with-editable", "/Users/frankshi/LProjects/Agents/_tools/ncnn_mcp", "ncnn-mcp"]

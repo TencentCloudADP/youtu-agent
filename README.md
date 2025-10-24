@@ -15,7 +15,8 @@
 | <a href="#-examples"><b>💡 Examples</b> </a> 
 | <a href="#-features"><b>✨ Features</b> </a> 
 | <a href="#-getting-started"><b>🚀 Getting Started</b> </a> 
-| <a href="https://discord.gg/svwuqgUx"><b>📢 Join Community</b> </a> 
+| 📢 <a href="https://discord.gg/QjqhkHQVVM"><b>Join Discord</b></a> or <a href="https://github.com/user-attachments/assets/354cd8e7-e108-4348-9355-04440052f408"><b>WeChat</b></a> 
+|
 </p>
 
 

@@ -11,28 +11,22 @@ DIR_LOGS.mkdir(exist_ok=True)
 
 # Flag to track if logging has been set up
 _LOGGING_INITIALIZED = False
-_ROOT_LEVEL = "WARNING"
 
 
 def setup_logging(level: Literal["WARNING", "INFO", "DEBUG"] = "WARNING") -> None:
     # Check if logging has already been initialized
-    global _LOGGING_INITIALIZED, _ROOT_LEVEL
+    global _LOGGING_INITIALIZED
     if _LOGGING_INITIALIZED:
         logging.getLogger().warning("Logging has already been initialized! Skipping...")
         return
 
-    _ROOT_LEVEL = level
-
-    # set httpx logging level to WARNING
-    logging.getLogger("httpx").setLevel(logging.WARNING)
-
-    root_logger = logging.getLogger()
-    root_logger.setLevel(level)
-    if root_logger.handlers:
-        root_logger.handlers.clear()
+    utu_logger = logging.getLogger("utu")
+    utu_logger.setLevel(logging.DEBUG)
+    if utu_logger.handlers:
+        utu_logger.handlers.clear()
 
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(level)
     color_formatter = ColoredFormatter(
         "%(green)s%(asctime)s%(reset)s[%(blue)s%(name)s%(reset)s] - "
         "%(log_color)s%(levelname)s%(reset)s - %(filename)s:%(lineno)d - %(green)s%(message)s%(reset)s",
@@ -57,17 +51,17 @@ def setup_logging(level: Literal["WARNING", "INFO", "DEBUG"] = "WARNING") -> Non
     )
     file_handler.setFormatter(formatter)
 
-    root_logger.addHandler(console_handler)
-    root_logger.addHandler(file_handler)
-    root_logger.info(f"Logging initialized with level {level}.")
+    utu_logger.addHandler(console_handler)
+    utu_logger.addHandler(file_handler)
+    utu_logger.info(f"Logging initialized with level {level}.")
 
     # Mark logging as initialized
     _LOGGING_INITIALIZED = True
 
 
-def get_logger(name: str, level: int | Literal["INFO", "WARNING", "ERROR", "CRITICAL"] = None) -> logging.Logger:
+def get_logger(name: str, level: int | str = logging.DEBUG) -> logging.Logger:
     logger = logging.getLogger(name)
-    logger.setLevel(level or _ROOT_LEVEL)
+    logger.setLevel(level)
 
     def log_error_with_exc(msg, *args, **kwargs):
         kwargs["exc_info"] = True

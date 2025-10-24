@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.1.2 - 2025-10-13
+- example: add ppt-gen by @fpg2012
+- analysis ui: unify env variable; fix filter by tool @chaofanqiu
+- ui: add file upload by @fpg2012
+- example: add examples for rl @Lightblues
+- tracing: add doc for phenix @Lightblues
+- feat: add OrchestratorAgent @Lightblues
+- enhance: refactor AynscBaseToolkit @Lightblues
+
 ## v0.1.1 - 2025-09-22
 - update toolkit util scripts by @Lightblues
 - LiteLLM support by @Lightblues

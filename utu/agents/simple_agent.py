@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Callable
 from contextlib import AsyncExitStack
 from typing import Any, Literal
@@ -10,8 +11,6 @@ from agents import (
     RunConfig,
     RunHooks,
     Runner,
-    RunResult,
-    RunResultStreaming,
     StopAtTools,
     TContext,
     Tool,
@@ -22,11 +21,13 @@ from agents.mcp import MCPServer
 
 from ..config import AgentConfig, ConfigLoader, ToolkitConfig
 from ..context import BaseContextManager, build_context_manager
+from ..db import DBService, TrajectoryModel
 from ..env import BaseEnv, get_env
+from ..hooks import get_run_hooks
 from ..tools import TOOLKIT_MAP, AsyncBaseToolkit
 from ..tools.utils import get_mcp_server
 from ..utils import AgentsUtils, get_logger, load_class_from_file
-from .common import TaskRecorder
+from .common import QueueCompleteSentinel, TaskRecorder
 
 logger = get_logger(__name__)
 
@@ -63,8 +64,8 @@ class SimpleAgent:
         self.env: BaseEnv = None
         self.current_agent: Agent[TContext] = None  # move to task recorder?
         self.input_items: list[TResponseInputItem] = []
+        self.run_hooks: RunHooks = get_run_hooks(self.config)
 
-        self._run_hooks: RunHooks = None
         self._mcp_servers: list[MCPServer] = []
         self._toolkits: dict[str, AsyncBaseToolkit] = {}
         self._mcps_exit_stack = AsyncExitStack()
@@ -207,7 +208,7 @@ class SimpleAgent:
             "input": input,
             "context": self._get_context(),
             "max_turns": self.config.max_turns,
-            "hooks": self._run_hooks,
+            "hooks": self.run_hooks,
             "run_config": self._get_run_config(),
         }
 
@@ -219,64 +220,79 @@ class SimpleAgent:
 
         Args:
             trace_id: str to identify the run
-            save: whether to use history (use `input_items`)
+            save: whether to update massage history (use `input_items`)
         """
-        if not self._initialized:
-            await self.build(trace_id)
-        trace_id = trace_id or AgentsUtils.gen_trace_id()
-        logger.info(f"> trace_id: {trace_id}")
+        recorder = self.run_streamed(input, trace_id)
+        async for _ in recorder.stream_events():
+            pass
+        return recorder
 
-        if isinstance(input, str):
-            input = self.input_items + [{"content": input, "role": "user"}]
-        run_kwargs = self._prepare_run_kwargs(input)
-        if AgentsUtils.get_current_trace():
-            run_result = await Runner.run(**run_kwargs)
-        else:
-            with trace(workflow_name="simple_agent", trace_id=trace_id):
-                run_result = await Runner.run(**run_kwargs)
-
-        task_recorder = TaskRecorder(input, trace_id)
-        task_recorder.add_run_result(run_result)
-        task_recorder.set_final_output(run_result.final_output)
-        if save:
-            self.input_items = run_result.to_input_list()
-            self.current_agent = run_result.last_agent  # NOTE: acturally, there are only one agent in SimpleAgent
-        return task_recorder
-
-    def run_streamed(self, input: str | list[TResponseInputItem], trace_id: str = None) -> RunResultStreaming:
+    def run_streamed(
+        self, input: str | list[TResponseInputItem], trace_id: str = None, save: bool = False, log_to_db: bool = True
+    ) -> TaskRecorder:
         """Entrypoint for running the agent streamly
 
         Args:
             trace_id: str to identify the run
         """
-        if not self._initialized:
-            raise RuntimeError("Agent is not initialized. Please call `build` first.")
         trace_id = trace_id or AgentsUtils.gen_trace_id()
         logger.info(f"> trace_id: {trace_id}")
 
-        if isinstance(input, str):
-            input = self.input_items + [{"content": input, "role": "user"}]
-        run_kwargs = self._prepare_run_kwargs(input)
-        if AgentsUtils.get_current_trace():
-            return Runner.run_streamed(**run_kwargs)
+        if isinstance(input, list):
+            assert isinstance(input[-1], dict) and "content" in input[-1], "invalid input format!"
+            task = input[-1]["content"]
         else:
-            with trace(workflow_name="simple_agent", trace_id=trace_id):
-                return Runner.run_streamed(**run_kwargs)
+            assert isinstance(input, str), "input should be str or list of TResponseInputItem!"
+            task = input
+        recorder = TaskRecorder(task=task, input=input, trace_id=trace_id)
+        recorder._run_impl_task = asyncio.create_task(self._start_streaming(recorder, save, log_to_db))
+        return recorder
+
+    async def _start_streaming(self, recorder: TaskRecorder, save: bool = False, log_to_db: bool = True):
+        if not self._initialized:
+            await self.build(recorder.trace_id)
+        try:
+            input = recorder.input
+            if isinstance(input, str):  # only add history when input is str?
+                input = self.input_items + [{"content": input, "role": "user"}]
+            run_kwargs = self._prepare_run_kwargs(input)
+            if AgentsUtils.get_current_trace():
+                run_streamed_result = Runner.run_streamed(**run_kwargs)
+            else:
+                with trace(workflow_name="simple_agent", trace_id=recorder.trace_id):
+                    run_streamed_result = Runner.run_streamed(**run_kwargs)
+            async for event in run_streamed_result.stream_events():
+                recorder._event_queue.put_nowait(event)
+            # save final output and trajectory
+            recorder.add_run_result(run_streamed_result)
+            if save:
+                self.input_items = run_streamed_result.to_input_list()
+                # NOTE: acturally, there are only one agent in SimpleAgent
+                self.current_agent = run_streamed_result.last_agent
+            # log to db
+            if log_to_db:
+                DBService.add(TrajectoryModel.from_task_recorder(recorder))
+        except Exception as e:
+            logger.error(f"Error processing task: {str(e)}")
+            recorder._event_queue.put_nowait(QueueCompleteSentinel())
+            recorder._is_complete = True
+            raise e
+        finally:
+            recorder._event_queue.put_nowait(QueueCompleteSentinel())
+            recorder._is_complete = True
 
     # util apis
-    async def chat(self, input: str) -> RunResult:
+    async def chat(self, input: str) -> TaskRecorder:
         # TODO: set "session-level" tracing for multi-turn chat
         recorder = await self.run(input, save=True)
         run_result = recorder.get_run_result()
         AgentsUtils.print_new_items(run_result.new_items)
         return run_result
 
-    async def chat_streamed(self, input: str) -> RunResultStreaming:
-        run_result_streaming = self.run_streamed(input)
-        await AgentsUtils.print_stream_events(run_result_streaming.stream_events())
-        self.input_items = run_result_streaming.to_input_list()
-        self.current_agent = run_result_streaming.last_agent
-        return run_result_streaming
+    async def chat_streamed(self, input: str) -> TaskRecorder:
+        recorder = self.run_streamed(input, save=True)
+        await AgentsUtils.print_stream_events(recorder.stream_events())
+        return recorder
 
     def set_instructions(self, instructions: str):
         logger.warning("WARNING: reset instructions is dangerous!")
@@ -285,7 +301,3 @@ class SimpleAgent:
     def clear_input_items(self):
         # reset chat history
         self.input_items = []
-
-    def set_run_hooks(self, run_hooks: RunHooks):
-        # WIP
-        self._run_hooks = run_hooks

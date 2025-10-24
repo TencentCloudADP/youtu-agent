@@ -57,3 +57,13 @@ export const tracingToolData = pgTable("tracing_tool", {
   output: json("output"),
   mcp_data: json("mcp_data"),
 });
+
+export const trajectory = pgTable("trajectory", {
+  id: serial("id").primaryKey(),
+  trace_id: varchar("trace_id", { length: 256 }).notNull(),
+  trace_url: varchar("trace_url", { length: 256 }),
+  d_input: text("d_input"),
+  d_output: text("d_output"),
+  trajectories: text("trajectories"),
+  time_cost: real("time_cost"),
+});

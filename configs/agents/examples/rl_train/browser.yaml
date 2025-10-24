@@ -10,6 +10,8 @@ agent:
 
 env:
   name: browser_tione
+  config:
+    state_keep: true  # whether to keep all the browser states in history messages
 
 context_manager:
   name: env

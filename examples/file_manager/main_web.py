@@ -1,7 +1,12 @@
-from utu.agents import SimpleAgent
-from utu.config import ConfigLoader
-from utu.ui import ExampleConfig
-from utu.ui.webui_chatbot import WebUIChatbot
+import argparse
+
+from utu.ui.webui_agents import WebUIAgents
+from utu.utils.env import EnvUtils
+
+DEFAULT_CONFIG = "examples/file_manager"
+DEFAULT_IP = EnvUtils.get_env("UTU_WEBUI_IP", "127.0.0.1")
+DEFAULT_PORT = EnvUtils.get_env("UTU_WEBUI_PORT", "8848")
+DEFAULT_AUTOLOAD = EnvUtils.get_env("UTU_WEBUI_AUTOLOAD", "false") == "true"
 
 EXAMPLE_QUERY = (
     "整理一下当前文件夹下面的所有文件，按照 学号-姓名 的格式重命名。"
@@ -9,15 +14,13 @@ EXAMPLE_QUERY = (
 )
 
 
-config = ConfigLoader.load_agent_config("examples/file_manager")
-worker_agent = SimpleAgent(config=config)
-
-
-def main_gradio():
-    env_and_args = ExampleConfig()
-    chatbot = WebUIChatbot(worker_agent, example_query=EXAMPLE_QUERY)
-    chatbot.launch(port=env_and_args.port, ip=env_and_args.ip, autoload=env_and_args.autoload)
-
-
 if __name__ == "__main__":
-    main_gradio()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", type=str, default=DEFAULT_IP)
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--autoload", type=bool, default=DEFAULT_AUTOLOAD)
+    args = parser.parse_args()
+
+    webui = WebUIAgents(default_config=DEFAULT_CONFIG, example_query=EXAMPLE_QUERY)
+    print(f"Server started at http://{args.ip}:{args.port}/")
+    webui.launch(ip=args.ip, port=args.port, autoload=args.autoload)

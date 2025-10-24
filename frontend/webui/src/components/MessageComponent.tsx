@@ -7,6 +7,7 @@ interface MessageComponentProps {
   message: Message;
   messageId: String;
   showSender: boolean;
+  staticFileEndpoint: string;
   onDownloadReport?: (content: any, contentType: "html" | "svg" | "markdown") => void;
 }
 
@@ -14,6 +15,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({
   message,
   messageId,
   showSender,
+  staticFileEndpoint,
   onDownloadReport 
 }) => {
   // Render message sender
@@ -79,7 +81,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({
     if (message.content.toolName == "final_answer") {
       return (
         <div className="tool-call-argument">
-          <SafeMarkdown messageId={messageId + "-tool-call-argument"}>{displayContent}</SafeMarkdown>
+          <SafeMarkdown key={messageId + "-tool-call-argument"} messageId={messageId + "-tool-call-argument"} staticFileEndpoint={staticFileEndpoint}>{displayContent}</SafeMarkdown>
         </div>
       )
     }
@@ -125,7 +127,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({
   const renderPlanContent = (plan: PlanItem) => (
     <div className="plan-content">
       <div className="plan-analysis">
-        <SafeMarkdown messageId={messageId + "-plan"}>{plan.analysis}</SafeMarkdown>
+        <SafeMarkdown key={messageId + "-plan"} messageId={messageId + "-plan"} staticFileEndpoint={staticFileEndpoint}>{plan.analysis}</SafeMarkdown>
       </div>
       {plan.todo.length > 0 && (
         <div className="plan-todo">
@@ -133,7 +135,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({
           <ol className="todo-list">
             {plan.todo.map((item, index) => (
               <li key={index} className="todo-item">
-                <SafeMarkdown messageId={messageId + "-todo" + "-" + index}>{item}</SafeMarkdown>
+                <SafeMarkdown key={messageId + "-todo" + "-" + index} messageId={messageId + "-todo" + "-" + index} staticFileEndpoint={staticFileEndpoint}>{item}</SafeMarkdown>
               </li>
             ))}
           </ol>
@@ -231,7 +233,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({
       );
     }
 
-    return <SafeMarkdown messageId={messageId + "-report"}>{processedContent}</SafeMarkdown>;
+    return <SafeMarkdown key={messageId + "-report"} messageId={messageId + "-report"} staticFileEndpoint={staticFileEndpoint}>{processedContent}</SafeMarkdown>;
   };
 
   const renderMessageContent = () => {
@@ -421,14 +423,14 @@ const MessageComponent: React.FC<MessageComponentProps> = ({
             <span>{getStatusText()}</span>
           </summary>
           <div className="message-detail-content">
-            <SafeMarkdown messageId={messageId + "-" + message.type}>{String(message.content)}</SafeMarkdown>
+            <SafeMarkdown messageId={messageId + "-" + message.type} key={messageId + "-" + message.type} staticFileEndpoint={staticFileEndpoint}>{String(message.content)}</SafeMarkdown>
           </div>
         </details>
       );
     }
     
     // Text message
-    return <SafeMarkdown messageId={messageId}>{String(message.content)}</SafeMarkdown>;
+    return <SafeMarkdown key={messageId.toString()} messageId={messageId} staticFileEndpoint={staticFileEndpoint}>{String(message.content)}</SafeMarkdown>;
   };
 
   const [confirmedStatus, setConfirmedStatus] = useState<'confirmed' | 'rejected' | undefined>(message.confirmedStatus);

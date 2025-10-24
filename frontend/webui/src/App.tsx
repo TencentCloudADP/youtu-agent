@@ -103,6 +103,16 @@ const App: React.FC = () => {
   const [isPlanNewAgentDisplayed, setIsPlanNewAgentDisplayed] = useState(false);
   const [isReportNewAgentDisplayed, setIsReportNewAgentDisplayed] = useState(false);
 
+  const staticFileEndpoint = (() => {
+    try {
+      const u = new URL(wsUrl);
+      const httpProtocol = u.protocol === 'wss:' ? 'https:' : 'http:';
+      return `${httpProtocol}//${u.host}/static`;
+    } catch {
+      return `${window.location.origin}/static`;
+    }
+  })();
+
   const uploadEndpoint = (() => {
     try {
       const u = new URL(wsUrl);
@@ -996,6 +1006,7 @@ const App: React.FC = () => {
                     message={message}
                     messageId={message.id.toString()}
                     showSender={showSender}
+                    staticFileEndpoint={staticFileEndpoint}
                     onDownloadReport={message.type === 'report' ? (content, contentType) => {
                       downloadReport(content, contentType);
                     } : undefined}
