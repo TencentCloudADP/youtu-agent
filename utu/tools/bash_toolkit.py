@@ -34,12 +34,13 @@ NSJAIL_PREFIX = """nsjail -q \
     -R /bin/ -R /lib/ -R /lib64/ \
     -R /usr/ -R /sbin/ -T /dev \
     -R /dev/urandom \
-    -R /tmp/utu_webui_workspace/ \
-    -B {}:/{}:rw \
+    -B {}:/tmp:rw \
     -R /etc/alternatives \
-    -D {} \
+    -D /tmp \
+    -E HOME=/tmp \
     -E LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu \
-    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- /bin/bash
+    -E MPLCONFIGDIR=/tmp/.matplotlib \
+    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- mkdir -p /tmp/.matplotlib && /bin/bash
 """
 
 class BashToolkit(AsyncBaseToolkit):
@@ -81,7 +82,7 @@ class BashToolkit(AsyncBaseToolkit):
                 return f"Command not executed due to banned string in command: {banned_str} found in {command}."
 
         process = subprocess.Popen(
-            NSJAIL_PREFIX.format(self.workspace_root, self.workspace_root, self.workspace_root),
+            NSJAIL_PREFIX.format(self.workspace_root),
             shell=True,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,

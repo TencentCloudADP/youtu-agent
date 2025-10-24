@@ -282,9 +282,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         for key, value in config.toolkits.items():
             print(value)
             if value.name == "bash":
-                value.config['workspace_root'] = self.session.workspace
+                value.config['workspace_root'] = '/tmp'
             if value.name == "python_executor":
-                value.config['workspace_root'] = self.session.workspace
+                value.config['workspace_root'] = '/tmp'
 
         await self.instantiate_agent(config)
         content = self._get_current_agent_content()

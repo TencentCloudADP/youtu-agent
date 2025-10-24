@@ -28,12 +28,13 @@ NSJAIL_PREFIX = """nsjail -q \
     -R /bin/ -R /lib/ -R /lib64/ \
     -R /usr/ -R /sbin/ -T /dev \
     -R /dev/urandom \
-    -R /tmp/utu_webui_workspace/ \
-    -R  /tmp/utu/python_executor/ \
     -R /etc/alternatives  \
-    -D {} \
+    -B {}:/tmp:rw \
+    -D /tmp \
     -E LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu \
-    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- /usr/bin/python3 -
+    -E HOME=/tmp \
+    -E MPLCONFIGDIR=/tmp/.matplotlib \
+    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- /usr/bin/mkdir -p /tmp/.matplotlib && /usr/bin/python3 -
 """
 
 
