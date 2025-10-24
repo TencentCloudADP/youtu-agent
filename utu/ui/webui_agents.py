@@ -44,7 +44,25 @@ from .common import (
 
 CONFIG_PATH = DIR_ROOT / "configs" / "agents"
 WORKSPACE_ROOT = "/tmp/utu_webui_workspace"
+FILE_IMAGE_HINT_PROMPT = """
+You can link the file in the workspace in your markdown response WITH ABSOLUTE PATH in markdown link/image syntax (`()[]` or `![]()`).
 
+You should link the file if the user explicitly ask you to add a file to your response.
+
+When you plot a diagram with matplotlib or other tools, you should save it to the workspace and use absolute path that starts with `/tmp/utu_webui_workspace/<uuid>/`.
+
+Important hint: It is OK to reference the file in the workspace with /tmp/utu_webui_workspace/<uuid>/ prefixed path, user can see that because the frontend will handle the path conversion.
+
+Requirements:
+- You should use absolute path that starts with `/tmp/utu_webui_workspace/<uuid>/`
+- The file should be in the workspace
+
+For example:
+
+![image](/tmp/utu_webui_workspace/<uuid>/file.png)
+
+[report](/tmp/utu_webui_workspace/<uuid>/report.md)
+"""
 
 class Session:
     def __init__(self, session_id: str = None):
@@ -56,7 +74,7 @@ class Session:
 
     @staticmethod
     def gen_session_id():
-        return str(uuid.uuid4())
+        return str(uuid.uuid4())[:8]
 
     def init_workspace(self):
         os.makedirs(self.workspace, exist_ok=True)
@@ -250,6 +268,15 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
     async def _handle_switch_agent_noexcept(self, switch_agent_request: SwitchAgentRequest):
         config = ConfigLoader.load_agent_config(switch_agent_request.config_file)
+        
+        if config.type == "simple":
+            config.agent.instructions += FILE_IMAGE_HINT_PROMPT
+        elif config.type == "orchestrator":
+            config.orchestrator_router.agent.instructions += FILE_IMAGE_HINT_PROMPT
+            for worker in config.orchestrator_workers.values():
+                worker.agent.instructions += FILE_IMAGE_HINT_PROMPT
+        else:
+            raise ValueError(f"Unsupported agent type: {config.type}")
 
         # set workdir for bash tool
         for key, value in config.toolkits.items():
