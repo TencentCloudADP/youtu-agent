@@ -28,6 +28,6 @@ orchestrator_workers:
 
 orchestrator_workers_info:
   - name: MathAgent
-    desciption: This agent is good at math. You can ask it to solve math problems.
+    description: This agent is good at math. You can ask it to solve math problems.
   - name: TranslatorAgent
-    desciption: When you need to translate text, you can use this agent.
+    description: When you need to translate text, you can use this agent.
