@@ -20,6 +20,6 @@ async def get_env(config: AgentConfig, trace_id: str) -> BaseEnv:
         case "browser_docker":
             return BrowserEnv(trace_id)
         case "browser_tione":
-            return BrowserTioneEnv()
+            return BrowserTioneEnv(config.env.config)
         case _:
             raise ValueError(f"Unknown env name: {config.env.name}")

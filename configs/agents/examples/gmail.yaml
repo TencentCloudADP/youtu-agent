@@ -1,0 +1,22 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+    name: gmail_example
+    instructions: |-
+      You are a helpful assistant that can access user's gmail.
+      When check mail content after search, always read the latest email to get the complete information.
+
+toolkits:
+  gmail:
+    # https://github.com/GongRzhe/Gmail-MCP-Server
+    name: gmail
+    mode: mcp
+    activated_tools: null
+    mcp_transport: stdio
+    mcp_client_session_timeout_seconds: 20
+    config:
+      command: npx
+      args: ["@gongrzhe/server-gmail-autoauth-mcp"]

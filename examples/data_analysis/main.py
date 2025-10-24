@@ -25,7 +25,7 @@ async def main():
     await AgentsUtils.print_stream_events(result.stream_events())
 
     # Extract and print the result
-    FileUtils.save_json(result.trajectories, fn.parent / "trajectories.json")
+    FileUtils.save_json(fn.parent / "trajectories.json", result.trajectories)
     with open(fn.parent / "report.html", "w", encoding="utf-8") as f:
         match = re.search(r"```html(.*?)```", result.final_output, re.DOTALL)
         html_str = match.group(1).strip() if match else result.final_output

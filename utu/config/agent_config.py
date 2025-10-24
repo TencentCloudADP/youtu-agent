@@ -24,8 +24,8 @@ class ToolkitConfig(ConfigBaseModel):
     activated_tools: list[str] | None = None
     """Activated tools, if None, all tools will be activated."""
     config: dict | None = Field(default_factory=dict)
-    """Toolkit config."""
-    config_llm: ModelConfigs | None = None
+    """Specified  configs for certain toolkit. We use raw dict for simplicity"""
+    config_llm: ModelConfigs | None = None  # | dict[str, ModelConfigs]
     """LLM config if used in toolkit."""
     customized_filepath: str | None = None
     """Customized toolkit filepath."""
@@ -33,8 +33,8 @@ class ToolkitConfig(ConfigBaseModel):
     """Customized toolkit classname."""
     mcp_transport: Literal["stdio", "sse", "streamable_http"] = "stdio"
     """MCP transport."""
-    mcp_client_session_timeout_seconds: int = 5
-    """The read timeout passed to the MCP ClientSession."""
+    mcp_client_session_timeout_seconds: int = 20
+    """The read timeout passed to the MCP ClientSession. We set it bigger to avoid timeout expections."""
 
 
 class ContextManagerConfig(ConfigBaseModel):
@@ -64,8 +64,8 @@ class AgentConfig(ConfigBaseModel):
     """Env config"""
     toolkits: dict[str, ToolkitConfig] = Field(default_factory=dict)
     """Toolkits config"""
-    max_turns: int = 20
-    """Max turns"""
+    max_turns: int = 50
+    """Max turns for simple agent. This param is derived from @openai-agents"""
 
     # orchestra agent config
     planner_model: ModelConfigs = Field(default_factory=ModelConfigs)

@@ -33,6 +33,8 @@ class ChainPlanner:
             res = router.run_streamed(input)
             await self._process_streamed(res, recorder)
             recorder.history_messages = res.to_input_list()  # update chat history
+            # add trajectory
+            recorder.trajectories.append(AgentsUtils.get_trajectory_from_agent_result(res, "router"))
         need_plan = res.final_output.strip().endswith("<plan>")  # special token!
         if need_plan:
             return await self.create_plan(recorder)

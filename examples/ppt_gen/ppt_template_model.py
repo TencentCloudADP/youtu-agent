@@ -1,6 +1,7 @@
 """
 This module is used to define the PPT template pydantic models.
 """
+
 import json
 import logging
 import traceback

@@ -11,6 +11,7 @@ import asyncio
 from agents import trace
 
 from ..config import AgentConfig, ConfigLoader
+from ..db import DBService, TrajectoryModel
 from ..utils import AgentsUtils, FileUtils, get_logger
 from .common import QueueCompleteSentinel
 from .orchestrator import ChainPlanner, OrchestratorStreamEvent, Recorder, Task
@@ -80,6 +81,8 @@ class OrchestratorAgent:
                         if task.is_last_task:
                             recorder.add_final_output(task.result)
                             break
+                # log to db
+                DBService.add(TrajectoryModel.from_task_recorder(recorder))
             except Exception as e:
                 logger.error(f"Error processing task: {str(e)}")
                 recorder._event_queue.put_nowait(QueueCompleteSentinel())

@@ -1,7 +1,7 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {useParams, useRouter, useSearchParams} from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
     Card,
     Button,
@@ -11,9 +11,15 @@ import {
     ConfigProvider,
     Collapse
 } from "antd";
-import {BulbOutlined, BulbFilled} from "@ant-design/icons";
-import ReactJson from "react-json-view";
+import { BulbOutlined, BulbFilled } from "@ant-design/icons";
+import dynamic from 'next/dynamic';
 import ReactMarkdown from "react-markdown";
+
+// 动态导入 ReactJson 以避免 SSR 问题
+const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
+
+// 检查是否在浏览器环境中
+const isBrowser = typeof window !== 'undefined';
 
 type Evaluation = {
     id: number;
@@ -81,7 +87,7 @@ function EvaluationDetailPage() {
     const params = useParams();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const {id} = params;
+    const { id } = params;
     const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -99,20 +105,23 @@ function EvaluationDetailPage() {
     const [tracingLoading, setTracingLoading] = useState(false);
 
     const [expandedChildKeys, setExpandedChildKeys] = useState<Record<string, boolean>>({});
-
+    const [isJsonExpanded, setIsJsonExpanded] = useState(false);
     const [activeTab, setActiveTab] = useState<string>("general");
-    const [isJsonExpanded, setIsJsonExpanded] = useState(false); // 新增状态：控制JSON展开/收起
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem("theme");
-        const initialDarkMode = savedTheme === "dark";
-        setIsDarkMode(initialDarkMode);
-        document.body.className = initialDarkMode ? "dark-mode" : "light-mode";
+        if (isBrowser) {
+            const savedTheme = localStorage.getItem("theme");
+            const initialDarkMode = savedTheme === "dark";
+            setIsDarkMode(initialDarkMode);
+            document.body.className = initialDarkMode ? "dark-mode" : "light-mode";
+        }
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-        document.body.className = isDarkMode ? "dark-mode" : "light-mode";
+        if (isBrowser) {
+            localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+            document.body.className = isDarkMode ? "dark-mode" : "light-mode";
+        }
     }, [isDarkMode]);
 
     useEffect(() => {
