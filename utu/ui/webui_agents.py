@@ -420,7 +420,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
             full_path = os.path.join(self.workspace, session_id, filename)
             with open(full_path, "wb") as f:
                 f.write(file["body"])
-            self.write({"filename": full_path})
+            self.write({"filename": os.path.join('/tmp', filename)})
         except Exception as e:
             self.set_status(500)
             self.write({"error": str(e)})
