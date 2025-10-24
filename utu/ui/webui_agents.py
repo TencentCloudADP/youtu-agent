@@ -49,19 +49,19 @@ You can link the file in the workspace in your markdown response WITH ABSOLUTE P
 
 You should link the file if the user explicitly ask you to add a file to your response.
 
-When you plot a diagram with matplotlib or other tools, you should save it to the workspace and use absolute path that starts with `/tmp/utu_webui_workspace/<uuid>/`.
+When you plot a diagram with matplotlib or other tools, you should save it to the workspace and use absolute path that starts with `/tmp/`.
 
-Important hint: It is OK to reference the file in the workspace with /tmp/utu_webui_workspace/<uuid>/ prefixed path, user can see that because the frontend will handle the path conversion.
+Important hint: It is OK to reference the file in the workspace with /tmp/ prefixed path, user can see that because the frontend will handle the path conversion.
 
 Requirements:
-- You should use absolute path that starts with `/tmp/utu_webui_workspace/<uuid>/`
+- You should use absolute path that starts with `/tmp/`
 - The file should be in the workspace
 
 For example:
 
-![image](/tmp/utu_webui_workspace/<uuid>/file.png)
+![image](/tmp/file.png)
 
-[report](/tmp/utu_webui_workspace/<uuid>/report.md)
+[report](/tmp/report.md)
 """
 
 class Session:
@@ -282,9 +282,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         for key, value in config.toolkits.items():
             print(value)
             if value.name == "bash":
-                value.config['workspace_root'] = '/tmp'
+                value.config['workspace_root'] = self.session.workspace
             if value.name == "python_executor":
-                value.config['workspace_root'] = '/tmp'
+                value.config['workspace_root'] = self.session.workspace
 
         await self.instantiate_agent(config)
         content = self._get_current_agent_content()

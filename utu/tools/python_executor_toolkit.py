@@ -29,12 +29,13 @@ NSJAIL_PREFIX = """nsjail -q \
     -R /usr/ -R /sbin/ -T /dev \
     -R /dev/urandom \
     -R /etc/alternatives  \
+    -R /etc/matplotlibrc \
     -B {}:/tmp:rw \
     -D /tmp \
     -E LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu \
     -E HOME=/tmp \
     -E MPLCONFIGDIR=/tmp/.matplotlib \
-    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- /usr/bin/mkdir -p /tmp/.matplotlib && /usr/bin/python3 -
+    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- /usr/bin/python3 -
 """
 
 
@@ -52,6 +53,7 @@ def _execute_python_code_sync(code: str, workdir: str):
 
         # Create and change to working directory
         os.makedirs(workdir, exist_ok=True)
+        os.makedirs('/tmp/.matplotlib', exist_ok=True)
         os.chdir(workdir)
 
         # Get file list before execution

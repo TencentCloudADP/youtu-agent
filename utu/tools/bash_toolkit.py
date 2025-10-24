@@ -17,6 +17,7 @@ Run commands in a bash shell\n
 import pathlib
 import re
 import subprocess
+import os
 
 from ..config import ToolkitConfig
 from ..utils import get_logger
@@ -36,11 +37,12 @@ NSJAIL_PREFIX = """nsjail -q \
     -R /dev/urandom \
     -B {}:/tmp:rw \
     -R /etc/alternatives \
+    -R /etc/matplotlibrc \
     -D /tmp \
     -E HOME=/tmp \
     -E LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu \
     -E MPLCONFIGDIR=/tmp/.matplotlib \
-    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- mkdir -p /tmp/.matplotlib && /bin/bash
+    -E PATH=/usr/local/bin:/usr/bin:/bin --keep_caps -- /bin/bash
 """
 
 class BashToolkit(AsyncBaseToolkit):
@@ -62,6 +64,7 @@ class BashToolkit(AsyncBaseToolkit):
         workspace_dir = pathlib.Path(workspace_root)
         workspace_dir.mkdir(parents=True, exist_ok=True)
         self.workspace_root = workspace_root
+        os.makedirs('/tmp/.matplotlib', exist_ok=True)
 
     @register_tool
     async def run_bash(self, command: str) -> dict:

@@ -107,9 +107,9 @@ const App: React.FC = () => {
     try {
       const u = new URL(wsUrl);
       const httpProtocol = u.protocol === 'wss:' ? 'https:' : 'http:';
-      return `${httpProtocol}//${u.host}/static`;
+      return `${httpProtocol}//${u.host}/static/${sessionId}`;
     } catch {
-      return `${window.location.origin}/static`;
+      return `${window.location.origin}/static/${sessionId}`;
     }
   })();
 

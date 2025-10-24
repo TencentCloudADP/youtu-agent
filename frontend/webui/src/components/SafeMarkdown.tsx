@@ -130,18 +130,23 @@ const SafeMarkdown: React.FC<{ children: React.ReactNode, messageId: String, sta
       // Use memoized image component
       img: ({node, src, alt, ...props}) => {
         // pattern: /tmp/utu_webui_workspace/<session_id>/path/to/file
-        if (src && src.startsWith('/tmp/utu_webui_workspace/')) {
-          src = src.replace('/tmp/utu_webui_workspace/', '/');
+        console.log('original_url', src);
+        if (src && src.startsWith('/tmp/')) {
+          src = src.replace('/tmp/', '/');
           src = staticFileEndpoint + src;
+          console.log('replaced_url', src);
         }
         return <ImageWithErrorHandling key={src} src={src} alt={alt} {...props} />;
       },
       a: ({node, href, ...props}) => {
         // pattern: /tmp/utu_webui_workspace/<session_id>/path/to/file
-        if (href && href.startsWith('/tmp/utu_webui_workspace/')) {
-          href = href.replace('/tmp/utu_webui_workspace/', '/');
+        console.log('original_url', href);
+        if (href && href.startsWith('/tmp/')) {
+          href = href.replace('/tmp/', '/');
           href = staticFileEndpoint + href;
+          console.log('replaced_url', href);
         }
+       
         return <a key={href} {...props} href={href} />;
       },
       // Custom heading component to avoid conflicts with Mermaid
