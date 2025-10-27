@@ -1,17 +1,56 @@
 import time
-import openai
 from utu.utils import EnvUtils
+
+try:
+    import openai  # kept for OpenAI/HTTP engine
+except Exception:
+    openai = None
 
 class LLM:
     def __init__(self):
-        EnvUtils.assert_env(["UTU_LLM_TYPE", "UTU_LLM_MODEL", "UTU_LLM_BASE_URL", "UTU_LLM_API_KEY"])
-        self.model_name = EnvUtils.get_env("UTU_LLM_MODEL")
-        self.client = openai.OpenAI(
-            api_key=EnvUtils.get_env("UTU_LLM_API_KEY"),
-            base_url=EnvUtils.get_env("UTU_LLM_BASE_URL"),
-        )
+        engine = EnvUtils.get_env("UTU_LLM_ENGINE", required=False) or "openai"
+        self.engine = engine.lower()
+
+        if self.engine == "vllm":
+            # Native vLLM backend (no HTTP server required)
+            weights_path = EnvUtils.get_env("UTU_LLM_WEIGHTS", required=False)
+            if not weights_path:
+                raise ValueError("UTU_LLM_WEIGHTS is required when UTU_LLM_ENGINE=vllm")
+            try:
+                from vllm import LLM as VLLMEngine
+                from vllm import SamplingParams
+            except Exception as e:
+                raise ImportError("vllm is required for UTU_LLM_ENGINE=vllm. Please: pip install vllm") from e
+            self._vllm_engine = VLLMEngine(model=weights_path)
+            self._vllm_sampling_cls = SamplingParams
+        else:
+            # Default OpenAI-compatible HTTP engine
+            EnvUtils.assert_env(["UTU_LLM_TYPE", "UTU_LLM_MODEL", "UTU_LLM_BASE_URL", "UTU_LLM_API_KEY"])
+            self.model_name = EnvUtils.get_env("UTU_LLM_MODEL")
+            if openai is None:
+                raise ImportError("openai package is required for HTTP engine. Ensure it's installed.")
+            self.client = openai.OpenAI(
+                api_key=EnvUtils.get_env("UTU_LLM_API_KEY"),
+                base_url=EnvUtils.get_env("UTU_LLM_BASE_URL"),
+            )
 
     def chat(self, messages_or_prompt, max_tokens=16384, temperature=0, max_retries=3, return_reasoning=False):
+        # vLLM native
+        if self.engine == "vllm":
+            if isinstance(messages_or_prompt, str):
+                prompt = messages_or_prompt
+            elif isinstance(messages_or_prompt, list):
+                # Simple conversion of messages to a single prompt
+                prompt = "\n".join(f"{m.get('role', 'user')}: {m.get('content', '')}" for m in messages_or_prompt)
+            else:
+                raise ValueError("messages_or_prompt must be a string or a list of messages.")
+
+            sp = self._vllm_sampling_cls(temperature=temperature, max_tokens=max_tokens)
+            outputs = self._vllm_engine.generate([prompt], sp)
+            text = outputs[0].outputs[0].text if outputs and outputs[0].outputs else ""
+            return text.strip()
+
+        # OpenAI-compatible HTTP
         for _ in range(max_retries):
             try:
                 if isinstance(messages_or_prompt, str):
@@ -30,11 +69,10 @@ class LLM:
                 response_text = response.choices[0].message.content.strip()
 
                 if return_reasoning:
-                    reasoning = response.choices[0].message.reasoning_content
+                    reasoning = getattr(response.choices[0].message, "reasoning_content", None)
                     return response_text, reasoning
                 return response_text
 
             except Exception as e:
-                error = f"An unexpected error occurred: {e}"
-                print(error)
+                print(f"LLM.chat error: {e}")
             time.sleep(10)

@@ -14,7 +14,7 @@ random.seed(42)
 
 async def main(args):
     # Optional: override model via CLI before anything uses the LLM
-    if args.model or args.base_url or args.api_key or args.local or args.provider:
+    if args.model or args.base_url or args.api_key or args.local or args.provider or args.engine or args.weights:
         # Set env to let downstream LLM wrapper pick them up
         if args.local:
             # Set sensible defaults for local inference
@@ -34,6 +34,10 @@ async def main(args):
             os.environ["UTU_LLM_BASE_URL"] = args.base_url
         if args.api_key:
             os.environ["UTU_LLM_API_KEY"] = args.api_key
+        if args.engine:
+            os.environ["UTU_LLM_ENGINE"] = args.engine
+        if args.weights:
+            os.environ["UTU_LLM_WEIGHTS"] = args.weights
     # Set up domain-specific variables
     if args.domain == "math":
         from training_free_grpo.math.dataset import load_data
@@ -204,6 +208,9 @@ if __name__ == "__main__":
     parser.add_argument("--api_key", type=str, default=None, help="Override: LLM API key (env UTU_LLM_API_KEY)")
     parser.add_argument("--local", action="store_true", help="Use local model defaults (base_url=http://localhost:8000/v1, api_key=dummy)")
     parser.add_argument("--provider", type=str, default=None, choices=["ollama", "vllm"], help="Shortcut for local providers")
+    # Native engines
+    parser.add_argument("--engine", type=str, default=None, choices=["openai", "vllm"], help="Engine backend (default: openai)")
+    parser.add_argument("--weights", type=str, default=None, help="Local weights folder for engine=vllm (env UTU_LLM_WEIGHTS)")
 
     args = parser.parse_args()
     asyncio.run(main(args))
