@@ -41,7 +41,10 @@ async def main(args):
     # Set up domain-specific variables
     if args.domain == "math":
         from training_free_grpo.math.dataset import load_data
-        from training_free_grpo.math.verify import verify_func
+        if args.math_verifier == "llm":
+            from training_free_grpo.math.verify_llm import verify_func
+        else:
+            from training_free_grpo.math.verify import verify_func
         from training_free_grpo.math.prompts import PROBLEM_WITH_EXPERIENCE_TEMPLATE
         from training_free_grpo.math.experience import ExperienceUpdater
         config_name = "simple/math_agent.yaml"
@@ -204,6 +207,7 @@ if __name__ == "__main__":
     parser.add_argument("--top_k", type=int, default=None, help="Top-k sampling (optional)")
     parser.add_argument("--rollout_max_tokens", type=int, default=16384, help="Max tokens for each rollout batch")
     parser.add_argument("--task_timeout", type=float, default=3600, help="Timeout for each individual task in seconds")
+    parser.add_argument("--math_verifier", type=str, default="rule", choices=["rule", "llm"], help="Math verification backend")
     # Optional model overrides (for local model endpoints)
     parser.add_argument("--model", type=str, default=None, help="Override: LLM model name (env UTU_LLM_MODEL)")
     parser.add_argument("--base_url", type=str, default=None, help="Override: LLM base URL (env UTU_LLM_BASE_URL)")
