@@ -8,7 +8,10 @@ except Exception:
 
 class LLM:
     def __init__(self):
-        engine = EnvUtils.get_env("UTU_LLM_ENGINE", required=False) or "openai"
+        # Default logic: if weights are provided, prefer native vLLM; otherwise HTTP(OpenAI)
+        engine = EnvUtils.get_env("UTU_LLM_ENGINE", required=False)
+        if not engine:
+            engine = "vllm" if EnvUtils.get_env("UTU_LLM_WEIGHTS", required=False) else "openai"
         self.engine = engine.lower()
 
         if self.engine == "vllm":
