@@ -2,6 +2,7 @@ import os
 import json
 import random
 from typing import List, Dict, Any
+import pandas as pd
 from datasets import load_dataset
 
 
@@ -10,9 +11,15 @@ def load_data(name: str) -> List[Dict[str, Any]]:
     # Support local file paths
     if os.path.exists(name):
         if name.endswith(".json"):
-            return json.load(open(name))
+            data = json.load(open(name))
+            return _normalize_local_math_records(data)
         if name.endswith(".jsonl"):
-            return [json.loads(line) for line in open(name)]
+            data = [json.loads(line) for line in open(name)]
+            return _normalize_local_math_records(data)
+        if name.endswith(".parquet"):
+            df = pd.read_parquet(name)
+            data = df.to_dict(orient="records")
+            return _normalize_local_math_records(data)
         raise ValueError(f"Unsupported local dataset format: {name}")
 
     if name == "AIME24":    
@@ -47,3 +54,33 @@ def load_data(name: str) -> List[Dict[str, Any]]:
             return transformed
 
     raise ValueError(f"Unsupported dataset: {name}")
+
+
+def _normalize_local_math_records(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Normalize various math dataset schemas to {problem, groundtruth, golden_answer?}.
+
+    Supports GSM8K-style columns: question, answer (answer may contain "#### final").
+    Passes through records already containing problem/groundtruth.
+    """
+    normalized: List[Dict[str, Any]] = []
+    for rec in records:
+        if "problem" in rec and "groundtruth" in rec:
+            normalized.append(rec)
+            continue
+        problem = rec.get("question") or rec.get("prompt") or rec.get("problem")
+        answer = rec.get("groundtruth") or rec.get("golden_answer") or rec.get("answer") or rec.get("final_answer")
+        if isinstance(answer, str) and "####" in answer:
+            # GSM8K answers often like: "...\n#### 42"
+            try:
+                answer = answer.split("####", 1)[-1].strip()
+            except Exception:
+                pass
+        if problem is None or answer is None:
+            # Skip rows that cannot be normalized
+            continue
+        out = {"problem": problem, "groundtruth": answer}
+        # If provided, keep explicit golden answer
+        if "golden_answer" in rec:
+            out["golden_answer"] = rec["golden_answer"]
+        normalized.append(out)
+    return normalized
