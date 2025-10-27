@@ -182,6 +182,14 @@ async def rollout_dataset(
 
 
 async def main(args):
+    # Optional: override model via CLI before anything uses the LLM
+    if args.model or args.base_url or args.api_key:
+        if args.model:
+            os.environ["UTU_LLM_MODEL"] = args.model
+        if args.base_url:
+            os.environ["UTU_LLM_BASE_URL"] = args.base_url
+        if args.api_key:
+            os.environ["UTU_LLM_API_KEY"] = args.api_key
     # Set up domain-specific variables
     if args.domain == "math":
         from training_free_grpo.math.dataset import load_data
@@ -264,6 +272,10 @@ if __name__ == "__main__":
     parser.add_argument("--rollout_max_tokens", type=int, default=16384, help="Max tokens for each rollout")
     parser.add_argument("--pass_k", type=int, default=1, help="Pass@k metric")
     parser.add_argument("--task_timeout", type=float, default=3600, help="Timeout for each individual task in seconds")
+    # Optional model overrides (for local model endpoints)
+    parser.add_argument("--model", type=str, default=None, help="Override: LLM model name (env UTU_LLM_MODEL)")
+    parser.add_argument("--base_url", type=str, default=None, help="Override: LLM base URL (env UTU_LLM_BASE_URL)")
+    parser.add_argument("--api_key", type=str, default=None, help="Override: LLM API key (env UTU_LLM_API_KEY)")
 
     args = parser.parse_args()
     asyncio.run(main(args))

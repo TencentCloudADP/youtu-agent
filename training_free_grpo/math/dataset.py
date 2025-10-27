@@ -7,6 +7,14 @@ from datasets import load_dataset
 
 def load_data(name: str) -> List[Dict[str, Any]]:
 
+    # Support local file paths
+    if os.path.exists(name):
+        if name.endswith(".json"):
+            return json.load(open(name))
+        if name.endswith(".jsonl"):
+            return [json.loads(line) for line in open(name)]
+        raise ValueError(f"Unsupported local dataset format: {name}")
+
     if name == "AIME24":    
         dataset = load_dataset("HuggingFaceH4/aime_2024", split="train")
         data = [{"problem": each["problem"], "groundtruth": each["answer"]} for each in dataset.to_list()]

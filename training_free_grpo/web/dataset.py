@@ -6,6 +6,16 @@ from datasets import load_dataset
 
 def load_data(dataset_name):
     """ dataset_name: {dataset}_{sample_number} """
+    # Support local file paths (json/jsonl/parquet)
+    if os.path.exists(dataset_name):
+        if dataset_name.endswith(".json"):
+            return json.load(open(dataset_name))
+        if dataset_name.endswith(".jsonl"):
+            return [json.loads(line) for line in open(dataset_name)]
+        if dataset_name.endswith(".parquet"):
+            import pandas as pd
+            return pd.read_parquet(dataset_name).to_dict(orient="records")
+        raise ValueError(f"Unsupported local dataset format: {dataset_name}")
     if dataset_name.startswith("AFM_web_RL"):
         data = load_AFM_web_RL()
     elif dataset_name.startswith("WebWalkerQA"):
