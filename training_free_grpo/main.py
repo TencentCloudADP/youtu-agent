@@ -224,6 +224,11 @@ async def main(args):
         worker_agent = None
     elif args.mode == "agent":
         config = ConfigLoader.load_agent_config(config_name)
+        # Apply sampling temperature if provided
+        try:
+            config.model.model_settings.temperature = args.rollout_temperature
+        except Exception:
+            pass
         worker_agent = SimpleAgent(config=config)
         await worker_agent.build()
     else:
@@ -271,6 +276,7 @@ async def main(args):
         rollout_filename=rollout_filename,
         rollout_concurrency=args.rollout_concurrency,
         task_timeout=args.task_timeout,
+        temperature=args.rollout_temperature,
         max_tokens=args.rollout_max_tokens,
     )
 
@@ -284,6 +290,7 @@ if __name__ == "__main__":
     parser.add_argument("--dataset_truncate", type=int, default=None, help="Truncate dataset to first N samples")
     parser.add_argument("--experience_file", type=str, default=None)
     parser.add_argument("--rollout_concurrency", type=int, default=5, help="Concurrency level for rollouts")
+    parser.add_argument("--rollout_temperature", type=float, default=0.3, help="Temperature for sampling")
     parser.add_argument("--rollout_max_tokens", type=int, default=16384, help="Max tokens for each rollout")
     parser.add_argument("--pass_k", type=int, default=1, help="Pass@k metric")
     parser.add_argument("--task_timeout", type=float, default=3600, help="Timeout for each individual task in seconds")
