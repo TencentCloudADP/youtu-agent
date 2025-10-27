@@ -183,7 +183,18 @@ async def rollout_dataset(
 
 async def main(args):
     # Optional: override model via CLI before anything uses the LLM
-    if args.model or args.base_url or args.api_key:
+    if args.model or args.base_url or args.api_key or args.local or args.provider:
+        if args.local:
+            os.environ.setdefault("UTU_LLM_BASE_URL", "http://localhost:8000/v1")
+            os.environ.setdefault("UTU_LLM_API_KEY", "dummy")
+        if args.provider:
+            provider = args.provider.lower()
+            if provider == "ollama":
+                os.environ["UTU_LLM_BASE_URL"] = os.environ.get("UTU_LLM_BASE_URL", "http://localhost:11434/v1")
+                os.environ.setdefault("UTU_LLM_API_KEY", "ollama")
+            elif provider == "vllm":
+                os.environ["UTU_LLM_BASE_URL"] = os.environ.get("UTU_LLM_BASE_URL", "http://localhost:8000/v1")
+                os.environ.setdefault("UTU_LLM_API_KEY", "dummy")
         if args.model:
             os.environ["UTU_LLM_MODEL"] = args.model
         if args.base_url:
@@ -276,6 +287,8 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default=None, help="Override: LLM model name (env UTU_LLM_MODEL)")
     parser.add_argument("--base_url", type=str, default=None, help="Override: LLM base URL (env UTU_LLM_BASE_URL)")
     parser.add_argument("--api_key", type=str, default=None, help="Override: LLM API key (env UTU_LLM_API_KEY)")
+    parser.add_argument("--local", action="store_true", help="Use local model defaults (base_url=http://localhost:8000/v1, api_key=dummy)")
+    parser.add_argument("--provider", type=str, default=None, choices=["ollama", "vllm"], help="Shortcut for local providers")
 
     args = parser.parse_args()
     asyncio.run(main(args))
