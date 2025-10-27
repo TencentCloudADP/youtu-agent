@@ -1,4 +1,5 @@
 import time
+import re
 from utu.utils import EnvUtils
 
 try:
@@ -37,6 +38,13 @@ class LLM:
                 base_url=EnvUtils.get_env("UTU_LLM_BASE_URL"),
             )
 
+    def _strip_think(self, text: str) -> str:
+        # Remove Qwen-style thinking blocks
+        try:
+            return re.sub(r"<think>[\s\S]*?</think>", "", text, flags=re.IGNORECASE).strip()
+        except Exception:
+            return text
+
     def chat(
         self,
         messages_or_prompt,
@@ -65,7 +73,7 @@ class LLM:
             sp = self._vllm_sampling_cls(**params)
             outputs = self._vllm_engine.generate([prompt], sp)
             text = outputs[0].outputs[0].text if outputs and outputs[0].outputs else ""
-            return text.strip()
+            return self._strip_think(text)
 
         # OpenAI-compatible HTTP
         for _ in range(max_retries):
@@ -89,12 +97,12 @@ class LLM:
                 if top_k is not None:
                     kwargs["extra_body"] = {"top_k": top_k}
                 response = self.client.chat.completions.create(**kwargs)
-                response_text = response.choices[0].message.content.strip()
+                response_text = (response.choices[0].message.content or "").strip()
 
                 if return_reasoning:
                     reasoning = getattr(response.choices[0].message, "reasoning_content", None)
-                    return response_text, reasoning
-                return response_text
+                    return self._strip_think(response_text), reasoning
+                return self._strip_think(response_text)
 
             except Exception as e:
                 print(f"LLM.chat error: {e}")
