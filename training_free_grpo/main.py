@@ -227,6 +227,10 @@ async def main(args):
         # Apply sampling temperature if provided
         try:
             config.model.model_settings.temperature = args.rollout_temperature
+            if args.top_p is not None:
+                config.model.model_settings.top_p = args.top_p
+            if args.top_k is not None:
+                config.model.model_settings.top_k = args.top_k
         except Exception:
             pass
         worker_agent = SimpleAgent(config=config)
@@ -268,6 +272,7 @@ async def main(args):
     rollouts = load_rollouts(rollout_filename)
 
     # Rollout the dataset
+    # Wire top_p and top_k via temperature path using the LLM wrapper (HTTP or vLLM)
     await rollout_dataset(
         worker_agent=worker_agent,
         data=formatted_test_data,
@@ -292,6 +297,8 @@ if __name__ == "__main__":
     parser.add_argument("--rollout_concurrency", type=int, default=5, help="Concurrency level for rollouts")
     parser.add_argument("--rollout_temperature", type=float, default=0.3, help="Temperature for sampling")
     parser.add_argument("--rollout_max_tokens", type=int, default=16384, help="Max tokens for each rollout")
+    parser.add_argument("--top_p", type=float, default=None, help="Top-p nucleus sampling (optional)")
+    parser.add_argument("--top_k", type=int, default=None, help="Top-k sampling (optional)")
     parser.add_argument("--pass_k", type=int, default=1, help="Pass@k metric")
     parser.add_argument("--task_timeout", type=float, default=3600, help="Timeout for each individual task in seconds")
     # Optional model overrides (for local model endpoints)

@@ -37,7 +37,16 @@ class LLM:
                 base_url=EnvUtils.get_env("UTU_LLM_BASE_URL"),
             )
 
-    def chat(self, messages_or_prompt, max_tokens=16384, temperature=0, max_retries=3, return_reasoning=False):
+    def chat(
+        self,
+        messages_or_prompt,
+        max_tokens=16384,
+        temperature=0,
+        top_p: float | None = None,
+        top_k: int | None = None,
+        max_retries=3,
+        return_reasoning=False,
+    ):
         # vLLM native
         if self.engine == "vllm":
             if isinstance(messages_or_prompt, str):
@@ -48,7 +57,12 @@ class LLM:
             else:
                 raise ValueError("messages_or_prompt must be a string or a list of messages.")
 
-            sp = self._vllm_sampling_cls(temperature=temperature, max_tokens=max_tokens)
+            params = {"temperature": temperature, "max_tokens": max_tokens}
+            if top_p is not None:
+                params["top_p"] = top_p
+            if top_k is not None:
+                params["top_k"] = top_k
+            sp = self._vllm_sampling_cls(**params)
             outputs = self._vllm_engine.generate([prompt], sp)
             text = outputs[0].outputs[0].text if outputs and outputs[0].outputs else ""
             return text.strip()
@@ -63,12 +77,18 @@ class LLM:
                 else:
                     raise ValueError("messages_or_prompt must be a string or a list of messages.")
 
-                response = self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=messages,
-                    max_tokens=max_tokens,
-                    temperature=temperature,
-                )
+                kwargs = {
+                    "model": self.model_name,
+                    "messages": messages,
+                    "max_tokens": max_tokens,
+                    "temperature": temperature,
+                }
+                if top_p is not None:
+                    kwargs["top_p"] = top_p
+                # Non-standard, but many servers accept it
+                if top_k is not None:
+                    kwargs["extra_body"] = {"top_k": top_k}
+                response = self.client.chat.completions.create(**kwargs)
                 response_text = response.choices[0].message.content.strip()
 
                 if return_reasoning:
