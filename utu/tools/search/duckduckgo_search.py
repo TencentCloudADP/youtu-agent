@@ -1,7 +1,7 @@
 try:
     from ddgs import DDGS
 except ImportError as e:
-    raise ImportError("Please install ddgs first: `uv pip install ddgs`") from e
+    raise ImportError("Please install ddgs first: `pip install ddgs`") from e
 from ...utils import get_logger
 from ..utils import ContentFilter
 

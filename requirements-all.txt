@@ -1,0 +1,11 @@
+# All dependencies (core + dev + all optional features)
+# Install with: pip install -r requirements-all.txt
+
+-r requirements.txt
+-r requirements-dev.txt
+-r requirements-litllm.txt
+-r requirements-documents.txt
+-r requirements-gaia.txt
+-r requirements-python-executor.txt
+-r requirements-search.txt
+

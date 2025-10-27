@@ -22,9 +22,9 @@ This script will create a new directory (`configs/tools/generated/{name}`) and c
 
 ```sh
 cd {output_directory}
-uv venv
+python3 -m venv .venv
 source .venv/bin/activate
-uv pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 2. Integrate the Tool into Your Agent

@@ -1,0 +1,7 @@
+# Document processing dependencies
+# Install with: pip install -r requirements-documents.txt
+
+-r requirements.txt
+
+pymupdf>=1.26.3
+

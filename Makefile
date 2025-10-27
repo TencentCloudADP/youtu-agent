@@ -3,40 +3,40 @@ SHELL := /bin/bash
 
 .PHONY: sync
 sync:
-	uv sync --all-extras --all-packages --group dev
+	pip install -r requirements-all.txt
 
 .PHONY: format
 format: 
-	uv run ruff format
-	uv run ruff check --fix
+	python -m ruff format
+	python -m ruff check --fix
 
 .PHONY: format-check
 format-check:
-	uv run ruff format --check
+	python -m ruff format --check
 
 .PHONY: lint
 lint: 
-	uv run ruff check
+	python -m ruff check
 
 .PHONY: build-docs
 build-docs:
-	uv run mkdocs build
+	python -m mkdocs build
 
 .PHONY: serve-docs
 serve-docs:
-	uv run mkdocs serve
+	python -m mkdocs serve
 
 .PHONY: deploy-docs
 deploy-docs:
-	uv run mkdocs gh-deploy --force --verbose
+	python -m mkdocs gh-deploy --force --verbose
 
 .PHONY: build-ui
 build-ui:
-	uv pip install build
+	pip install build
 	npm --version || echo "npm not found, please install npm"
 	cd utu/ui/frontend && npm install && bash build.sh
-	uv pip install --force-reinstall utu/ui/frontend/build/utu_agent_ui-0.2.0-py3-none-any.whl
+	pip install --force-reinstall utu/ui/frontend/build/utu_agent_ui-0.2.0-py3-none-any.whl
 
 .PHONY: demo
 demo: build-ui
-	uv run python -m demo.demo_universal
+	python -m demo.demo_universal

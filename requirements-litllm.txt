@@ -1,0 +1,7 @@
+# LiteLLM optional dependency
+# Install with: pip install -r requirements-litllm.txt
+
+-r requirements.txt
+
+litellm>=1.77.0
+

@@ -11,15 +11,14 @@ First, clone the repository and set up the Python environment.
 git clone https://github.com/TencentCloudADP/youtu-agent.git
 cd youtu-agent
 
-# We use `uv` to manage the virtual environment and dependencies
-# Create the virtual environment
-uv venv
+# Create a virtual environment
+python3 -m venv .venv
 
 # Activate the environment
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install all dependencies, including development tools
-uv sync --group dev
+pip install -r requirements-dev.txt
 
 # Create your environment configuration file from the example
 cp .env.example .env

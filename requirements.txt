@@ -1,0 +1,35 @@
+# Core dependencies for Youtu-agent
+# Python >=3.12 required
+
+aiofiles>=24.1.0
+aiohttp>=3.12.15
+art>=6.5
+arxiv>=2.2.0
+chunkr-ai>=0.1.0
+colorlog>=6.9.0
+docker>=7.1.0
+google-genai>=1.26.0
+hydra-core>=1.3.2
+ipython>=9.5.0
+jinja2>=3.1.6
+math-verify>=0.8.0
+matplotlib>=3.10.3
+mcp>=1.12.3
+# https://github.com/openai/openai-agents-python/issues/1395 | openai==1.97.1 & openai-agents==0.2.5
+openai==1.99.6
+openai-agents==0.2.8
+# https://github.com/Arize-ai/openinference/tree/main/python/instrumentation/openinference-instrumentation-openai
+openinference-instrumentation-openai>=0.1.30
+openinference-instrumentation-openai-agents>=1.1.1
+openpyxl>=3.1.5
+pandas>=2.3.0
+pexpect>=4.9.0
+prompt-toolkit>=3.0.52
+psycopg2-binary>=2.9.10
+requests>=2.32.4
+rich>=14.1.0
+sqlmodel>=0.0.24
+tiktoken>=0.9.0
+toml>=0.10.2
+wikipedia-api>=0.8.1
+

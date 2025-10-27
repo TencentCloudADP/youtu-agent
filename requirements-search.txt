@@ -1,0 +1,7 @@
+# Search/web crawling dependencies
+# Install with: pip install -r requirements-search.txt
+
+-r requirements.txt
+
+crawl4ai>=0.7.4
+

@@ -1,0 +1,21 @@
+# Development dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# First install core dependencies
+-r requirements.txt
+
+arize-phoenix-client>=1.14.1
+arize-phoenix-otel>=0.11.0
+# datasets == 4.0.0 remove scripts, https://github.com/huggingface/datasets/issues/7693
+datasets==3.6.0
+gradio>=5.42.0
+mkdocs>=1.6.1
+mkdocs-material>=9.6.16
+mkdocstrings[python]>=0.30.0
+mypy>=1.17.1
+pre-commit>=4.3.0
+pytest>=8.4.1
+pytest-asyncio>=1.0.0
+ruff>=0.12.8
+tornado>=6.5.2
+

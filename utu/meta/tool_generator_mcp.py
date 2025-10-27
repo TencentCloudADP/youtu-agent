@@ -139,7 +139,7 @@ class ToolGenerator:
     def _init_environment(self, odir):
         """Initialize the virtual environment and install requirements."""
         subprocess.run(
-            f"cd {odir} && uv venv && . .venv/bin/activate && uv pip install -r requirements.txt",
+            f"cd {odir} && python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt",
             shell=True,
             check=True,
         )

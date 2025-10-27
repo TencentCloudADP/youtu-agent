@@ -8,7 +8,7 @@ Before getting started, please ensure your system meets the following requiremen
 
 - **Python** 3.12 or higher.
 - **[Git tool](https://git-scm.com/downloads)**.
-- **`UV`** Package Manager: an extremely fast Python package and project manager. We'll install this in the setup steps below.
+- **pip** Package Manager: Python's standard package installer (comes bundled with Python).
 - **API Keys**: You'll need to obtain API keys for the underlying LLM that your agent will use (e.g., `DeepSeek`, `OpenAI`, etc.) - this is required. Optionally, you can also get API keys for `Serper` and `Jina` for enhanced features.
     - **`DeepSeek API Key`**: Visit [DeepSeek](https://platform.deepseek.com/) or [Tencent Cloud](https://cloud.tencent.com/document/product/1772/115969) and register an account to get an API key.
     - **`Serper API Key`** (optional): Visit [Serper](https://serper.dev/) and get API key.
@@ -32,44 +32,25 @@ cd youtu-agent
 
 **Beginner Tip:** If you see `git: command not found`, it means Git is not installed. Please install Git first.
 
-### Step 2: Install UV Package Manager
+### Step 2: Verify Python Installation
 
-You can **install** `UV` using the following commands (refer to `UV` official repo's [installation guides](https://github.com/astral-sh/uv?tab=readme-ov-file#installation)):
-
-```sh
-# Install UV on Linux/macOS
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-```powershell
-# On Windows
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-Or simply use pip:
-
-```sh
-pip install uv
-```
-
-```sh
-# Or pipx
-pipx install uv
-```
-
-**Verify Installation:**
+Make sure you have Python 3.12 or higher installed:
 
 ```bash
-uv --version
+python3 --version
+# or on some systems:
+python --version
 ```
 
-If a version number is displayed, the installation was successful.
+If you see a version number like `Python 3.12.x` or higher, you're good to go!
+
+**Beginner Tip:** If Python is not installed or the version is too old, visit [Python's official website](https://www.python.org/downloads/) to download and install the latest version.
 
 ### Step 3: Create and Activate Virtual Environment
 
 ```bash
 # Create virtual environment
-uv venv
+python3 -m venv .venv
 
 # Activate virtual environment
 # Linux/macOS:
@@ -79,21 +60,21 @@ source .venv/bin/activate
 # .venv\Scripts\activate
 ```
 
-**Beginner Tip:** After activating the virtual environment, you'll see `(Youtu-agent)` identifier before your command line prompt as follow:
+**Beginner Tip:** After activating the virtual environment, you'll see `(.venv)` identifier before your command line prompt as follow:
 
 ```sh
 # Linux/macOS
-(Youtu-agent) your-username:~/path/to/youtu-agent$
+(.venv) your-username:~/path/to/youtu-agent$
 
 # Windows
-# (Youtu-agent) path\to\Youtu-agent>
+# (.venv) path\to\youtu-agent>
 ```
 
 ### Step 4: Install Project Dependencies
 
 ```sh
 # Install all dependencies, including development tools
-uv sync --group dev
+pip install -r requirements-dev.txt
 ```
 
 ### Step 5: Configure Environment Variables
@@ -175,7 +156,7 @@ Now you can try asking some questions:
 
 **Beginner Tip:** 
 - Type `quit`, `exit` or `q` to exit the conversation
-- If you encounter errors, check if your `UV` environment is activated and `UTU_LLM_*` API Key is configured correctly
+- If you encounter errors, check if your virtual environment is activated and `UTU_LLM_*` API Key is configured correctly
 
 ### Test 2: Run Orchestra Example
 

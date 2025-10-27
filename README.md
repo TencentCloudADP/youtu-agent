@@ -27,14 +27,17 @@ git clone https://github.com/TencentCloudADP/youtu-agent -b training_free_GRPO
 # Change to the project directory
 cd youtu-agent
 
-# Sync the environment with the lock file
-uv sync  # or, `make sync`
+# Create a virtual environment
+python3 -m venv .venv
 
 # Activate the virtual environment
 source ./.venv/bin/activate
 
+# Install dependencies
+pip install -r requirements-dev.txt
+
 # Upgrade datasets package to avoid potential issues
-uv pip install --upgrade datasets
+pip install --upgrade datasets
 ```
 
 Next, configure your environment variables by copying the example file and filling in the necessary API keys in the project root.

@@ -2,7 +2,7 @@ try:
     from crawl4ai import AsyncWebCrawler
 except ImportError as e:
     raise ImportError(
-        "Please install crawl4ai: `uv pip install crawl4ai && python -m playwright install --with-deps chromium`"
+        "Please install crawl4ai: `pip install crawl4ai && python -m playwright install --with-deps chromium`"
     ) from e  # noqa: E501
 from ...utils import async_file_cache, get_logger
 

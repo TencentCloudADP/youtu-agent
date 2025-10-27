@@ -1,0 +1,11 @@
+# Python executor dependencies
+# Install with: pip install -r requirements-python-executor.txt
+
+-r requirements.txt
+
+chardet>=5.2.0
+matplotlib>=3.10.3
+pandas>=2.3.1
+scipy>=1.16.1
+seaborn>=0.13.2
+

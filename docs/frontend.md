@@ -66,7 +66,7 @@ We ship the static web pages in the `utu_agent_ui` package, which can be install
 Download prebuilt wheel file (`utu_agent_ui-0.2.0-py3-none-any.whl`) from [releases](https://github.com/TencentCloudADP/youtu-agent/releases) and run the following command:
 
 ```bash
-uv pip install utu_agent_ui-0.2.0-py3-none-any.whl
+pip install utu_agent_ui-0.2.0-py3-none-any.whl
 ```
 
 ### Compiling from Source
@@ -77,7 +77,7 @@ Before compiling, make sure you have `npm` installed.
 
 ```bash
 npm install
-uv pip install build
+pip install build
 bash ./build.sh
 ```
 
