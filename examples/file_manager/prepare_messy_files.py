@@ -3,7 +3,7 @@ import os
 import random
 
 
-def prepare_messy_files(work_dir="/tmp/file_manager_test"):
+def prepare_messy_files(work_dir="/tmp/mock_files/"):
     """
     Prepare messy files for testing.
     """
@@ -93,7 +93,7 @@ def prepare_messy_files(work_dir="/tmp/file_manager_test"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare messy files for testing")
-    parser.add_argument("--work_dir", default="/tmp/file_manager_test", help="Work directory")
+    parser.add_argument("--work_dir", default="/tmp/mock_files", help="Work directory")
     args = parser.parse_args()
 
     # warn user if work_dir is not empty
