@@ -77,7 +77,7 @@ python scripts/run_eval.py --config_name <your_eval_config> --exp_id <your_exp_i
 If you have already run the rollout and only want to re-run the judgment phase, use this script:
 
 ```sh
-python scripts/run_eval_judge.py --config_name <your_eval_config> --exp_id <your_exp_id> --dataset WebWalkerQA
+python scripts/run_eval.py --config_name <your_eval_config> --exp_id <your_exp_id> --dataset WebWalkerQA --step judge
 ```
 
 ### Dump Experiment Data

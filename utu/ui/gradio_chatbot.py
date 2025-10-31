@@ -1,5 +1,7 @@
 import asyncio
 import logging
+import sys
+import warnings
 
 import agents as ag
 import gradio as gr
@@ -7,8 +9,44 @@ import gradio as gr
 from utu.agents import OrchestraAgent, SimpleAgent
 from utu.agents.orchestra import OrchestraStreamEvent
 
+# Add a visible deprecation warning that will be shown when the module is imported
+warnings.simplefilter("always", DeprecationWarning)  # Ensure deprecation warnings are shown
+warnings.warn(
+    "The gradio_chatbot module is deprecated and will be removed in a future release. "
+    "Please migrate to the new webui implementation.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+# Print a warning to stderr for better visibility
+print(
+    "WARNING: The gradio_chatbot module is deprecated and will be removed in a future release. "
+    "Please migrate to the new webui implementation.",
+    file=sys.stderr,
+)
+
+
+warnings.warn(
+    "The gradio_chatbot module is deprecated and will be removed in a future release. "
+    "Please update your code to use the recommended alternatives.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
 
 class GradioChatbot:
+    """
+    DEPRECATED: This module is deprecated and will be removed in a future release.
+
+    This module has been superseded by newer implementations in the webui package.
+    Please migrate to the new implementation as soon as possible.
+
+    Migration Guide:
+    - Replace usage of GradioChatbot with the new web interface components
+    - Update your code to use the new API endpoints
+    - Refer to the project documentation for more details
+    """
+
     def __init__(self, agent: SimpleAgent | OrchestraAgent, example_query=""):
         self.agent = agent
         self.user_interrupted = False

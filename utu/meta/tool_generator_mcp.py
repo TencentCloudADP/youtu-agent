@@ -14,6 +14,7 @@ generation workflow:
 """
 
 import asyncio
+import pathlib
 import subprocess
 from dataclasses import dataclass, field
 
@@ -37,13 +38,15 @@ class TaskRecorder(DataClassWithStreamEvents):
 
 
 class ToolGenerator:
-    def __init__(self):
+    def __init__(self, auto_debug: bool = True):
+        self.auto_debug = auto_debug
         self.prompts = FileUtils.load_prompts("meta/tool_generator_mcp.yaml")
         self.llm = SimpleAgent(
             name="tool_generator",
             instructions="You are a Python software engineer assistant.",
             toolkits=["user_interaction", "search"],
         )
+        self.debugger = SimpleAgent(config="meta/tool_generator_mcp_debugger") if auto_debug else None
         self.output_dir = DIR_ROOT / "configs/tools/generated"
         self.output_dir.mkdir(exist_ok=True)
 
@@ -73,6 +76,10 @@ class ToolGenerator:
                 await self.step2(task_recorder)
                 await self.step3(task_recorder)
                 self.postprocess(task_recorder)
+
+                # Auto debug if enabled
+                if self.auto_debug:
+                    await self.run_debug(task_recorder=task_recorder, workspace_dir=task_recorder.name)
             except Exception as e:
                 task_recorder._is_complete = True
                 task_recorder._event_queue.put_nowait(QueueCompleteSentinel())
@@ -84,7 +91,7 @@ class ToolGenerator:
     async def step1(self, task_recorder: TaskRecorder, user_input: str) -> None:
         async with self.llm as agent:
             query = FileUtils.get_jinja_template_str(self.prompts["STEP_1_REQUIREMENT"]).render(user_request=user_input)
-            res = agent.run_streamed(query)
+            res = agent.run_streamed(query, save=True)
             await self._process_streamed(res, task_recorder)
             parsed_res = LLMOutputParser.extract_code_json(res.final_output)
             task_recorder.name = parsed_res["name"]
@@ -93,14 +100,14 @@ class ToolGenerator:
     async def step2(self, task_recorder: TaskRecorder) -> None:
         async with self.llm as agent:
             query = FileUtils.get_jinja_template_str(self.prompts["STEP_2_IMPLEMENTATION"]).render()
-            res = agent.run_streamed(query)
+            res = agent.run_streamed(query, save=True)
             await self._process_streamed(res, task_recorder)
             task_recorder.implementation = LLMOutputParser.extract_code_python(res.final_output)
 
     async def step3(self, task_recorder: TaskRecorder) -> None:
         async with self.llm as agent:
             query = FileUtils.get_jinja_template_str(self.prompts["STEP_3_MANIFEST"]).render()
-            res = agent.run_streamed(query)
+            res = agent.run_streamed(query, save=True)
             await self._process_streamed(res, task_recorder)
             task_recorder.manifest = LLMOutputParser.extract_code_json(res.final_output)
 
@@ -147,4 +154,23 @@ class ToolGenerator:
     async def _process_streamed(self, run_result_streaming: RunResultStreaming, task_recorder: TaskRecorder):
         async for event in run_result_streaming.stream_events():
             task_recorder._event_queue.put_nowait(event)
-        self.llm.input_items = run_result_streaming.to_input_list()
+
+    async def run_debug(self, workspace_dir: str, task_recorder: TaskRecorder = None) -> TaskRecorder:
+        task_recorder = task_recorder or TaskRecorder(name=workspace_dir)
+        res = self.run_debug_streamed(workspace_dir)
+        await self._process_streamed(res, task_recorder)
+        return task_recorder
+
+    def run_debug_streamed(self, workspace_dir: str) -> TaskRecorder:
+        """Run debug on an existing tool workspace directory.
+
+        Args:
+            workspace_dir: Path to the tool workspace directory (relative to configs/tools/generated/)
+        """
+        if not self.debugger:
+            self.debugger = SimpleAgent(config="meta/tool_generator_mcp_debugger")
+
+        if isinstance(workspace_dir, str):
+            workspace_dir = pathlib.Path(DIR_ROOT / "configs/tools/generated" / workspace_dir)
+        self.debugger.setup_workspace(workspace_dir)
+        return self.debugger.run_streamed(f"当前目录: {workspace_dir}")

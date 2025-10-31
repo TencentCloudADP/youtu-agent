@@ -1,6 +1,7 @@
 """
 This module is used to define the PPT template pydantic models.
 """
+
 import json
 import logging
 import traceback
@@ -10,6 +11,7 @@ from typing import Any, Literal
 import requests
 from PIL import Image
 from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pydantic import BaseModel
 from utils import delete_shape, duplicate_slide, find_shape_with_name_except, replace_picture_keep_format
 
@@ -481,6 +483,7 @@ def handle_pure_text(text: str, target_shape, slide):
         for paragraph in text_frame.paragraphs:
             for run in paragraph.runs:
                 run.text = text
+                text = ""
     except Exception as e:
         logging.error(f"Failed to set text: {text} {e}")
         traceback.print_exc()
@@ -502,7 +505,19 @@ def handle_image(image_url: str, target_shape, slide):
     # center the image
     left += (width - image_width) / 2
     top += (height - image_height) / 2
-    slide.shapes.add_picture(image_url, left, top, image_width, image_height)
+
+    # get parent
+    try:
+        parent = target_shape._parent._parent
+        # check if parent is shape group
+        if parent.shape_type == MSO_SHAPE_TYPE.GROUP:
+            # get parent left and top
+            parent_left, parent_top = parent.left, parent.top
+            slide.shapes.add_picture(image_url, left + parent_left, top + parent_top, image_width, image_height)
+        else:
+            slide.shapes.add_picture(image_url, left, top, image_width, image_height)
+    except AttributeError:
+        slide.shapes.add_picture(image_url, left, top, image_width, image_height)
 
     # remove the placeholder
     delete_shape(target_shape)

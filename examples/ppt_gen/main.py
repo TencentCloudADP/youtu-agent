@@ -16,11 +16,13 @@ async def main():
     parser.add_argument("--extra_prompt", type=str, default="")
     parser.add_argument("--pages", type=int, default=15)
     parser.add_argument("--url", type=str, default=None)
-    parser.add_argument("--template_path", type=str, default="template/template_ori.pptx")
-    parser.add_argument("--output_path",
-                        type=str, default=f"output-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.pptx")
-    parser.add_argument("--output_json",
-                        type=str, default=f"output-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.json")
+    parser.add_argument("--template_path", type=str, default="template/0.pptx")
+    parser.add_argument(
+        "--output_path", type=str, default=f"output-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.pptx"
+    )
+    parser.add_argument(
+        "--output_json", type=str, default=f"output-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.json"
+    )
     args = parser.parse_args()
 
     agent = SimpleAgent(config=config)

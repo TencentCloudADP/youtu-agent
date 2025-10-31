@@ -1,0 +1,20 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+    name: rag_example
+    instructions: |-
+      You are a helpful assistant that can access a local knowledge base.
+
+toolkits:
+  ragflow:
+    # https://ragflow.io/docs/dev/launch_mcp_server
+    name: ragflow
+    mode: mcp
+    activated_tools: null
+    mcp_transport: streamable_http
+    mcp_client_session_timeout_seconds: 20
+    config:
+      url: ${oc.env:MCP_RAGFLOW_URL}

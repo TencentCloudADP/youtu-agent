@@ -1,7 +1,7 @@
 # @package _global_
 defaults:
   - /model/base@orchestrator_model
-  - /agents/router/base@orchestrator_router  # router
+  - /agents/router/force_plan@orchestrator_router  # router
   - /agents/simple/search_agent@orchestrator_workers.SearchAgent
   - /agents/simple/svg_generator@orchestrator_workers.SVGGenerator
   - _self_
@@ -10,6 +10,7 @@ type: orchestrator
 
 orchestrator_config:
   name: SVGGeneratorAgent
+  add_chitchat_subagent: false
   additional_instructions: |-
     Your main object is generating SVG code according to user's request. So,
     - If user's request is not clear enough, use the ChitchatAgent to help clarify user's request. (If available)

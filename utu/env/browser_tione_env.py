@@ -12,7 +12,8 @@ logger = get_logger(__name__)
 
 
 class BrowserTioneEnv(BaseEnv):
-    def __init__(self):
+    def __init__(self, config: dict) -> None:
+        self.config = config
         self.browser_state: str = None
         self._stack = AsyncExitStack()
 
@@ -43,8 +44,14 @@ class BrowserTioneEnv(BaseEnv):
                     res = await self.client.call_tool(tool_name, json.loads(input_json))
                     if res.isError:
                         return f"Error: {res.content[0].text}"
-                    self.browser_state = res.content[1].text  # DISCUSS: record the web actions?
-                    return res.content[0].text
+                    if self.config.get("state_keep", True):
+                        # state_keep=True: keep all the browser states in history messages
+                        tool_result = res.content[0].text + res.content[1].text
+                    else:
+                        # state_keep=False: only keep the latest browser state
+                        self.browser_state = res.content[1].text
+                        tool_result = res.content[0].text
+                    return tool_result
                 except Exception as e:
                     logger.error(f"except: {e}", exc_info=True)
                     return f"Error: {e}"

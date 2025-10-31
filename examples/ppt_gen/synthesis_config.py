@@ -1,6 +1,7 @@
 """
 This script is used to generate a config file from given json schema for PPTGeneratorAgent.
 """
+
 import argparse
 
 TEMPLATE = """

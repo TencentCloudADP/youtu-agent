@@ -30,6 +30,7 @@ from openai import AsyncOpenAI
 from openai.types.chat import ChatCompletionMessageParam, ChatCompletionToolParam
 from openai.types.responses import ResponseFunctionToolCall
 
+from .image import encode_image
 from .openai_utils import OpenAIChatCompletionParams
 from .print_utils import PrintUtils
 
@@ -318,6 +319,13 @@ class AgentsUtils:
             params_json_schema=tool["function"].get("parameters", None),
             on_invoke_tool=None,
         )
+
+    @staticmethod
+    def get_message_from_image(image_url: str) -> dict:
+        """Get a message dict for image input."""
+        # from openai.types.responses.response_input_item_param import Message
+        # from openai.types.responses.response_input_image_param import ResponseInputImageParam
+        return {"role": "user", "content": [{"type": "input_image", "image_url": encode_image(image_url)}]}
 
 
 class SimplifiedOpenAIChatCompletionsModel(OpenAIChatCompletionsModel):

@@ -1,6 +1,13 @@
+"""
+- add "context_manager" logic for `_run_single_turn` and `_run_single_turn_streamed`
+- add termination logic based on `termination_max_tokens` in `ModelConfigs`
+"""
+
 import asyncio
 import logging
+from typing import cast
 
+# , ResponseReasoningItem, ResponseCustomToolCall, McpCall
 from agents import (
     Agent,
     ItemHelpers,
@@ -14,13 +21,19 @@ from agents import (
 )
 from agents._run_impl import RunImpl, get_model_tracing_impl
 from agents.exceptions import ModelBehaviorError
-from agents.items import ModelResponse
-from agents.run import AgentRunner, AgentToolUseTracker, RunResultStreaming, SingleStepResult
-from agents.stream_events import RawResponsesStreamEvent
+from agents.items import HandoffCallItem, ModelResponse, ToolCallItem, ToolCallItemTypes
+from agents.run import _TOOL_CALL_TYPES, AgentRunner, AgentToolUseTracker, RunResultStreaming, SingleStepResult
+from agents.stream_events import RawResponsesStreamEvent, RunItemStreamEvent
 from agents.usage import Usage
 from agents.util import _coro
-from openai.types.responses import ResponseCompletedEvent
+from openai.types.responses import (
+    ResponseCompletedEvent,
+    ResponseFunctionToolCall,
+    ResponseOutputItemDoneEvent,
+    ResponseOutputMessage,
+)
 
+from ..config import AgentConfig
 from ..context import BaseContextManager
 
 logger = logging.getLogger(__name__)
@@ -41,6 +54,7 @@ class UTUAgentRunner(AgentRunner):
         should_run_agent_start_hooks: bool,
         tool_use_tracker: AgentToolUseTracker,
         previous_response_id: str | None,
+        conversation_id: str | None,
     ) -> SingleStepResult:
         # Ensure we run the hooks before anything else
         if should_run_agent_start_hooks:
@@ -59,12 +73,9 @@ class UTUAgentRunner(AgentRunner):
         input = ItemHelpers.input_to_new_input_list(original_input)
         input.extend([generated_item.to_input_item() for generated_item in generated_items])
 
-        # FIXME: set context manage as a hook?
         # ADD: context manager
-        if context_wrapper.context:
-            context_manager: BaseContextManager = context_wrapper.context.get("context_manager", None)
-            input = context_manager.preprocess(input, context_wrapper)
-        # print(f"< [DEBUG] input: {input}")
+        input = cls._context_manager_preprocess(input, context_wrapper)
+
         new_response = await cls._get_new_response(
             agent,
             system_prompt,
@@ -72,15 +83,17 @@ class UTUAgentRunner(AgentRunner):
             output_schema,
             all_tools,
             handoffs,
+            hooks,
             context_wrapper,
             run_config,
             tool_use_tracker,
             previous_response_id,
+            conversation_id,
             prompt_config,
         )
 
-        # ADD: response logging
-        # print(json.dumps([item.model_dump() for item in new_response.output], ensure_ascii=False))
+        # ADD: terminate when context too long
+        new_response = cls._check_too_long(new_response, context_wrapper)
 
         return await cls._get_single_step_result_from_response(
             agent=agent,
@@ -108,7 +121,10 @@ class UTUAgentRunner(AgentRunner):
         tool_use_tracker: AgentToolUseTracker,
         all_tools: list[Tool],
         previous_response_id: str | None,
+        conversation_id: str | None,
     ) -> SingleStepResult:
+        emitted_tool_call_ids: set[str] = set()
+
         if should_run_agent_start_hooks:
             await asyncio.gather(
                 hooks.on_agent_start(context_wrapper, agent),
@@ -136,16 +152,25 @@ class UTUAgentRunner(AgentRunner):
         input.extend([item.to_input_item() for item in streamed_result.new_items])
 
         # ADD: context manager
-        if context_wrapper.context:
-            context_manager: BaseContextManager = context_wrapper.context.get("context_manager", None)
-            input = context_manager.preprocess(input, context_wrapper)
+        input = cls._context_manager_preprocess(input, context_wrapper)
 
+        # THIS IS THE RESOLVED CONFLICT BLOCK
         filtered = await cls._maybe_filter_model_input(
             agent=agent,
             run_config=run_config,
             context_wrapper=context_wrapper,
             input_items=input,
             system_instructions=system_prompt,
+        )
+
+        # Call hook just before the model is invoked, with the correct system_prompt.
+        await asyncio.gather(
+            hooks.on_llm_start(context_wrapper, agent, filtered.instructions, filtered.input),
+            (
+                agent.hooks.on_llm_start(context_wrapper, agent, filtered.instructions, filtered.input)
+                if agent.hooks
+                else _coro.noop_coroutine()
+            ),
         )
 
         # 1. Stream the output events
@@ -158,9 +183,11 @@ class UTUAgentRunner(AgentRunner):
             handoffs,
             get_model_tracing_impl(run_config.tracing_disabled, run_config.trace_include_sensitive_data),
             previous_response_id=previous_response_id,
+            conversation_id=conversation_id,
             prompt=prompt_config,
         ):
             if isinstance(event, ResponseCompletedEvent):
+                logger.debug(f"> [DEBUG] ResponseCompletedEvent: {event}")
                 usage = (
                     Usage(
                         requests=1,
@@ -180,16 +207,47 @@ class UTUAgentRunner(AgentRunner):
                 )
                 context_wrapper.usage.add(usage)
 
+            if isinstance(event, ResponseOutputItemDoneEvent):
+                logger.debug(f"> [DEBUG] ResponseOutputItemDoneEvent: {event}")
+                output_item = event.item
+
+                if isinstance(output_item, _TOOL_CALL_TYPES):
+                    call_id: str | None = getattr(output_item, "call_id", getattr(output_item, "id", None))
+
+                    if call_id and call_id not in emitted_tool_call_ids:
+                        emitted_tool_call_ids.add(call_id)
+
+                        tool_item = ToolCallItem(
+                            raw_item=cast(ToolCallItemTypes, output_item),
+                            agent=agent,
+                        )
+                        streamed_result._event_queue.put_nowait(RunItemStreamEvent(item=tool_item, name="tool_called"))
+
             streamed_result._event_queue.put_nowait(RawResponsesStreamEvent(data=event))
+
+        # Call hook just after the model response is finalized.
+        if final_response is not None:
+            await asyncio.gather(
+                (
+                    agent.hooks.on_llm_end(context_wrapper, agent, final_response)
+                    if agent.hooks
+                    else _coro.noop_coroutine()
+                ),
+                hooks.on_llm_end(context_wrapper, agent, final_response),
+            )
 
         # 2. At this point, the streaming is complete for this turn of the agent loop.
         if not final_response:
             raise ModelBehaviorError("Model did not produce a final response!")
 
+        # ADD: terminate when context too long
+        final_response = cls._check_too_long(final_response, context_wrapper)
+
         # 3. Now, we can process the turn as we do in the non-streaming case
-        return await cls._get_single_step_result_from_streamed_response(
+        single_step_result = await cls._get_single_step_result_from_response(
             agent=agent,
-            streamed_result=streamed_result,
+            original_input=streamed_result.input,
+            pre_step_items=streamed_result.new_items,
             new_response=final_response,
             output_schema=output_schema,
             all_tools=all_tools,
@@ -198,4 +256,70 @@ class UTUAgentRunner(AgentRunner):
             context_wrapper=context_wrapper,
             run_config=run_config,
             tool_use_tracker=tool_use_tracker,
+            event_queue=streamed_result._event_queue,
         )
+
+        import dataclasses as _dc
+
+        # Filter out items that have already been sent to avoid duplicates
+        items_to_filter = single_step_result.new_step_items
+
+        if emitted_tool_call_ids:
+            # Filter out tool call items that were already emitted during streaming
+            items_to_filter = [
+                item
+                for item in items_to_filter
+                if not (
+                    isinstance(item, ToolCallItem)
+                    and (call_id := getattr(item.raw_item, "call_id", getattr(item.raw_item, "id", None)))
+                    and call_id in emitted_tool_call_ids
+                )
+            ]
+
+        # Filter out HandoffCallItem to avoid duplicates (already sent earlier)
+        items_to_filter = [item for item in items_to_filter if not isinstance(item, HandoffCallItem)]
+
+        # Create filtered result and send to queue
+        filtered_result = _dc.replace(single_step_result, new_step_items=items_to_filter)
+        RunImpl.stream_step_result_to_queue(filtered_result, streamed_result._event_queue)
+        return single_step_result
+
+    @classmethod
+    def _context_manager_preprocess(
+        cls, input: list[TResponseInputItem], context_wrapper: RunContextWrapper[TContext]
+    ) -> list[TResponseInputItem]:
+        if context_wrapper.context:
+            context_manager: BaseContextManager = context_wrapper.context.get("context_manager", None)
+            input = context_manager.preprocess(input, context_wrapper)
+        return input
+        # print(f"< [DEBUG] input: {input}")
+
+    @classmethod
+    def _check_too_long(
+        cls, new_response: ModelResponse, context_wrapper: RunContextWrapper[TContext]
+    ) -> ModelResponse:
+        # ADD: terminate when response too long. before `_get_single_step_result_from_response`
+        """Check if the context is too long. If the total_tokens exceed the max limit, terminate this rollout
+        (by removing all tool calls from the response)"""
+        if context_wrapper.context is None:
+            return new_response
+        config: AgentConfig = context_wrapper.context.get("agent_config", None)
+        if not config or not config.model.termination_max_tokens:
+            return new_response
+
+        MAX_TOKENS = config.model.termination_max_tokens
+        total_tokens = new_response.usage.total_tokens if new_response.usage else 0
+        logger.warning(f"> [DEBUG] total_tokens: {total_tokens}, MAX_TOKENS: {MAX_TOKENS}")
+        if total_tokens > MAX_TOKENS:
+            output = []
+            for item in new_response.output:
+                if isinstance(item, ResponseOutputMessage):
+                    output.append(item)
+                elif isinstance(item, ResponseFunctionToolCall):
+                    pass
+            logger.warning(
+                f"Response truncated due to exceeding max token limit of {MAX_TOKENS}.\n"
+                f"  Raw response: {new_response.output}."
+            )
+            new_response.output = output
+        return new_response

@@ -14,7 +14,8 @@
 | <a href="#-示例"><b>💡 示例</b> </a> 
 | <a href="#-特性"><b>✨ 特性</b> </a> 
 | <a href="#-快速开始"><b>🚀 快速开始</b> </a> 
-| 
+| 📢 <a href="https://discord.gg/QjqhkHQVVM"><b>Join Discord</b></a> or <a href="https://github.com/user-attachments/assets/354cd8e7-e108-4348-9355-04440052f408"><b>WeChat</b></a> 
+|
 </p>
 
 
@@ -200,7 +201,7 @@ UTU_LLM_BASE_URL=https://api.deepseek.com/v1
 UTU_LLM_API_KEY=<替换为你的 API Key>
 ```
 
-> 腾讯云为新用户提供免费 DeepSeek API 额度。点击[此处](https://lke.cloud.tencent.com/lke/#/trialProduct?source=act)申请，完成后请参考以下 `.env` 文件配置。如果赠送额度已失效，可以点击[此处](https://buy.cloud.tencent.com/tcadp)购买额度包，或前往[系统管理设置页](https://console.cloud.tencent.com/lkeap/settings)启用“原子能力_DeepSeek API”后付费以激活 API Key：
+> 点击[此处](https://lke.cloud.tencent.com/lke/#/trialProduct?source=act)申请腾讯云 DeepSeek API（OpenAI SDK 格式），完成后请参考以下 `.env` 文件配置。如果赠送额度已失效，可以点击[此处](https://buy.cloud.tencent.com/tcadp)购买额度包，或前往[系统管理设置页](https://console.cloud.tencent.com/lkeap/settings)启用“原子能力_DeepSeek API”后付费以激活 API Key：
 
 ```bash
 # 设置你的 LLM 配置, 可参考 https://www.tencentcloud.com/document/product/1255/70381

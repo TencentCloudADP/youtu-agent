@@ -21,7 +21,7 @@ async def main():
         await AgentsUtils.print_stream_events(result.stream_events())
 
         print(f"Final output: {result.final_output}")
-        FileUtils.save_json(result.to_input_list(), pathlib.Path(__file__).parent / "trajectories.json")
+        FileUtils.save_json(pathlib.Path(__file__).parent / "trajectories.json", result.to_input_list())
 
 
 if __name__ == "__main__":

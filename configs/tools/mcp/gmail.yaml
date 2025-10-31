@@ -1,0 +1,10 @@
+# @package _global_
+# https://github.com/GongRzhe/Gmail-MCP-Server
+name: gmail
+mode: mcp
+activated_tools: null
+mcp_transport: stdio
+mcp_client_session_timeout_seconds: 20
+config:
+  command: npx
+  args: ["@gongrzhe/server-gmail-autoauth-mcp"]

@@ -11,7 +11,7 @@ class DatasetSample(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     dataset: str = ""  # dataset name, for exp
-    index: int | None = Field(default=None)  # The index of the datapoint in the dataset, starting from 1
+    index: int | None = Field(default=None)  # The index of the datapoint in the dataset
     source: str = ""  # dataset name for mixed dataset
     source_index: int | None = Field(default=None)  # The index of the datapoint in the source dataset, if available
 

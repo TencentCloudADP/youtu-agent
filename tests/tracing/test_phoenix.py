@@ -1,4 +1,4 @@
-from utu.tracing import PhoenixUtils
+from utu.tracing.phoenix_utils import PhoenixUtils
 
 phoenix_utils = PhoenixUtils()
 

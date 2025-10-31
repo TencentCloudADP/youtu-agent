@@ -34,9 +34,9 @@ deploy-docs:
 build-ui:
 	uv pip install build
 	npm --version || echo "npm not found, please install npm"
-	cd utu/ui/frontend && npm install && bash build.sh
-	uv pip install --force-reinstall utu/ui/frontend/build/utu_agent_ui-0.2.0-py3-none-any.whl
+	cd frontend/webui && npm install && bash build.sh
+	uv pip install --force-reinstall frontend/webui/build/utu_agent_ui-0.2.0-py3-none-any.whl
 
 .PHONY: demo
 demo: build-ui
-	uv run python -m demo.demo_universal
+	uv run python -m demo.demo

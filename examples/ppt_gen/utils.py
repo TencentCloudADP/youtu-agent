@@ -132,23 +132,36 @@ def find_shape_with_name_except(shapes, name, depth=0):
 
 
 def duplicate_slide(prs, slide):
-    """
-    Copy the given slide to the end of the presentation.
-
-    Args:
-        prs: Presentation object
-        slide: Slide object to be copied
-    Returns:
-        New created Slide object
-    """
-    # Create new slide, use the same layout
     slide_layout = slide.slide_layout
     new_slide = prs.slides.add_slide(slide_layout)
 
-    # Copy all shapes
     for shape in slide.shapes:
-        new_shape_element = copy.deepcopy(shape.element)
-        new_slide.shapes._spTree.insert_element_before(new_shape_element, "p:extLst")
+        el = shape.element
+        new_el = copy.deepcopy(el)
+
+        # 处理图片 - 使用 python-pptx 内置命名空间
+        try:
+            blips = new_el.xpath(".//a:blip[@r:embed]")
+
+            for blip in blips:
+                old_rId = blip.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed")
+
+                if old_rId:
+                    # 获取原始图片
+                    old_image_part = slide.part.related_part(old_rId)
+
+                    # 在新幻灯片中建立关系
+                    new_rId = new_slide.part.relate_to(
+                        old_image_part, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+                    )
+
+                    # 更新 rId
+                    blip.set("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed", new_rId)
+
+        except (KeyError, AttributeError):
+            pass
+
+        new_slide.shapes._spTree.insert_element_before(new_el, "p:extLst")
 
     return new_slide
 
@@ -191,48 +204,16 @@ def move_slide(prs, old_index, new_index):
     return prs
 
 
-def replace_picture_keep_format(slide, old_picture_index, new_image_path):
-    """
-    Replace the picture at the given index with a new image while keeping all format attributes.
-    """
-    target_shape = slide.shapes[old_picture_index]
+def replace_picture_keep_format(slide, shape_index, new_image_path):
+    shape = slide.shapes[shape_index]
 
-    # Save all properties
-    properties = {
-        "left": target_shape.left,
-        "top": target_shape.top,
-        "width": target_shape.width,
-        "height": target_shape.height,
-        "rotation": target_shape.rotation if hasattr(target_shape, "rotation") else 0,
-    }
+    if shape.shape_type != 13:
+        raise ValueError("Target shape is not a picture")
 
-    # Save shadow, border, etc. effects (if exist)
-    _shadow = None
-    if hasattr(target_shape, "shadow"):
-        _shadow = target_shape.shadow
+    img_id = shape._element.blip_rEmbed
+    image_part = shape.part.related_part(img_id)
 
-    # Get the position in shapes collection
-    _shape_index = None
-    for i, shape in enumerate(slide.shapes):
-        if shape == target_shape:
-            _shape_index = i
-            break
+    with open(new_image_path, "rb") as f:
+        image_part._blob = f.read()
 
-    # Remove the original picture
-    sp = target_shape._element
-    sp.getparent().remove(sp)
-
-    # Insert the new picture
-    new_picture = slide.shapes.add_picture(
-        new_image_path, properties["left"], properties["top"], properties["width"], properties["height"]
-    )
-
-    # Restore rotation
-    if properties["rotation"] != 0:
-        new_picture.rotation = properties["rotation"]
-
-    # Restore shadow, border, etc. effects
-    if _shadow:
-        new_picture.shadow = _shadow
-
-    return new_picture
+    return shape

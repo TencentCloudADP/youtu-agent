@@ -109,6 +109,8 @@ nav:
     - QuickStart (for beginner): quickstart_beginner.md
     - QuickStart: quickstart.md
     - Start with Docker: docker.md
+  - Howto:
+    - Evaluate an Agent: howto/eval.md
   - Documentation:
     - Config: config.md
     - Environment Variables: environment_variables.md

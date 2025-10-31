@@ -6,6 +6,10 @@ model_provider:
   # base_url: ${oc.env:UTU_LLM_BASE_URL}
   # api_key: ${oc.env:UTU_LLM_API_KEY}
 
-# model_settings:
-#   temperature: 0.3
-#   top_p: 0.95
+model_settings:
+  # temperature: 0.3
+  # top_p: 0.95
+  # max_tokens: 1000
+  include_usage: True
+
+# termination_max_tokens: 

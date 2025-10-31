@@ -14,7 +14,8 @@
 | <a href="#-使用例"><b>💡 サンプル</b> </a> 
 | <a href="#-特徴"><b>✨ 機能</b> </a> 
 | <a href="#-すぐに始める"><b>🚀 クイックスタート</b> </a> 
-| 
+| 📢 <a href="https://discord.gg/QjqhkHQVVM"><b>Join Discord</b></a> or <a href="https://github.com/user-attachments/assets/354cd8e7-e108-4348-9355-04440052f408"><b>WeChat</b></a> 
+|
 </p>
 
 `Youtu-Agent`は、自律エージェントを構築・実行・評価するための柔軟で高性能なフレームワークです。ベンチマークテストでトップクラスの成績を収めるだけでなく、オープンソースモデルを活用してデータ分析、ファイル処理、深層学習などの高度な機能を実現できる強力なエージェント機能も備えています。

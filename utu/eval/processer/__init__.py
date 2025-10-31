@@ -1,4 +1,5 @@
 from utu.config import EvalConfig
+from utu.utils import get_logger
 
 from .base_llm_processor import BaseLLMJudgeProcesser as BaseLLMJudgeProcesser
 from .base_match_processor import BaseMatchProcesser as BaseMatchProcesser
@@ -7,6 +8,8 @@ from .browse_comp import BrowseCompProcesser as BrowseCompProcesser, BrowseCompZ
 from .gaia import GAIAProcesser as GAIAProcesser
 from .web_walker import WebWalkerQAProcesser as WebWalkerQAProcesser
 from .xbench import XBenchProcesser as XBenchProcesser
+
+logger = get_logger(__name__)
 
 
 # factory class for evaluation
@@ -40,7 +43,7 @@ class ProcesserFactory:
         name_lower = name.lower()
         if name_lower not in cls._registry:
             # if the name is found, return the corresponding processer
-            print(f"Processer for '{name}' not found. Using default processer.")
+            logger.warning(f"Processer for dataset='{name}' not found. Using default processer.")
             return cls._registry["default"](config)
         return cls._registry[name_lower](config)
 

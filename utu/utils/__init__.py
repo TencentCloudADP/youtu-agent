@@ -1,6 +1,7 @@
 from .agents_utils import AgentsUtils, ChatCompletionConverter
 from .common import get_event_loop, load_class_from_file, schema_to_basemodel
 from .env import EnvUtils
+from .image import encode_image
 from .llm_output_parser import LLMOutputParser
 from .log import get_logger, oneline_object, setup_logging
 from .openai_utils import OpenAIUtils, SimplifiedAsyncOpenAI
@@ -30,4 +31,5 @@ __all__ = [
     "get_event_loop",
     "EnvUtils",
     "LLMOutputParser",
+    "encode_image",
 ]

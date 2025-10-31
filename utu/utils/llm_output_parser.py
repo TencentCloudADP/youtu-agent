@@ -62,3 +62,15 @@ class LLMOutputParser:
             return "".join(x.title() for x in components)
         else:
             return components[0].lower() + "".join(x.title() for x in components[1:])
+
+    @staticmethod
+    def extract_float_number(s: str, return_last: bool = True) -> float | None:
+        """Extract numbers from the given string.
+        Args:
+            return_last: if True, return the last number found; otherwise return first number found.
+        """
+        pattern = re.compile(r"[-+]?\d*\.\d+|\d+")
+        matches = pattern.findall(s)
+        if not matches:
+            return None
+        return float(matches[-1]) if return_last else float(matches[0])

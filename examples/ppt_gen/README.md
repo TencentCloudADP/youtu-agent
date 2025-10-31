@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-Download [template file](https://docs.google.com/presentation/d/1sJbfAgrrJ7-L9-HFR-2WMrdmrcvbq58y/edit?usp=sharing&ouid=102491574393427318377&rtpof=true&sd=true) to `examples/ppt_gen/template` directory.
+Download [template files](https://drive.google.com/drive/folders/1oZYoHBJJwzAzhrpvnUnklvU7LcS4oFz6?usp=sharing) to `examples/ppt_gen/template` directory.
 
 Prepare the reference resource (plain text / markdown / html webpage) for PPT generation. For example, download the [Nobel Prize webpage](https://www.nobelprize.org/prizes/physics/2025/popular-information/).
 
@@ -15,7 +15,7 @@ wget https://www.nobelprize.org/prizes/physics/2025/popular-information/ -O webp
 Run `main.py`
 
 ```
-python main.py --file webpage.html
+python main.py --file webpage.html --template_path template/0.pptx --pages 15
 ```
 
 The script will produce a `json` file and a `pptx` file if everything is OK.

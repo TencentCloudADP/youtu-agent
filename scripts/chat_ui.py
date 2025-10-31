@@ -1,22 +1,27 @@
 """
 Usage:
 
-    python scripts/chat_ui.py --config_name orchestrator/universal
+    python scripts/chat_ui.py --default_config orchestrator/universal
 """
 
-from utu.agents import get_agent
-from utu.ui.webui_chatbot import WebUIChatbot
-from utu.utils.script_utils import parse_cli_args
+import argparse
+
+from utu.ui.webui_agents import WebUIAgents
+from utu.utils import EnvUtils
 
 
 def main():
-    config = parse_cli_args()
-    agent = get_agent(config)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", type=str, default=EnvUtils.get_env("UTU_WEBUI_IP", "127.0.0.1"))
+    parser.add_argument("--port", type=int, default=EnvUtils.get_env("UTU_WEBUI_PORT", "8848"))
+    parser.add_argument("--autoload", type=bool, default=EnvUtils.get_env("UTU_WEBUI_AUTOLOAD", "false") == "true")
 
-    question = "请分析论文 https://www.arxiv.org/pdf/2507.12883，整理出它的相关工作，并且进行简单的比较。"
+    parser.add_argument("--default_config", type=str, default="simple/base", help="Configuration name")
+    parser.add_argument("--example_query", type=str, default="What can you do?", help="Example query to show in the UI")
+    args = parser.parse_args()
 
-    ui = WebUIChatbot(agent, example_query=question)
-    ui.launch()
+    ui = WebUIAgents(args.default_config, example_query=args.example_query)
+    ui.launch(ip=args.ip, port=args.port, autoload=args.autoload)
 
 
 if __name__ == "__main__":
