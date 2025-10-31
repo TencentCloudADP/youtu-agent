@@ -11,8 +11,10 @@ import json
 import logging
 from collections import OrderedDict
 from collections.abc import Iterable, Iterator, Mapping
-from datetime import UTC, datetime
-from typing import TYPE_CHECKING, Any, assert_never
+from datetime import datetime
+from typing import TYPE_CHECKING, Any
+from typing_extensions import assert_never
+
 
 from agents import MCPListToolsSpanData
 from agents.tracing import Span, Trace, TracingProcessor
@@ -208,7 +210,7 @@ class OpenInferenceTracingProcessor(TracingProcessor):
 
 
 def _as_utc_nano(dt: datetime) -> int:
-    return int(dt.astimezone(UTC).timestamp() * 1_000_000_000)
+    return int(dt.timestamp() * 1_000_000_000)
 
 
 def _get_span_name(obj: Span[Any]) -> str:

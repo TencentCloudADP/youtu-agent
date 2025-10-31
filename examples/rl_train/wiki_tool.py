@@ -7,16 +7,16 @@ from utu.tools import AsyncBaseToolkit, register_tool
 class WikiToolkit(AsyncBaseToolkit):
     @register_tool
     async def perform_single_search_batch(self, query: list[str]) -> str:
-        """Performs batched searches on wikipedia: supply an array 'query'; the tool retrieves the top 5 results for each query in one call.
+        """Performs batched searches on wikipedia: supply an array 'query'; the tool retrieves the top 3 results for each query in one call.
 
         Args:
             query: Array of query strings. Include multiple complementary search queries in a single call.
         """
-        payload = {"queries": query, "topk": 5, "return_scores": True}
+        payload = {"queries": query, "topk": 3, "return_scores": True}
 
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = requests.post(
-            "http://10.0.20.2:8501/retrieve",  # NOTE: you should change this to your own deployment
+            "http://10.16.20.181:80/retrieve",  # NOTE: you should change this to your own deployment
             headers=headers,
             json=payload,
             timeout=30,

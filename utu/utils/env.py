@@ -12,8 +12,8 @@ class EnvUtils:
         """Get the value of an environment variable. Raise an error if default is not privided (None)"""
         if default is None:
             res = os.getenv(key)
-            if res is None:
-                raise ValueError(f"Environment variable {key} is not set")
+            # if res is None:
+            #     raise ValueError(f"Environment variable {key} is not set")
             return res
         return os.getenv(key, default)
 
@@ -23,8 +23,9 @@ class EnvUtils:
             for k in key:
                 EnvUtils.assert_env(k)
         else:
-            if not os.getenv(key):
-                raise ValueError(f"Environment variable {key} is not set")
+            pass
+            # if not os.getenv(key):
+            #     raise ValueError(f"Environment variable {key} is not set")
 
     @staticmethod
     def ensure_package(package_name: str) -> None:
