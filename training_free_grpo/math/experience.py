@@ -222,7 +222,10 @@ class ExperienceUpdater:
         # collect operations
         all_operations = []
         for each in critiques:
-            all_operations.extend(each["operations"])
+            try:
+                all_operations.extend(each["operations"])
+            except:
+                print(f"Warning: failed to decode operation: {each}")
         print("- Num of operations to process:", len(all_operations))
 
         # split experiences
@@ -230,12 +233,15 @@ class ExperienceUpdater:
         to_modify = []
         max_ID = 0
         for operation in all_operations:
-            if operation["option"] == "modify":
-                if operation["modified_from"] in candidate_experiences:
-                    to_modify.append(operation)
-            elif operation["option"] == "add":
-                candidate_experiences[f"C{max_ID}"] = operation["experience"]
-                max_ID += 1
+            try:
+                if operation["option"] == "modify":
+                    if operation["modified_from"] in candidate_experiences:
+                        to_modify.append(operation)
+                elif operation["option"] == "add":
+                    candidate_experiences[f"C{max_ID}"] = operation["experience"]
+                    max_ID += 1
+            except:
+                print(f"Warning: failed to decode operation: {operation}")
 
         print("- Num of added experiences:", max_ID)
         print("- Num of experiences to be modified:", len(to_modify))
