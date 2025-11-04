@@ -1,0 +1,78 @@
+(youtu-agent) [root@VM-1-8-tencentos youtu-agent]# python scripts/cli_chat.py  --config generated/public_sentiment_analyzer_agent.yaml
+2025-11-04 11:16:49,360[utu.tracing.setup] - WARNING - setup.py:43 - PHOENIX_ENDPOINT or PHOENIX_PROJECT_NAME is not set! Skipping OpenTelemetry tracing.
+__   __            _                                      _   
+\ \ / / ___  _  _ | |_  _  _  ___  __ _  __ _  ___  _ _  | |_ 
+ \ V / / _ \| || ||  _|| || ||___|/ _` |/ _` |/ -_)| ' \ |  _|
+  |_|  \___/ \_,_| \__| \_,_|     \__,_|\__, |\___||_||_| \__|
+                                        |___/                 
+
+----------------------------------------------------------------------------------------------------
+Usage: `python cli_chat.py --config_name <config_name>`
+Quit: exit, quit, q
+----------------------------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/youtu-agent/scripts/cli_chat.py", line 45, in <module>
+    asyncio.run(main())
+  File "/usr/lib64/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/asyncio/base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/scripts/cli_chat.py", line 20, in main
+    config = parse_cli_args()
+             ^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/utils/script_utils.py", line 13, in parse_cli_args
+    config: AgentConfig = ConfigLoader.load_agent_config(args.config_name)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/config/loader.py", line 52, in load_agent_config
+    cfg = cls._load_config_to_dict(name, config_path="../../configs")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/config/loader.py", line 24, in _load_config_to_dict
+    cfg = compose(config_name=name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/compose.py", line 38, in compose
+    cfg = gh.hydra.compose_config(
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/hydra.py", line 594, in compose_config
+    cfg = self.config_loader.load_configuration(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/config_loader_impl.py", line 142, in load_configuration
+    return self._load_configuration_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/config_loader_impl.py", line 253, in _load_configuration_impl
+    defaults_list = create_defaults_list(
+                    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 745, in create_defaults_list
+    defaults, tree = _create_defaults_list(
+                     ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 715, in _create_defaults_list
+    defaults_tree = _create_defaults_tree(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 356, in _create_defaults_tree
+    ret = _create_defaults_tree_impl(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 457, in _create_defaults_tree_impl
+    return _expand_virtual_root(repo, root, overrides, skip_missing)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 280, in _expand_virtual_root
+    subtree = _create_defaults_tree_impl(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 573, in _create_defaults_tree_impl
+    add_child(children, new_root)
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 520, in add_child
+    subtree_ = _create_defaults_tree_impl(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 488, in _create_defaults_tree_impl
+    config_not_found_error(repo=repo, tree=root)
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/hydra/_internal/defaults_list.py", line 799, in config_not_found_error
+    raise MissingConfigException(
+hydra.errors.MissingConfigException: In 'agents/generated/public_sentiment_analyzer_agent.yaml': Could not load 'tools/mcp_memory'.
+
+Config search path:
+        provider=hydra, path=pkg://hydra.conf
+        provider=main, path=file:///home/youtu-agent/configs
+        provider=schema, path=structured://

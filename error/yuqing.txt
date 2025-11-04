@@ -1,0 +1,159 @@
+(youtu-agent) [root@VM-1-8-tencentos youtu-agent]# python scripts/gen_simple_agent.py
+2025-10-31 19:18:06,903[utu.tracing.setup] - WARNING - setup.py:43 - PHOENIX_ENDPOINT or PHOENIX_PROJECT_NAME is not set! Skipping OpenTelemetry tracing.
+Enter your agent requirements: 帮我生成一个agent,可以根据互联网上的信息进行舆情分析,并生成详细分析报告。
+>> new agent: clarification_agent
+我来帮您设计一个舆情分析AI Agent。让我先了解一些具体需求，以便为您创建更精确的规格说明。<toolcall name=ask_user>{"question": "您希望这个舆情分析Agent主要关注哪些平台的信息？比如社交媒体（微博、微信、Twitter等）、新闻网站、论坛、还是其他特定平台？"}</toolcall>
+您希望这个舆情分析Agent主要关注哪些平台的信息？比如社交媒体（微博、微信、Twitter等）、新闻网站、论坛、还是其他特定平台？全部
+[tool_output] 全部
+<toolcall name=ask_user>{"question": "您希望舆情分析报告包含哪些具体内容？比如情感分析、热门话题追踪、关键意见领袖识别、舆情趋势预测、还是其他特定分析维度？"}</toolcall>
+您希望舆情分析报告包含哪些具体内容？比如情感分析、热门话题追踪、关键意见领袖识别、舆情趋势预测、还是其他特定分析维度？全部
+[tool_output] 全部
+<toolcall name=ask_user>{"question": "您希望舆情分析报告的输出格式是什么？比如Markdown文档、HTML报告、JSON数据、还是其他特定格式？"}</toolcall>
+您希望舆情分析报告的输出格式是什么？比如Markdown文档、HTML报告、JSON数据、还是其他特定格式？HTML
+[tool_output] HTML
+<toolcall name=ask_user>{"question": "您希望这个Agent具备实时监控能力吗？还是只需要对特定时间段或特定关键词进行一次性分析？"}</toolcall>
+您希望这个Agent具备实时监控能力吗？还是只需要对特定时间段或特定关键词进行一次性分析？实时监控
+[tool_output] 实时监控
+基于您的需求，我为您设计了一个舆情分析AI Agent的详细规格说明：
+
+## 舆情分析AI Agent 需求规格说明
+
+### 对象
+- **核心功能**: 实时监控全网舆情信息，进行多维度深度分析
+- **覆盖范围**: 社交媒体平台（微博、微信、Twitter等）、新闻网站、论坛、博客等全网信息源
+- **分析维度**: 情感分析、热门话题追踪、关键意见领袖识别、舆情趋势预测、危机预警
+
+### 输出
+- **格式**: 交互式HTML报告
+- **内容**: 
+  - 情感分布统计图表
+  - 热门话题词云和趋势图
+  - 关键意见领袖影响力分析
+  - 舆情时间线和发展趋势预测
+  - 危机预警指标和风险评估
+  - 详细的数据表格和原始数据链接
+
+### 核心能力
+- **实时监控**: 7×24小时不间断舆情监测
+- **多语言支持**: 中文为主，支持多语言信息处理
+- **智能过滤**: 自动识别和过滤垃圾信息和重复内容
+- **深度分析**: 自然语言处理和机器学习算法进行情感和主题分析
+
+### 技术特性
+- **可扩展性**: 支持自定义监控关键词和平台
+- **实时性**: 分钟级数据更新和报告生成
+- **可视化**: 丰富的图表和交互式数据展示
+- **安全性**: 数据加密和隐私保护机制
+
+这个Agent将能够为您的组织提供全面的舆情监控和分析服务，帮助您及时了解公众舆论动态，做出数据驱动的决策。
+ERROR: You must supply a command.
+
+Execute binaries from npm packages.
+
+  npx [options] <command>[@version] [command-arg]...
+
+  npx [options] [-p|--package <package>]... <command> [command-arg]...
+
+  npx [options] -c '<command-string>'
+
+  npx --shell-auto-fallback [shell]
+
+
+Options:
+  --package, -p          Package to be installed.                       [string]
+  --cache                Location of the npm cache.                     [string]
+  --always-spawn         Always spawn a child process to execute the command.
+                                                                       [boolean]
+  --no-install           Skip installation if a package is missing.    [boolean]
+  --userconfig           Path to user npmrc.                            [string]
+  --call, -c             Execute string as if inside `npm run-script`.  [string]
+  --shell, -s            Shell to execute the command with, if any.
+                                                       [string] [default: false]
+  --shell-auto-fallback  Generate shell code to use npx as the "command not
+                         found" fallback.
+                                   [string] [choices: "", "bash", "fish", "zsh"]
+  --ignore-existing      Ignores existing binaries in $PATH, or in the local
+                         project. This forces npx to do a temporary install and
+                         use the latest version.                       [boolean]
+  --quiet, -q            Suppress output from npx itself. Subcommands will not
+                         be affected.                                  [boolean]
+  --npm                  npm binary to use for internal operations.
+                                                              [string] [default:
+       "/root/.nvm/versions/node/v12.22.12/lib/node_modules/npm/bin/npm-cli.js"]
+  --node-arg, -n         Extra node argument when calling a node binary.[string]
+  --version, -v          Show version number                           [boolean]
+  --help, -h             Show help                                     [boolean]
+
+For the full documentation, see the manual page for npx(1).
+Error initializing MCP server: Connection closed
+2025-10-31 19:19:38,289[utu.agents.common] - ERROR - common.py:81 - run_impl_exc: Connection closed
+2025-10-31 19:19:38,291[utu.agents.common] - ERROR - common.py:82 - Traceback (most recent call last):
+  File "/home/youtu-agent/utu/meta/simple_agent_generator.py", line 144, in _start_streaming
+    raise e
+  File "/home/youtu-agent/utu/meta/simple_agent_generator.py", line 134, in _start_streaming
+    await self.step2(task_recorder)
+  File "/home/youtu-agent/utu/meta/simple_agent_generator.py", line 191, in step2
+    tools_schema = await get_mcp_tools_schema(config)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/tools/utils.py", line 43, in get_mcp_tools_schema
+    tools = await get_mcp_tools(config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/tools/utils.py", line 36, in get_mcp_tools
+    async with get_mcp_server(config) as mcp_server:
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/agents/mcp/server.py", line 237, in __aenter__
+    await self.connect()
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/agents/mcp/server.py", line 277, in connect
+    server_result = await session.initialize()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/mcp/client/session.py", line 151, in initialize
+    result = await self.send_request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/mcp/shared/session.py", line 286, in send_request
+    raise McpError(response_or_error.error)
+mcp.shared.exceptions.McpError: Connection closed
+
+Traceback (most recent call last):
+  File "/home/youtu-agent/scripts/gen_simple_agent.py", line 15, in <module>
+    asyncio.run(main())
+  File "/usr/lib64/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.12/asyncio/base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/scripts/gen_simple_agent.py", line 11, in main
+    await AgentsUtils.print_stream_events(task_recorder.stream_events())
+  File "/home/youtu-agent/utu/utils/agents_utils.py", line 178, in print_stream_events
+    async for event in result:
+  File "/home/youtu-agent/utu/agents/common.py", line 68, in stream_events
+    raise self._stored_exception
+  File "/home/youtu-agent/utu/meta/simple_agent_generator.py", line 144, in _start_streaming
+    raise e
+  File "/home/youtu-agent/utu/meta/simple_agent_generator.py", line 134, in _start_streaming
+    await self.step2(task_recorder)
+  File "/home/youtu-agent/utu/meta/simple_agent_generator.py", line 191, in step2
+    tools_schema = await get_mcp_tools_schema(config)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/tools/utils.py", line 43, in get_mcp_tools_schema
+    tools = await get_mcp_tools(config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/utu/tools/utils.py", line 36, in get_mcp_tools
+    async with get_mcp_server(config) as mcp_server:
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/agents/mcp/server.py", line 237, in __aenter__
+    await self.connect()
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/agents/mcp/server.py", line 277, in connect
+    server_result = await session.initialize()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/mcp/client/session.py", line 151, in initialize
+    result = await self.send_request(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/youtu-agent/.venv/lib64/python3.12/site-packages/mcp/shared/session.py", line 286, in send_request
+    raise McpError(response_or_error.error)
+mcp.shared.exceptions.McpError: Connection closed
+(youtu-agent) [root@VM-1-8-tencentos youtu-agent]#
+ 
