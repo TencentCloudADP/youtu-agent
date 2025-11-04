@@ -78,6 +78,7 @@ class SimpleAgentGenerator:
         self._initialized = False
         self.ask_function = ask_function
         self.final_answer_call_id = None
+        self.toolkit_name_mapping = {}  # Preserve original toolkit paths (e.g., mcp/memory)
 
     async def build(self):
         if self._initialized:
@@ -150,7 +151,9 @@ class SimpleAgentGenerator:
         toolkits_includes = []
         toolkits_configs = []
         for toolkit_name, tool_names in task_recorder.selected_tools.items():
-            toolkits_includes.append(f"- /tools/{toolkit_name}@toolkits.{toolkit_name}")
+            # Use original path (e.g., mcp/memory) instead of sanitized name (mcp_memory)
+            original_name = self.toolkit_name_mapping.get(toolkit_name, toolkit_name)
+            toolkits_includes.append(f"- /tools/{original_name}@toolkits.{toolkit_name}")
             toolkits_configs.append(f"{toolkit_name}: {json.dumps({'activated_tools': tool_names})}")
         config = CONFIG_TEMPLATE.format(
             agent_name=task_recorder.name,
@@ -195,9 +198,12 @@ class SimpleAgentGenerator:
         tools_descs = []
         tool_to_toolkit_name = {}  # NOTE: toolkit_name should be sanitized, e.g. mcp/memory -> mcp_memory
         for toolkit_name, tools_schema in tools_schema_by_toolkit.items():
-            toolkit_name = toolkit_name.replace("/", "_")
+            # Sanitize toolkit name for use as dictionary key and YAML identifier
+            sanitized_name = toolkit_name.replace("/", "_")
+            # Preserve original path for config file references
+            self.toolkit_name_mapping[sanitized_name] = toolkit_name
             tools_descs.extend(f"- {tool.name}: {tool.description}" for tool in tools_schema.values())
-            tool_to_toolkit_name.update({tool.name: toolkit_name for tool in tools_schema.values()})
+            tool_to_toolkit_name.update({tool.name: sanitized_name for tool in tools_schema.values()})
         logger.info(f"Available tools: {tool_to_toolkit_name}")
         tools_str = "\n".join(tools_descs)
         query = TOOL_SELECTION_TEMPLATE.format(
