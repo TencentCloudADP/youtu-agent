@@ -4,7 +4,7 @@ from agents import AgentBase, RunContextWrapper, RunHooks, TContext, Tool
 from agents.tool_context import ToolContext
 from typing_extensions import TypeVar
 
-from ..utils import PrintUtils, get_logger
+from ..utils import StringUtils, get_logger
 
 TAgent = TypeVar("TAgent", bound=AgentBase, default=AgentBase)
 logger = get_logger(__name__)
@@ -34,6 +34,6 @@ class BaseRunHooks(RunHooks):
 
     async def on_tool_end(self, context: ToolContext, agent: TAgent, tool: Tool, result: str) -> None:
         """Called after a tool is invoked."""
-        logger.debug(f"[toolcall-{context.tool_call_id}] {tool.name}: {PrintUtils.truncate_text(result)}...")
+        logger.debug(f"[toolcall-{context.tool_call_id}] {tool.name}: {StringUtils.truncate_str(result)}")
         if len(result) > self.tool_result_max_length:
             logger.warning(f"Tool result too long! {len(result)} chars exceeds {self.tool_result_max_length}!")

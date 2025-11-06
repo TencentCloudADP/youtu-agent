@@ -8,6 +8,7 @@ from .openai_utils import OpenAIUtils, SimplifiedAsyncOpenAI
 from .path import CACHE_DIR, DIR_ROOT, FileUtils
 from .print_utils import PrintUtils
 from .sqlmodel_utils import SQLModelUtils
+from .string_util import StringUtils
 from .token import TokenUtils
 from .tool_cache import async_file_cache
 
@@ -32,4 +33,5 @@ __all__ = [
     "EnvUtils",
     "LLMOutputParser",
     "encode_image",
+    "StringUtils",
 ]

@@ -22,7 +22,7 @@ from agents import RunResultStreaming, trace
 
 from ..agents import SimpleAgent
 from ..agents.common import DataClassWithStreamEvents, QueueCompleteSentinel
-from ..utils import DIR_ROOT, FileUtils, LLMOutputParser, PrintUtils, get_logger
+from ..utils import DIR_ROOT, FileUtils, LLMOutputParser, StringUtils, get_logger
 
 logger = get_logger(__name__)
 
@@ -128,9 +128,9 @@ class ToolGenerator:
                 FileUtils.get_jinja_template_str(self.prompts["TEMPLATE_MANIFEST"]).render(
                     name=name,
                     class_name=task_recorder.manifest["class_name"],
-                    requirements=PrintUtils.format_json(task_recorder.manifest["requirements"]),
-                    methods=PrintUtils.format_json(task_recorder.manifest["methods"]),
-                    api_keys=PrintUtils.format_json(task_recorder.manifest["api_keys"]),
+                    requirements=StringUtils.to_json_string(task_recorder.manifest["requirements"]),
+                    methods=StringUtils.to_json_string(task_recorder.manifest["methods"]),
+                    api_keys=StringUtils.to_json_string(task_recorder.manifest["api_keys"]),
                 )
             )
         with open(odir / "requirements.txt", "w") as f:
