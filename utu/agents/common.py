@@ -5,15 +5,11 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from agents import Agent, RunResult, StreamEvent, TResponseInputItem
+from agents._run_impl import QueueCompleteSentinel
 
 from ..utils import AgentsUtils, get_logger
 
 logger = get_logger(__name__)
-
-
-# from agents._run_impl import QueueCompleteSentinel
-class QueueCompleteSentinel:
-    pass
 
 
 @dataclass

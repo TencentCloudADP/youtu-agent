@@ -2,7 +2,7 @@ from typing import Any
 
 from agents import Agent, AgentOutputSchemaBase, Runner, RunResultStreaming, TResponseInputItem, trace
 
-from ..config import ModelConfigs
+from ..config import ConfigLoader, ModelConfigs
 from ..utils import AgentsUtils, get_logger
 from .common import TaskRecorder
 
@@ -14,12 +14,12 @@ class LLMAgent:
 
     def __init__(
         self,
-        model_config: ModelConfigs,
+        model_config: ModelConfigs = None,
         name: str = None,
         instructions: str = None,
         output_type: type[Any] | AgentOutputSchemaBase | None = None,
     ):
-        self.config = model_config
+        model_config = model_config or ConfigLoader.load_model_config("base")
         self.agent = Agent(
             name=name or "LLMAgent",
             instructions=instructions,
