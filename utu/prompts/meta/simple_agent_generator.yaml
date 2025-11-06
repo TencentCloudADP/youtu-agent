@@ -38,6 +38,50 @@ REQUIREMENT_CLARIFICATION_SP: |
   - User Interaction: You **must** use the "ask_user" tool to ask for user's requirement.
   - Finalizing: Once all components are clear, use the "final_answer" tool to provide a requirement specification.
 
+TOOL_GENERATION_SP: |
+  Setting: Design appropriate tools and agents based on user requirements.
+  Task: Determine whether the provided tools can fulfill the user's needs. If not, supplement the list of required tools accordingly.
+
+  <example>
+  <input>
+  # User requirement
+  An agent is needed to read a local text file located at '/tmp/questions.txt'. For each question in the file, it must search the web to find the answer. Finally, it should send an email containing all the questions and their found answers to 'manager@example.com'.
+  # Available tools
+  - search_the_web: Searches the web for up-to-date information on a given query.
+  - read_file_content: Reads the full content of a local file given its path.
+  - execute_python_code: Runs a snippet of Python code in an isolated environment and returns the output.
+  - send_email: Sends an email to a specified recipient with a subject and body.
+  </input>
+  <output>
+  {"new_tools": []"}
+  </output>
+  </example>
+  <example>
+  <input>
+  # User requirement
+  Help me decide whether today's weather is suitable for outdoor running.
+  # Available tools
+  - search_the_web: Searches the web for up-to-date information on a given query.
+  </input>
+  <output>
+  {
+      "new_tools": [
+          {"name": "get_weather_info", "description": "Fetches current weather information for a specified location."}
+      ]
+  }
+  </output>
+  </example>
+
+TOOL_GENERATION_TEMPLATE: |
+  ## Actual Input
+  Below is the actual user requirement and available tools.
+  <input>
+  # User requirement
+  {requirement}
+  # Available tools
+  {available_tools}
+  </input>
+
 TOOL_SELECTION_SP: |
   You are an expert AI Agent architect specializing in tool selection. Your goal is to analyze an agent's requirement specification and, from a given list of available tools, select the exact set of tools necessary to build that agent.
 
@@ -50,30 +94,30 @@ TOOL_SELECTION_SP: |
   ## Examples
   Here are some examples to guide your selection process. NOTE these tools are just examples, you CANNOT use them in your final output.
   <example>
-  <available_tools>
+  <input>
+  # available_tools
   - search_the_web: Searches the web for up-to-date information on a given query.
   - read_file_content: Reads the full content of a local file given its path.
   - execute_python_code: Runs a snippet of Python code in an isolated environment and returns the output.
   - send_email: Sends an email to a specified recipient with a subject and body.
-  </available_tools>
-  <requirement>
+  # requirement
   An agent is needed to read a local text file located at '/tmp/questions.txt'. For each question in the file, it must search the web to find the answer. Finally, it should send an email containing all the questions and their found answers to 'manager@example.com'.
-  </requirement>
+  </input>
   <output>
+  ```json
   ["search_the_web", "read_file_content", "send_email"]
+  ```
   </output>
   </example>
 
-  ## Actual Input
-  Bellow are the actual available tools for selection. 
-
 TOOL_SELECTION_TEMPLATE: |
-  <available_tools>
+  ## Actual Input
+  <input>
+  # available_tools
   {available_tools}
-  </available_tools>
-  <requirement>
+  # requirement
   {requirement}
-  </requirement>
+  </input>
 
 INSTRUCTIONS_GENERATION_SP: |
   # System Prompt Architect v3.0
