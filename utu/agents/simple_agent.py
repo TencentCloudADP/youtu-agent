@@ -298,9 +298,9 @@ class SimpleAgent:
         return recorder
 
     async def _start_streaming(self, recorder: TaskRecorder, save: bool = False, log_to_db: bool = True):
-        if not self._initialized:
-            await self.build(recorder.trace_id)
         try:
+            if not self._initialized:
+                await self.build(recorder.trace_id)
             input = recorder.input
             if isinstance(input, str):  # only add history when input is str?
                 input = self.input_items + [{"content": input, "role": "user"}]
@@ -320,14 +320,14 @@ class SimpleAgent:
                 self.current_agent = run_streamed_result.last_agent
             if log_to_db:
                 DBService.add(TrajectoryModel.from_task_recorder(recorder))
+            # mark complete
+            recorder._event_queue.put_nowait(QueueCompleteSentinel())
+            recorder._is_complete = True
         except Exception as e:
             logger.error(f"Error processing task: {str(e)}")
             recorder._event_queue.put_nowait(QueueCompleteSentinel())
             recorder._is_complete = True
             raise e
-        finally:
-            recorder._event_queue.put_nowait(QueueCompleteSentinel())
-            recorder._is_complete = True
 
     # util apis
     async def chat(self, input: str) -> TaskRecorder:

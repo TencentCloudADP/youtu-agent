@@ -83,14 +83,13 @@ class OrchestratorAgent:
                             break
                 # log to db
                 DBService.add(TrajectoryModel.from_task_recorder(recorder))
+                recorder._event_queue.put_nowait(QueueCompleteSentinel())
+                recorder._is_complete = True
             except Exception as e:
                 logger.error(f"Error processing task: {str(e)}")
                 recorder._event_queue.put_nowait(QueueCompleteSentinel())
                 recorder._is_complete = True
                 raise e
-            finally:
-                recorder._event_queue.put_nowait(QueueCompleteSentinel())
-                recorder._is_complete = True
 
     async def _run_task(self, recorder: Recorder, task: Task):
         worker = self.workers[task.agent_name]

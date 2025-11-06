@@ -36,6 +36,10 @@ class TaskRecorder(DataClassWithStreamEvents):
     # class_name, requirements, methods, etc
     output_file: str = field(default_factory=str)
 
+    @property
+    def mcp_toolname(self) -> str:
+        return f"generated/{self.name}"
+
 
 class ToolGenerator:
     def __init__(self, auto_debug: bool = True):
@@ -80,13 +84,13 @@ class ToolGenerator:
                 # Auto debug if enabled
                 if self.auto_debug:
                     await self.run_debug(task_recorder=task_recorder, workspace_dir=task_recorder.name)
-            except Exception as e:
-                task_recorder._is_complete = True
+                # mark complete
                 task_recorder._event_queue.put_nowait(QueueCompleteSentinel())
+                task_recorder._is_complete = True
+            except Exception as e:
+                task_recorder._event_queue.put_nowait(QueueCompleteSentinel())
+                task_recorder._is_complete = True
                 raise e
-
-        task_recorder._event_queue.put_nowait(QueueCompleteSentinel())
-        task_recorder._is_complete = True
 
     async def step1(self, task_recorder: TaskRecorder, user_input: str) -> None:
         async with self.llm as agent:
