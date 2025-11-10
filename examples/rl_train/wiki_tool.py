@@ -19,7 +19,7 @@ class WikiToolkit(AsyncBaseToolkit):
             "http://10.16.20.181:80/retrieve",  # NOTE: you should change this to your own deployment
             headers=headers,
             json=payload,
-            timeout=30,
+            timeout=90,
         )
         api_response = response.json()
         raw_results = api_response.get("result", [])
