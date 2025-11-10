@@ -1,4 +1,7 @@
 import json
+from datetime import datetime
+
+DEFAULT_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 class StringUtils:
@@ -15,7 +18,7 @@ class StringUtils:
         return s.replace("\n", " ")
 
     @staticmethod
-    def to_json_string(obj: dict, indent: int = None) -> str:
+    def to_json_string(obj: dict | list, indent: int = None) -> str:
         """Convert object to JSON formatted string."""
         return json.dumps(obj, indent=indent, ensure_ascii=False)
 
@@ -28,7 +31,7 @@ class StringUtils:
             max_length: Maximum length of the returned text
             oneline: Whether to convert text to a single line by removing newlines
         """
-        if isinstance(text, dict):
+        if isinstance(text, dict | list):
             text = StringUtils.to_json_string(text)
         if oneline:
             text = " ".join(text.splitlines())
@@ -36,3 +39,21 @@ class StringUtils:
             return text
         else:
             return text[: max_length - 3] + "..."
+
+    @staticmethod
+    def timestamp_to_datetime(timestamp: int, is_ms: bool = False, format_str: str = DEFAULT_DATETIME_FORMAT) -> str:
+        """Convert timestamp to formatted datetime string."""
+        if is_ms or timestamp > 1e12:
+            timestamp /= 1000
+        return datetime.fromtimestamp(timestamp).strftime(format_str)
+
+    @staticmethod
+    def get_current_datetime_str(format_str: str = DEFAULT_DATETIME_FORMAT) -> str:
+        return datetime.now().strftime(format_str)
+
+    @staticmethod
+    def get_current_timestamp(is_ms: bool = False) -> int:
+        ts = datetime.now().timestamp()
+        if is_ms:
+            ts *= 1000
+        return int(ts)

@@ -1,10 +1,10 @@
 from typing import Literal
 
 # from openai import NOT_GIVEN
-from agents import ModelSettings
+from agents import Model, ModelSettings
 from pydantic import ConfigDict, Field
 
-from ..utils import EnvUtils
+from ..utils import AgentsUtils, EnvUtils
 from .base_config import ConfigBaseModel
 
 
@@ -47,3 +47,11 @@ class ModelConfigs(ConfigBaseModel):
 
     termination_max_tokens: int | None = None
     """max tokens for the model, used in truncation logic"""
+
+    def get_agents_model(self) -> Model:
+        return AgentsUtils.get_agents_model(
+            type=self.model_provider.type,
+            model=self.model_provider.model,
+            base_url=self.model_provider.base_url,
+            api_key=self.model_provider.api_key,
+        )
