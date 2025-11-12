@@ -33,12 +33,12 @@ Key highlights:
 
 ## 🗞️ News
 
-- 📢 [2025-11-03] New examples: we add the [**PPT generation**](examples/ppt_gen/README.md) and [**RAG**](configs/agents/examples/rag.yaml) examples.
-- 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191). RL for DeepSeek-V3.2 at $8? Yes, it’s possible! Training-free GRPO keeps DeepSeek-V3.2 frozen, learns a token prior from ~100 samples for ~$8 RL runs, delivers verified math and web search gains! [code in branch [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)] [[x thread](https://x.com/cai_cecilia47/status/1976558824640393559)].
-- 🛠️ [2025-09-28] Agent auto-generation now ships with companion tooling: describe a capability once and let `Youtu-Agent` build the tool for you. [[details](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)].
-- 📺 [2025-09-09] We hosted a live sharing the design philosophy and basic usage of `Youtu-Agent`. [[video](https://www.bilibili.com/video/BV1mypqz4EvS)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)].
-- 🎁 [2025-09-02] [Tencent Cloud International](https://www.tencentcloud.com/) offers new users of the DeepSeek API **3 million free tokens** (**Sep 1 – Oct 31, 2025**). [Try it out](https://www.tencentcloud.com/document/product/1255/70381) for free if you want to use DeepSeek models in `Youtu-Agent`! For enterprise agent solutions, also check out [Agent Development Platform](https://adp.tencentcloud.com) (ADP).
-- 📺 [2025-08-28] We hosted a live sharing updates about DeepSeek-V3.1 and how to use it in the `Youtu-Agent` framework. [[video](https://www.bilibili.com/video/BV1XwayzrETi/)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)].
+- [2025-11-03] New examples: we add the [**PPT generation**](examples/ppt_gen/README.md) and [**RAG**](configs/agents/examples/rag.yaml) examples.
+- 🔥 [2025-10-10] Breaking News: [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191). RL for DeepSeek-V3.2 at $8? Yes, it’s possible! Training-free GRPO keeps DeepSeek-V3.2 frozen, learns a token prior from ~100 samples for ~$8 RL runs, delivers verified math and web search gains! [code in branch [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)] [[x thread](https://x.com/cai_cecilia47/status/1976558824640393559)].
+- [2025-09-28] Agent auto-generation now ships with companion tooling: describe a capability once and let `Youtu-Agent` build the tool for you. [[details](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)].
+- [2025-09-09] We hosted a live sharing the design philosophy and basic usage of `Youtu-Agent`. [[video](https://www.bilibili.com/video/BV1mypqz4EvS)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)].
+- [2025-09-02] [Tencent Cloud International](https://www.tencentcloud.com/) offers new users of the DeepSeek API **3 million free tokens** (**Sep 1 – Oct 31, 2025**). [Try it out](https://www.tencentcloud.com/document/product/1255/70381) for free if you want to use DeepSeek models in `Youtu-Agent`! For enterprise agent solutions, also check out [Agent Development Platform](https://adp.tencentcloud.com) (ADP).
+- [2025-08-28] We hosted a live sharing updates about DeepSeek-V3.1 and how to use it in the `Youtu-Agent` framework. [[video](https://www.bilibili.com/video/BV1XwayzrETi/)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)].
 
 ## 🌟 Benchmark Performance
 
@@ -192,7 +192,10 @@ python scripts/cli_chat.py --config generated/xxx
 
 ### Use Cases
 - **Deep / Wide research**: Covers common search-oriented tasks.
+- **PPT generation**: Automatically generates PowerPoint presentations from HTML content or web pages with customizable templates and layouts. [[example](examples/ppt_gen/README.md)]
+- **RAG integration**: Retrieval-Augmented Generation example integrated with RAGFlow service for knowledge-based question answering. [[config](configs/agents/examples/rag.yaml)]
 - **Webpage generation**: Examples include generating web pages based on specific inputs.
+- **LLM optimization with Training-Free GRPO**: A novel reinforcement learning method for optimizing LLM performance without model fine-tuning—learns a lightweight token prior from minimal samples to achieve significant improvements. [[paper](https://arxiv.org/abs/2510.08191)] [[code](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
 - **Trajectory collection**: Supports data collection for training and research purposes.
 
 

@@ -32,12 +32,12 @@
 
 ## 🗞️ 新闻
 
-- 📢 [2025-11-03] 新增示例：我们添加了 [**PPT 生成**](examples/ppt_gen/README.md)和 [**RAG**](configs/agents/examples/rag.yaml) 示例。
-- 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191)。DeepSeek-V3.2 的强化学习只需 8 美元？真的可以！Training-Free GRPO 让 DeepSeek-V3.2 保持冻结，仅用约 100 条样本学习 token 先验，把整次 RL 成本压到约 8 美元，并在数学与网页搜索任务上获得验证提升！代码分支 [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO) [[X 帖子](https://x.com/cai_cecilia47/status/1976558824640393559)]。
-- 🛠️ [2025-09-28] 自动智能体功能现已配套上线自动工具生成：描述所需能力，`Youtu-Agent` 即可完成工具构建。[[详情](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)]。
-- 📺 [2025-09-09] 我们举办了一场直播，分享了 `Youtu-Agent` 的设计理念与基础用法。[[视频](https://www.bilibili.com/video/BV1mypqz4EvS)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)]。
-- 🎁 [2025-09-02] [腾讯云国际站](https://www.tencentcloud.com/) 为 DeepSeek API 新用户提供 **300 万免费令牌**（**2025年9月1日 – 2025年10月31日**）。如果想在 `Youtu-Agent` 中使用 DeepSeek 模型，[点击免费试用](https://www.tencentcloud.com/document/product/1255/70381)！如需企业级智能体解决方案，也可查看 [智能体开发平台 ADP](https://adp.tencentcloud.com)。
-- 📺 [2025-08-28] 我们围绕新发布的 DeepSeek-V3.1 模型进行了直播分享，并介绍了如何在 `Youtu-Agent` 框架中使用该模型。[[视频](https://www.bilibili.com/video/BV1XwayzrETi/)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)]。
+- [2025-11-03] 新增示例：我们添加了 [**PPT 生成**](examples/ppt_gen/README.md)和 [**RAG**](configs/agents/examples/rag.yaml) 示例。
+- 🔥 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191)。DeepSeek-V3.2 的强化学习只需 8 美元？真的可以！Training-Free GRPO 让 DeepSeek-V3.2 保持冻结，仅用约 100 条样本学习 token 先验，把整次 RL 成本压到约 8 美元，并在数学与网页搜索任务上获得验证提升！代码分支 [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO) [[X 帖子](https://x.com/cai_cecilia47/status/1976558824640393559)]。
+- [2025-09-28] 自动智能体功能现已配套上线自动工具生成：描述所需能力，`Youtu-Agent` 即可完成工具构建。[[详情](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)]。
+- [2025-09-09] 我们举办了一场直播，分享了 `Youtu-Agent` 的设计理念与基础用法。[[视频](https://www.bilibili.com/video/BV1mypqz4EvS)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)]。
+- [2025-09-02] [腾讯云国际站](https://www.tencentcloud.com/) 为 DeepSeek API 新用户提供 **300 万免费令牌**（**2025年9月1日 – 2025年10月31日**）。如果想在 `Youtu-Agent` 中使用 DeepSeek 模型，[点击免费试用](https://www.tencentcloud.com/document/product/1255/70381)！如需企业级智能体解决方案，也可查看 [智能体开发平台 ADP](https://adp.tencentcloud.com)。
+- [2025-08-28] 我们围绕新发布的 DeepSeek-V3.1 模型进行了直播分享，并介绍了如何在 `Youtu-Agent` 框架中使用该模型。[[视频](https://www.bilibili.com/video/BV1XwayzrETi/)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)]。
 
 ## 🌟 基准性能
 
@@ -161,9 +161,12 @@ python scripts/cli_chat.py --config generated/xxx
 - 工具生成与优化：工具评估和自动化优化，定制化工具生成的能力将在未来得到支持。
 
 ### 用例
-- 深度/广度研究：涵盖常见的面向搜索的任务。
-- 网页生成：示例包括根据特定输入生成网页。
-- 轨迹收集：支持用于训练和研究目的的数据收集。
+- **深度/广度研究**：涵盖常见的面向搜索的任务。
+- **PPT 生成**：根据 HTML 内容或网页自动生成 PowerPoint 演示文稿，支持自定义模板和布局。[[示例](examples/ppt_gen/README.md)]
+- **RAG 集成**：与 RAGFlow 服务集成的检索增强生成示例，用于基于知识的问答。[[配置](configs/agents/examples/rag.yaml)]
+- **网页生成**：示例包括根据特定输入生成网页。
+- **使用 Training-Free GRPO 优化大语言模型**：一种无需模型微调即可优化大语言模型性能的新型强化学习方法——从少量样本中学习轻量级 token 先验以实现显著改进。[[论文](https://arxiv.org/abs/2510.08191)] [[代码](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
+- **轨迹收集**：支持用于训练和研究目的的数据收集。
 
 ## 🤔 为何选择 Youtu-Agent？
 
