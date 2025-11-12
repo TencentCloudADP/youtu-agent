@@ -195,7 +195,7 @@ python scripts/cli_chat.py --config generated/xxx
 - **PPT generation**: Automatically generates PowerPoint presentations from HTML content or web pages with customizable templates and layouts. [[example](examples/ppt_gen/README.md)]
 - **RAG integration**: Retrieval-Augmented Generation example integrated with RAGFlow service for knowledge-based question answering. [[config](configs/agents/examples/rag.yaml)]
 - **Webpage generation**: Examples include generating web pages based on specific inputs.
-- **LLM optimization with Training-Free GRPO**: A novel reinforcement learning method for optimizing LLM performance without model fine-tuning—learns a lightweight token prior from minimal samples to achieve significant improvements. [[paper](https://arxiv.org/abs/2510.08191)] [[code](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
+- **Reinforcement Learning**: Optimize LLMs with Training-Free GRPO, a novel reinforcement learning method for optimizing LLM performance without model fine-tuning—learns a lightweight token prior from minimal samples to achieve significant improvements. [[paper](https://arxiv.org/abs/2510.08191)] [[code](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
 - **Trajectory collection**: Supports data collection for training and research purposes.
 
 

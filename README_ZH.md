@@ -165,7 +165,7 @@ python scripts/cli_chat.py --config generated/xxx
 - **PPT 生成**：根据 HTML 内容或网页自动生成 PowerPoint 演示文稿，支持自定义模板和布局。[[示例](examples/ppt_gen/README.md)]
 - **RAG 集成**：与 RAGFlow 服务集成的检索增强生成示例，用于基于知识的问答。[[配置](configs/agents/examples/rag.yaml)]
 - **网页生成**：示例包括根据特定输入生成网页。
-- **使用 Training-Free GRPO 优化大语言模型**：一种无需模型微调即可优化大语言模型性能的新型强化学习方法——从少量样本中学习轻量级 token 先验以实现显著改进。[[论文](https://arxiv.org/abs/2510.08191)] [[代码](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
+- **强化学习**：使用 Training-Free GRPO 优化大语言模型，这是一种无需模型微调即可优化大语言模型性能的新型强化学习方法——从少量样本中学习轻量级 token 先验以实现显著改进。[[论文](https://arxiv.org/abs/2510.08191)] [[代码](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
 - **轨迹收集**：支持用于训练和研究目的的数据收集。
 
 ## 🤔 为何选择 Youtu-Agent？

@@ -167,7 +167,7 @@ python scripts/cli_chat.py --config generated/xxx
 - **PPT生成**：HTMLコンテンツやウェブページから、カスタマイズ可能なテンプレートとレイアウトでPowerPointプレゼンテーションを自動生成します。[[例](examples/ppt_gen/README.md)]
 - **RAG統合**：RAGFlowサービスと統合された検索拡張生成の例で、知識ベースの質問応答に対応します。[[設定](configs/agents/examples/rag.yaml)]
 - **ページ生成**：特定の入力に基づいてページを生成する例があります。
-- **Training-Free GRPOによる大規模言語モデルの最適化**：モデルの微調整なしで大規模言語モデルのパフォーマンスを最適化する新しい強化学習手法——少数のサンプルから軽量なトークン事前分布を学習して大幅な改善を実現します。[[論文](https://arxiv.org/abs/2510.08191)] [[コード](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
+- **強化学習**：Training-Free GRPOによる大規模言語モデルの最適化。モデルの微調整なしで大規模言語モデルのパフォーマンスを最適化する新しい強化学習手法——少数のサンプルから軽量なトークン事前分布を学習して大幅な改善を実現します。[[論文](https://arxiv.org/abs/2510.08191)] [[コード](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)]
 - **トレース収集**：トレーニングや研究目的でのデータ収集をサポートします。
 
 ## 🤔 なぜYoutu-Agentを選ぶのか？
