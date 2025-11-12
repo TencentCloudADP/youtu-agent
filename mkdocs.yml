@@ -118,6 +118,7 @@ nav:
     - Agent Environments: env.md
     - Tools: tools.md
     - Evaluation: eval.md
+    - Agent Practice: practice.md
     - WebUI: frontend.md
     - Automatic Generation: auto_generation.md
   - Examples: 

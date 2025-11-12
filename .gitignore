@@ -71,6 +71,7 @@ wheels/
 test.yaml
 pgs
 CLAUDE.md
+.mcp.json
 .specify
 alembic.ini
 alembic/
