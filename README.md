@@ -2,6 +2,9 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2510.08191-b31b1b.svg)](https://arxiv.org/abs/2510.08191)
 
+> [!NOTE]
+> Training-Free GRPO has been integrated into Youtu-Agent in `main` branch, serving as the agent practice module. This preview implementation branch is archived. For the latest version, please go to [Agent Practice Module](https://github.com/TencentCloudADP/youtu-agent/tree/main/utu/practice) for more details.
+
 `Youtu-Agent` is a flexible, high-performance framework for building, running, and evaluating autonomous agents. Beyond topping the benchmarks, this framework delivers powerful agent capabilities, e.g. data analysis, file processing, and deep research, all with open-source models.
 
 `Training-Free GRPO` is a cost-effective solution that further enhances `Youtu-Agent` performance without any LLM parameter updates. It consumes significantly fewer training data and lower costs on improving the 671B DeepSeek-V3.1-Terminus than fine-tuning a 32B model.
