@@ -1,0 +1,197 @@
+type_map:
+  - content: 0
+  - title: 1
+  - section_title: 2
+  - two_column_content: 3
+  - items_page_3: 4
+  - items_page_4: 5
+  - items_page_4_alt: 6
+  - item_page_4_growth: 7
+  - items_page_4_key_point: 8
+  - item_page_6_sequence: 9
+  - items_page_4_img: 10
+  - item_page_5_sequence: 11
+  - acknowledgement: 12
+
+title_page:
+  description: title page, should always be the first page      
+  type: title
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  subtitle:
+    type: str
+    description: be very concise within 10 words                  
+    max_len: 10
+  author:
+    type: str
+    max_len: 5
+  date:
+    type: str
+  ppt_type:
+    type: str
+    description: describe the type of the ppt, e.g., "work report"                               
+    max_len: 2
+
+section_title_page:
+  description: section title page, should not follow the title page immediately                
+  type: section_title
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  subtitle:
+    type: str
+    description: be very concise within 10 words                  
+  section_no:
+    type: int
+
+content_page:
+  description: single column content page, with the most basic layout            
+  type: content
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  content:
+    type: content
+
+two_column_content_page:
+  description: two column content pages                         
+  type: two_column_content
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  content:
+    type: content_list
+    description: list of exactly 2 BaseContent objects        
+    min_len: 2
+    max_len: 2
+
+items_page_3:
+  description: page with three logically parallel items         
+  type: items_page_3
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 3 items
+    min_len: 3
+    max_len: 3
+                              
+items_page_4:
+  description: page with four logically parallel items          
+  type: items_page_4
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 4 items
+    min_len: 4
+    max_len: 4
+                              
+items_page_4_alt:
+  description: alternative page with four logically parallel items                             
+  type: items_page_4_alt
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 4 items
+    min_len: 4
+    max_len: 4
+                              
+items_page_4_key_point:
+  description: "this slide is designed to present four key elements, stages, or pillars in a clean, balanced layout. each element is represented by a customizable label — which can be: a letter (e.g., s-w-o-t) or a chinese character (e.g., 增 / 删 / 改 / 查)"                
+  type: items_page_4_key_point
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  label:
+    type: str_list
+    description: be exactly one character/letter/digit
+    min_len: 4
+    max_len: 4
+  items:
+    type: item_list
+    description: exactly 4 items
+    min_len: 4
+    max_len: 4
+                              
+items_page_4_img:
+  description: a process or framework centered around data/analysis, with 4 connected stages represented by icons, useful for explaining systems, strategies, or operations                 
+  type: items_page_4_img
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 4 items
+    min_len: 4
+    max_len: 4
+  image:
+    type: image
+
+item_page_4_growth:
+  description: this slide visually represents growth over time, using an upward-sloping bar chart. four key stages or drivers of growth are highlighted on the left, each with an icon (home, battery, lock, chat bubbles) and placeholder text. the design suggests that these factors contribute progressively to overall growth, making it ideal for showing business expansion, performance metrics, or kpis     
+  type: item_page_4_growth
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 4 items
+    min_len: 4
+    max_len: 4
+                              
+item_page_6_sequence:
+  description: this slide illustrates a step-by-step process or timeline. six stages are connected by a dotted line, moving from left to right. each stage has an icon (database, fork/merge, gears, lightbulb, pen, etc.) and placeholder text. it is perfect for explaining workflows, project phases, or a logical progression of ideas or actions  
+  type: item_page_6_sequence
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 6 items
+    min_len: 6
+    max_len: 6
+                              
+item_page_5_sequence:
+  description: this slide illustrates a step-by-step process or timeline. five stages are connected by a dotted line, moving from left to right. each stage has an icon (database, fork/merge, gears, lightbulb, pen, etc.) and placeholder text. it is perfect for explaining workflows, project phases, or a logical progression of ideas or actions                                
+  type: item_page_5_sequence
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 5 items
+    min_len: 5
+    max_len: 5
+                              
+acknowledgement_page:
+  description: acknowledgement page, should be the last page    
+  type: acknowledgement
+  title:
+    type: str
+    description: just place "Thank you"/"谢谢"/"END"/"FIN" here                                
+  subtitle:
+    type: str
+    description: be very concise within 10 words                  
+    max_len: 10
+  author:
+    type: str
+  date:
+    type: str
