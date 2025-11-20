@@ -1,0 +1,16 @@
+name: python_executor
+mode: builtin
+activated_tools: null
+
+config:
+  deep_analysis_outline_prompt: |
+    You are an expert in writing.
+  deep_analysis_chapter_prompt: |
+    You are an expert in writing.
+  general_writing_prompt: |
+    You are an expert in writing.
+
+config_llm:
+  model_provider:
+    type: ${oc.env:UTU_LLM_TYPE}
+    model: ${oc.env:UTU_LLM_MODEL}

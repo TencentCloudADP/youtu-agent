@@ -1,0 +1,39 @@
+# @package _global_
+defaults:
+  - /model/base@orchestrator_model
+  - /agents/router/force_plan@orchestrator_router  # router
+  - /agents/simple/search_agent@orchestrator_workers.SearchAgent
+  - /agents/simple/code_agent@orchestrator_workers.CodeAgent
+  - /agents/simple/shell_agent@orchestrator_workers.ShellAgent
+  - /agents/simple/html_generator@orchestrator_workers.HTMLGenerator
+  - /agents/simple/report_agent@orchestrator_workers.ReportAgent
+  - _self_
+
+type: orchestrator
+
+orchestrator_config:
+  name: PlanAndExecuteAgent
+  add_chitchat_subagent: false
+  additional_instructions: |-
+    Current date: 2025-11-19, Wednesday
+    Your ultimate object is finishing the user's request.
+    
+    General workflow:
+    1. Use SearchAgent to gather relevant information, conduct research, and collect necessary data.
+    2. Use CodeAgent to create charts, diagrams, or perform data analysis if visualization is needed.
+    3. Generate the final output(Choose one of them):
+       - Use ReportAgent to produce a markdown report (default for most cases).
+       - Use HTMLGenerator to create a webpage report only if the user explicitly requests a webpage or HTML output.
+
+
+orchestrator_workers_info:
+  - name: SearchAgent
+    description: Web search, information retrieval, research material collection, API data fetching.
+  - name: CodeAgent
+    description: Run code snippets in Python to solve mathmatical problems or draw pyplot diagrams.
+  - name: ShellAgent
+    description: Run shell commands to do file management, system tasks, or workflow automation.
+  - name: HTMLGenerator
+    description: Generate a webpage based on provided information.
+  - name: ReportAgent
+    description: Generate a report based on provided information.
