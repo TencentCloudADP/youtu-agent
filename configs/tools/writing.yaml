@@ -1,14 +1,127 @@
-name: python_executor
+name: writing_toolkit
 mode: builtin
 activated_tools: null
 
 config:
-  deep_analysis_outline_prompt: |
-    You are an expert in writing.
-  deep_analysis_chapter_prompt: |
-    You are an expert in writing.
+  deep_research_outline_prompt: |
+    You are an expert in writing and research.
+    
+    Based on the conversation history and the main task below, create a detailed report outline in Markdown format.
+    
+    **Main Task**: {task}
+    
+    **Requirements**:
+    1. Review the conversation history to understand the context, previous discussions, and any relevant information
+    2. Create a comprehensive outline with clear multi-chapter structure
+    3. Each chapter should have:
+       - A meaningful title (use ## for chapter titles)
+       - Brief description of what will be covered
+       - Key points or sub-sections (use ### for sub-sections if needed)
+    4. The outline should be logical, well-structured, and cover all important aspects of the task
+    5. Consider any insights, data, or requirements mentioned in the conversation history
+    
+    **Output Format** (Markdown):
+    ```markdown
+    # Report Title
+    
+    ## Chapter 1: [Title]
+    Brief description of this chapter...
+    - Key point 1
+    - Key point 2
+    
+    ## Chapter 2: [Title]
+    Brief description of this chapter...
+    ### Sub-section 2.1: [Title]
+    - Key point 1
+    
+    ## Chapter 3: [Title]
+    ...
+    ```
+    
+    Generate the outline now:
+
+  deep_research_chapter_prompt: |
+    You are an expert in writing and research.
+    
+    Based on the conversation history, the outline below, and the current report progress, write the next chapter.
+    
+    **Outline**:
+    {outline}
+    
+    **Current Report Progress**:
+    {report}
+    
+    **Instructions**:
+    1. Review the conversation history for relevant context and information
+    2. Identify which chapter needs to be written next based on the outline and current progress
+    3. Write the complete chapter in Markdown format with:
+       - Chapter title (## heading)
+       - Well-structured content with sub-sections if needed (### headings)
+       - Clear, professional writing
+       - Relevant details and insights from the conversation history
+    4. If ALL chapters in the outline have been completed, output exactly "FINISHED" (without quotes)
+    
+    **Important**: 
+    - Only write ONE chapter at a time
+    - Ensure the chapter aligns with the outline structure
+    - Use information from the conversation history when relevant
+    - Output "FINISHED" only when all chapters are complete
+
+    **Visualization requirements**:
+    - Prioritize using images saved by CodeAgent from previous steps. Identify image content based on filenames and embed them using markdown syntax at appropriate positions in the report. **Critical**: Only use image paths that were actually saved by CodeAgent. Never fabricate or construct non-existent image paths, as this will cause rendering errors. If no images are available, use mermaid diagrams instead.
+    - When needed, use mermaid syntax to create charts and diagrams. **Important**: Always use English punctuation marks in mermaid code blocks, never use Chinese punctuation marks.
+    
+    Generate the next chapter now:
+  
+  fiction_writing_prompt: |
+    You are an expert in fiction writing.
+    
+    Based on the conversation history and the task below, create engaging fictional content.
+    
+    **Task**: {task}
+    
+    **Instructions**:
+    1. Review the conversation history to understand the context, characters, plot points, and any established story elements
+    2. Create compelling fictional content that addresses the task
+    3. Focus on:
+       - Vivid descriptions and imagery
+       - Character development and dialogue
+       - Plot progression and pacing
+       - Emotional engagement and atmosphere
+       - Consistent tone and style
+    4. Use appropriate narrative techniques (show don't tell, sensory details, etc.)
+    5. Maintain continuity with any previously established story elements from the conversation history
+    6. Format the content in a readable way (use line breaks for paragraphs, dialogue formatting, etc.)
+    
+    **Important**:
+    - Prioritize storytelling quality and reader engagement
+    - Ensure characters act consistently with their established traits
+    - Create natural, believable dialogue
+    - Build tension and maintain reader interest
+    - DO NOT use Markdown formatting (no headers, no bold, no italics, etc.)
+    - Output plain text fiction content only
+    
+    Generate the fictional content now:
+  
   general_writing_prompt: |
     You are an expert in writing.
+    
+    Based on the conversation history and the task below, generate high-quality content.
+    
+    **Task**: {task}
+    
+    **Instructions**:
+    1. Review the conversation history to understand the context and any relevant information
+    2. Generate content that addresses the task comprehensively
+    3. Use clear, professional writing
+    4. Structure the content appropriately (use Markdown formatting if suitable)
+    5. Incorporate insights or requirements from the conversation history
+
+    **Visualization requirements**:
+    - Prioritize using images saved by CodeAgent from previous steps. Identify image content based on filenames and embed them using markdown syntax at appropriate positions in the report. **Critical**: Only use image paths that were actually saved by CodeAgent. Never fabricate or construct non-existent image paths, as this will cause rendering errors. If no images are available, use mermaid diagrams instead.
+    - When needed, use mermaid syntax to create charts and diagrams. **Important**: Always use English punctuation marks in mermaid code blocks, never use Chinese punctuation marks.
+
+    Generate the content now:
 
 config_llm:
   model_provider:

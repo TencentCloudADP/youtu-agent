@@ -24,6 +24,7 @@ agent:
     - Use Python syntax to generate charts.
     - Always use English punctuation marks in Python code blocks, never use Chinese punctuation marks.
 
-# python_executor:
-#   config:
-#     workspace_root: ./
+toolkits:
+  python_executor:
+    config:
+      workspace_root: ./

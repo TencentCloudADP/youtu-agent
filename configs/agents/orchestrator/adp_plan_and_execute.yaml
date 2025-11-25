@@ -7,6 +7,7 @@ defaults:
   - /agents/simple/shell_agent@orchestrator_workers.ShellAgent
   - /agents/simple/html_generator@orchestrator_workers.HTMLGenerator
   - /agents/simple/report_agent@orchestrator_workers.ReportAgent
+  - /agents/simple/attachment_agent@orchestrator_workers.AttachmentAgent
   - _self_
 
 type: orchestrator
@@ -37,3 +38,5 @@ orchestrator_workers_info:
     description: Generate a webpage based on provided information.
   - name: ReportAgent
     description: Generate a report based on provided information.
+  - name: AttachmentAgent
+    description: Get the summarized content of a url or local document.
