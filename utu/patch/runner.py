@@ -325,6 +325,10 @@ class UTUAgentRunner(AgentRunner):
             })
         input = cls._context_manager_preprocess(input, context_wrapper)
 
+        # ADD: inject input_list into context for tools to access trajectory
+        if isinstance(context_wrapper.context, dict):
+            context_wrapper.context['input_list'] = input
+
         # THIS IS THE RESOLVED CONFLICT BLOCK
         filtered = await cls._maybe_filter_model_input(
             agent=agent,
@@ -541,6 +545,10 @@ class UTUAgentRunner(AgentRunner):
 
         # ADD: context manager
         input = cls._context_manager_preprocess(input, context_wrapper)
+
+        # ADD: inject input_list into context for tools to access trajectory
+        if isinstance(context_wrapper.context, dict):
+            context_wrapper.context['input_list'] = input
 
         new_response = await cls._get_new_response(
             agent,
