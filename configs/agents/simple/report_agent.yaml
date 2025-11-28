@@ -22,3 +22,5 @@ agent:
     Tips:
     - Always call write_text(genre, tasks) to generate a report.
     - Directly **copy** the tool output as the final output.
+
+stop_at_tool_names: ["write_text"]
