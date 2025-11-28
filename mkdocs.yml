@@ -111,6 +111,7 @@ nav:
     - Start with Docker: docker.md
   - Howto:
     - Evaluate an Agent: howto/eval.md
+    - Customize an YAML Config: howto/config.md
   - Documentation:
     - Config: config.md
     - Environment Variables: environment_variables.md

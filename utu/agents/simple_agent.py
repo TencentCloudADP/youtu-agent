@@ -55,6 +55,8 @@ class SimpleAgent:
             self.config.agent.name = name
         if instructions:
             self.config.agent.instructions = instructions
+        if self.config.stop_at_tool_names:
+            tool_use_behavior = StopAtTools(stop_at_tool_names=self.config.stop_at_tool_names)
         self.model = self._get_model(self.config, model)
         self.model_settings = self._get_model_settings(self.config, model_settings)
         self.tools: list[Tool] = tools or []

@@ -1,0 +1,36 @@
+# ===========================================================================================
+# Example config for builtin toolkits with full yaml configuration, this file is the same as
+#   the builtin version in @configs/tools/search.yaml . The toolkit configs in @configs/tools/*
+#   can then be loaded into agent configs via hydra defaults, see ./agent_with_hydra.yaml 
+#   for details.
+# Doc: https://tencentcloudadp.github.io/youtu-agent/tools/
+#   Reference config data structure: utu/config/agent_config.py
+# ============================================================================================
+
+# -------------------------------------------------------------------------------------------
+# basic configs
+mode: builtin  # builtin | mcp | customized
+env_mode: local  # local | e2b
+name: search  # name of the toolkit
+
+# Setup tools you want to use in this toolkit.
+# op1: set activated_tools to null if you want to use all tools
+# activated_tools: null
+# op2: specify the activated tools you want to use
+activated_tools: ["search", "web_qa"]
+
+# -------------------------------------------------------------------------------------------
+# Toolkit's customize configs. The `config` field is a dictionary, and will be used in the
+#   specific toolkit. For instance, the `search_engine, crawl_engine` here are used in file
+#   utu/tools/search_toolkit.py for the `SearchToolkit` class.
+# For builtin toolkits, your can check corresponding YAML config files in @configs/tools/*
+#   to understand all available config fields.
+config:
+  search_engine: google
+  crawl_engine: jina
+
+# LLM used within toolkit, same structure as "model configs" in ./agent_simple.yaml
+config_llm:
+  model_provider:
+    type: ${oc.env:UTU_LLM_TYPE}
+    model: ${oc.env:UTU_LLM_MODEL}
