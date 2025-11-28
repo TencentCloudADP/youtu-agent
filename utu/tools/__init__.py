@@ -18,6 +18,7 @@ from .utils import get_tools_map as get_tools_map, get_tools_schema as get_tools
 from .video_toolkit import VideoToolkit
 from .wikipedia_toolkit import WikipediaSearchTool
 from .writing_toolkit import WritingToolkit
+from .ppt_toolkit import PPTToolkit
 
 TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "search": SearchToolkit,
@@ -37,6 +38,7 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "memory_simple": SimpleMemoryToolkit,
     "user_interaction": UserInteractionToolkit,
     "writing_toolkit": WritingToolkit,
+    "ppt_toolkit": PPTToolkit,
 }
 
 

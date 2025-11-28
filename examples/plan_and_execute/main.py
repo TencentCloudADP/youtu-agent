@@ -25,12 +25,15 @@ async def main():
     # question = "北京学区房评测需求聚焦东、西、海等核心城区及潜力区域，涵盖多类房产。从教育资源（学校质量、升学政策）、房价（均价、走势）、居住环境（房屋、配套）、市场交易（活跃度、周期）等维度，结合官方数据、实地调研等方式分析，图表丰富，提供综合评测与个性化建议。"
 
     # 测试 writing 分流
-    question = "写一段2000字关于人工智能的小说，直接写不要搜索"
+    # question = "写一段2000字关于人工智能的小说，直接写不要搜索"
     # question = "制作一张体检打分表，直接写不要搜索"
 
     # 测试 attachments 读取
     # question = "这里提到的人的信息帮我总结下 https://www.nobelprize.org/prizes/physics/2025/popular-information"
     # question = "北京学区房综合评测报告.docx 为我总结一下价格趋势"
+
+    # 测试ppt生成
+    question = "制作一个腾讯游戏版图介绍ppt"
 
     res = runner.run_streamed(question)
     await AgentsUtils.print_stream_events(res.stream_events())

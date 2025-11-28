@@ -8,6 +8,7 @@ defaults:
   - /agents/simple/html_generator@orchestrator_workers.HTMLGenerator
   - /agents/simple/report_agent@orchestrator_workers.ReportAgent
   - /agents/simple/attachment_agent@orchestrator_workers.AttachmentAgent
+  - /agents/simple/ppt_agent@orchestrator_workers.PPTGeneratorAgent
   - _self_
 
 type: orchestrator
@@ -18,14 +19,14 @@ orchestrator_config:
   additional_instructions: |-
     Current date: 2025-11-19, Wednesday
     Your ultimate object is finishing the user's request.
-    
+
     General workflow:
     1. Use SearchAgent to gather relevant information, conduct research, and collect necessary data.
-    2. Use CodeAgent to create charts, diagrams, or perform data analysis if visualization is needed.
+    2. Use CodeAgent to create charts, diagrams, or perform data analysis if visualization is needed. DO NOT use CodeAgent for PPT generation task.
     3. Generate the final output(Choose one of them):
        - Use ReportAgent to produce a markdown report (default for most cases).
        - Use HTMLGenerator to create a webpage report only if the user explicitly requests a webpage or HTML output.
-
+       - Use PPTGeneratorAgent to create a PowerPoint presentation only if the user explicitly requests a PowerPoint presentation.
 
 orchestrator_workers_info:
   - name: SearchAgent
@@ -40,3 +41,5 @@ orchestrator_workers_info:
     description: Generate a report based on provided information.
   - name: AttachmentAgent
     description: Get the summarized content of a url or local document.
+  - name: PPTGeneratorAgent
+    description: Generate a PowerPoint presentation based on provided information.

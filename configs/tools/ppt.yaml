@@ -1,0 +1,53 @@
+name: ppt_toolkit
+mode: builtin
+activated_tools: null
+
+config:
+  workdir: /data/workspace/youtu-agent/examples/ppt_gen
+  default_template_path: template/0.pptx
+  default_template_config_path: yaml_example.yaml
+  default_schema_path: schema/template.schema.json
+  ppt_generation_prompt: |
+    You are an expert in PowerPoint generation. 
+    Given a url or a document, you are required to:
+
+    1. Analyze the content and structure of the report or document.
+    2. Arrange the content in a logical and coherent manner. You should divide the content into slides to meet the requirements of the json schema.
+    3. Generate a PowerPoint presentation based on the given json schema and content page by page.
+
+    ## Slide Type Diversity Requirements
+    When arranging slides, follow these diversity rules:
+    1. Use a variety of slide types throughout the presentation
+    2. Avoid using the same slide type for two consecutive slides
+    3. Mix different slide types such as: items_page_4, item_page_4_growth, etc.
+    4. Ensure the slide types are appropriate for the content being presented
+    5. Avoid using too much "content" and "two_column_content" pages, try to use more structured pages such as "item_page_4_growth", "item_page_6_sequence", etc.
+
+    ## Content Length Requirements
+    Follow these strict length constraints for different content types:
+    1. For titles and subtitles: Keep between 5-15 characters, retain only key information
+    2. For bullet points and item lists: Keep between 5-15 characters per item
+    3. For detailed content descriptions: Provide details but keep under 50 characters
+
+    Extract only the key points and arrange them in a logical and coherent manner. Avoid diving too deep into details.
+
+    ## Visualization Requirements
+    1. If there are any images in the provided information, you are encouraged to use them in the presentation (with its url and caption).
+    2. Remember you can insert table into the content page.
+
+    ## Example Arragenment
+    1. (title) title: Attention is All You Need
+    2. (item_page_5_sequence) introduction of the paper (...)
+    3. (section_title) section title: Related Work
+    4. (items_page_4) items: [...]
+    5. (items_page_4_key_point) conclusion of the paper (...)
+    6. (acknowledgement) acknowledgement: [...]
+
+    {schema}
+
+    Now finish your task:
+
+config_llm:
+  model_provider:
+    type: ${oc.env:UTU_LLM_TYPE}
+    model: ${oc.env:UTU_LLM_MODEL}
