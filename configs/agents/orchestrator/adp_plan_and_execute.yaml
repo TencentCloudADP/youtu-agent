@@ -30,7 +30,7 @@ orchestrator_config:
 
 orchestrator_workers_info:
   - name: SearchAgent
-    description: Web search, information retrieval, research material collection, API data fetching.
+    description: Web search (text, image), information retrieval, research material collection, API data fetching.
   - name: CodeAgent
     description: Run code snippets in Python to solve mathmatical problems or draw pyplot diagrams.
   - name: ShellAgent
@@ -40,6 +40,6 @@ orchestrator_workers_info:
   - name: ReportAgent
     description: Generate a report based on provided information.
   - name: AttachmentAgent
-    description: Get the summarized content of a url or local document.
+    description: Get the summarized content of a url or local document uploaded by the user.
   - name: PPTGeneratorAgent
     description: Generate a PowerPoint presentation based on provided information.

@@ -5,7 +5,7 @@ from typing import Any
 import httpx
 
 from ..config import ToolkitConfig
-from .base import AsyncBaseToolkit
+from .base import AsyncBaseToolkit, register_tool
 
 
 class SerperToolkit(AsyncBaseToolkit):
@@ -139,6 +139,7 @@ class SerperToolkit(AsyncBaseToolkit):
             "status": "success",
         }
 
+    @register_tool
     async def image_search(
         self,
         query: str,
