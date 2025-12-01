@@ -59,13 +59,15 @@ config:
        - Well-structured content with sub-sections if needed (### headings)
        - Clear, professional writing
        - Relevant details and insights from the conversation history
-    4. If ALL chapters in the outline have been completed, output exactly "FINISHED" (without quotes)
+    4. If ALL chapters in the outline have been completed, output exactly "FINISHED"
     
     **Important**: 
+    - When writing the FIRST chapter, you MUST include the report title (# heading) at the very beginning to ensure the overall report completeness
     - Only write ONE chapter at a time
     - Ensure the chapter aligns with the outline structure
     - Use information from the conversation history when relevant
-    - Output "FINISHED" only when all chapters are complete
+    - When writing the chapter, directly output the chapter content without any additional instructions
+    - When the chapter is complete, directly output "FINISHED" without any additional instructions
 
     **Visualization requirements**:
     - Prioritize using images saved by CodeAgent from previous steps. Identify image content based on filenames and embed them using markdown syntax at appropriate positions in the report. **Critical**: Only use image paths that were actually saved by CodeAgent. Never fabricate or construct non-existent image paths, as this will cause rendering errors. If no images are available, use mermaid diagrams instead.

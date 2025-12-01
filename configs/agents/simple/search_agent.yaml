@@ -2,6 +2,7 @@
 defaults:
   - /model/base@model
   - /tools/search@toolkits.search
+  - /tools/serper@toolkits.serper
   - _self_
 
 agent:
@@ -19,6 +20,11 @@ agent:
       - Ask focused questions to a webpage.
       - Use after search to extract detailed info.
       - Keep questions specific and unambiguous.
+    3. image_search(query, num=5)
+      - Search for images.
+      - After searching, extract the most useful results.
+      - For each selected image, include: image URL and semantic description.
+      - Prioritize images with clear relevance and high quality.
 
     Tips:
     - Start with search to collect sources.
@@ -26,3 +32,4 @@ agent:
     - Summarize findings clearly, citing evidence.
     - Present multiple viewpoints if available.
     - For complex questions, create a plan and break them down into smaller searches.
+    - Use image_search to find relevant images, then extract top results with URLs and descriptions

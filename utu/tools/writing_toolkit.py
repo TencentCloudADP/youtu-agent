@@ -162,12 +162,21 @@ class WritingToolkit(AsyncBaseToolkit):
         chapter = await self.llm.query_one(
             messages=chapter_messages, **self.config.config_llm.model_params.model_dump()
         )
-        while chapter != "FINISHED":
-            report += "\n" + chapter.strip()
+        while "FINISHED" not in chapter:
+            # Add chapter to report
+            if report:
+                report += "\n\n" + chapter.strip()
+            else:
+                report = chapter.strip()
+            # Generate next chapter
             chapter_messages = self._prepare_messages(trajectory, self.deep_research_chapter_prompt.format(outline=outline, report=report))
             chapter = await self.llm.query_one(
                 messages=chapter_messages, **self.config.config_llm.model_params.model_dump()
             )
+        # Handle the last response (which contains FINISHED)
+        final_content = chapter.replace("FINISHED", "").strip()
+        if final_content:
+            report += "\n\n" + final_content
         return report
 
     async def write_fiction(self, task: str, trajectory: list[TResponseInputItem] | None = None) -> str:

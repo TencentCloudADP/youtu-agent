@@ -21,5 +21,6 @@ agent:
 
     Tips:
     - Always call write_text(genre, tasks) to generate a report.
+    - tasks should be a brief description of the main task, and should not be too long.
 
 stop_at_tool_names: ["write_text"]
