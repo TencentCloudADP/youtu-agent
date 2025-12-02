@@ -2,15 +2,24 @@
 
 本文档说明如何使用 YAML 描述 PPT 模板。
 
+## YAML的合并
+
+PPT模版的YAML配置主要有两种：
+
+1. [`yaml_example.yaml`](./yaml_example.yaml) 或者 [`yaml_example2.yaml`](./yaml_example2.yaml) 这类多个模版间共享的YAML配置。
+2. 每个具体PPT项目独有的YAML配置文件，用于定义该PPT特有的页面类型、覆盖共享yaml的页面类型、修改模版中的页面顺序（`type_map`）。和模版的pptx文件放在同一个文件夹中。
+
 ## YAML 文件结构
 
-YAML配置文件（见 [`yaml_example.yaml`](./yaml_example.yaml)）包括两部分：
+合并后的YAML主要包括两部分：
 
 1. **`type_map`**：按顺序将每种幻灯片的 `type` 映射到参考 PPT 模板中的幻灯片索引（从 0 开始）。渲染器根据该索引复制相应母版。
 2. **页面定义块**：每个 `<name>_page` 条目描述某类幻灯片的 schema，必须包含：
    - `description`：对页面的文字说明，会用于文档和 JSON Schema。
    - `type`：幻灯片类型，必须出现在 `type_map` 中。
    - 至少一个 **字段定义**，用于描述每个占位符希望接收的数据。
+
+建议将 `type_map` 放在具体 PPT 模版的 YAML 配置文件中。`type_map`只需要列出模版支持的页面，对于没有在其中列出的页面，`gen_schema.py`脚本会把它在最终的schema中去掉。
 
 ### 字段定义可用的键
 

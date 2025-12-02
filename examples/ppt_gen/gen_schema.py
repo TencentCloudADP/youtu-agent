@@ -139,13 +139,19 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
             if isinstance(item, dict):
                 for t in item.keys():
                     allowed_types.add(str(t))
-    # Fallback: infer from page specs if type_map missing
-    if not allowed_types:
-        for key, value in yaml_root.items():
-            if isinstance(value, dict) and key != "type_map":
-                t = value.get("type")
-                if t:
-                    allowed_types.add(str(t))
+
+    not_allowed_types = []
+    for key, value in yaml_root.items():
+        if key == "type_map":
+            continue
+        if not isinstance(value, dict):
+            continue
+        t = value.get("type")
+        if t and t not in allowed_types:
+            not_allowed_types.append(key)
+    # remove not allowed types from yaml_root
+    for t in not_allowed_types:
+        del yaml_root[t]
 
     one_of = []
     # iterate keys excluding type_map
@@ -200,7 +206,7 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
             "Paragraph": {
                 "type": "object",
                 "properties": {
-                    "text": {"type": "string"},
+                    "text": {"type": "string", "maxLength": 200, "minLength": 10},
                     "bullet": {"type": "boolean", "default": False},
                     "level": {"type": "integer", "minimum": 0},
                 },
@@ -211,7 +217,7 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                 "type": "object",
                 "properties": {
                     "title": {"type": "string", "maxLength": 4},
-                    "content": {"type": "string", "maxLength": 10},
+                    "content": {"type": "string", "maxLength": 200},
                 },
                 "required": ["title", "content"],
                 "additionalProperties": False,
@@ -224,7 +230,7 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                         "properties": {
                             "paragraph": {
                                 "oneOf": [
-                                    {"type": "array", "items": {"$ref": "#/$defs/Paragraph"}, "minItems": 1},
+                                    {"type": "array", "items": {"$ref": "#/$defs/Paragraph"}, "minItems": 2},
                                     {"type": "string"},
                                 ]
                             }

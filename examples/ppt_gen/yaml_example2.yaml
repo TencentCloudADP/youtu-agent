@@ -1,0 +1,140 @@
+title_page:
+  description: title page, should always be the first page      
+  type: title_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  subtitle:
+    type: str
+    description: be very concise within 6 words                  
+    max_len: 10
+  date:
+    type: str
+    description: date of the presentation, fill with placeholder "2025-11-27"                  
+    max_len: 10
+  author:
+    type: str
+    description: author of the presentation, fill with placeholder "John Doe"                  
+    max_len: 10
+
+section_title_page:
+  description: section title page, should not follow the title page immediately                
+  type: section_title_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  subtitle:
+    type: str
+    description: be very concise within 6 words                  
+    max_len: 10
+
+content_page:
+  description: single column content page, with the most basic layout. Should NOT be used if possible.          
+  type: content_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  content:
+    type: content
+
+two_column_content_page:
+  description: two column content pages. Should NOT be used if possible.
+  type: two_column_content_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  content:
+    type: content_list
+    description: list of exactly 2 BaseContent objects        
+
+items_3_page:
+  description: page with three logically parallel items         
+  type: items_3_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 3 items
+
+items_3_with_subtitle_page:
+  description: page with three logically parallel items. With one subtitle.
+  type: items_3_with_subtitle_page
+  title:
+    type: str
+    description: be very concise within 5 words                   
+    max_len: 5
+  subtitle:
+    type: str
+    description: be very concise within 6 words                  
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 3 items
+
+image_description_page:
+  description: page with two column. One column is an image, the other is the description content
+  type: image_description_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  image:
+    type: content
+    description: image content / chart content / short table content
+  image_demonstration:
+    type: content
+    description: description content
+                              
+items_6_timeline_page:
+  description: this slide illustrates a timeline. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to year or month.
+  type: items_6_timeline_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 6 items
+
+items_4_page:
+  description: this slide illustrates 4 items. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to one word.
+  type: items_4_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 4 items, the title should be one word (the most important key point of its content), the content should be very short.
+
+items_4_timeline_page:
+  description: this slide illustrates a timeline. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to year, month or quarter.
+  type: items_4_timeline_page
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 7
+  items:
+    type: item_list
+    description: exactly 4 items, the title should be year, month or quarter, the content should be very short.
+
+acknowledgement_page:
+  description: acknowledgement page, should be the last page    
+  type: acknowledgement_page
+  title:
+    type: str
+    description: just place "Thank you"/"谢谢"/"END"/"FIN" here                                
+  subtitle:
+    type: str
+    description: be very concise within 6 words                  
+    max_len: 10
+  author:
+    type: str
+  date:
+    type: str

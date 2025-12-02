@@ -1,11 +1,13 @@
 import json
 import logging
+import re
+from pathlib import Path
 from typing import Any
 
 import yaml
 from ppt_template_model import PageConfig
 from pptx import Presentation
-from utils import delete_slide, delete_slide_range, duplicate_slide, move_slide
+from utils import delete_slide_range, duplicate_slide, move_slide
 
 
 def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_config: dict[str, Any]):
@@ -20,25 +22,30 @@ def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_c
     for slide_data in slides_data:
         slide_type = slide_data.get("type")
         if not slide_type:
-            logging.warning("Skipped slide without type definition: %s", slide_data)
-            continue
+            raise ValueError("Slide data must contain a 'type' field")
 
         template_index = page_config.type_map.get(slide_type)
         if template_index is None or template_index >= len(prs.slides):
-            logging.warning("No template found for slide type '%s'", slide_type)
-            continue
+            raise ValueError("No template found for slide type '%s'", slide_type)
 
         template_slide = prs.slides[template_index]
-        if slide_type in ("title", "acknowledgement"):
+        if slide_type in ("title_page", "acknowledgement_page"):
             target_slide = template_slide
         else:
             target_slide = duplicate_slide(prs, template_slide)
 
         page_config.render(target_slide, slide_data)
 
-    delete_slide_range(prs, range(2, 12))
-    delete_slide(prs, 0)
-    move_slide(prs, 1, len(prs.slides) - 1)
+    # get title page
+    title_pages_idx = page_config.type_map.get("title_page")
+    acknowledgement_pages_idx = page_config.type_map.get("acknowledgement_page")
+    max_idx = max(list(page_config.type_map.values()))
+    # move title page to the first
+    move_slide(prs, title_pages_idx, 0)
+    # move acknowledgement page to the last
+    move_slide(prs, acknowledgement_pages_idx, len(prs.slides) - 1)
+    # remove all
+    delete_slide_range(prs, range(1, max_idx))
     prs.save(output_path)
 
 
@@ -47,8 +54,11 @@ def extract_json(content):
     Extract the json data from the given content.
     """
     # extract content within "```json" and "```"
-    json_data = content.split("```json")[1].split("```")[0]
-    return json_data
+    pattern = r"```json(.*?)```"
+    match = re.search(pattern, content, re.DOTALL)
+    if match:
+        return match.group(1)
+    return content
 
 
 if __name__ == "__main__":
@@ -56,7 +66,8 @@ if __name__ == "__main__":
     import datetime
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--template", type=str, default="templates/0.pptx")
+    parser.add_argument("-t", "--template", type=str, default="templates")
+    parser.add_argument("-n", "--template_name", type=str, default="0")
     default_output_filename = f"output-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.pptx"
     parser.add_argument("-o", "--output", type=str, default=default_output_filename)
     parser.add_argument("-i", "--input", type=str, required=True)
@@ -76,8 +87,21 @@ if __name__ == "__main__":
     with open(input_json) as f:
         content = f.read()
     json_data = extract_json(content)
-
+    if not json_data:
+        raise ValueError("No JSON data found in input file")
     with open(args.yaml_config) as f:
         yaml_config = yaml.safe_load(f)
+    template_yaml = Path(template) / args.template_name / f"{args.template_name}.yaml"
+    if not template_yaml.exists():
+        template_config = {}
+    else:
+        with open(template_yaml) as f:
+            template_config = yaml.safe_load(f)
+    # merge
+    yaml_config.update(template_config)
 
-    fill_template_with_yaml_config(template, output, json_data, yaml_config)
+    print(json.dumps(yaml_config, indent=4))
+
+    template_path = Path(template) / args.template_name / f"{args.template_name}.pptx"
+
+    fill_template_with_yaml_config(template_path, output, json_data, yaml_config)

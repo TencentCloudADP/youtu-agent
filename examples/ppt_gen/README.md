@@ -35,11 +35,12 @@ Run the PPT generation script.
 ```python
 python main.py \
   --file webpage.html \
-  --template_path templates/0.pptx \
-  --yaml_path yaml_example.yaml \
-  --pages 10 \
+  --template_path templates \
+  --yaml_path yaml_example2.yaml \
+  --pages 8 \
   --disable_tooluse \
-  --extra_prompt "Language should be English."
+  --extra_prompt "Ensure rich content. In English" \
+  --template_name 11
 ```
 
 The script will produce a `json` file and a `pptx` file if everything is OK. Pass `--yaml_path` to switch between different template definitions.

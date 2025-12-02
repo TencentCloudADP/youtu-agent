@@ -4,6 +4,13 @@
 
 This document explains how to describe PPT templates with YAML so that the `ppt_gen` example can generate consistent slides across different topics and layouts.
 
+## Overview
+
+There are two types of YAML configuration files:
+
+1. [`yaml_example.yaml`](./yaml_example.yaml) or [`yaml_example2.yaml`](./yaml_example2.yaml) - YAML configurations shared across multiple templates.
+2. Individual YAML configuration files for each specific PPT project, used to define project-specific slide types, override shared YAML slide types, and modify the page order in the template (`type_map`). These YAML files are placed in the same folder as the template's pptx file.
+
 ## YAML file layout
 
 A template YAML file (see [`yaml_example.yaml`](./yaml_example.yaml)) is composed of two sections:
@@ -13,6 +20,8 @@ A template YAML file (see [`yaml_example.yaml`](./yaml_example.yaml)) is compose
    - `description`: free-form docstring used for both human guidance and JSON schema.
    - `type`: the logical slide type (must exist in `type_map`).
    - One or more **field specifications** that describe the expected payload for each placeholder.
+
+It is recommended to place `type_map` in the YAML configuration file for a specific PPT template. `type_map` should only list the pages supported by the template. For pages not listed in `type_map`, the `gen_schema.py` script will remove them from the final schema.
 
 ### Field specification keys
 

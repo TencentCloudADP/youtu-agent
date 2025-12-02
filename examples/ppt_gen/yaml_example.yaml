@@ -1,8 +1,8 @@
 type_map:
-  - content: 0
-  - title: 1
-  - section_title: 2
-  - two_column_content: 3
+  - content_page: 0
+  - title_page: 1
+  - section_title_page: 2
+  - two_column_content_page: 3
   - items_page_3: 4
   - items_page_4: 5
   - items_page_4_alt: 6
@@ -11,11 +11,11 @@ type_map:
   - item_page_6_sequence: 9
   - items_page_4_img: 10
   - item_page_5_sequence: 11
-  - acknowledgement: 12
+  - acknowledgement_page: 12
 
 title_page:
   description: title page, should always be the first page      
-  type: title
+  type: title_page
   title:
     type: str
     description: be very concise within 7 words                   
@@ -36,7 +36,7 @@ title_page:
 
 section_title_page:
   description: section title page, should not follow the title page immediately                
-  type: section_title
+  type: section_title_page
   title:
     type: str
     description: be very concise within 7 words                   
@@ -49,7 +49,7 @@ section_title_page:
 
 content_page:
   description: single column content page, with the most basic layout            
-  type: content
+  type: content_page
   title:
     type: str
     description: be very concise within 7 words                   
@@ -59,7 +59,7 @@ content_page:
 
 two_column_content_page:
   description: two column content pages                         
-  type: two_column_content
+  type: two_column_content_page
   title:
     type: str
     description: be very concise within 7 words                   
@@ -141,6 +141,7 @@ items_page_4_img:
     max_len: 4
   image:
     type: image
+    description: Vibe image only. Never use chart or table.
 
 item_page_4_growth:
   description: this slide visually represents growth over time, using an upward-sloping bar chart. four key stages or drivers of growth are highlighted on the left, each with an icon (home, battery, lock, chat bubbles) and placeholder text. the design suggests that these factors contribute progressively to overall growth, making it ideal for showing business expansion, performance metrics, or kpis     
@@ -183,7 +184,7 @@ item_page_5_sequence:
                               
 acknowledgement_page:
   description: acknowledgement page, should be the last page    
-  type: acknowledgement
+  type: acknowledgement_page
   title:
     type: str
     description: just place "Thank you"/"谢谢"/"END"/"FIN" here                                

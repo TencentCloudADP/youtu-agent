@@ -30,11 +30,12 @@ wget https://www.nobelprize.org/prizes/physics/2025/popular-information/ -O webp
 ```python
 python main.py \
   --file webpage.html \
-  --template_path template/0.pptx \
-  --yaml_path yaml_example.yaml \
-  --pages 10 \
+  --template_path templates \
+  --yaml_path yaml_example2.yaml \
+  --pages 8 \
   --disable_tooluse \
-  --extra_prompt "确保PPT语言是中文"
+  --extra_prompt "确保PPT语言是中文" \
+  --template_name 11
 ```
 
 脚本会生成同名的 `json` 与 `pptx` 文件。通过 `--yaml_path` 可以切换不同的模板配置。
