@@ -33,7 +33,10 @@ async def main():
     # question = "北京学区房综合评测报告.docx 为我总结一下价格趋势"
 
     # 测试ppt生成
-    question = "制作一个腾讯游戏介绍ppt"
+    # question = "制作一个腾讯游戏介绍ppt"
+
+    # 测试功能性网页
+    question = "为我制作一个塔罗牌占卜的网页，需要占卜多个维度的结果，每一种牌的牌面要带有解析，不要搜索，一步完成"
 
     res = runner.run_streamed(question)
     await AgentsUtils.print_stream_events(res.stream_events())
