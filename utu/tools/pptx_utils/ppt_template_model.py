@@ -1,16 +1,17 @@
-import copy
-import json
+"""
+This module is used to define the PPT template pydantic models.
+"""
+
 import logging
-import random
 import traceback
 import uuid
-import requests
-import matplotlib
-from PIL import Image
-from pydantic import BaseModel
 from typing import Any, Literal
+
+import requests
+from PIL import Image
 from pptx.enum.shapes import MSO_SHAPE_TYPE
-from pptx import Presentation
+from pydantic import BaseModel
+from .utils import delete_shape, find_shape_with_name_except, replace_picture_keep_format
 
 
 class BaseContent(BaseModel):
@@ -77,7 +78,7 @@ class PageConfig:
             if key == "type_map":
                 continue
 
-            page_key = key if key.endswith("_page") else f"{key}_page"
+            page_key = key
             self.pages[page_key] = value
 
     def render(self, slide, page_json: dict[str, Any]):
@@ -86,7 +87,8 @@ class PageConfig:
         logging.info(f"===Rendering page type: {page_type}===")
 
         # Get page configuration
-        page_config = self.pages.get(f"{page_type}_page", {})
+
+        page_config = self.pages.get(page_type, {})
 
         # Render all fields based on their type from YAML config
         for field_name, field_config in page_config.items():
@@ -95,9 +97,10 @@ class PageConfig:
 
             field_value = page_json.get(field_name)
             if field_value is None:
-                continue
+                raise ValueError(f"Field '{field_name}' not found in page JSON")
 
             field_type = field_config.get("type", "str")
+            print(f"field_name: {field_name}, field_type: {field_type}")
 
             if field_type == "str":
                 self._render_text_field(slide, field_name, field_value)
@@ -115,7 +118,7 @@ class PageConfig:
             elif field_type == "image":
                 self._render_basic_image_field(slide, field_name, field_value)
             else:
-                logging.warning(f"Unknown field type: {field_type}")
+                raise ValueError(f"Unknown field type: {field_type}")
 
     def _render_basic_image_field(self, slide, field_name: str, image_value):
         logging.info(f"{field_name}: {image_value}")
@@ -126,10 +129,11 @@ class PageConfig:
 
     def _render_text_field(self, slide, field_name: str, text_value: str):
         """Render text field"""
-        logging.info(f"{field_name}: {text_value}")
         shape = find_shape_with_name_except(slide.shapes, field_name)
         if shape:
             handle_pure_text(text_value, shape, slide)
+        else:
+            raise ValueError(f"Shape not found for {field_name}")
 
     def _render_content_field(self, slide, field_name: str, content_value):
         """Render content field"""
@@ -148,7 +152,7 @@ class PageConfig:
             if shape:
                 handle_content(self._ensure_content_model(content_value), shape, slide)
             else:
-                logging.warning(f"Shape not found for {target_name}")
+                raise ValueError(f"Shape not found for {target_name}")
 
     def _render_item_list_field(self, slide, field_name: str, items: list):
         """Render item list field"""
@@ -159,9 +163,9 @@ class PageConfig:
     def _render_label_list_field(self, slide, field_name: str, labels: list):
         """Render label list field"""
         for i, label_text in enumerate(labels):
-            label_shape = find_shape_with_name_except(slide.shapes, f"label{i + 1}")
+            label_shape = find_shape_with_name_except(slide.shapes, f"{field_name}{i + 1}")
             if label_shape:
-                logging.info(f"label{i + 1}: {label_text}")
+                logging.info(f"{field_name}{i + 1}: {label_text}")
                 handle_pure_text(label_text, label_shape, slide)
 
     def _ensure_basic_image_model(self, image_value: Any) -> BasicImage:
@@ -237,6 +241,7 @@ def download_image(url, base_dir="."):
 
 def handle_pure_text(text: str, target_shape, slide):
     try:
+        logging.info(f"handle_pure_text: {text} =fill=> {target_shape.text_frame.text}")
         text_frame = target_shape.text_frame
         has_runs = any(paragraph.runs for paragraph in text_frame.paragraphs)
 
@@ -245,13 +250,13 @@ def handle_pure_text(text: str, target_shape, slide):
             paragraph = text_frame.paragraphs[0]
             run = paragraph.add_run()
             run.text = text
-            return
-
-        for paragraph in text_frame.paragraphs:
-            for run in paragraph.runs:
-                run.text = text
-                text = ""
+        else:
+            for paragraph in text_frame.paragraphs:
+                for run in paragraph.runs:
+                    run.text = text
+                    text = ""
     except Exception as e:
+        traceback.print_exc()
         logging.error(f"Failed to set text: {text} {e}")
 
 
@@ -365,251 +370,3 @@ def handle_item(item: Item, item_index: int, slide, index_start_from_one=True):
 
     handle_pure_text(item.title, item_title_shape, slide)
     handle_pure_text(item.content, item_content_shape, slide)
-
-
-# rgb colors from a color scheme
-_color_palette = [
-    (178, 34, 34),  # Brick Red
-    (46, 139, 87),  # Sea Green
-    (70, 130, 180),  # Steel Blue
-    (210, 180, 140),  # Tan
-    (147, 112, 219),  # Medium Purple
-    (255, 165, 0),  # Orange (desaturated)
-    (72, 209, 204),  # Medium Turquoise
-    (205, 92, 92),  # Indian Red
-    (106, 90, 205),  # Slate Blue
-    (238, 130, 238),  # Violet
-    (60, 179, 113),  # Medium Sea Green
-    (100, 149, 237),  # Cornflower Blue
-    (218, 165, 32),  # Goldenrod
-    (199, 21, 133),  # Medium Violet Red
-    (65, 105, 225),  # Royal Blue
-]
-
-
-def inspect_ppt(prs):
-    """
-    Inspect the given presentation.
-    """
-    for slide in prs.slides:
-        inspect_slide(slide)
-
-
-def inspect_slide(slide):
-    """
-    Inspect the given slide layout.
-    """
-
-    def _inspect_shape_list(shapes, indent=0):
-        for shape in shapes:
-            print(" " * indent + shape.name)
-            if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-                _inspect_shape_list(shape.shapes, indent + 2)
-
-    _inspect_shape_list(slide.shapes)
-
-
-def to_svg(slide, prs, svg_filename="test.svg"):
-    """
-    Convert the given slide layout to an SVG file.
-    """
-
-    def _to_svg_box(shapes, svg_box):
-        for shape in shapes:
-            svg_box.append(
-                {
-                    "left": shape.left,
-                    "top": shape.top,
-                    "width": shape.width,
-                    "height": shape.height,
-                    "shape_type": shape.shape_type,
-                }
-            )
-            if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-                _to_svg_box(shape.shapes, svg_box)
-
-    def render_svg(svg_box):
-        width = prs.slide_width.inches
-        height = prs.slide_height.inches
-        fig, ax = matplotlib.pyplot.subplots(figsize=(width, height))
-        ax.set_xlim(0, width)
-        ax.set_ylim(height, 0)
-        for box in svg_box:
-            left, top, width, height = box["left"].inches, box["top"].inches, box["width"].inches, box["height"].inches
-            picked_color = random.choice(_color_palette)
-            color = (picked_color[0] / 255, picked_color[1] / 255, picked_color[2] / 255, 0.3)
-            ax.add_patch(matplotlib.patches.Rectangle((left, top), width, height, color=color))
-        ax.set_axis_off()
-        matplotlib.pyplot.subplots_adjust(left=0, right=1, top=1, bottom=0)
-        matplotlib.pyplot.margins(0)
-        ax.set_xmargin(0)
-        ax.set_ymargin(0)
-        fig.savefig(svg_filename, bbox_inches="tight", pad_inches=0)
-
-    svg_box = []
-    _to_svg_box(slide.shapes, svg_box)
-    render_svg(svg_box)
-
-    return svg_box
-
-
-def delete_shape(shape):
-    """
-    Delete the given shape.
-    """
-    parent = shape.element.getparent()
-    parent.remove(shape.element)
-
-
-def find_shape_with_name(shapes, name, depth=0):
-    """
-    Find the shape with the given name in the given shapes.
-    """
-    if depth == 0:
-        logging.info(f"Finding shape with name: {name}")
-    for shape in shapes:
-        if shape.name == name:
-            return shape
-        if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-            found = find_shape_with_name(shape.shapes, name, depth + 1)
-            if found:
-                return found
-    return None
-
-
-def find_shape_with_name_except(shapes, name, depth=0):
-    """
-    Find the shape with the given name in the given shapes, except the shape with the given name.
-    """
-    if depth == 0:
-        logging.info(f"Finding shape with name: {name}")
-    for shape in shapes:
-        if shape.name == name:
-            return shape
-        if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-            found = find_shape_with_name(shape.shapes, name, depth + 1)
-            if found:
-                return found
-    raise Exception(f"Shape with name {name} not found")
-
-
-def duplicate_slide(prs, slide):
-    slide_layout = slide.slide_layout
-    new_slide = prs.slides.add_slide(slide_layout)
-
-    for shape in slide.shapes:
-        el = shape.element
-        new_el = copy.deepcopy(el)
-
-        # 处理图片 - 使用 python-pptx 内置命名空间
-        try:
-            blips = new_el.xpath(".//a:blip[@r:embed]")
-
-            for blip in blips:
-                old_rId = blip.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed")
-
-                if old_rId:
-                    # 获取原始图片
-                    old_image_part = slide.part.related_part(old_rId)
-
-                    # 在新幻灯片中建立关系
-                    new_rId = new_slide.part.relate_to(
-                        old_image_part, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
-                    )
-
-                    # 更新 rId
-                    blip.set("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed", new_rId)
-
-        except (KeyError, AttributeError):
-            pass
-
-        new_slide.shapes._spTree.insert_element_before(new_el, "p:extLst")
-
-    return new_slide
-
-
-def delete_slide_range(prs, index_range):
-    """delete slides in the given index range
-    Args:
-        prs: Presentation object
-        index_range: range of slide indices (0-based)
-    """
-    for index in reversed(index_range):
-        delete_slide(prs, index)
-
-
-def delete_slide(prs, index):
-    """delete slide at the given index
-    Args:
-        prs: Presentation object
-        index: slide index (0-based)
-
-    Raises:
-        IndexError: when index out of range
-    """
-    if index < 0 or index >= len(prs.slides):
-        raise IndexError(f"Slide index {index} out of range (0-{len(prs.slides) - 1})")
-
-    xml_slides = prs.slides._sldIdLst
-    xml_slides.remove(xml_slides[index])
-
-
-def move_slide(prs, old_index, new_index):
-    """move slide from old_index to new_index"""
-    xml_slides = prs.slides._sldIdLst
-    # get the element to move
-    slide_element = xml_slides[old_index]
-    # remove the element from old position
-    xml_slides.remove(slide_element)
-    # insert to new position
-    xml_slides.insert(new_index, slide_element)
-    return prs
-
-
-def replace_picture_keep_format(slide, shape_index, new_image_path):
-    shape = slide.shapes[shape_index]
-
-    if shape.shape_type != 13:
-        raise ValueError("Target shape is not a picture")
-
-    img_id = shape._element.blip_rEmbed
-    image_part = shape.part.related_part(img_id)
-
-    with open(new_image_path, "rb") as f:
-        image_part._blob = f.read()
-
-    return shape
-
-
-def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_config: dict[str, Any]):
-    page_config = PageConfig(yaml_config)
-    prs = Presentation(template_path)
-    data = json.loads(json_data)
-    slides_data = data.get("slides", [])
-
-    if not isinstance(slides_data, list):
-        raise ValueError("JSON data must contain a 'slides' list")
-
-    for slide_data in slides_data:
-        slide_type = slide_data.get("type")
-        if not slide_type:
-            logging.warning("Skipped slide without type definition: %s", slide_data)
-            continue
-
-        template_index = page_config.type_map.get(slide_type)
-        if template_index is None or template_index >= len(prs.slides):
-            logging.warning("No template found for slide type '%s'", slide_type)
-            continue
-
-        template_slide = prs.slides[template_index]
-        if slide_type in ("title", "acknowledgement"):
-            target_slide = template_slide
-        else:
-            target_slide = duplicate_slide(prs, template_slide)
-
-        page_config.render(target_slide, slide_data)
-
-    delete_slide_range(prs, range(2, 12))
-    delete_slide(prs, 0)
-    move_slide(prs, 1, len(prs.slides) - 1)
-    prs.save(output_path)

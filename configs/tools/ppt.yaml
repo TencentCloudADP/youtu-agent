@@ -4,9 +4,9 @@ activated_tools: null
 
 config:
   workdir: /data/workspace/youtu-agent/examples/ppt_gen
-  default_template_path: template/0.pptx
-  default_template_config_path: yaml_example.yaml
-  default_schema_path: schema/template.schema.json
+  template_dir: /data/workspace/youtu-agent/examples/ppt_gen/templates
+  default_template_index: 9
+  default_yaml_config_path: yaml_example2.yaml
   ppt_generation_prompt: |
     You are an expert in PowerPoint generation. 
     Given a url or a document, you are required to:

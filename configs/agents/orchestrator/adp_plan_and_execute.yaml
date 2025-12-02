@@ -23,7 +23,7 @@ orchestrator_config:
     General workflow:
     1. Use SearchAgent to gather relevant information, conduct research, and collect necessary data.
     2. Use CodeAgent to create charts, diagrams, or perform data analysis if visualization is needed. DO NOT use CodeAgent for PPT generation task.
-    3. Generate the final output(Choose one of them):
+    3. Generate the final output (Choose ONLY ONE of them and call it ONLY ONCE):
        - Use ReportAgent to produce a markdown report (default for most cases).
        - Use HTMLGenerator to create a webpage report only if the user explicitly requests a webpage or HTML output.
        - Use PPTGeneratorAgent to create a PowerPoint presentation only if the user explicitly requests a PowerPoint presentation.
