@@ -269,12 +269,9 @@ class ExperienceUpdater:
                 if operation["option"] == "modify":
                     new_experiences[operation["modified_from"]] = operation["experience"]
                 elif operation["option"] == "merge":
-                    for ID in operation["merged_from"]:
-                        if ID not in new_experiences:
-                            raise Exception(f"ID {ID} not found for merging")
-                    for ID in operation["merged_from"]:
-                        if ID in new_experiences:
-                            del new_experiences[ID]
+                    valid_ids = [mid for mid in operation["merged_from"] if mid in new_experiences]
+                    for ID in valid_ids:
+                        del new_experiences[ID]
                     new_experiences[f"C{max_ID}"] = operation["experience"]
                     max_ID += 1
             except Exception as e:
