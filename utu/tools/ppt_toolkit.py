@@ -1,5 +1,6 @@
 import json
 import os
+import requests
 import yaml
 
 from typing import TYPE_CHECKING, Any
@@ -164,6 +165,30 @@ class PPTToolkit(AsyncBaseToolkit):
     @register_tool
     async def load_template(self, template_index: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         raise NotImplementedError
+
+    @register_tool
+    async def check_image_ok(self, image_url: str, image_description: str, trajectory: list[TResponseInputItem] | None = None) -> str:
+        """
+        Check if an image URL is accessible and can be used for PPT generation.
+
+        Args:
+            url: The image URL to check
+            image_description: Description of the image content (e.g., "company logo", "product screenshot")
+            trajectory: Conversation history (auto-injected)
+
+        Returns:
+            Status message indicating if the image is available, including the description if provided
+        """
+        if image_url.startswith("http"):
+            headers = {"Accept": "image/*, */*"}
+            try:
+                response = requests.get(image_url, headers=headers, timeout=10)
+                if response.status_code == 200:
+                    desc_info = f" (Description: {image_description})" if image_description else ""
+                    return f"✓ Image is available and can be used for PPT generation: {image_url}{desc_info}"
+            except Exception as e:
+                return f"✗ Image is NOT available (Error: {str(e)}): {image_url}."
+        return f"✗ Image is NOT available and cannot be used for PPT generation: {image_url}."
 
     @register_tool
     async def generate_ppt(self, task: str, output_file_name: str, trajectory: list[TResponseInputItem] | None = None) -> str:

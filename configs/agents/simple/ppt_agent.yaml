@@ -14,15 +14,16 @@ agent:
       - Load a new pptx template.
       - template_index is the index of the template to load.
 
-    2. generate_ppt(task, output_file_name)
+    2. check_image_ok(image_url, image_description)
+      - Check if the image URL is accessible and matches the provided description.
+      - Can only check ONE image at a time. If there are multiple images in the conversation history, call this tool iteratively for each image that you want to use in the presentation.
+
+    3. generate_ppt(task, output_file_name)
       - Generate a PowerPoint presentation based on provided information.
       - task is the main task description about the PowerPoint presentation. Use structured description(e.g. markdown headers or json) to outline the content of the PowerPoint presentation.
       - output_file_name is the name of the generated PowerPoint presentation. e.g. report.pptx
 
     General Workflow:
-    1. call **load_template** to get the config of supported slide types and a PPT template.
-    2. call **generate_ppt** to generate a PowerPoint presentation based on the config and PPT template.
-
-    Tips:
-    - If the user does not specifically request a particular pptx template and configuration, DO NOT call **load_template**. Just call **generate_ppt** directly.
-    - When calling **generate_ppt**, the task parameter should be described clearly to improve the quality of the generated PPT, and the output_file_name should also be meaningful.
+    1. call **load_template** to get the config of supported slide types and a PPT template. SKIP this step if the user does not specifically request a particular pptx template.
+    2. call **check_image_ok** iteratively to check if the image URL is accessible and matches the provided description.
+    3. call **generate_ppt** to generate a PowerPoint presentation based on the config and PPT template.
