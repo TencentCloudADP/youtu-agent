@@ -26,10 +26,15 @@ agent:
       - For each selected image, include: image URL and semantic description.
       - Prioritize images with clear relevance and high quality.
 
-    Tips:
+    Tips for text search:
     - Start with search to collect sources.
     - Use web_qa for deep dives on selected pages.
     - Summarize findings clearly, citing evidence.
     - Present multiple viewpoints if available.
     - For complex questions, create a plan and break them down into smaller searches.
-    - Use image_search to find relevant images, then extract top results with URLs and descriptions
+
+    Tips for image search:
+    - Use image_search to find relevant images, then extract top results with URLs and descriptions.
+    - Prioritize images with clear relevance and high quality.
+    - DO NOT search for data charts, graphs, statistical diagrams, or any data visualization images. If the user requests such content, terminate the task and inform that these require code-based generation (e.g., using matplotlib, plotly) rather than web search.
+    

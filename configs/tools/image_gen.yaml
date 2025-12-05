@@ -1,0 +1,9 @@
+name: image_gen
+mode: builtin
+activated_tools: null
+# # config:
+# config_llm:
+#   model_provider:
+#     # dummy! We acturally use `UTU_IMAGE_LLM_*`
+#     type: ${oc.env:UTU_LLM_TYPE}
+#     model: ${oc.env:UTU_LLM_MODEL}

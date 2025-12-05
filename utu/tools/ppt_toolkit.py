@@ -1,9 +1,11 @@
 import json
+import uuid
 import os
 import requests
 import yaml
 
 from typing import TYPE_CHECKING, Any
+from PIL import Image
 
 from agents import FunctionTool, RunContextWrapper, TContext, TResponseInputItem, function_tool
 
@@ -167,7 +169,7 @@ class PPTToolkit(AsyncBaseToolkit):
         raise NotImplementedError
 
     @register_tool
-    async def check_image_ok(self, image_url: str, image_description: str, trajectory: list[TResponseInputItem] | None = None) -> str:
+    async def download_image_url(self, image_url: str, image_description: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         """
         Check if an image URL is accessible and can be used for PPT generation.
 
@@ -181,22 +183,31 @@ class PPTToolkit(AsyncBaseToolkit):
         """
         if image_url.startswith("http"):
             headers = {"Accept": "image/*, */*"}
-            try:
-                response = requests.get(image_url, headers=headers, timeout=10)
-                if response.status_code == 200:
-                    desc_info = f" (Description: {image_description})" if image_description else ""
-                    return f"✓ Image is available and can be used for PPT generation: {image_url}{desc_info}"
-            except Exception as e:
-                return f"✗ Image is NOT available (Error: {str(e)}): {image_url}."
-        return f"✗ Image is NOT available and cannot be used for PPT generation: {image_url}."
+            response = requests.get(image_url, headers=headers)
+            extension_name = image_url.split(".")[-1]
+            if extension_name not in ["png", "jpg", "jpeg", "gif", "bmp", "webp"]:
+                extension_name = "png"
+            if response.status_code == 200:
+                file_name = f"{uuid.uuid4()}.{extension_name}"
+                with open(file_name, "wb") as f:
+                    f.write(response.content)
+                image = Image.open(file_name)
+                width, height = image.size
+                if width > 800 and height > 600:
+                    return f"✓ Image is available and can be used for PPT generation: {file_name}. Description: {image_description}"
+        return f"✗ Image is NOT available {image_url}."
 
     @register_tool
-    async def generate_ppt(self, task: str, output_file_name: str, trajectory: list[TResponseInputItem] | None = None) -> str:
+    async def generate_json_schema(self, task: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         messages = self._prepare_messages(trajectory, self.instructions_to_generate_ppt + "\n" + task)
         json_schema = await self.llm.query_one(
             messages=messages, **self.config.config_llm.model_params.model_dump()
         )
-        json_schema = json_schema.replace("```json", "").replace("```", "")
+        json_schema = json_schema.replace("```json", "").replace("```", "").strip()
+        return json_schema
+    
+    @register_tool
+    async def fill_template(self, json_schema: str, output_file_name: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         fill_template_with_yaml_config(
             template_path=self.template_path,
             output_path=output_file_name,
