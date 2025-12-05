@@ -4,15 +4,15 @@ import contextlib
 import glob
 import io
 import os
+import queue
 import re
+import threading
 import time
 import traceback
 from concurrent.futures import ProcessPoolExecutor, TimeoutError
-from typing import Dict
-import threading
-import queue
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -22,37 +22,38 @@ from .base import AsyncBaseToolkit, register_tool
 # Used to clean ANSI escape sequences
 ANSI_ESCAPE = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]")
 
+
 class ProcessPoolManager:
     _instance = None
     _lock = threading.Lock()
-    
+
     def __new__(cls, max_workers: int = None):
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super().__new__(cls)
                 cls._instance._init_manager(max_workers)
             return cls._instance
-    
+
     def _init_manager(self, max_workers: int):
         if max_workers is None:
             max_workers = 1
-        
+
         self.max_workers = max_workers
         self.available_processes = queue.Queue(maxsize=max_workers)
-        self.process_pools: Dict[int, ProcessPoolExecutor] = {}
+        self.process_pools: dict[int, ProcessPoolExecutor] = {}
         self.lock = threading.Lock()
-        
+
         for _ in range(max_workers):
             executor = ProcessPoolExecutor(max_workers=1)
             self.available_processes.put(executor)
             self.process_pools[id(executor)] = executor
-    
+
     def acquire_process(self) -> ProcessPoolExecutor:
         try:
             return self.available_processes.get(timeout=300)
         except queue.Empty:
             raise RuntimeError("No available processes in pool")
-    
+
     def release_process(self, executor: ProcessPoolExecutor):
         if id(executor) in self.process_pools:
             try:
@@ -66,7 +67,7 @@ class ProcessPoolManager:
                         new_executor = ProcessPoolExecutor(max_workers=1)
                         self.process_pools[id(new_executor)] = new_executor
                         self.available_processes.put(new_executor)
-    
+
     def shutdown(self):
         with self.lock:
             for executor in self.process_pools.values():
@@ -78,13 +79,16 @@ class ProcessPoolManager:
                 except:
                     pass
 
+
 _process_manager = None
+
 
 def get_process_manager(max_workers: int = None) -> ProcessPoolManager:
     global _process_manager
     if _process_manager is None:
         _process_manager = ProcessPoolManager(max_workers)
     return _process_manager
+
 
 def _execute_python_code_sync(code: str, workdir: str, max_memory_MB: int):
     """
@@ -97,7 +101,7 @@ def _execute_python_code_sync(code: str, workdir: str, max_memory_MB: int):
         code_clean = code.strip()
         if code_clean.startswith("```python"):
             code_clean = code_clean.split("```python")[1].split("```")[0].strip()
-        
+
         # memory limit
         memory_limit_code = f"""
 import resource
@@ -227,17 +231,11 @@ class PythonExecutorToolkit(AsyncBaseToolkit):
         loop = asyncio.get_running_loop()
         starttime = time.time()
         executor = None
-        
+
         try:
             executor = self.process_manager.acquire_process()
             res = await asyncio.wait_for(
-                loop.run_in_executor(
-                    executor,
-                    _execute_python_code_sync,
-                    code, 
-                    workdir, 
-                    max_memory_MB
-                ),
+                loop.run_in_executor(executor, _execute_python_code_sync, code, workdir, max_memory_MB),
                 timeout=timeout,
             )
             res["time"] = time.time() - starttime
@@ -252,7 +250,7 @@ class PythonExecutorToolkit(AsyncBaseToolkit):
                 "output": "",
                 "files": [],
                 "error": f"Code execution timed out ({timeout} seconds)",
-                "time": time.time() - starttime
+                "time": time.time() - starttime,
             }
         except Exception as e:
             return {
@@ -264,7 +262,7 @@ class PythonExecutorToolkit(AsyncBaseToolkit):
                 "output": "",
                 "files": [],
                 "error": str(traceback.format_exc()),
-                "time": time.time() - starttime
+                "time": time.time() - starttime,
             }
         finally:
             if executor is not None:

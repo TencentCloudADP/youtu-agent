@@ -1,75 +1,57 @@
-import json
 import copy
+import json
 import os
 import re
-
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from tqdm import tqdm
+
 from training_free_grpo.llm import LLM
 from training_free_grpo.web.prompts import (
+    BATCH_EXPERIENCE_UPDATE_TEMPLATE_SP,
+    BATCH_EXPERIENCE_UPDATE_TEMPLATE_UP,
+    GROUP_EXPERIENCE_UPDATE_TEMPLATE_SP,
+    GROUP_EXPERIENCE_UPDATE_TEMPLATE_UP,
     SINGLE_QUERY_CRITIQUE_TEMPLATE_SP,
     SINGLE_QUERY_CRITIQUE_TEMPLATE_UP,
     SINGLE_ROLLOUT_SUMMARY_TEMPLATE_SP,
     SINGLE_ROLLOUT_SUMMARY_TEMPLATE_UP,
-    GROUP_EXPERIENCE_UPDATE_TEMPLATE_SP,
-    GROUP_EXPERIENCE_UPDATE_TEMPLATE_UP,
-    BATCH_EXPERIENCE_UPDATE_TEMPLATE_SP,
-    BATCH_EXPERIENCE_UPDATE_TEMPLATE_UP,
 )
 
 
 class ExperienceUpdater:
     def __init__(self):
         self.llm = LLM()
-    
+
     def run(self, rollouts, experiences, save_dir, max_workers=16, given_ground_truth=True):
         # 1. Summarize trajectory for each rollout
         problem_to_summarized_rollouts = self._single_rollout_summary(
-            rollouts=rollouts, 
-            save_dir=save_dir, 
-            max_workers=max_workers,
-            given_ground_truth=given_ground_truth
+            rollouts=rollouts, save_dir=save_dir, max_workers=max_workers, given_ground_truth=given_ground_truth
         )
 
         # 2. Generate critique for each query
         new_experiences = self._single_query_critique(
-            problem_to_summarized_rollouts=problem_to_summarized_rollouts, 
+            problem_to_summarized_rollouts=problem_to_summarized_rollouts,
             experiences=experiences,
-            save_dir=save_dir, 
+            save_dir=save_dir,
             max_workers=max_workers,
-            given_ground_truth=given_ground_truth
+            given_ground_truth=given_ground_truth,
         )
 
         # 3. group update experiences
         critiques = self._group_update(
-            experiences=experiences, 
-            new_experiences=new_experiences, 
-            save_dir=save_dir,
-            max_workers=max_workers
+            experiences=experiences, new_experiences=new_experiences, save_dir=save_dir, max_workers=max_workers
         )
 
         # 4. batch update experiences
-        new_experiences = self._batch_update(
-            experiences=experiences, 
-            critiques=critiques, 
-            save_dir=save_dir
-        )
+        new_experiences = self._batch_update(experiences=experiences, critiques=critiques, save_dir=save_dir)
 
         # 5. assign new experience IDs
-        new_experiences = {
-            f"G{i}": exp for i, exp in enumerate(new_experiences.values())
-        }
+        new_experiences = {f"G{i}": exp for i, exp in enumerate(new_experiences.values())}
         return new_experiences
 
-
-    def _single_rollout_summary(
-        self,
-        rollouts, 
-        save_dir, 
-        max_workers,
-        given_ground_truth=True
-    ):
+    def _single_rollout_summary(self, rollouts, save_dir, max_workers, given_ground_truth=True):
         # check file existence
         filename = os.path.join(save_dir, "single_rollout_summary.json")
         if os.path.exists(filename):
@@ -102,14 +84,11 @@ class ExperienceUpdater:
             try:
                 up = SINGLE_ROLLOUT_SUMMARY_TEMPLATE_UP.format(
                     task=cur["problem"],
-                    trajectory=cur["trajectories"][0]["trajectory"], 
-                    answer=cur["groundtruth"] if given_ground_truth else "[REDACTED]"
+                    trajectory=cur["trajectories"][0]["trajectory"],
+                    answer=cur["groundtruth"] if given_ground_truth else "[REDACTED]",
                 )
                 response = self.llm.chat(
-                    [
-                        {"role": "system", "content": SINGLE_ROLLOUT_SUMMARY_TEMPLATE_SP},
-                        {"role": "user", "content": up}
-                    ]
+                    [{"role": "system", "content": SINGLE_ROLLOUT_SUMMARY_TEMPLATE_SP}, {"role": "user", "content": up}]
                 )
                 return {"trajectory_summary": response, **cur}
             except Exception as e:
@@ -132,15 +111,14 @@ class ExperienceUpdater:
             json.dump(results, f, indent=2)
         return results
 
-
     def _single_query_critique(
         self,
-        problem_to_summarized_rollouts, 
-        experiences, 
-        save_dir, 
-        max_workers, 
+        problem_to_summarized_rollouts,
+        experiences,
+        save_dir,
+        max_workers,
         max_operations=1,
-        given_ground_truth=True
+        given_ground_truth=True,
     ):
         # check file existence
         filename = os.path.join(save_dir, "single_query_critique.json")
@@ -167,24 +145,23 @@ class ExperienceUpdater:
             try:
                 problem = rollouts_per_problem[0]["problem"]
                 answer = rollouts_per_problem[0]["groundtruth"]
-                formatted_trajectories = "\n\n".join([
-                    f"Attempt {i+1} (Answer {'correct' if each['reward'] else 'wrong'}):\n{each['trajectory_summary']}"
-                    for i, each in enumerate(rollouts_per_problem)
-                ])
+                formatted_trajectories = "\n\n".join(
+                    [
+                        f"Attempt {i + 1} (Answer {'correct' if each['reward'] else 'wrong'}):\n{each['trajectory_summary']}"
+                        for i, each in enumerate(rollouts_per_problem)
+                    ]
+                )
                 up = SINGLE_QUERY_CRITIQUE_TEMPLATE_UP.format(
                     question=problem,
                     answer=answer if given_ground_truth else "[REDACTED]",
                     attempts=formatted_trajectories,
                 )
                 response = self.llm.chat(
-                    [
-                        {"role": "system", "content": SINGLE_QUERY_CRITIQUE_TEMPLATE_SP},
-                        {"role": "user", "content": up}
-                    ]
+                    [{"role": "system", "content": SINGLE_QUERY_CRITIQUE_TEMPLATE_SP}, {"role": "user", "content": up}]
                 )
                 # response = response.split("```json")[-1].split("```")[0]
                 # extract experiences from the response
-                pattern = re.compile(r"<Experiences>\s*(.*?)\s*</Experiences>",re.DOTALL | re.IGNORECASE)
+                pattern = re.compile(r"<Experiences>\s*(.*?)\s*</Experiences>", re.DOTALL | re.IGNORECASE)
                 match = pattern.search(response)
                 experiences = match.group(1).strip() if match else ""
                 return {"rollouts": rollouts_per_problem, "critique": response, "experiences": experiences}
@@ -209,14 +186,7 @@ class ExperienceUpdater:
             json.dump(results, f, indent=2)
         return results
 
-
-    def _group_update(
-        self,
-        experiences, 
-        new_experiences, 
-        save_dir,
-        max_workers=16
-    ):
+    def _group_update(self, experiences, new_experiences, save_dir, max_workers=16):
         # check file existence
         filename = os.path.join(save_dir, "group_update.json")
         if os.path.exists(filename):
@@ -226,10 +196,12 @@ class ExperienceUpdater:
                     print("Group update")
                     print("- File exists, loaded from:", filename)
                     return results
-        
+
         def process(new_experience):
             try:
-                formatted_experiences = "\n".join([ f"[{i}]. {e}" for i, e in experiences.items() ]) if experiences else "None"
+                formatted_experiences = (
+                    "\n".join([f"[{i}]. {e}" for i, e in experiences.items()]) if experiences else "None"
+                )
                 up = GROUP_EXPERIENCE_UPDATE_TEMPLATE_UP.format(
                     existing_experiences=formatted_experiences,
                     new_experiences=new_experience["experiences"],
@@ -237,7 +209,7 @@ class ExperienceUpdater:
                 response = self.llm.chat(
                     [
                         {"role": "system", "content": GROUP_EXPERIENCE_UPDATE_TEMPLATE_SP},
-                        {"role": "user", "content": up}
+                        {"role": "user", "content": up},
                     ]
                 )
                 # parse response
@@ -247,39 +219,31 @@ class ExperienceUpdater:
             except Exception as e:
                 print(f"Warning: failed in group update, {e}")
                 return None
-        
+
         # parallel running
         results = []
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_to_case = {
-                executor.submit(process, new_experience): new_experience
-                for new_experience in new_experiences
+                executor.submit(process, new_experience): new_experience for new_experience in new_experiences
             }
             for future in tqdm(as_completed(future_to_case), total=len(new_experiences), desc="Group update"):
                 result = future.result()
                 if result is not None:
                     results.append(result)
-        
+
         # write results
         with open(filename, "w") as f:
             json.dump(results, f, indent=2)
         return results
 
-
-    def _batch_update(
-        self,
-        experiences, 
-        critiques, 
-        save_dir,
-        max_retries=3
-    ):
+    def _batch_update(self, experiences, critiques, save_dir, max_retries=3):
         print("Batch update")
         filename = os.path.join(save_dir, "batch_update.json")
         if os.path.exists(filename):
             results = json.load(open(filename))
             print("- File exists, loaded from:", filename)
             return results
-        
+
         # collect operations
         all_operations = []
         for each in critiques:
@@ -296,7 +260,7 @@ class ExperienceUpdater:
                 response = self.llm.chat(
                     [
                         {"role": "system", "content": BATCH_EXPERIENCE_UPDATE_TEMPLATE_SP},
-                        {"role": "user", "content": up}
+                        {"role": "user", "content": up},
                     ]
                 )
                 revision_plan = json.loads(response.split("```json")[-1].split("```")[0])
@@ -344,10 +308,10 @@ class ExperienceUpdater:
         return new_experiences
 
     def _format_exp_and_ops(self, experiences, operations):
-        """ Format experiences and operations. """
+        """Format experiences and operations."""
         if not operations:
             return "No batch operations."
-        
+
         # Format existing experiences and their related operations
         formatted_res = []
         for id, exp in experiences.items():

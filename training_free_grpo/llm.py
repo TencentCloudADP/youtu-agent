@@ -1,6 +1,9 @@
 import time
+
 import openai
+
 from utu.utils import EnvUtils
+
 
 class LLM:
     def __init__(self):
