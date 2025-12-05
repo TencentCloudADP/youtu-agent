@@ -78,7 +78,7 @@ class PageConfig:
             if key == "type_map":
                 continue
 
-            page_key = key if key.endswith("_page") else f"{key}_page"
+            page_key = key
             self.pages[page_key] = value
 
     def render(self, slide, page_json: dict[str, Any]):
@@ -89,6 +89,8 @@ class PageConfig:
         # Get page configuration
 
         page_config = self.pages.get(page_type, {})
+        
+        print(f"page_config: {page_config}")
 
         # Render all fields based on their type from YAML config
         for field_name, field_config in page_config.items():
