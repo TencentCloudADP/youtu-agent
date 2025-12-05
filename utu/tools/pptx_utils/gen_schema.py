@@ -199,14 +199,16 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                 "type": "object",
                 "properties": {
                     "image_url": {"type": "string", "format": "uri"},
+                    "image_description": {"type": "string"},
                 },
-                "required": ["image_url"],
+                # "required": ["image_url"],
+                "required": ["image_description"],
                 "additionalProperties": False,
             },
             "Paragraph": {
                 "type": "object",
                 "properties": {
-                    "text": {"type": "string", "maxLength": 200, "minLength": 10},
+                    "text": {"type": "string", "maxLength": 200, "minLength": 30},
                     "bullet": {"type": "boolean", "default": False},
                     "level": {"type": "integer", "minimum": 0},
                 },
@@ -216,8 +218,8 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
             "Item": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string", "maxLength": 4},
-                    "content": {"type": "string", "maxLength": 200},
+                    "title": {"type": "string", "maxLength": 10},
+                    "content": {"type": "string", "maxLength": 200, "minLength": 40},
                 },
                 "required": ["title", "content"],
                 "additionalProperties": False,
@@ -246,9 +248,11 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                         "type": "object",
                         "properties": {
                             "image_url": {"type": "string", "format": "uri"},
-                            "caption": {"type": "string", "maxLength": 20},
+                            "image_description": {"type": "string"},
+                            "caption": {"type": "string", "maxLength": 50},
                         },
-                        "required": ["image_url"],
+                        # "required": ["image_url"],
+                        "required": ["image_description"],
                     },
                 ],
             },

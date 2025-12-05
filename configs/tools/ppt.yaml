@@ -32,8 +32,10 @@ config:
     Extract only the key points and arrange them in a logical and coherent manner. Avoid diving too deep into details.
 
     ## Visualization Requirements
-    1. If there are any images in the provided information, you are encouraged to use them in the presentation (with its url and caption).
-    2. Remember you can insert table into the content page.
+    1. If there are any images in the provided information, you are encouraged to use them in the presentation (with its local path and caption).
+    2. If no images are provided, you can provide image descriptions instead (in `image_description` field rather than `image_url` field). The subsequent process will generate high-quality images based on your descriptions for use in the PPT.
+    3. Genrated images have higher priority than the provided images.
+    4. And remember you can insert table into the content page.
 
     ## Example Arragenment
     1. (title) title: Attention is All You Need

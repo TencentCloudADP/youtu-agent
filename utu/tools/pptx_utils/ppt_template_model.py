@@ -5,6 +5,7 @@ This module is used to define the PPT template pydantic models.
 import logging
 import traceback
 import uuid
+import os
 from typing import Any, Literal
 
 import requests
@@ -125,7 +126,8 @@ class PageConfig:
         shape = find_shape_with_name_except(slide.shapes, field_name)
         image = self._ensure_basic_image_model(image_value)
         if shape:
-            handle_image(image.image_url, shape, slide)
+            # handle_image(image.image_url, shape, slide)
+            handle_image(image, shape, slide)
 
     def _render_text_field(self, slide, field_name: str, text_value: str):
         """Render text field"""
@@ -260,13 +262,38 @@ def handle_pure_text(text: str, target_shape, slide):
         logging.error(f"Failed to set text: {text} {e}")
 
 
-def handle_image(image_url: str, target_shape, slide):
+# def handle_image(image_url: str, target_shape, slide):
+def handle_image(image, target_shape, slide):
     left, top, width, height = target_shape.left, target_shape.top, target_shape.width, target_shape.height
-    try:
-        image_url, image_width, image_height = download_image(image_url)
-    except Exception as e:
-        logging.warning(f"Failed to download image: {image_url} {e}")
-        traceback.print_exc()
+    
+    # Distinguish between remote URL and local relative path
+    if image.image_url and image.image_url.startswith("http"):
+        # Case 1: Remote URL - download the image
+        try:
+            image_url = image.image_url
+            image_url, image_width, image_height = download_image(image_url)
+        except Exception as e:
+            logging.warning(f"Failed to download image: {image.image_url} {e}")
+            traceback.print_exc()
+            return
+    elif image.image_url and os.path.exists(image.image_url):
+        # Case 2: Local relative path - use image_url directly as local path
+        try:
+            image_url = image.image_url
+            if not image_url:
+                logging.warning(f"Image URL is empty for local image with description: {image.image_description}")
+                return
+            
+            # Get image dimensions from local file
+            img = Image.open(image_url)
+            image_width, image_height = img.size
+            logging.info(f"Using local image: {image_url} ({image_width}x{image_height})")
+        except Exception as e:
+            logging.warning(f"Failed to load local image: {image_url} {e}")
+            traceback.print_exc()
+            return
+    else:
+        logging.warning(f"Invalid image configuration: missing required fields")
         return
 
     # scale the image to fit the placeholder
@@ -352,7 +379,8 @@ def handle_content(content: BaseContent, target_shape, slide):
     if content.content_type == "text":
         handle_text_content(content, target_shape, slide)
     elif content.content_type == "image":
-        handle_image(content.image_url, target_shape, slide)
+        # handle_image(content.image_url, target_shape, slide)
+        handle_image(content, target_shape, slide)
     elif content.content_type == "table":
         handle_table(content, target_shape, slide)
     else:

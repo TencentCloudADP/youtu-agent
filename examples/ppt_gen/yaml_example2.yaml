@@ -39,6 +39,7 @@ content_page:
     max_len: 7
   content:
     type: content
+    description: detailed content with comprehensive information, supporting paragraphs, bullet points, and rich text formatting.
 
 two_column_content_page:
   description: two column content pages. Should NOT be used if possible.
@@ -49,7 +50,7 @@ two_column_content_page:
     max_len: 7
   content:
     type: content_list
-    description: list of exactly 2 BaseContent objects        
+    description: list of exactly 2 BaseContent objects, each containing detailed information with comprehensive descriptions, supporting multiple formats like text, bullet points, tables, or images. Each content block should be informative and well-structured.
 
 items_3_page:
   description: page with three logically parallel items         
@@ -60,7 +61,7 @@ items_3_page:
     max_len: 7
   items:
     type: item_list
-    description: exactly 3 items
+    description: exactly 3 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
 
 items_3_with_subtitle_page:
   description: page with three logically parallel items. With one subtitle.
@@ -75,7 +76,7 @@ items_3_with_subtitle_page:
     max_len: 10
   items:
     type: item_list
-    description: exactly 3 items
+    description: exactly 3 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item. 
 
 image_description_page:
   description: page with two column. One column is an image, the other is the description content
@@ -89,8 +90,8 @@ image_description_page:
     description: image content / chart content / short table content
   image_demonstration:
     type: content
-    description: description content
-                              
+    description: detailed description content explaining the image, chart, or table. Provide comprehensive analysis, key insights, data interpretation, or contextual information that helps audience understand the visual element thoroughly.
+
 items_6_timeline_page:
   description: this slide illustrates a timeline. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to year or month.
   type: items_6_timeline_page
@@ -100,7 +101,7 @@ items_6_timeline_page:
     max_len: 7
   items:
     type: item_list
-    description: exactly 6 items
+    description: exactly 6 items representing chronological events or milestones. Each item should have a time-based title (year/month) and detailed content describing what happened, key achievements, or significant changes during that period. 
 
 items_4_page:
   description: this slide illustrates 4 items. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to one word.
@@ -111,7 +112,7 @@ items_4_page:
     max_len: 7
   items:
     type: item_list
-    description: exactly 4 items, the title should be one word (the most important key point of its content), the content should be very short.
+    description: exactly 4 items, each with a one-word title capturing the core concept. The content should provide detailed explanation of the key point, including relevant details, examples, or supporting information to give comprehensive understanding. 
 
 items_4_timeline_page:
   description: this slide illustrates a timeline. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to year, month or quarter.
@@ -122,7 +123,7 @@ items_4_timeline_page:
     max_len: 7
   items:
     type: item_list
-    description: exactly 4 items, the title should be year, month or quarter, the content should be very short.
+    description: exactly 4 items representing chronological progression. Each item should have a time-based title (year/month/quarter) and detailed content describing events, milestones, achievements, or developments during that time period with comprehensive context. 
 
 acknowledgement_page:
   description: acknowledgement page, should be the last page    
