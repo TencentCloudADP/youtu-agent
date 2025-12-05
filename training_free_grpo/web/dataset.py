@@ -1,11 +1,12 @@
-import os
 import json
+import os
+
 import pandas as pd
 from datasets import load_dataset
 
 
 def load_data(dataset_name):
-    """ dataset_name: {dataset}_{sample_number} """
+    """dataset_name: {dataset}_{sample_number}"""
     if dataset_name.startswith("AFM_web_RL"):
         data = load_AFM_web_RL()
     elif dataset_name.startswith("WebWalkerQA"):
@@ -22,7 +23,7 @@ def load_data(dataset_name):
         elif dataset_name.startswith("WebWalkerQA"):
             data = sampling_WebWalkerQA(data, n=n)
         print(f"- Sampled {len(data)} examples")
-    
+
     return data
 
 
@@ -45,7 +46,7 @@ def load_AFM_web_RL(split="train"):
 
 
 def sampling_AFM_web_RL(data, n, random_seed=42):
-    """ Sample n examples from AFM_web_RL dataset. """
+    """Sample n examples from AFM_web_RL dataset."""
 
     df = pd.DataFrame(data)
     df_sampled = df.sample(n=n, random_state=random_seed).reset_index(drop=True)
@@ -53,7 +54,7 @@ def sampling_AFM_web_RL(data, n, random_seed=42):
     # gen new id and save the original id to source_id
     df_sampled["source_id"] = df_sampled["id"]
     df_sampled["id"] = range(1, len(df_sampled) + 1)
-    
+
     return df_sampled.to_dict(orient="records")
 
 
@@ -82,7 +83,7 @@ def load_WebWalkerQA(split="main"):
 
 
 def sampling_WebWalkerQA(data, n, random_seed=42):
-    """ Sample n examples from WebWalkerQA with the rate of difficulty keep the same. """
+    """Sample n examples from WebWalkerQA with the rate of difficulty keep the same."""
     difficluty_ratio = {1: 4, 2: 7, 3: 6}  # easy:medium:hard = 4:7:6
     total_ratio = sum(difficluty_ratio.values())
     n_easy = n * difficluty_ratio[1] // total_ratio
@@ -102,7 +103,7 @@ def sampling_WebWalkerQA(data, n, random_seed=42):
     # gen new id and save the original id to source_id
     df_sampled["source_id"] = df_sampled["id"]
     df_sampled["id"] = range(1, len(df_sampled) + 1)
-    
+
     return df_sampled.to_dict(orient="records")
 
 

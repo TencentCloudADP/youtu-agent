@@ -1,17 +1,18 @@
-import json
 import copy
+import json
 import os
-
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from tqdm import tqdm
+
 from training_free_grpo.llm import LLM
 from training_free_grpo.math.prompts import (
-    SINGLE_QUERY_CRITIQUE_TEMPLATE, 
+    BATCH_EXPERIENCE_UPDATE_TEMPLATE,
     SINGLE_QUERY_CRITIQUE_NO_GT_TEMPLATE,
-    SINGLE_ROLLOUT_SUMMARY_TEMPLATE,
+    SINGLE_QUERY_CRITIQUE_TEMPLATE,
     SINGLE_ROLLOUT_SUMMARY_NO_GT_TEMPLATE,
-    BATCH_EXPERIENCE_UPDATE_TEMPLATE
+    SINGLE_ROLLOUT_SUMMARY_TEMPLATE,
 )
 
 
@@ -22,44 +23,32 @@ class ExperienceUpdater:
     def run(self, rollouts, experiences, save_dir, max_workers=16, given_ground_truth=True, only_partial_correct=True):
         # 1. Summarize trajectory for each rollout
         problem_to_summarized_rollouts = self._single_rollout_summary(
-            rollouts=rollouts, 
-            save_dir=save_dir, 
+            rollouts=rollouts,
+            save_dir=save_dir,
             max_workers=max_workers,
             given_ground_truth=given_ground_truth,
-            only_partial_correct=only_partial_correct
+            only_partial_correct=only_partial_correct,
         )
 
         # 2. Generate critique for each query
         critiques = self._single_query_critique(
-            problem_to_summarized_rollouts=problem_to_summarized_rollouts, 
+            problem_to_summarized_rollouts=problem_to_summarized_rollouts,
             experiences=experiences,
-            save_dir=save_dir, 
+            save_dir=save_dir,
             max_workers=max_workers,
             given_ground_truth=given_ground_truth,
-            only_partial_correct=only_partial_correct
+            only_partial_correct=only_partial_correct,
         )
 
         # 3. batch update experiences
-        new_experiences = self._batch_update(
-            experiences=experiences, 
-            critiques=critiques, 
-            save_dir=save_dir
-        )
+        new_experiences = self._batch_update(experiences=experiences, critiques=critiques, save_dir=save_dir)
 
         # 4. assign new experience IDs
-        new_experiences = {
-            f"G{i}": exp for i, exp in enumerate(new_experiences.values())
-        }
+        new_experiences = {f"G{i}": exp for i, exp in enumerate(new_experiences.values())}
         return new_experiences
 
-
     def _single_rollout_summary(
-        self,
-        rollouts, 
-        save_dir, 
-        max_workers,
-        given_ground_truth=True,
-        only_partial_correct=True
+        self, rollouts, save_dir, max_workers, given_ground_truth=True, only_partial_correct=True
     ):
         # check file existence
         filename = os.path.join(save_dir, "single_rollout_summary.json")
@@ -93,13 +82,12 @@ class ExperienceUpdater:
             try:
                 response = self.llm.chat(
                     SINGLE_ROLLOUT_SUMMARY_TEMPLATE.format(
-                        trajectory=cur["trajectories"][0]["trajectory"], 
-                        grade="This trajectory delivers **" + ("correct" if cur["reward"] else "wrong") + "** answer", 
-                        answer=cur["groundtruth"]
-                    ) if given_ground_truth else
-                    SINGLE_ROLLOUT_SUMMARY_NO_GT_TEMPLATE.format(
-                        trajectory=cur["trajectories"][0]["trajectory"]
+                        trajectory=cur["trajectories"][0]["trajectory"],
+                        grade="This trajectory delivers **" + ("correct" if cur["reward"] else "wrong") + "** answer",
+                        answer=cur["groundtruth"],
                     )
+                    if given_ground_truth
+                    else SINGLE_ROLLOUT_SUMMARY_NO_GT_TEMPLATE.format(trajectory=cur["trajectories"][0]["trajectory"])
                 )
                 return {"trajectory_summary": response, **cur}
             except Exception as e:
@@ -122,16 +110,15 @@ class ExperienceUpdater:
             json.dump(results, f, indent=2)
         return results
 
-
     def _single_query_critique(
         self,
-        problem_to_summarized_rollouts, 
-        experiences, 
-        save_dir, 
-        max_workers, 
+        problem_to_summarized_rollouts,
+        experiences,
+        save_dir,
+        max_workers,
         max_operations=1,
         given_ground_truth=True,
-        only_partial_correct=True
+        only_partial_correct=True,
     ):
         # check file existence
         filename = os.path.join(save_dir, "single_query_critique.json")
@@ -158,11 +145,15 @@ class ExperienceUpdater:
             try:
                 problem = rollouts_per_problem[0]["problem"]
                 answer = rollouts_per_problem[0]["groundtruth"]
-                formatted_trajectories = "\n\n".join([
-                    f"Trajectory {i+1} (Answer {'correct' if each["reward"] else 'wrong'}):\n{each['trajectory_summary']}"
-                    for i, each in enumerate(rollouts_per_problem)
-                ])
-                formatted_experiences = "\n".join([ f"[{i}]. {e}" for i, e in experiences.items() ]) if experiences else "None"
+                formatted_trajectories = "\n\n".join(
+                    [
+                        f"Trajectory {i + 1} (Answer {'correct' if each['reward'] else 'wrong'}):\n{each['trajectory_summary']}"
+                        for i, each in enumerate(rollouts_per_problem)
+                    ]
+                )
+                formatted_experiences = (
+                    "\n".join([f"[{i}]. {e}" for i, e in experiences.items()]) if experiences else "None"
+                )
                 response = self.llm.chat(
                     SINGLE_QUERY_CRITIQUE_TEMPLATE.format(
                         max_operations=max_operations,
@@ -170,19 +161,27 @@ class ExperienceUpdater:
                         trajectories=formatted_trajectories,
                         answer=answer,
                         experiences=formatted_experiences,
-                    ) if given_ground_truth else
-                    SINGLE_QUERY_CRITIQUE_NO_GT_TEMPLATE.format(
+                    )
+                    if given_ground_truth
+                    else SINGLE_QUERY_CRITIQUE_NO_GT_TEMPLATE.format(
                         max_operations=max_operations,
                         problem=problem,
-                        trajectories="\n\n".join([
-                            f"Trajectory {i+1}:\n{each['trajectory_summary']}" for i, each in enumerate(rollouts_per_problem)
-                        ]),
-                        experiences=formatted_experiences
+                        trajectories="\n\n".join(
+                            [
+                                f"Trajectory {i + 1}:\n{each['trajectory_summary']}"
+                                for i, each in enumerate(rollouts_per_problem)
+                            ]
+                        ),
+                        experiences=formatted_experiences,
                     )
                 )
                 response = response.split("```json")[-1].split("```")[0]
                 operations = json.loads(response)
-                return {"rollouts": rollouts_per_problem, "critique": response, "operations": operations[:max_operations]}
+                return {
+                    "rollouts": rollouts_per_problem,
+                    "critique": response,
+                    "operations": operations[:max_operations],
+                }
             except Exception as e:
                 print(f"Warning: failed in single query critique, {e}")
                 return None
@@ -204,21 +203,14 @@ class ExperienceUpdater:
             json.dump(results, f, indent=2)
         return results
 
-
-    def _batch_update(
-        self,
-        experiences, 
-        critiques, 
-        save_dir,
-        max_retries=3
-    ):
+    def _batch_update(self, experiences, critiques, save_dir, max_retries=3):
         print("Batch update")
         filename = os.path.join(save_dir, "batch_update.json")
         if os.path.exists(filename):
             results = json.load(open(filename))
             print("- File exists, loaded from:", filename)
             return results
-        
+
         # collect operations
         all_operations = []
         for each in critiques:
@@ -252,10 +244,7 @@ class ExperienceUpdater:
         for _ in range(max_retries):
             try:
                 response = self.llm.chat(
-                    BATCH_EXPERIENCE_UPDATE_TEMPLATE.format(
-                        experiences=candidate_experiences, 
-                        updates=to_modify
-                    )
+                    BATCH_EXPERIENCE_UPDATE_TEMPLATE.format(experiences=candidate_experiences, updates=to_modify)
                 )
                 revision_plan = json.loads(response.split("```json")[-1].split("```")[0])
                 break

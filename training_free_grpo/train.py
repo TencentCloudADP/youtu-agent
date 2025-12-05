@@ -5,7 +5,7 @@ import json
 import os
 import random
 
-from training_free_grpo.main import rollout_dataset, load_rollouts
+from training_free_grpo.main import load_rollouts, rollout_dataset
 from utu.agents import SimpleAgent
 from utu.config import ConfigLoader
 
@@ -16,19 +16,21 @@ async def main(args):
     # Set up domain-specific variables
     if args.domain == "math":
         from training_free_grpo.math.dataset import load_data
-        from training_free_grpo.math.verify import verify_func
-        from training_free_grpo.math.prompts import PROBLEM_WITH_EXPERIENCE_TEMPLATE
         from training_free_grpo.math.experience import ExperienceUpdater
+        from training_free_grpo.math.prompts import PROBLEM_WITH_EXPERIENCE_TEMPLATE
+        from training_free_grpo.math.verify import verify_func
+
         config_name = "simple/math_agent.yaml"
     elif args.domain == "web":
         from training_free_grpo.web.dataset import load_data
-        from training_free_grpo.web.verify import verify_func
-        from training_free_grpo.web.prompts import PROBLEM_WITH_EXPERIENCE_TEMPLATE
         from training_free_grpo.web.experience import ExperienceUpdater
+        from training_free_grpo.web.prompts import PROBLEM_WITH_EXPERIENCE_TEMPLATE
+        from training_free_grpo.web.verify import verify_func
+
         config_name = "simple/base_search.yaml"
     else:
         raise ValueError(f"Unsupported domain: {args.domain}")
-    
+
     # Create experiment directory
     experiment_dir = os.path.join("data", args.domain, "train", args.experiment_name)
     os.makedirs(experiment_dir, exist_ok=True)
@@ -75,7 +77,7 @@ async def main(args):
                     shuffled_data.append(json.loads(line))
             print(f"Loaded {len(shuffled_data)} records from shuffled data")
         else:
-            print(f"Shuffling data ...")
+            print("Shuffling data ...")
             shuffled_data = copy.deepcopy(train_data)
             random.shuffle(shuffled_data)
             with open(shuffled_filename, "w") as f:
@@ -95,31 +97,38 @@ async def main(args):
             print(f"Step {step} (Epoch {epoch}, Batch {batch_idx})")
             cur_step_dir = os.path.join(experiment_dir, f"step_{step}")
             os.makedirs(cur_step_dir, exist_ok=True)
-            
+
             # Get current batch data
             batch_data = copy.deepcopy(shuffled_data[batch_idx * args.batchsize : (batch_idx + 1) * args.batchsize])
 
             # Load existing rollouts
             rollout_filename = os.path.join(cur_step_dir, "rollout.jsonl")
             rollouts = load_rollouts(rollout_filename)
-            
+
             # Retrieve experiences for this batch (except first step)
             if step > 0:
-                experience_filename = os.path.join("data", args.domain, "train", args.experiment_name, f"step_{step}/experiences.json")
+                experience_filename = os.path.join(
+                    "data", args.domain, "train", args.experiment_name, f"step_{step}/experiences.json"
+                )
                 experiences = json.load(open(experience_filename))
             else:
                 experiences = {}
-            
+
             # Format the batch data with experiences
-            formatted_experiences = "\n".join([ f"[{i}]. {e}" for i, e in experiences.items() ])
-            formatted_batch_data = [{
-                "prompt": PROBLEM_WITH_EXPERIENCE_TEMPLATE.format(
-                    experiences=formatted_experiences if formatted_experiences else "None",
-                    problem=each["problem"],
-                ) if experiences else each["problem"],
-                **each
-            } for each in batch_data]
-            
+            formatted_experiences = "\n".join([f"[{i}]. {e}" for i, e in experiences.items()])
+            formatted_batch_data = [
+                {
+                    "prompt": PROBLEM_WITH_EXPERIENCE_TEMPLATE.format(
+                        experiences=formatted_experiences if formatted_experiences else "None",
+                        problem=each["problem"],
+                    )
+                    if experiences
+                    else each["problem"],
+                    **each,
+                }
+                for each in batch_data
+            ]
+
             # Duplicate for GRPO
             print(f"GRPO rollout number={args.grpo_n}")
             formatted_batch_data = formatted_batch_data * args.grpo_n
@@ -139,18 +148,18 @@ async def main(args):
             stats[f"step_{step}"]["rollout"] = rollout_stats
 
             # Generate critiques and update experiences
-            next_step_dir = os.path.join(experiment_dir, f"step_{step+1}")
+            next_step_dir = os.path.join(experiment_dir, f"step_{step + 1}")
             os.makedirs(next_step_dir, exist_ok=True)
             next_experience_filename = os.path.join(next_step_dir, "experiences.json")
             if os.path.exists(next_experience_filename):
                 print(f"Experiences already exist for step {step}, skipping experience update")
             else:
                 new_experiences = ExperienceUpdater().run(
-                    rollouts=rollouts, 
+                    rollouts=rollouts,
                     experiences=experiences,
                     save_dir=cur_step_dir,
                     max_workers=args.rollout_concurrency,
-                    given_ground_truth=True if args.given_ground_truth=="True" else False,
+                    given_ground_truth=True if args.given_ground_truth == "True" else False,
                     only_partial_correct=True if args.grpo_n > 1 else False,
                 )
                 json.dump(new_experiences, open(next_experience_filename, "w"), indent=2)
@@ -161,11 +170,14 @@ async def main(args):
             json.dump(stats, open(stats_filename, "w"), indent=2)
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training-free GRPO")
-    parser.add_argument("--mode", type=str, default="agent", required=True, choices=["prompt", "agent"], help="Mode of inference")
-    parser.add_argument("--domain", type=str, required=True, choices=["math", "web"], help="domain of the tasks (math/web)")
+    parser.add_argument(
+        "--mode", type=str, default="agent", required=True, choices=["prompt", "agent"], help="Mode of inference"
+    )
+    parser.add_argument(
+        "--domain", type=str, required=True, choices=["math", "web"], help="domain of the tasks (math/web)"
+    )
     parser.add_argument("--experiment_name", type=str, required=True, help="name of experiment run")
     parser.add_argument("--dataset", type=str, required="True", help="Name of dataset")
     parser.add_argument("--dataset_truncate", type=int, default=None, help="Truncate dataset to first N samples")
