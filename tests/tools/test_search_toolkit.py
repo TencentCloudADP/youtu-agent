@@ -1,15 +1,14 @@
 import json
-
 import pytest
-
 from utu.config import ConfigLoader
+import asyncio
+from examples.rl_train.wiki_tool import WikiToolkit
+'''
 from utu.tools import SearchToolkit
 from utu.tools.search.crawl4ai_crawl import Crawl4aiCrawl
 from utu.tools.search.google_search import GoogleSearch
 from utu.tools.search.jina_crawl import JinaCrawl
 from utu.tools.search.jina_search import JinaSearch
-
-
 # ----------------------------------------------------------------------------
 async def test_baidu_search():
     from utu.tools.search.baidu_search import BaiduSearch
@@ -97,3 +96,30 @@ async def test_web_qa(search_toolkit: SearchToolkit):
         print(f"query: {q}")
         result = await search_toolkit.web_qa(*q)
         print(f"result: {result}")
+'''
+
+
+async def test_local_wiki():
+    local_wiki_tool = WikiToolkit()
+    queries = [
+        "Apple Inc.",
+        "NVIDIA",
+        "Starbucks"
+    ]
+    result = await local_wiki_tool.search_wiki(queries)
+    print(f"result: {result}")
+
+
+async def test_main():
+    tasks = [test_local_wiki() for _ in range(128)]
+    await asyncio.gather(*tasks)
+    return
+
+
+
+if __name__ == '__main__':
+    print()
+    # asyncio.run(test_crawl4ai_crawl())
+    # asyncio.run(test_local_wiki())
+    asyncio.run(test_main())
+
