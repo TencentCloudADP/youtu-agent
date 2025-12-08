@@ -130,7 +130,7 @@ class WikiToolkit(AsyncBaseToolkit):
         # NOTE: you should change this to your own deployment
         self.retrieval_service_url = config.get("retrieval_service_url", "http://10.16.20.181:80/retrieve")
         self.topk = config.get("topk", 3)
-        print(f"{self.num_workers=}, {self.rate_limit=}, {self.timeout=}, {self.enable_global_rate_limit=}, {self.retrieval_service_url=}, {self.topk=}")
+        print(f"Initialized 🔍 WikiToolkit with config:{self.num_workers=}, {self.rate_limit=}, {self.timeout=}, {self.enable_global_rate_limit=}, {self.retrieval_service_url=}, {self.topk=}")
         logger.info(f"Initialized SearchTool with config: {config}")
 
 
