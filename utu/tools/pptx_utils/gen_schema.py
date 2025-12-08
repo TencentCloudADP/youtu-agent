@@ -132,6 +132,7 @@ def _page_to_schema(page_key: str, page_spec: dict[str, Any], allowed_types: set
 
 def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
     # build allowed types from type_map in YAML (list of single-key mappings)
+    # Support both single index and list of indices as values
     allowed_types: set[str] = set()
     tm = yaml_root.get("type_map")
     if isinstance(tm, list):
@@ -218,7 +219,7 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
             "Item": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string", "maxLength": 10},
+                    "title": {"type": "string", "maxLength": 15},
                     "content": {"type": "string", "maxLength": 200, "minLength": 40},
                 },
                 "required": ["title", "content"],

@@ -70,7 +70,11 @@ class PageConfig:
             for item in config["type_map"]:
                 if isinstance(item, dict):
                     for key, value in item.items():
-                        self.type_map[key] = value
+                        # Support both single index and list of indices
+                        if isinstance(value, list):
+                            self.type_map[key] = value
+                        else:
+                            self.type_map[key] = [value]
         else:
             raise ValueError("type_map not found in YAML config")
 

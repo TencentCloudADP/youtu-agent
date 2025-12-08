@@ -57,8 +57,8 @@ items_3_page:
   type: items_3_page
   title:
     type: str
-    description: be very concise within 7 words                   
-    max_len: 7
+    description: be very concise within 10 words
+    max_len: 10
   items:
     type: item_list
     description: exactly 3 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
@@ -68,11 +68,11 @@ items_3_with_subtitle_page:
   type: items_3_with_subtitle_page
   title:
     type: str
-    description: be very concise within 5 words                   
-    max_len: 5
+    description: be very concise within 10 words
+    max_len: 10
   subtitle:
     type: str
-    description: be very concise within 6 words                  
+    description: be very concise within 10 words
     max_len: 10
   items:
     type: item_list

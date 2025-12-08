@@ -64,6 +64,7 @@ config:
     2. **Maintain Structure**: Keep the hierarchical structure and logical flow of the original outline.
     3. **Follow Schema**: Ensure the output JSON strictly conforms to the provided schema.
     4. **Character Encoding**: Preserve all special characters, punctuation, and formatting marks correctly.
+    5. **Alternate Between Similar Page Types**: When multiple similar page types are available in the schema (e.g., items_3_page, items_3_with_subtitle_page, items_3_with_subtitle_page_alt), actively alternate between them throughout the presentation. Do NOT repeatedly use only one type when alternatives exist. This creates visual variety and keeps the presentation engaging.
 
     ## Input Format
     You will receive:

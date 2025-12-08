@@ -1,5 +1,6 @@
 import json
 import logging
+import random
 import re
 from pathlib import Path
 from typing import Any
@@ -24,9 +25,15 @@ def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_c
         if not slide_type:
             raise ValueError("Slide data must contain a 'type' field")
 
-        template_index = page_config.type_map.get(slide_type)
-        if template_index is None or template_index >= len(prs.slides):
-            raise ValueError("No template found for slide type '%s'", slide_type)
+        template_indices = page_config.type_map.get(slide_type)
+        if template_indices is None or len(template_indices) == 0:
+            raise ValueError(f"No template found for slide type '{slide_type}'")
+        
+        # Randomly select one index from the list
+        template_index = random.choice(template_indices)
+        
+        if template_index >= len(prs.slides):
+            raise ValueError(f"Template index {template_index} out of range for slide type '{slide_type}'")
 
         template_slide = prs.slides[template_index]
         if slide_type in ("title_page", "acknowledgement_page"):
@@ -37,9 +44,10 @@ def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_c
         page_config.render(target_slide, slide_data)
 
     # get title page
-    title_pages_idx = page_config.type_map.get("title_page")
-    acknowledgement_pages_idx = page_config.type_map.get("acknowledgement_page")
-    max_idx = max(list(page_config.type_map.values()))
+    title_pages_idx = page_config.type_map.get("title_page", [0])[0]
+    acknowledgement_pages_idx = page_config.type_map.get("acknowledgement_page", [len(prs.slides) - 1])[0]
+    # Calculate max_idx from all indices in type_map
+    max_idx = max(max(indices) for indices in page_config.type_map.values() if indices)
     # move title page to the first
     move_slide(prs, title_pages_idx, 0)
     # move acknowledgement page to the last
