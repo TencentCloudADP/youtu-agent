@@ -5,12 +5,14 @@ This module is used to define the PPT template pydantic models.
 import logging
 import traceback
 import uuid
-from typing import Any, Literal
+from typing import Any, Literal, Tuple
 
 import requests
 from PIL import Image
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pydantic import BaseModel
+import numpy as np
+
 from utils import delete_shape, find_shape_with_name_except, replace_picture_keep_format
 
 
@@ -52,6 +54,10 @@ class TableContent(BaseContent):
     n_rows: int  # no more than 7
     n_cols: int  # no more than 10
 
+# font awesome 4 only
+class FontAwesomeIcon(BaseModel):
+    icon_name: str
+
 
 class PageConfig:
     """Configuration loader for page templates from YAML"""
@@ -78,10 +84,9 @@ class PageConfig:
             if key == "type_map":
                 continue
 
-            page_key = key if key.endswith("_page") else f"{key}_page"
-            self.pages[page_key] = value
+            self.pages[key] = value
 
-    def render(self, slide, page_json: dict[str, Any]):
+    def render(self, slide, page_json: dict[str, Any], prs):
         """Render slide based on page configuration and data"""
         page_type = page_json.get("type", "")
         logging.info(f"===Rendering page type: {page_type}===")
@@ -117,8 +122,16 @@ class PageConfig:
                 self._render_label_list_field(slide, field_name, field_value)
             elif field_type == "image":
                 self._render_basic_image_field(slide, field_name, field_value)
+            elif field_type == "fontawesome_icon":
+                self._render_font_awesome_icon_field(slide, field_name, field_value, prs)
             else:
                 raise ValueError(f"Unknown field type: {field_type}")
+
+    def _render_font_awesome_icon_field(self, slide, field_name: str, icon_value, prs):
+        logging.info(f"{field_name}: {icon_value}")
+        shape = find_shape_with_name_except(slide.shapes, field_name)
+        if shape:
+            handle_font_awesome_icon(icon_value, shape, slide, prs)
 
     def _render_basic_image_field(self, slide, field_name: str, image_value):
         logging.info(f"{field_name}: {image_value}")
@@ -227,18 +240,6 @@ def download_image(url, base_dir="."):
     raise Exception(f"Failed to download image: {url}")
 
 
-# def handle_pure_text(text: str, target_shape, slide):
-#     try:
-#         text_frame = target_shape.text_frame
-#         for paragraph in text_frame.paragraphs:
-#             for run in paragraph.runs:
-#                 run.text = text
-#                 text = ""
-#     except Exception as e:
-#         logging.error(f"Failed to set text: {text} {e}")
-#         traceback.print_exc()
-
-
 def handle_pure_text(text: str, target_shape, slide):
     try:
         logging.info(f"handle_pure_text: {text} =fill=> {target_shape.text_frame.text}")
@@ -260,14 +261,19 @@ def handle_pure_text(text: str, target_shape, slide):
         logging.error(f"Failed to set text: {text} {e}")
 
 
-def handle_image(image_url: str, target_shape, slide):
+def handle_image(image_url: str, target_shape, slide, is_local: bool = False):
     left, top, width, height = target_shape.left, target_shape.top, target_shape.width, target_shape.height
-    try:
-        image_url, image_width, image_height = download_image(image_url)
-    except Exception as e:
-        logging.warning(f"Failed to download image: {image_url} {e}")
-        traceback.print_exc()
-        return
+    
+    if not is_local:
+        try:
+            image_url, image_width, image_height = download_image(image_url)
+        except Exception as e:
+            logging.warning(f"Failed to download image: {image_url} {e}")
+            traceback.print_exc()
+            return
+    else:
+        image = Image.open(image_url)
+        image_width, image_height = image.size
 
     # scale the image to fit the placeholder
     scale = min(width / image_width, height / image_height)
@@ -370,3 +376,51 @@ def handle_item(item: Item, item_index: int, slide, index_start_from_one=True):
 
     handle_pure_text(item.title, item_title_shape, slide)
     handle_pure_text(item.content, item_content_shape, slide)
+
+
+# def handle_font_awesome_icon(icon: FontAwesomeIcon, target_shape, slide):
+#     """
+#     Read SVG and convert to PNG, then replace the shape with the PNG
+#     """
+#     from fa_to_codepoint import fa_2_codepoint
+    
+#     codepoint = fa_2_codepoint[icon.icon_name]
+#     handle_image(f"fa_icons/{codepoint}.png", target_shape, slide)
+
+def handle_font_awesome_icon(icon: FontAwesomeIcon, target_shape, slide, prs):
+    from fa_to_codepoint import fa_2_codepoint
+    from utils import get_fill_rgb
+    
+    codepoint = fa_2_codepoint[icon["icon_name"]]
+    
+    target_color = get_fill_rgb(target_shape, prs)
+    if not target_color:
+        logging.warning("cannot get target color of icon, use black by default")
+        target_color = (0, 0, 0)
+    
+    img = Image.open(f'fa_icons/{codepoint}.png')
+    
+    # replace black in the image with the target_color
+    img_array = np.array(img)
+    # 分离RGB和Alpha通道
+    rgb = img_array[:, :, :3]
+    alpha = img_array[:, :, 3] if img_array.shape[2] == 4 else None
+    
+    # 创建黑色像素掩码
+    black_mask = np.all(rgb <= 10, axis=2)
+    
+    # 替换RGB通道中的黑色
+    rgb[black_mask] = target_color
+    
+    # 重新组合通道
+    if alpha is not None:
+        result_array = np.dstack((rgb, alpha))
+    else:
+        result_array = rgb
+    result_img = Image.fromarray(result_array)
+    
+    # save to temp file
+    temp_file = f"{uuid.uuid4()}.png"
+    result_img.save(temp_file)
+    
+    handle_image(temp_file, target_shape, slide, is_local=True)
