@@ -71,6 +71,7 @@ class PPTToolkit(AsyncBaseToolkit):
         )
         # Load prompts from config
         self.ppt_generation_prompt = self.config.config.get("ppt_generation_prompt")
+        self.outline_translation_prompt = self.config.config.get("markdown_outline_translation_prompt")
         # Load default workdirs
         self.workdir = self.config.config.get("workdir")
         self.template_dir = self.config.config.get("template_dir")
@@ -88,7 +89,6 @@ class PPTToolkit(AsyncBaseToolkit):
             with open(self.template_yaml_config_path, "r") as f:
                 self.yaml_config.update(yaml.safe_load(f))
         self.schema = build_schema(self.yaml_config)
-        self.instructions_to_generate_ppt = self.ppt_generation_prompt.format(schema=json.dumps(self.schema, indent=2))
     
     def _prepare_messages(self, trajectory: list[TResponseInputItem] | None, prompt: str) -> list[dict]:
         """
@@ -165,10 +165,6 @@ class PPTToolkit(AsyncBaseToolkit):
         return tools
 
     @register_tool
-    async def load_template(self, template_index: str, trajectory: list[TResponseInputItem] | None = None) -> str:
-        raise NotImplementedError
-
-    @register_tool
     async def download_image_url(self, image_url: str, image_description: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         """
         Check if an image URL is accessible and can be used for PPT generation.
@@ -199,7 +195,13 @@ class PPTToolkit(AsyncBaseToolkit):
 
     @register_tool
     async def generate_json_schema(self, task: str, trajectory: list[TResponseInputItem] | None = None) -> str:
-        messages = self._prepare_messages(trajectory, self.instructions_to_generate_ppt + "\n" + task)
+        if "####" in task and "#####" not in task:
+            messages = self._prepare_messages(trajectory,
+                                              self.outline_translation_prompt.format(schema=json.dumps(self.schema, indent=2),
+                                                                                     outline=task) + "\n" + task)
+        else:
+            messages = self._prepare_messages(trajectory,
+                                              self.ppt_generation_prompt.format(schema=json.dumps(self.schema, indent=2)) + "\n" + task)
         json_schema = await self.llm.query_one(
             messages=messages, **self.config.config_llm.model_params.model_dump()
         )

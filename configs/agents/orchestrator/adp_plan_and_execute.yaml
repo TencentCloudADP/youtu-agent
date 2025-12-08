@@ -40,6 +40,6 @@ orchestrator_workers_info:
   - name: ReportAgent
     description: Generate a report based on provided information.
   - name: AttachmentAgent
-    description: Get the summarized content of a url or local document uploaded by the user.
+    description: Get the summarized content of a url or local document uploaded by the user. One Attachment task for one file.
   - name: PPTGeneratorAgent
     description: Generate a PowerPoint presentation based on provided information.

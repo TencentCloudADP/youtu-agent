@@ -19,6 +19,7 @@ agent:
     2. generate_json_schema(task)
       - Generate an outline in json schema for the PowerPoint presentation.
       - `task` is the main task description about the PowerPoint presentation. Use structured description(e.g. markdown headers or json) to outline the content of the PowerPoint presentation.
+      - **IMPORTANT**: If the user has already provided a complete markdown-formatted outline, pass the entire markdown outline directly as the `task` parameter without any modifications. The tool will automatically translate the markdown structure into the required json schema format.
 
     3. generate_image(prompt, save_path)
       - Generate an image by llm.

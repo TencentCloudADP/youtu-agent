@@ -48,7 +48,42 @@ config:
     {schema}
 
     Now finish your task:
+  markdown_outline_translation_prompt: |
+    Your task is to translate a markdown-formatted PPT outline into a JSON structure that conforms to the given schema.
 
+    ## Markdown Format Specification
+    The markdown outline uses 4 levels of headers, marked by different numbers of "#" symbols:
+    - **Level 1 Header (#)**: Represents the title of the cover slide. It means the `title_page` in the json schema
+    - **Level 2 Header (##)**: Represents the title of section transition slides between chapters. It means the `section_title_page` in the json schema.
+    - **Level 3 Header (###)**: Represents the title of a specific content slide. It's the `title` field in the json schema of the corresponding content page. **IMPORTANT**: All content under each level 3 header MUST BE in a single content page!!!
+    - **Level 4 Header (####)**: Represents sub-headings for bullet points within a slide. It's the `title` field of ech items, where the number of `items` is the same as the number of sub-headings.
+    - **Content under Level 4 headers**: Bullet points (marked with "-") represent the detailed content under each sub-heading. It's the `content` field of each item.
+
+    ## Translation Requirements
+    1. **Preserve All Information**: You MUST NOT change, omit, or add any information from the markdown outline. Translate it completely and accurately into JSON format.
+    2. **Maintain Structure**: Keep the hierarchical structure and logical flow of the original outline.
+    3. **Follow Schema**: Ensure the output JSON strictly conforms to the provided schema.
+    4. **Character Encoding**: Preserve all special characters, punctuation, and formatting marks correctly.
+
+    ## Input Format
+    You will receive:
+    1. A JSON schema that defines the structure of the output
+    2. A markdown outline that needs to be translated
+
+    ## Output Format
+    Generate a valid JSON object that:
+    - Matches the provided schema structure
+    - Contains all information from the markdown outline
+    - Maintains the original content without any modifications
+
+    ---
+    Schema:
+    {schema}
+
+    Markdown Outline:
+    {outline}
+
+    Now translate the markdown outline into JSON format according to the schema:
 config_llm:
   model_provider:
     type: ${oc.env:UTU_LLM_TYPE}
