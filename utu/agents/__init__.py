@@ -4,6 +4,7 @@ from .orchestra_agent import OrchestraAgent
 from .orchestrator_agent import OrchestratorAgent
 from .simple_agent import SimpleAgent
 from .workforce_agent import WorkforceAgent
+from .training_agent import TrainingAgent
 
 
 def get_agent(config: AgentConfig) -> SimpleAgent | OrchestraAgent | OrchestratorAgent | WorkforceAgent:
@@ -25,5 +26,6 @@ __all__ = [
     "OrchestratorAgent",
     "LLMAgent",
     "WorkforceAgent",
+    "TrainingAgent",
     "get_agent",
 ]
