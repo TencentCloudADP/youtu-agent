@@ -1,19 +1,4 @@
 # ruff: noqa: E501
-import requests
-import json
-from utu.tools import AsyncBaseToolkit, register_tool
-from typing import Any, Callable, Optional, TypeVar
-T = TypeVar("T")
-import json
-import logging
-import os
-import threading
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
-from contextlib import ExitStack
-from enum import Enum
-from uuid import uuid4
-from utu.config import ToolkitConfig
-
 # Copyright 2024 Bytedance Ltd. and/or its affiliates
 # Copyright 2023-2024 SGLang Team
 #
@@ -28,6 +13,21 @@ from utu.config import ToolkitConfig
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import requests
+import json
+from utu.tools import AsyncBaseToolkit, register_tool
+from typing import Any, Callable, Optional, TypeVar
+T = TypeVar("T")
+import json
+import logging
+import os
+import threading
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
+from contextlib import ExitStack
+from enum import Enum
+from uuid import uuid4
+from utu.config import ToolkitConfig
 
 import json
 import logging
