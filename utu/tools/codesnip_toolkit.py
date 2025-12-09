@@ -106,7 +106,7 @@ class CodesnipToolkit(AsyncBaseToolkit):
         - ``` ... ```
         """
         # Pattern to match code blocks with optional language specifier
-        pattern = r"```(?:python|py|Python)?\s*\n?(.*?)```"
+        pattern = r'```(?:python|py|Python)?\s*\n?(.*?)```'
         matches = re.findall(pattern, code, re.DOTALL)
 
         if matches:
@@ -118,7 +118,8 @@ class CodesnipToolkit(AsyncBaseToolkit):
 
     @register_tool("code_interpreter")
     async def code_interpreter(self, code: str) -> str:
-        """A tool for executing code."""
+        """A tool for executing code.
+        """
         # Extract code from markdown code blocks if present
         code = self._extract_code_from_markdown(code)
 
