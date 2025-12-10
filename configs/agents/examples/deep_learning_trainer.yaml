@@ -1,0 +1,28 @@
+# @package _global_
+defaults:
+  - /model/base@orchestrator_model
+  - /agents/router/force_plan@orchestrator_router  # router
+  - /agents/simple/model_trainer@orchestrator_workers.ModelTrainer
+  - /agents/simple/metric_analyst@orchestrator_workers.MetricAnalyst
+  - /agents/simple/data_collector@orchestrator_workers.DataCollector
+  - _self_
+
+type: orchestrator
+
+orchestrator_config:
+  name: DeepLearningTrainerAgent
+  add_chitchat_subagent: false
+  additional_instructions: |-
+    Your ultimate object is training specified deep learning task to optimize model. Use the three orchestrator_workers to complete the object.
+    - Use ModelTrainer to execute model training task.
+    - After training is finished, there will be a training log contains train informations (e.g. loss curve) and eval results. Feed the log to MetricAnalyst for analysing.
+    - The MetricAnalyst will generate a conclusion of this period of training and data feedback for next training, feed the feedback to DataCollector in order to collect wanted data.
+    - The DataCollector will follow the given data feedback and collect data for next training. After data augmented, re-train the model.
+
+orchestrator_workers_info:
+  - name: ModelTrainer
+    description: Train specified model.
+  - name: MetricAnalyst
+    description: Analysis the training log and give the next data upgrade suggestion.
+  - name: DataCollector
+    description: Collect data by the suggestion of MetricAnalyst.
