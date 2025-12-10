@@ -72,6 +72,7 @@ class PPTToolkit(AsyncBaseToolkit):
         # Load prompts from config
         self.ppt_generation_prompt = self.config.config.get("ppt_generation_prompt")
         self.outline_translation_prompt = self.config.config.get("markdown_outline_translation_prompt")
+        self.json_outline_translation_prompt = self.config.config.get("json_outline_translation_prompt")
         # Load default workdirs
         self.workdir = self.config.config.get("workdir")
         self.template_dir = self.config.config.get("template_dir")
@@ -164,6 +165,108 @@ class PPTToolkit(AsyncBaseToolkit):
         
         return tools
 
+    def _translate_markdown_outline_to_json_outline(self, markdown_outline: str) -> str:
+        """
+        Translate markdown outline to JSON outline format.
+        
+        Markdown format:
+        - # (H1): Title page
+        - ## (H2): Section title page
+        - ### (H3): Content page title
+        - #### (H4): Subtitle within content page
+        - Plain text or bullet points under H4: Detail content
+        
+        Args:
+            markdown_outline: Markdown formatted outline string
+            
+        Returns:
+            JSON string representing the outline
+        """
+        lines = markdown_outline.strip().split('\n')
+        slides = []
+        
+        current_content_page = None
+        current_subtitle = None
+        current_detail_lines = []
+        
+        def finalize_subtitle():
+            """Helper to finalize current subtitle and add to content page"""
+            nonlocal current_subtitle, current_detail_lines
+            if current_subtitle and current_content_page:
+                detail = '\n'.join(current_detail_lines).strip()
+                current_content_page['body'].append({
+                    'subtitle': current_subtitle,
+                    'detail': detail
+                })
+                current_subtitle = None
+                current_detail_lines = []
+        
+        def finalize_content_page():
+            """Helper to finalize current content page and add to slides"""
+            nonlocal current_content_page
+            finalize_subtitle()
+            if current_content_page:
+                # Add items_num parameter equal to the length of body list
+                current_content_page['items_num'] = len(current_content_page['body'])
+                slides.append(current_content_page)
+                current_content_page = None
+        
+        for line in lines:
+            line_stripped = line.strip()
+            if not line_stripped:
+                continue
+            
+            # H1: Title page
+            if line_stripped.startswith('#') and not line_stripped.startswith('##'):
+                finalize_content_page()
+                title = line_stripped[1:].strip()
+                slides.append({
+                    'type': 'title',
+                    'title': title
+                })
+            
+            # H2: Section title page
+            elif line_stripped.startswith('##') and not line_stripped.startswith('###'):
+                finalize_content_page()
+                title = line_stripped[2:].strip()
+                slides.append({
+                    'type': 'section_title',
+                    'title': title
+                })
+            
+            # H3: Content page title
+            elif line_stripped.startswith('###') and not line_stripped.startswith('####'):
+                finalize_content_page()
+                title = line_stripped[3:].strip()
+                current_content_page = {
+                    'type': 'content_page',
+                    'title': title,
+                    'body': []
+                }
+            
+            # H4: Subtitle within content page
+            elif line_stripped.startswith('####'):
+                finalize_subtitle()
+                current_subtitle = line_stripped[4:].strip()
+                current_detail_lines = []
+            
+            # Content under H4 (bullet points or plain text)
+            else:
+                if current_subtitle:
+                    # Remove leading dash and spaces for bullet points
+                    # if line_stripped.startswith('-'):
+                    #     content = line_stripped[1:].strip()
+                    # else:
+                    #     content = line_stripped
+                    # current_detail_lines.append(content)
+                    current_detail_lines.append(line_stripped)
+        
+        # Finalize any remaining content
+        finalize_content_page()
+        
+        json_data = {'slides': slides}
+        return json.dumps(json_data, ensure_ascii=False, indent=2)
+
     @register_tool
     async def download_image_url(self, image_url: str, image_description: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         """
@@ -196,9 +299,13 @@ class PPTToolkit(AsyncBaseToolkit):
     @register_tool
     async def generate_json_schema(self, task: str, trajectory: list[TResponseInputItem] | None = None) -> str:
         if "####" in task and "#####" not in task:
+            # messages = self._prepare_messages(trajectory,
+            #                                   self.outline_translation_prompt.format(schema=json.dumps(self.schema, indent=2),
+            #                                                                          outline=task))
+            task = self._translate_markdown_outline_to_json_outline(task)
             messages = self._prepare_messages(trajectory,
-                                              self.outline_translation_prompt.format(schema=json.dumps(self.schema, indent=2),
-                                                                                     outline=task) + "\n" + task)
+                                              self.json_outline_translation_prompt.format(schema=json.dumps(self.schema, indent=2),
+                                                                                          outline=task))
         else:
             messages = self._prepare_messages(trajectory,
                                               self.ppt_generation_prompt.format(schema=json.dumps(self.schema, indent=2)) + "\n" + task)
