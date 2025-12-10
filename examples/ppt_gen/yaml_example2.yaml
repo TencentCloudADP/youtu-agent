@@ -62,6 +62,8 @@ items_3_page:
   items:
     type: item_list
     description: exactly 3 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 3
+    min_len: 3
 
 items_3_with_subtitle_page:
   description: page with three logically parallel items. With one subtitle.
@@ -77,6 +79,8 @@ items_3_with_subtitle_page:
   items:
     type: item_list
     description: exactly 3 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item. 
+    max_len: 3
+    min_len: 3
 
 image_description_page:
   description: page with two column. One column is an image, the other is the description content
@@ -104,15 +108,17 @@ items_6_timeline_page:
     description: exactly 6 items representing chronological events or milestones. Each item should have a time-based title (year/month) and detailed content describing what happened, key achievements, or significant changes during that period. 
 
 items_4_page:
-  description: this slide illustrates 4 items. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to one word.
+  description: page with three logically parallel items         
   type: items_4_page
   title:
     type: str
-    description: be very concise within 7 words                   
-    max_len: 7
+    description: be very concise within 10 words
+    max_len: 10
   items:
     type: item_list
-    description: exactly 4 items, each with a one-word title capturing the core concept. The content should provide detailed explanation of the key point, including relevant details, examples, or supporting information to give comprehensive understanding. 
+    description: exactly 4 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 4
+    min_len: 4
 
 items_4_timeline_page:
   description: this slide illustrates a timeline. The items are presented in a horizontal line from left to right. It is recommended to restrict item title to year, month or quarter.
@@ -139,3 +145,76 @@ acknowledgement_page:
     type: str
   date:
     type: str
+
+items_2_page:
+  description: page with three logically parallel items         
+  type: items_2_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 2 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 2
+    min_len: 2
+
+items_2_with_subtitle_page:
+  description: page with three logically parallel items. With one subtitle.
+  type: items_2_with_subtitle_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  subtitle:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 2 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item. 
+    max_len: 2
+    min_len: 2
+
+items_4_with_subtitle_page:
+  description: page with three logically parallel items. With one subtitle.
+  type: items_4_with_subtitle_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  subtitle:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 4 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item. 
+    max_len: 4
+    min_len: 4
+
+items_5_page:
+  description: page with three logically parallel items         
+  type: items_5_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 5 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 5
+    min_len: 5
+
+items_6_page:
+  description: page with three logically parallel items         
+  type: items_6_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 6 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 6
+    min_len: 6
