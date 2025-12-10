@@ -26,11 +26,11 @@ orchestrator_config:
     3. Generate the final output (Choose ONLY ONE of them and call it ONLY ONCE):
        - Use ReportAgent to produce a markdown report (default for most cases).
        - Use HTMLGenerator to create a webpage report only if the user explicitly requests a webpage or HTML output.
-       - Use PPTGeneratorAgent to create a PowerPoint presentation only if the user explicitly requests a PowerPoint presentation.
+       - Use PPTGeneratorAgent to create a PowerPoint presentation only if the user explicitly requests a PowerPoint presentation. NOTE: PPTGeneratorAgent already includes built-in templates and design elements, so DO NOT use SearchAgent to search for PPT design, templates, or styling information.
 
 orchestrator_workers_info:
   - name: SearchAgent
-    description: Web search (text, image), information retrieval, research material collection, API data fetching.
+    description: Web search (text, image, statistical diagrams, data charts), information retrieval, research material collection, API data fetching.
   - name: CodeAgent
     description: Run code snippets in Python to solve mathmatical problems or draw pyplot diagrams.
   - name: ShellAgent
