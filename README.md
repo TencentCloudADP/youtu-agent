@@ -1,415 +1,247 @@
-# <img src="docs/assets/logo.svg" alt="Youtu-agent Logo" height="24px"> Youtu-Agent: A simple yet powerful agent framework that delivers with open-source models
-
-<div align="center">
-<a href="https://tencentcloudadp.github.io/youtu-agent/"><img src=https://img.shields.io/badge/📖-Documentation-blue.svg></a>
-<!-- <a href=https://arxiv.org/abs/2502.14345><img src=https://img.shields.io/badge/arXiv-2502.14345-b31b1b.svg></a> -->
-<a href=https://github.com/TencentCloudADP/youtu-agent><img src=https://img.shields.io/badge/GitHub-Tencent-blue.svg></a>
-<a href=https://deepwiki.com/TencentCloudADP/youtu-agent><img src=https://img.shields.io/badge/DeepWiki-Tencent-blue.svg></a>
-<a href=https://arxiv.org/abs/2510.08191><img src=https://img.shields.io/badge/arXiv-2510.08191-b31b1b.svg></a>
-</div>
-
-<p align="center">
-| <a href="README_ZH.md"><b>中文</b></a>
-| <a href="README_JA.md"><b>日本語</b></a>
-| <a href="#-benchmark-performance"><b>🌟 Performance</b></a> 
-| <a href="#-examples"><b>💡 Examples</b> </a> 
-| <a href="#-features"><b>✨ Features</b> </a> 
-| <a href="#-getting-started"><b>🚀 Getting Started</b> </a> 
-| 📢 <a href="https://discord.gg/QjqhkHQVVM"><b>Join Discord</b></a> or <a href="https://github.com/user-attachments/assets/354cd8e7-e108-4348-9355-04440052f408"><b>WeChat</b></a> 
-|
-</p>
 
 
-`Youtu-Agent` is a flexible, high-performance framework for building, running, and evaluating autonomous agents. Beyond topping the benchmarks, this framework delivers powerful agent capabilities, e.g. data analysis, file processing, and deep research, all with open-source models.
+# Training Youtu-Agent with Ease: Hands-On Guide for End-to-End Reinforcement Learning
 
-<img src="docs/assets/mascot.png" alt="Youtu-agent Logo" width="200" align="left" style="margin-right:20px;">
+<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-Agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
 
-Key highlights:
-- **Verified performance**: Achieved 71.47% on WebWalkerQA (pass@1) and 72.8% on GAIA (text-only subset, pass@1), using purely `DeepSeek-V3` series models (without Claude or GPT), establishing a strong open-source starting point.
-- **Open-source friendly & cost-aware**: Optimized for accessible, low-cost deployment without reliance on closed models.
-- **Practical use cases**: Out-of-the-box support for tasks like CSV analysis, literature review, personal file organization, and podcast and video generation (coming soon).
-- **Flexible architecture**: Built on [openai-agents](https://github.com/openai/openai-agents-python), with extensible support for diverse model APIs (form `DeepSeek` to `gpt-oss`), tool integrations, and framework implementations.
-- **Automation & simplicity**: YAML-based configs, auto agent generation, and streamlined setup reduce manual overhead.
+This repository allows you to train your agents built by Youtu-Agent. We have **verified the performace** of code/math (ReTool) and search (SearchR1) tasks with multi-node training on **128 GPUs**.
 
-## 🗞️ News
+[**Youtu-Agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a framework for building and managing your own Youtu Agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
 
-- 🎉 [2025-11-12] **Training-Free GRPO now available in main branch!** The agent practice module powered by [Training-Free Group Relative Policy Optimization](https://arxiv.org/abs/2510.08191) is now integrated into the main branch. Enhance your agents' performance without fine-tuning at minimal cost (~$8 for RL runs). See our [Agent Practice Documentation](https://tencentcloudadp.github.io/youtu-agent/practice/) for usage and examples on math reasoning and web search tasks.
-- 📢 [2025-11-03] New examples: we add the [**PPT generation**](examples/ppt_gen/README.md) and [**RAG**](configs/agents/examples/rag.yaml) examples.
-- 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191). RL for DeepSeek-V3.2 at $8? Yes, it's possible! Training-free GRPO keeps DeepSeek-V3.2 frozen, learns a token prior from ~100 samples for ~$8 RL runs, delivers verified math and web search gains! [code in branch [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)] [[x thread](https://x.com/cai_cecilia47/status/1976558824640393559)].
-- 🛠️ [2025-09-28] Agent auto-generation now ships with companion tooling: describe a capability once and let `Youtu-Agent` build the tool for you. [[details](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)].
+[**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a framework for training LLM-based agents via popular training backends. In the present implementation, we use the VeRL library for RL training.
 
-<details>
-<summary><b>📰 Previous announcements</b></summary>
-- 📺 [2025-09-09] We hosted a live sharing the design philosophy and basic usage of `Youtu-Agent`. [[video](https://www.bilibili.com/video/BV1mypqz4EvS)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)].
-- 🎁 [2025-09-02] [Tencent Cloud International](https://www.tencentcloud.com/) offers new users of the DeepSeek API **3 million free tokens** (**Sep 1 – Oct 31, 2025**). [Try it out](https://www.tencentcloud.com/document/product/1255/70381) for free if you want to use DeepSeek models in `Youtu-Agent`! For enterprise agent solutions, also check out [Agent Development Platform](https://adp.tencentcloud.com) (ADP).
-- 📺 [2025-08-28] We hosted a live sharing updates about DeepSeek-V3.1 and how to use it in the `Youtu-Agent` framework. [[video](https://www.bilibili.com/video/BV1XwayzrETi/)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)].
-</details>
 
-## 🌟 Benchmark Performance
+## 1. Verified Training Performance
 
-`Youtu-Agent` is built on open-source models and lightweight tools, demonstrating strong results on challenging deep search and tool use benchmarks.
+The RL training dynamics (at least 200 steps) of 7B instruct models are provided below for reference, confirming the effectiveness and stability of training with our repository. More performance gains are expected with prolonged training.
 
-- **[WebWalkerQA](https://huggingface.co/datasets/callanwu/WebWalkerQA)**: Achieved 60.71% accuracy with `DeepSeek-V3-0324`， using new released `DeepSeek-V3.1` can further improve to 71.47%, setting a new SOTA performance.
-- **[GAIA](https://gaia-benchmark-leaderboard.hf.space/)**: Achieved 72.8% pass@1 on the [text-only validation subset](https://github.com/sunnynexus/WebThinker/blob/main/data/GAIA/dev.json) using `DeepSeek-V3-0324` (including models used within tools). We are actively extending evaluation to the full GAIA benchmark with multimodal tools, and will release the trajectories in the near future. Stay tuned! ✨
 
-![WebWalkerQA](docs/assets/images/benchmark_webwalkerqa.png)
-
-## 💡 Examples
-
-Click on the images to view detailed videos.
+- [ReTool](https://api.wandb.ai/links/1275747829-fudan-university/vwxn21w2). AIME24: 0.10 (step 0) -> 0.45 (step 460).
 
 <table>
   <tr>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>Data Analysis</strong><br>Analyzes a CSV file and generates an HTML report.
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>File Management</strong><br>Renames and categorizes local files for the user.
-    </td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <video src="https://github.com/user-attachments/assets/60193435-b89d-47d3-8153-5799d6ff2920" 
-             poster="https://img.youtube.com/vi/r9we4m1cB6M/sddefault.jpg" 
-             controls muted preload="metadata" 
-             width="100%" height="300"
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <video src="https://github.com/user-attachments/assets/dbb9cfc6-3963-4264-ba93-9ba21c5a579e" 
-             poster="https://img.youtube.com/vi/GdA4AapE2L4/sddefault.jpg" 
-             controls muted preload="metadata" 
-             width="100%" height="300"
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-  </tr>
-  <tr >
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>Wide Research</strong><br>Gathers extensive information to generate a comprehensive report, replicating the functionality of Manus.
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>Paper Analysis</strong><br>Parses a given paper, performs analysis, and compiles related literature to produce a final result.
-    </td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <video src="https://github.com/user-attachments/assets/6fc75814-e565-4f94-9ab5-33e3e7788e92" 
-             poster="https://img.youtube.com/vi/v3QQg0WAnPs/sddefault.jpg" 
-             controls muted preload="metadata" 
-             width="100%" height="300"
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <video src="https://github.com/user-attachments/assets/09b24f94-30f0-4e88-9aaf-9f3bbf82e99d" 
-             poster="https://img.youtube.com/vi/vBddCjjRk00/sddefault.jpg" 
-             controls muted preload="metadata" 
-             width="100%" height="300"
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-  </tr>
-  <tr >
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>RAG</strong><br>A RAG example by integration with RAGFlow service.
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>PPT Generation</strong><br>An example that generate PPT file according to given content.
-    </td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <video src="https://github.com/user-attachments/assets/4d74ef6f-7a84-4102-9666-0fbfe02e0d2f" 
-             controls muted preload="metadata" 
-             width="100%" height="300"
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <video src="https://github.com/user-attachments/assets/91568e27-bf77-44d6-baa6-b178d2d88255" 
-             controls muted preload="metadata" 
-             width="100%" height="300"
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
+    <td align="center"><img src="docs/assets/images/retool_entropy.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/retool_gradnorm.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/retool_val_ame24.png" width="200"/></td>
   </tr>
 </table>
 
-> [!NOTE]
-> See the [`examples`](./examples) directory and [documentation](https://tencentcloudadp.github.io/youtu-agent/examples/) for more details.
 
-### 🤖 Automatic Tool and Agent Generation
+- [SearchR1](https://api.wandb.ai/links/yuleiqin-tencent/0e2hs7io). TriviaQA: 0.37 (step 0) -> 0.54 (step 200); PopQA: 0.16 (step 0) -> 0.35 (step 200); NQ: 0.24 (step 0) -> 0.45 (step 200); MuSiQue: 0.06 (step 0) -> 0.14 (step 200); HotpotQA: 0.21 (step 0) -> 0.38 (step 200); Bamboogle: 0.23 (step 0) -> 0.36 (step 200); 2wiki: 0.22 (step 0) -> 0.32 (step 200).
 
-A standout feature of `Youtu-Agent` is its ability to **automatically generate tools alongside agent configurations**. Other frameworks often make you hand-code functions or hand-craft prompts before an agent can even run. Here, you simply describe the task: the built-in meta-agent interviews you, assembles the necessary tools, produces YAML configs, and saves everything so you can execute it immediately.
+<table>
+  <tr>
+    <td align="center"><img src="docs/assets/images/search_entropy.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_gradnorm.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_triviaqa.png" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/assets/images/search_val_popqa.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_nq.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_musique.png" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/assets/images/search_val_hotpotqa.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_bamboogle.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_2wiki.png" width="200"/></td>
+  </tr>
+</table>
+
+
+## 2. Installation
+
+### 2.1 VeRL
+
+To install VeRL, run the following command:
 
 ```bash
-# Interactively clarify your requirements and auto-generate a config
-python scripts/gen_simple_agent.py
+# create anaconda env (optional)
+conda create -n agent-lightning python==3.12.0
 
-# Run the generated config
-python scripts/cli_chat.py --config generated/xxx
+# install verl
+pip install verl==0.5
 ```
 
-<table>
-  <tr>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>Automatic Agent Generation</strong><br>Interactively clarify your requirements, automatically generate the agent configuration, and run it right away.
-    </td>
-    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
-      <strong>Automatic Tool Generation</strong><br>Describe the behaviors you need, let the meta-agent draft tool code and schemas, then drop them straight into your workflow.
-    </td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid black; padding:10px; vertical-align:top; width: 400px;">
-      <video src="https://github.com/user-attachments/assets/0c2ee833-507e-4141-8de4-148ff3d9f9ef" 
-             poster="https://img.youtube.com/vi/JVpHDJtKBo8/maxresdefault.jpg" 
-             controls muted preload="metadata" 
-             width="100%" height="auto" 
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-    <td style="border: 1px solid black; padding:10px; vertical-align:top; width: 400px;">
-      <video src="https://github.com/user-attachments/assets/37878544-cfda-4a8a-9b42-a7361782c750" 
-             poster="https://img.youtube.com/vi/zjGooBuqdSE/maxresdefault.jpg" 
-             controls muted preload="metadata" 
-             width="100%" height="auto" 
-             style="object-fit: cover; border-radius: 8px;"></video>
-    </td>
-  </tr>
-</table>
+### 2.2 Agent Lightning
 
-> [!NOTE]
-> See [documentation](https://tencentcloudadp.github.io/youtu-agent/auto_generation/) for more details.
-
-## ✨ Features
-
-![features](docs/assets/images/header.png)
-
-### Design Philosophy
-- **Minimal design**: We try to keep the framework simple and easy to use, avoiding unnecessary overhead.
-- **Modular & configurable**: Flexible customization and easy integration of new components.
-- **Open-source model support & low-cost**: Promotes accessibility and cost-effectiveness for various applications.
-
-### Core Features
-- **Built on openai-agents**: Leveraging the foundation of [openai-agents](https://github.com/openai/openai-agents-python) SDK, our framework inherits streaming, tracing, and agent-loop capabilities, ensuring compatibility with both `responses` and `chat.completions` APIs for seamless adaptation to diverse models like [gpt-oss](https://github.com/openai/gpt-oss).
-- **Fully asynchronous**: Enables high-performance and efficient execution, especially beneficial for evaluating benchmarks.
-- **Tracing & analysis system**: Beyond OTEL, our `DBTracingProcessor` system provides in-depth analysis of tool calls and agent trajectories. (will be released soon)
-
-### Automation
-- **YAML based configuration**: Structured and easily manageable agent configurations.
-- **Automatic agent generation**: Based on user requirements, agent configurations can be automatically generated.
-- **Tool generation & optimization**: Tool evaluation and automated optimization, and customized tool generation will be supported in the future.
-
-### Use Cases
-- **Deep / Wide research**: Covers common search-oriented tasks.
-- **Webpage generation**: Examples include generating web pages based on specific inputs.
-- **Trajectory collection**: Supports data collection for training and research purposes.
-
-
-## 🤔 Why Choose Youtu-Agent?
-
-`Youtu-Agent` is designed to provide significant value to different user groups:
-
-### For Agents Researchers & LLM Trainers
-- A **simple yet powerful baseline** that is stronger than basic ReAct, serving as an excellent starting point for model training and ablation studies.
-- **One-click evaluation scripts** to streamline the experimental process and ensure consistent benchmarking.
-
-### For Agent Application Developers
-- A **proven and portable scaffolding** for building real-world agent applications.
-- **Ease of Use**: Get started quickly with simple scripts and a rich set of built-in toolkits.
-- **Modular Design**: Key components like `Environment` and `ContextManager` are encapsulated yet highly customizable.
-
-### For AI & Agent Enthusiasts
-- **Practical Use Cases**: The `/examples` directory includes tasks like deep research report generation, data analysis, and personal file organization.
-- **Simplicity & Debuggability**: A rich toolset and visual tracing tools make development and debugging intuitive and straightforward.
-
-
-## 🧩 Core Concepts
-
-- **Agent**: An LLM configured with specific prompts, tools, and an environment.
-- **Toolkit**: An encapsulated set of tools that an agent can use.
-- **Environment**: The world in which the agent operates (e.g., a browser, a shell).
-- **ContextManager**: A configurable module for managing the agent's context window.
-- **Benchmark**: An encapsulated workflow for a specific dataset, including preprocessing, rollout, and judging logic.
-
-For more design and implementation details, please refer to our [technical documentation](https://tencentcloudadp.github.io/youtu-agent/).
-
-## 🚀 Getting Started
-
-Youtu-Agent provides complete code and examples to help you get started quickly. Follow the steps below to run your first agent, or refer to [`docker/README.md`](./docker/README.md) for a streamlined Docker-based setup with interactive frontend.
-
-### Setup
-
-#### Source Code Deployment
-
-> [!NOTE]
-> The project requires Python 3.12+. We recommend using [uv](https://github.com/astral-sh/uv) for dependency management.
-
-First, make sure Python and uv are installed.
-
-Then clone the repository and sync dependencies:
+To install Agent Lightning, run the following command:
 
 ```bash
-git clone https://github.com/TencentCloudADP/youtu-agent.git
+# install agent-lightning
+git clone -b contrib/youtu-agent-lightning https://github.com/microsoft/agent-lightning.git
+cd agent-lightning
+pip install -e .
+```
+
+### 2.3 Youtu-Agent
+
+
+To install Youtu-Agent, run the following command:
+
+```bash
+# install youtu-agent
+git clone -b rl/agl https://github.com/TencentCloudADP/youtu-agent.git
 cd youtu-agent
-uv sync  # or, `make sync`
-source ./.venv/bin/activate
-cp .env.example .env  # NOTE: You should then config the necessary API keys.
+pip install -e .
+# modify your .env accordingly
+cp .env.example .env
 ```
 
-After copying the `.env.example` file, you need to fill in the necessary keys in the `.env` file, e.g. LLM API keys. For example:
+
+## 3. Training Your Youtu-Agent
+
+We provide two examples respectively for agents that: 1) solve Maths problems with codes (ReTool); 2) solve QA problems with local wiki search (SearchR1).
+
+[ReTool](https://github.com/ReTool-RL/ReTool): We implement the agent via `configs/agents/retool/qa_python.yaml`. Its tool is **code interpreter** defined in `utu/tools/codesnip_toolkit.py`. Please make sure the local sandbox fusion service is ready and its IP address `server_url` is correctly set in the tool python file.
+
+[SearchR1](https://github.com/PeterGriffinJin/Search-R1): We implement the agent via `configs/agents/examples/rl_train/qa_wiki.yaml`. Its tool is **local wiki search** defined in `examples/rl_train/wiki_tool.py`. Please make sure the local retrieval service is ready and its IP address `retrieval_service_url` is correctly set in the tool python file.
+
+
+
+### 3.1 ReTool
+
+For the detailed training and testing, please refer to this directory `examples_train_w_youtu/retool_youtu`.
+
+1) For 7B model, we recommend at least 32 GPUs with 96GB memory.
+2) Please modify the number of nodes and number of GPUs in `examples_train_w_youtu/retool_youtu/run_qwen2.5_7b_single_node.sh` and `examples_train_w_youtu/retool_youtu/run_qwen2.5_7b.sh` accordingly.
+3) Make sure all the environment variables mentioned below are properly set.
+
+
+
+#### Step 1
+
+Download the training and testing datasets from the huggingface and save to `${PROJECT_DIR}/datasets` (e.g., datasets/BytedTsinghua-SIA/DAPO-Math-17k).
+
+* Training Dataset 🤗 [https://huggingface.co/datasets/BytedTsinghua-SIA/DAPO-Math-17k]
+* Testing Dataset 🤗 [https://huggingface.co/datasets/BytedTsinghua-SIA/AIME-2024]
+
+
+#### Step 2
+
+Download the SandboxFusion docker and launch the sandbox service:
+* Sandbox Service ⌨️ [https://github.com/bytedance/SandboxFusion]
+
+
+#### Step 3
+
+Modify the training scripts and the agent config file to make sure every directory path and URL address is valid. For example:
+
+
+- `examples_train_w_youtu/retool_youtu/run_qwen2.5_7b.sh`: BASE_MODEL, CODESNIP_SERVER_URL
+- `examples_train_w_youtu/retool_youtu/sandbox_fusion_tool_config.yaml`: sandbox_fusion_url
+- `utu/tools/codesnip_toolkit.py`: server_url (sandbox fusion service)
+
+
+#### Step 4
+
+Train the Youtu-Agent on a single node with 8 GPUs:
 
 ```bash
-# llm requires OpenAI API format compatibility
-# setup your LLM config , ref https://api-docs.deepseek.com/
-UTU_LLM_TYPE=chat.completions
-UTU_LLM_MODEL=deepseek-chat
-UTU_LLM_BASE_URL=https://api.deepseek.com/v1
-UTU_LLM_API_KEY=replace-to-your-api-key
+# restart the ray cluster
+bash scripts/restart_ray.sh
+# submit the ray training job
+bash examples_train_w_youtu/retool_youtu/run_qwen2.5_7b_single_node.sh
 ```
 
-> [Tencent Cloud International](https://www.tencentcloud.com/) offers new users of the DeepSeek API **3 million free tokens** (**Sep 1 – Oct 31, 2025**). [Try it out](https://www.tencentcloud.com/document/product/1255/70381) for free. Once you’ve applied, replace the API key in the .env file below:
+(Optional) Train the Youtu-Agent on four nodes with 32 GPUs:
 
 ```bash
-# llm
-# setup your LLM config , ref https://www.tencentcloud.com/document/product/1255/70381
-UTU_LLM_TYPE=chat.completions
-UTU_LLM_MODEL=deepseek-v3
-UTU_LLM_BASE_URL=https://api.lkeap.cloud.tencent.com/v1
-UTU_LLM_API_KEY=replace-with-your-api-key
+# submit the ray training job with the multi-node ray script
+bash run_ray.sh examples_train_w_youtu/retool_youtu/run_qwen2.5_7b.sh
 ```
 
-#### Docker Deployment
+(Optional) Debugging and Testing
 
-Please refer to [`docker/README.md`](./docker/README.md) for a streamlined Docker-based setup with interactive frontend.
+* Deployment of vLLM service
 
-### Quick Start
-
-Youtu-agent ships with built-in configurations. For example, the config `configs/agents/simple/base_search.yaml` defines a simple agent equipped with a search tool:
-
-```yaml
-defaults:
-  - /model/base
-  - /tools/search@toolkits.search
-  - _self_
-
-agent:
-  name: simple-tool-agent
-  instructions: "You are a helpful assistant that can search the web."
-```
-
-You can launch an interactive CLI chatbot with this agent by running:
+**Prerequisites:** Before starting the agent, please ensure that you have installed youtu-agent, and that the `retool` directory from `examples_train_w_youtu/retool_youtu/retool` is placed in `youtu-agent/configs/agents/retool`.
 
 ```bash
-# NOTE: You need to set `SERPER_API_KEY` and `JINA_API_KEY` in `.env` for web search access.
-# (We plan to replace these with free alternatives in the future)
-python scripts/cli_chat.py --config simple/base_search
-# To avoid using the search toolkit, you can run:
-python scripts/cli_chat.py --config simple/base
+# launch vLLM backend server
+export BASE_MODEL="YOUR_MODEL_PATH"
+bash vllm_deploy.sh
+
+# run the agent code
+# You must launch the sandbox server first! (SandBoxFusion)
+export CODESNIP_SERVER_URL="YOUR_SANDBOX_URL"
+python calc_sandbox_agent_youtu.py
 ```
 
-📖 More details: [Quickstart Documentation](https://tencentcloudadp.github.io/youtu-agent/quickstart)
-
-### Explore More Examples
-
-The repository provides multiple ready-to-use examples. Some examples require the agent to have internet search capabilities, so you’ll need to configure the tool APIs in the `.env` file under the tools module:
+* Deployment of Store and Runner service
+1. Store
 
 ```bash
-# tools
-# serper api key, ref https://serper.dev/playground
-SERPER_API_KEY=<Access the URL in the comments to get the API Key>
-# jina api key, ref https://jina.ai/reader
-JINA_API_KEY=<Access the URL in the comments to get the API Key>
+agl store --port 9999
 ```
 
-For example, to enable the agent to automatically search online for information and generate an SVG image on the topic of “DeepSeek V3.1 New Features,” run the following command:
+2. Runner
 
 ```bash
-python examples/svg_generator/main.py
+AGL_MANAGED_STORE=0 AGL_CURRENT_ROLE=runner python train_calc_sandbox_agent.py --external-store-address http://localhost:9999 --n-runners 10
 ```
 
-If you want to visualize the agent’s runtime status using the web UI, download the frontend package from the Youtu-Agent releases and install it locally:
+
+### 3.2 SearchR1
+
+For the detailed training and testing, please refer to this directory `examples_train_w_youtu/search_r1_youtu`.
+
+1) For 3B model, we recommend at least 2 GPUs with 96GB memory. For 32B model, we recommend at least 32 GPUs with 96GB memory.
+2) Please modify the number of nodes and number of GPUs in the `examples_train_w_youtu/search_r1_youtu/train_search_agent.py`.
+3) Make sure all the environment variables mentioned below are properly set.
+4) It is noted that for reward score, we use both rule-based (exact-match) and llm-based (llm-as-a-judge) scoring techniques. Therefore, a llm service (openai-compatible) URL should be prepared in advance.
+
+
+
+#### Step 1
+
+Download the training and testing datasets from the huggingface and save to `${PROJECT_DIR}/datasets/asearcher_data/` (e.g., datasets/asearcher_data/ASearcher-train-data/base).
+
+* Training Dataset 🤗 [https://huggingface.co/datasets/inclusionAI/ASearcher-train-data]
+* Testing Dataset 🤗 [https://huggingface.co/datasets/inclusionAI/ASearcher-test-data]
+
+Run the following script for data preprocessing:
 
 ```bash
-# Download the frontend package
-curl -LO https://github.com/Tencent/Youtu-agent/releases/download/frontend%2Fv0.2.0/utu_agent_ui-0.2.0-py3-none-any.whl
-
-# Install the frontend package
-uv pip install utu_agent_ui-0.2.0-py3-none-any.whl
+bash examples_train_w_youtu/search_r1_youtu/data_preprocess/run_preprocess.sh
 ```
 
-Next, run the web version of the SVG image generation command:
+#### Step 2
 
+
+Download the retrieval service materials (e.g., the wiki18.json, embedding model, and index files) and launch the retrieval service (make sure you download the complete json/index/embedding files properly):
+
+* Retrieval Service 🔍 [https://github.com/inclusionAI/ASearcher/blob/main/scripts/launch_local_server.sh]
+
+#### Step 3
+
+Modify the training scripts and the agent config file to make sure every directory path and URL address (retrieval service IP) is valid. For example:
+
+- `examples_train_w_youtu/search_r1_youtu/search_tool_config.yaml`: YOUR_RETRIEVAL_SERVICE_IP
+- `examples_train_w_youtu/search_r1_youtu/trainer7b_utu_onpolicy.sh`: MODEL_ROOT_PATH, REWARD_MODEL_URL, REWARD_MODEL_NAME
+- `examples/rl_train/wiki_tool.py`: retrieval_service_url
+
+
+#### Step 4
+
+
+Train the Youtu-Agent on 4 nodes with 32 GPUs:
 ```bash
-python examples/svg_generator/main_web.py
+# 3B model
+bash run_ray.sh examples_train_w_youtu/search_r1_youtu/trainer3b_utu_onpolicy.sh
+
+# 32B model
+bash run_ray.sh examples_train_w_youtu/search_r1_youtu/trainer32b_utu_onpolicy.sh
 ```
 
-Once the terminal shows the following message, the deployment is successful. You can access the project by clicking the local link:
 
-```bash
-Server started at http://127.0.0.1:8848/
+## Acknowledgement
+
+We sincerely appreciate the efforts from the following projects:
+
+* Youtu-Agent
 ```
-
-![svg_generator_ui](https://github.com/user-attachments/assets/337d327f-91ee-434e-bbcf-297dd4b26c28)
-
-Given a research topic, the agent will automatically search the web, collect relevant information, and output an SVG visualization.
-
-![svg_generator_result](https://github.com/user-attachments/assets/41aa7348-5f02-4daa-b5b2-225e35d21067)
-
-📖 Learn more: [Examples Documentation](https://tencentcloudadp.github.io/youtu-agent/examples)
-
-### Run Evaluations
-
-Youtu-Agent also supports benchmarking on standard datasets. For example, to evaluate on `WebWalkerQA`:
-
-```bash
-# Prepare dataset. This script will download and process WebWalkerQA dataset, and save it to DB.
-python scripts/data/process_web_walker_qa.py
-
-# Run evaluation with config `ww.yaml` with your custom `exp_id`. We choose the sampled small dataset `WebWalkerQA_15` for quick evaluation.
-# NOTE: `JUDGE_LLM_TYPE, JUDGE_LLM_MODEL, JUDGE_LLM_BASE_URL, JUDGE_LLM_API_KEY` should be set in `.env`. Ref `.env.full`.
-python scripts/run_eval.py --config_name ww --exp_id <your_exp_id> --dataset WebWalkerQA_15 --concurrency 5
-```
-
-Results are stored and can be further analyzed in the evaluation platform. See [Evaluation Analysis](./frontend/exp_analysis/README.md).
-
-![eval_analysis_overview](https://github.com/user-attachments/assets/4a285b9e-d096-437e-9b8e-e5bf6b1924b6)
-
-![eval_analysis_detail](https://github.com/user-attachments/assets/4ede525a-5e16-4d88-9ebb-01a7dca3aaec)
-
-📖 Learn more: [Evaluation Documentation](https://tencentcloudadp.github.io/youtu-agent/eval)
-
-## 📖 Dive Deeper
-
-After getting started, you can learn more about the framework and its capabilities through our full documentation:
-
-- 📖 **[Full Documentation](https://tencentcloudadp.github.io/youtu-agent/)**: Explore the core concepts, architecture, and advanced features.
-- 🚀 **[Quickstart Guide](https://tencentcloudadp.github.io/youtu-agent/quickstart/)**: A detailed guide to get you up and running.
-- ❓ **[FAQ](https://tencentcloudadp.github.io/youtu-agent/faq)**: Find answers to common questions and issues.
-
-## 🙏 Acknowledgements
-
-This project builds upon the excellent work of several open-source projects:
-- [openai-agents](https://github.com/openai/openai-agents-python)
-- [mkdocs-material](https://github.com/squidfunk/mkdocs-material)
-- [model-context-protocol](https://github.com/modelcontextprotocol/python-sdk)
-
-## 🙌 Contributing
-
-We welcome contributions from the community! If you'd like to help improve Youtu-Agent, please read our [**Contributing Guidelines**](./CONTRIBUTING.md) to get started.
-
-## 📚 Citation
-
-If you find this work useful, please consider citing:
-
-```bibtex
-@misc{training_free_grpo,
-      title={Training-Free Group Relative Policy Optimization}, 
-      author={Tencent Youtu Lab},
-      year={2025},
-      eprint={2510.08191},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2510.08191}, 
-}
-
 @misc{youtu-agent-2025,
-  title={Youtu-agent: A Simple yet Powerful Agent Framework},
+  title={Youtu-Agent: A Simple yet Powerful Agent Framework},
   author={Tencent Youtu Lab},
   year={2025},
   publisher = {GitHub},
@@ -417,3 +249,28 @@ If you find this work useful, please consider citing:
   howpublished = {\url{https://github.com/TencentCloudADP/youtu-agent}},
 }
 ```
+
+
+* AgentLightning
+```
+@misc{luo2025agentlightningtrainai,
+      title={Agent Lightning: Train ANY AI Agents with Reinforcement Learning},
+      author={Xufang Luo and Yuge Zhang and Zhiyuan He and Zilong Wang and Siyun Zhao and Dongsheng Li and Luna K. Qiu and Yuqing Yang},
+      year={2025},
+      eprint={2508.03680},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2508.03680},
+}
+```
+
+* VeRL
+```
+@article{sheng2024hybridflow,
+  title   = {HybridFlow: A Flexible and Efficient RLHF Framework},
+  author  = {Guangming Sheng and Chi Zhang and Zilingfeng Ye and Xibin Wu and Wang Zhang and Ru Zhang and Yanghua Peng and Haibin Lin and Chuan Wu},
+  year    = {2024},
+  journal = {arXiv preprint arXiv: 2409.19256}
+}
+```
+

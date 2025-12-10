@@ -4,9 +4,9 @@ from .orchestra_agent import OrchestraAgent
 from .orchestrator_agent import OrchestratorAgent
 from .simple_agent import SimpleAgent
 from .workforce_agent import WorkforceAgent
+from .training_agent import TrainingAgent
 
-
-def get_agent(config: AgentConfig) -> SimpleAgent | OrchestraAgent | OrchestratorAgent | WorkforceAgent:
+def get_agent(config: AgentConfig) -> SimpleAgent | OrchestraAgent | OrchestratorAgent | WorkforceAgent | TrainingAgent:
     if config.type == "simple":
         return SimpleAgent(config=config)
     elif config.type == "orchestra":
@@ -26,4 +26,5 @@ __all__ = [
     "LLMAgent",
     "WorkforceAgent",
     "get_agent",
+    "TrainingAgent",
 ]
