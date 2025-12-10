@@ -208,7 +208,8 @@ bash examples_train_w_youtu/search_r1_youtu/data_preprocess/run_preprocess.sh
 #### Step 2
 
 
-Download the SandboxFusion docker and launch the sandbox service:
+Download the retrieval service materials (e.g., the complete wiki18.json, embedding model, and index files) and launch the retrieval service:
+
 * Retrieval Service 🔍 [https://github.com/inclusionAI/ASearcher/blob/main/scripts/launch_local_server.sh]
 
 #### Step 3
