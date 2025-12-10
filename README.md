@@ -2,7 +2,7 @@
 
 ## Youtu-agent x Agent Lightning
 
-<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-agent x Agent Lightning logo" width="150" align="left" style="margin-right:20px;">
+<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
 
 [**Youtu-agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a framework for building and managing your own Youtu Agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
 
