@@ -1,15 +1,14 @@
 
 
-# Youtu-agent x Agent Lightning
+# Training Youtu-Agent with Ease: Hands-On Guide for End-to-End Reinforcement Learning
 
-<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
+<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-Agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
 
-[**Youtu-agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a framework for building and managing your own Youtu Agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
+This repository allows you to train your agents built by Youtu-Agent. We have **verified the performace** of code/math (ReTool) and search (SearchR1) tasks with multi-node training on **128 GPUs**.
+
+[**Youtu-Agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a framework for building and managing your own Youtu Agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
 
 [**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a framework for training LLM-based agents via popular training backends. In the present implementation, we use the VeRL library for RL training.
-
-This repository allows you to train your agents built by Youtu-agent with Agent Lightning and **we have verified the performaces** of code/math (ReTool) and search (SearchR1) tasks with multi-node training on **128 GPUs**.
-
 
 
 ## 1. Verified Training Performance
@@ -74,10 +73,10 @@ cd agent-lightning
 pip install -e .
 ```
 
-### 2.3 Youtu-agent
+### 2.3 Youtu-Agent
 
 
-To install Youtu-agent, run the following command:
+To install Youtu-Agent, run the following command:
 
 ```bash
 # install youtu-agent
@@ -89,7 +88,7 @@ cp .env.example .env
 ```
 
 
-## 3. Training Your Youtu-agent
+## 3. Training Your Youtu-Agent
 
 We provide two examples respectively for agents that: 1) solve Maths problems with codes (ReTool); 2) solve QA problems with local wiki search (SearchR1).
 
@@ -135,7 +134,7 @@ Modify the training scripts and the agent config file to make sure every directo
 
 #### Step 4
 
-Train the Youtu-agent on a single node with 8 GPUs:
+Train the Youtu-Agent on a single node with 8 GPUs:
 
 ```bash
 # restart the ray cluster
@@ -144,7 +143,7 @@ bash scripts/restart_ray.sh
 bash examples_train_w_youtu/retool_youtu/run_qwen2.5_7b_single_node.sh
 ```
 
-(Optional) Train the Youtu-agent on four nodes with 32 GPUs:
+(Optional) Train the Youtu-Agent on four nodes with 32 GPUs:
 
 ```bash
 # submit the ray training job with the multi-node ray script
@@ -224,7 +223,7 @@ Modify the training scripts and the agent config file to make sure every directo
 #### Step 4
 
 
-Train the Youtu-agent on 4 nodes with 32 GPUs:
+Train the Youtu-Agent on 4 nodes with 32 GPUs:
 ```bash
 # 3B model
 bash run_ray.sh examples_train_w_youtu/search_r1_youtu/trainer3b_utu_onpolicy.sh
@@ -238,10 +237,10 @@ bash run_ray.sh examples_train_w_youtu/search_r1_youtu/trainer32b_utu_onpolicy.s
 
 We sincerely appreciate the efforts from the following projects:
 
-* Youtu-agent
+* Youtu-Agent
 ```
 @misc{youtu-agent-2025,
-  title={Youtu-agent: A Simple yet Powerful Agent Framework},
+  title={Youtu-Agent: A Simple yet Powerful Agent Framework},
   author={Tencent Youtu Lab},
   year={2025},
   publisher = {GitHub},
