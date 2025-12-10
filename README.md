@@ -2,13 +2,50 @@
 
 ## Youtu-agent x Agent Lightning
 
-<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
+<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-agent x Agent Lightning logo" width="150" align="left" style="margin-right:20px;">
 
-### 1. Introduction
+[**Youtu-agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a framework for building and managing your own Youtu Agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
 
-[**Youtu-agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a tool for building and managing your own Youtu agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
+[**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a framework for training LLM-based agents via popular training backends. In the present implementation, we use the VeRL library for RL training.
 
-[**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a tool for training LLM-based agents with agent frameworks via popular training backends. In the present implementation, we use the VeRL library for RL training.
+This repository allows you to train your agents built by Youtu-agent with Agent Lightning and **we have verified the performaces** of code/math (ReTool) and search (SearchR1) tasks with multi-node training on **128 GPUs**.
+
+
+
+### 1. Verified Training Performance
+
+The training dynamics (at least 200 steps) of 7B instruct models are provided below for reference, confirming the effectiveness and stability of training with our repository.
+
+- [ReTool](https://api.wandb.ai/links/1275747829-fudan-university/vwxn21w2)
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/assets/images/retool_entropy.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/retool_gradnorm.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/retool_val_ame24.png" width="200"/></td>
+  </tr>
+</table>
+
+
+- [SearchR1](https://api.wandb.ai/links/yuleiqin-tencent/0e2hs7io)
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/assets/images/search_entropy.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_gradnorm.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_triviaqa.png" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/assets/images/search_val_popqa.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_nq.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_musique.png" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/assets/images/search_val_hotpotqa.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_bamboogle.png" width="200"/></td>
+    <td align="center"><img src="docs/assets/images/search_val_2wiki.png" width="200"/></td>
+  </tr>
+</table>
 
 
 ### 2. Installation
