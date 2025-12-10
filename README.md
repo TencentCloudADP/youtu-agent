@@ -4,6 +4,9 @@
 
 ### 1. Introduction
 
+<img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
+
+
 [**Youtu-agent**](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) is a tool for building and managing your own Youtu agent. It is designed to be used either as a command-line tool or a library in your own Python projects.
 
 [**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a tool for training LLM-based agents with agent frameworks via popular training backends. In the present implementation, we use the VeRL library for RL training.
