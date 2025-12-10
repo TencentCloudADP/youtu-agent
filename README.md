@@ -208,7 +208,7 @@ bash examples_train_w_youtu/search_r1_youtu/data_preprocess/run_preprocess.sh
 #### Step 2
 
 
-Download the retrieval service materials (e.g., the complete wiki18.json, embedding model, and index files) and launch the retrieval service:
+Download the retrieval service materials (e.g., the wiki18.json, embedding model, and index files) and launch the retrieval service (make sure you download the complete json/index/embedding files properly):
 
 * Retrieval Service 🔍 [https://github.com/inclusionAI/ASearcher/blob/main/scripts/launch_local_server.sh]
 
