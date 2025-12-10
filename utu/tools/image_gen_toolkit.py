@@ -285,7 +285,7 @@ class ImageGenToolkit(AsyncBaseToolkit):
             auto_enhance_prompt (bool, optional): Additional feature to automatically enhance and optimize 
                 the prompt using LLM before image generation. The LLM will add visual details, artistic 
                 terminology, and improve the overall quality of the prompt for better image results. 
-                Default is True.
+                Default is False. Not recommended for auto enhancement.
         """
         # Auto-enhance prompt if enabled
         if auto_enhance_prompt:
