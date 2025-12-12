@@ -2,9 +2,9 @@
 defaults:
   - /model/base@orchestrator_model
   - /agents/router/force_plan@orchestrator_router  # router
-  - /agents/simple/model_trainer@orchestrator_workers.ModelTrainer
-  - /agents/simple/metric_analyst@orchestrator_workers.MetricAnalyst
-  - /agents/simple/data_collector@orchestrator_workers.DataCollector
+  - /agents/examples/deep_learning/model_trainer@orchestrator_workers.ModelTrainer
+  - /agents/examples/deep_learning/metric_analyst@orchestrator_workers.MetricAnalyst
+  - /agents/examples/deep_learning/data_collector@orchestrator_workers.DataCollector
   - _self_
 
 type: orchestrator
@@ -17,7 +17,7 @@ orchestrator_config:
     - Use ModelTrainer to execute model training task.
     - After training is finished, there will be a training log contains train informations (e.g. loss curve) and eval results. Feed the log to MetricAnalyst for analysing.
     - The MetricAnalyst will generate a conclusion of this period of training and data feedback for next training, feed the feedback to DataCollector in order to collect wanted data.
-    - The DataCollector will follow the given data feedback and collect data for next training. After data augmented, re-train the model.
+    - The DataCollector will follow the given data feedback and collect data for next training.
 
 orchestrator_workers_info:
   - name: ModelTrainer

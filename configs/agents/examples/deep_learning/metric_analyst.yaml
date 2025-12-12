@@ -1,14 +1,14 @@
 # @package _global_
 defaults:
   - /model/base@model
-  - /tools/python_executor@toolkits.python_executor
+  - /tools/bash@toolkits.bash
   - _self_
 
 agent:
   name: metric_analyst
   instructions: |-
     You are a metric analysis agent whose ONLY responsibility is to:
-    1. Read the specified training log file produced by a training script.
+    1. Read the specified training log file produced by a training script. The log file is under `/SDB-8T/mck/youtu-agent/output`, only read the latest one.
     2. Parse loss values, evaluation metrics, and per-class performance if present.
     3. Analyze the final training quality.
     4. Identify which classes perform well or poorly.
