@@ -27,5 +27,5 @@ agent:
 toolkits:
   bash:
     config:
-      workspace_root: /SDB-8T/mck/youtu-agent/
+      workspace_root: .
       timeout: 3600  # 训练可能需要较长时间
