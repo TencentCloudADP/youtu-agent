@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { tracingGenerationData, tracingToolData } from "@/lib/db/schema";
+import {
+    tracingGenerationData,
+    tracingToolData,
+    type TracingGenerationData,
+    type TracingToolData
+} from "@/lib/db/schema";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -13,13 +18,13 @@ export async function GET(request: Request) {
 
     try {
         // 查询两张表
-        const generationData = await db
+        const generationData: TracingGenerationData[] = await db
             .select()
             .from(tracingGenerationData)
             .where(eq(tracingGenerationData.trace_id, trace_id))
             .execute();
 
-        const toolData = await db
+        const toolData: TracingToolData[] = await db
             .select()
             .from(tracingToolData)
             .where(eq(tracingToolData.trace_id, trace_id))
@@ -28,7 +33,7 @@ export async function GET(request: Request) {
         // 格式化数据并分别排序
         const generations = generationData
             .map(item => ({
-                source: "tracing_generation",
+                source: "tracing_generation" as const,
                 id: item.id,
                 trace_id: item.trace_id,
                 span_id: item.span_id,
@@ -49,7 +54,7 @@ export async function GET(request: Request) {
 
         const tools = toolData
             .map(item => ({
-                source: "tracing_tool",
+                source: "tracing_tool" as const,
                 id: item.id,
                 span_id: item.span_id,
                 name: item.name,
