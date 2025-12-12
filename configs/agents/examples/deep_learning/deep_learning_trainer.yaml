@@ -1,0 +1,24 @@
+# @package _global_
+defaults:
+  - /model/base@orchestrator_model
+  - /agents/router/force_plan@orchestrator_router  # router
+  - /agents/examples/deep_learning/model_trainer@orchestrator_workers.ModelTrainer
+  - /agents/examples/deep_learning/metric_analyst@orchestrator_workers.MetricAnalyst
+  - _self_
+
+type: orchestrator
+
+orchestrator_config:
+  name: DeepLearningTrainerAgent
+  add_chitchat_subagent: false
+  additional_instructions: |-
+    Your ultimate object is training specified deep learning task to optimize model. Use the two orchestrator_workers to complete the object.
+    - Use ModelTrainer to execute model training task.
+    - After training is finished, there will be a training log contains train informations and eval results. Feed the log to MetricAnalyst for analysing.
+    - The MetricAnalyst will generate a conclusion of this period of training and data feedback for next iteration.
+
+orchestrator_workers_info:
+  - name: ModelTrainer
+    description: Train specified model.
+  - name: MetricAnalyst
+    description: Analysis the training log and give the next data iterations suggestion.

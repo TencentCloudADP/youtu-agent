@@ -89,7 +89,6 @@ class PageConfig:
         # Get page configuration
 
         page_config = self.pages.get(page_type, {})
-        
         print(f"page_config: {page_config}")
 
         # Render all fields based on their type from YAML config
