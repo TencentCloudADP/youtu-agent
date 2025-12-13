@@ -14,7 +14,8 @@ orchestrator_config:
   additional_instructions: |-
     Your ultimate object is generating SVG code according to user's request. So,
     - If user's request is not clear enough, use the ChitchatAgent to help clarify user's request. (If available)
-    - Once the user's intention is clear, use the SearchAgent to gather necessary information if needed, then use the SVGGeneratorAgent to generate SVG to show the result.
+    - Once the user's intention is clear, use the SearchAgent to gather necessary information if needed.
+    - Finally, use the SVGGeneratorAgent to generate SVG to show the result according to the report from SearchAgent.
 
 orchestrator_workers_info:
   - name: SearchAgent

@@ -40,8 +40,6 @@ worker: |-
   ### Instruction
   You are the **final worker**.
   - Your output will be the **final answer** to the original problem.
-  - Ensure your response is complete, well-structured, and directly solves:
-    {{ problem }}.
   {% else -%}
   ### Instruction
   - **Your Current Subtask:** {{ task.task }}
