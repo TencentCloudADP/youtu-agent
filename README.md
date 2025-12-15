@@ -10,6 +10,8 @@ This repository allows you to train your agents built by Youtu-Agent. We have **
 
 [**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a framework for training LLM-based agents via popular training backends. In the present implementation, we use the VeRL library for RL training.
 
+Checkout our blog post at [**Meidum**](https://medium.com/@yuleiqin/stop-wrestling-with-your-agent-rl-how-youtu-agent-achieved-stable-128-gpu-scaling-without-e6a765a3e92b) and [**Notion**](https://spotted-coconut-df8.notion.site/Stop-Wrestling-with-Your-Agent-RL-How-Youtu-Agent-Achieved-Stable-128-GPU-Scaling-Without-Breaking-2ca5e8f089ba80539a98c582b65e0233) for detailed explanations on how we achieve the 128 GPU scaling of RL without breaking.
+
 
 ## 1. Verified Training Performance
 
