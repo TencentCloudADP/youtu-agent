@@ -41,7 +41,7 @@ def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_c
         else:
             target_slide = duplicate_slide(prs, template_slide)
 
-        page_config.render(target_slide, slide_data)
+        page_config.render(target_slide, slide_data, prs)
 
     # get title page
     title_pages_idx = page_config.type_map.get("title_page", [0])[0]

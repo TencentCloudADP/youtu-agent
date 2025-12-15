@@ -89,6 +89,12 @@ def _map_field(field_name: str, spec: dict[str, Any]) -> tuple[dict[str, Any], b
         if desc:
             prop["description"] = desc
         return prop, is_required
+    
+    if t == "fontawesome_icon":
+        prop = {"$ref": "#/$defs/FontAwesomeIcon"}
+        if desc:
+            prop["description"] = desc
+        return prop, is_required
 
     # Fallback: treat unknown as free-form string
     prop = {"type": "string"}
@@ -195,6 +201,15 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                     }
                 },
                 "required": ["content_type"],
+            },
+            "FontAwesomeIcon": {
+                "type": "object",
+                "description": "FontAwesome v4 icon",
+                "properties": {
+                    "icon_name": {"type": "string", "description": "FontAwesome v4 icon name (without \"fa-\" prefix), e.g. group, graduation-cap"}
+                },
+                "required": ["icon_name"],
+                "additionalProperties": False
             },
             "BasicImage": {
                 "type": "object",

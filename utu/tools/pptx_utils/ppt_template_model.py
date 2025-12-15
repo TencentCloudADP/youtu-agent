@@ -6,9 +6,10 @@ import logging
 import traceback
 import uuid
 import os
-from typing import Any, Literal
+from typing import Any, Literal, Tuple
 
 import requests
+import numpy as np
 from PIL import Image
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pydantic import BaseModel
@@ -54,6 +55,11 @@ class TableContent(BaseContent):
     n_cols: int  # no more than 10
 
 
+# font awesome 4 only
+class FontAwesomeIcon(BaseModel):
+    icon_name: str
+
+
 class PageConfig:
     """Configuration loader for page templates from YAML"""
 
@@ -86,7 +92,7 @@ class PageConfig:
             page_key = key
             self.pages[page_key] = value
 
-    def render(self, slide, page_json: dict[str, Any]):
+    def render(self, slide, page_json: dict[str, Any], prs):
         """Render slide based on page configuration and data"""
         page_type = page_json.get("type", "")
         logging.info(f"===Rendering page type: {page_type}===")
@@ -122,16 +128,23 @@ class PageConfig:
                 self._render_label_list_field(slide, field_name, field_value)
             elif field_type == "image":
                 self._render_basic_image_field(slide, field_name, field_value)
+            elif field_type == "fontawesome_icon":
+                self._render_font_awesome_icon_field(slide, field_name, field_value, prs)
             else:
                 raise ValueError(f"Unknown field type: {field_type}")
+
+    def _render_font_awesome_icon_field(self, slide, field_name: str, icon_value, prs):
+        logging.info(f"{field_name}: {icon_value}")
+        shape = find_shape_with_name_except(slide.shapes, field_name)
+        if shape:
+            handle_font_awesome_icon(icon_value, shape, slide, prs)
 
     def _render_basic_image_field(self, slide, field_name: str, image_value):
         logging.info(f"{field_name}: {image_value}")
         shape = find_shape_with_name_except(slide.shapes, field_name)
         image = self._ensure_basic_image_model(image_value)
         if shape:
-            # handle_image(image.image_url, shape, slide)
-            handle_image(image, shape, slide)
+            handle_image(image.image_url, shape, slide)
 
     def _render_text_field(self, slide, field_name: str, text_value: str):
         """Render text field"""
@@ -266,26 +279,25 @@ def handle_pure_text(text: str, target_shape, slide):
         logging.error(f"Failed to set text: {text} {e}")
 
 
-# def handle_image(image_url: str, target_shape, slide):
-def handle_image(image, target_shape, slide):
+def handle_image(image_url: str, target_shape, slide):
     left, top, width, height = target_shape.left, target_shape.top, target_shape.width, target_shape.height
     
     # Distinguish between remote URL and local relative path
-    if image.image_url and image.image_url.startswith("http"):
+    if image_url and image_url.startswith("http"):
         # Case 1: Remote URL - download the image
         try:
-            image_url = image.image_url
+            image_url = image_url
             image_url, image_width, image_height = download_image(image_url)
         except Exception as e:
-            logging.warning(f"Failed to download image: {image.image_url} {e}")
+            logging.warning(f"Failed to download image: {image_url} {e}")
             traceback.print_exc()
             return
-    elif image.image_url and os.path.exists(image.image_url):
+    elif image_url and os.path.exists(image_url):
         # Case 2: Local relative path - use image_url directly as local path
         try:
-            image_url = image.image_url
+            image_url = image_url
             if not image_url:
-                logging.warning(f"Image URL is empty for local image with description: {image.image_description}")
+                logging.warning(f"Image URL is empty for local image: {image_url}")
                 return
             
             # Get image dimensions from local file
@@ -383,8 +395,7 @@ def handle_content(content: BaseContent, target_shape, slide):
     if content.content_type == "text":
         handle_text_content(content, target_shape, slide)
     elif content.content_type == "image":
-        # handle_image(content.image_url, target_shape, slide)
-        handle_image(content, target_shape, slide)
+        handle_image(content.image_url, target_shape, slide)
     elif content.content_type == "table":
         handle_table(content, target_shape, slide)
     else:
@@ -402,3 +413,42 @@ def handle_item(item: Item, item_index: int, slide, index_start_from_one=True):
 
     handle_pure_text(item.title, item_title_shape, slide)
     handle_pure_text(item.content, item_content_shape, slide)
+
+
+def handle_font_awesome_icon(icon: FontAwesomeIcon, target_shape, slide, prs):
+    from .fa_to_codepoint import fa_2_codepoint
+    from .utils import get_fill_rgb
+    
+    codepoint = fa_2_codepoint.get(icon["icon_name"], 61817)
+    
+    target_color = get_fill_rgb(target_shape, prs)
+    if not target_color:
+        logging.warning("cannot get target color of icon, use black by default")
+        target_color = (0, 0, 0)
+    
+    img = Image.open(f'fa_icons/{codepoint}.png')
+    
+    # replace black in the image with the target_color
+    img_array = np.array(img)
+    # 分离RGB和Alpha通道
+    rgb = img_array[:, :, :3]
+    alpha = img_array[:, :, 3] if img_array.shape[2] == 4 else None
+    
+    # 创建黑色像素掩码
+    black_mask = np.all(rgb <= 10, axis=2)
+    
+    # 替换RGB通道中的黑色
+    rgb[black_mask] = target_color
+    
+    # 重新组合通道
+    if alpha is not None:
+        result_array = np.dstack((rgb, alpha))
+    else:
+        result_array = rgb
+    result_img = Image.fromarray(result_array)
+    
+    # save to temp file
+    temp_file = f"{uuid.uuid4()}.png"
+    result_img.save(temp_file)
+    
+    handle_image(temp_file, target_shape, slide)

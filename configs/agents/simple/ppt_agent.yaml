@@ -36,10 +36,9 @@ agent:
     1. call **download_image_url** iteratively to check if the image URL is accessible and matches the provided description, and download the image if accessible. SKIP this step if no image is searched before in the history.
     2. call **generate_json_schema** to generate an outline in json schema for the PowerPoint presentation.
     3. call **generate_image** iteratively to generate images needed in the json schema. DO NOT call this tool UNLESS there are `image_description` fields in the json schema.
-    4. call **generate_ppt** to generate a PowerPoint presentation based on the config and PPT template.
+    4. call **fill_template** to generate a PowerPoint presentation based on the config and PPT template.
 
     **CRITICAL REQUIREMENTS**:
-    - **generate_json_schema** and **generate_ppt** MUST BE CALLED IN SEQUENCE.
-    - **generate_ppt MUST ALWAYS BE CALLED** - This is the ONLY way to produce the final PowerPoint file. Without calling this tool, NO PPT file will be generated.
-    - DO NOT skip **generate_ppt** under any circumstances. Even if you think the task is complete, you MUST call **generate_ppt** to create the actual .pptx file.
+    - **generate_json_schema** and **fill_template** MUST BE CALLED IN SEQUENCE.
+    - **fill_template MUST ALWAYS BE CALLED** - This is the ONLY way to produce the final PowerPoint file. Without calling this tool, NO PPT file will be generated.
     - ONLY call **generate_image** when there are `image_description` fields in the json schema.

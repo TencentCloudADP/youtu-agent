@@ -5,6 +5,9 @@ from copy import deepcopy
 
 import matplotlib
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.enum.dml import MSO_COLOR_TYPE, MSO_FILL, MSO_THEME_COLOR
+from pptx.opc.constants import RELATIONSHIP_TYPE
+from pptx.oxml import parse_xml
 
 # rgb colors from a color scheme
 _color_palette = [
@@ -337,6 +340,62 @@ def replace_picture_keep_format(slide, shape_index, new_image_path):
         image_part._blob = f.read()
 
     return shape
+
+
+def get_theme_color_rgb(prs, theme_color):
+    """
+    根据 theme_color（MSO_THEME_COLOR 枚举）取得实际 RGB 值。
+    返回 (r, g, b)，范围 0-255。
+    """
+
+    # 1. 取得主题 XML
+    slide_master = prs.slide_master
+    slide_master_part = slide_master.part
+    theme_part = slide_master_part.part_related_by(RELATIONSHIP_TYPE.THEME)
+    theme = parse_xml(theme_part.blob)
+    
+    print(theme)
+    
+    # 枚举到 clrScheme 节点的名称映射
+    theme_color_map = {
+        MSO_THEME_COLOR.DARK_1: "dk1",
+        MSO_THEME_COLOR.LIGHT_1: "lt1",
+        MSO_THEME_COLOR.DARK_2: "dk2",
+        MSO_THEME_COLOR.LIGHT_2: "lt2",
+        MSO_THEME_COLOR.ACCENT_1: "accent1",
+        MSO_THEME_COLOR.ACCENT_2: "accent2",
+        MSO_THEME_COLOR.ACCENT_3: "accent3",
+        MSO_THEME_COLOR.ACCENT_4: "accent4",
+        MSO_THEME_COLOR.ACCENT_5: "accent5",
+        MSO_THEME_COLOR.ACCENT_6: "accent6",
+        MSO_THEME_COLOR.HYPERLINK: "hlink",
+        MSO_THEME_COLOR.FOLLOWED_HYPERLINK: "folHlink",
+    }
+    
+    for color_name in theme_color_map.values():
+        print(color_name)
+        color_element = theme.xpath(f'a:themeElements/a:clrScheme/a:{color_name}/a:srgbClr')[0]
+        print(color_element)
+        # color_element.set('val', hex_value.encode('utf-8'))
+    
+    return None
+
+
+def get_fill_rgb(shape, prs):
+    fill = shape.fill
+    
+    if fill.type != MSO_FILL.SOLID:
+        return None
+    
+    fore_color = fill.fore_color
+    
+    if fore_color.type == MSO_COLOR_TYPE.RGB:
+        return tuple(fore_color.rgb)
+    elif fore_color.type == MSO_COLOR_TYPE.SCHEME:
+        print(fore_color.theme_color)
+        return get_theme_color_rgb(prs, fore_color.theme_color)
+    
+    return None
 
 
 if __name__ == "__main__":
