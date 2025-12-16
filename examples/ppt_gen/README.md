@@ -1,51 +1,67 @@
 # PowerPoint Template Example
 
+> [中文README](README.zh.md)
+
+## Prerequisites
+
+This example requires additional dependencies for image processing, document handling, and visualization.
+
+**Install dependencies:**
+
+```bash
+# Navigate to project root
+cd youtu-agent
+
+# Install PPT generation dependencies
+uv sync --extra ppt-gen
+```
+
 ## Quick Start
 
-Download [template files](https://drive.google.com/drive/folders/1oZYoHBJJwzAzhrpvnUnklvU7LcS4oFz6?usp=sharing) to `examples/ppt_gen/template` directory.
+Download [template files](https://cdn.jsdelivr.net/gh/TencentCloudADP-DevRel/picgo-images@main/assets/templates.zip) to `examples/ppt_gen/template` directory.
 
-Prepare the reference resource (plain text / markdown / html webpage) for PPT generation. For example, download the [Nobel Prize webpage](https://www.nobelprize.org/prizes/physics/2025/popular-information/).
+Navigate to the example directory, prepare the reference resource (plain text / markdown / html webpage) for PPT generation. For example, download the [Nobel Prize webpage](https://www.nobelprize.org/prizes/physics/2025/popular-information/).
 
-```
+```bash
+# Navigate to the example directory
+cd examples/ppt_gen
+
+# Download sample webpage
 wget https://www.nobelprize.org/prizes/physics/2025/popular-information/ -O webpage.html
 ```
 
-`cd` into `examples/ppt_gen`
+Run the PPT generation script.
 
-Run `main.py`
-
+```python
+python main.py \
+  --file webpage.html \
+  --template_path templates \
+  --yaml_path yaml_example2.yaml \
+  --pages 8 \
+  --disable_tooluse \
+  --extra_prompt "Ensure rich content. In English" \
+  --template_name 11
 ```
-python main.py --file webpage.html --template_path template/0.pptx --pages 15
-```
 
-The script will produce a `json` file and a `pptx` file if everything is OK.
+The script will produce a `json` file and a `pptx` file if everything is OK. Pass `--yaml_path` to switch between different template definitions.
 
-## Custom Template
+## YAML-driven template configuration
 
-The PPT generation workflow basically consists of 3 stages
+For more details, see [YAML-driven template configuration](./YAML_CONFIG_GUIDE.md).
 
-1. LLM summarize the give resource, and arrange the content for PPT
-2. LLM rearrange the content into JSON format following the given JSON schema which defines various types of layout and content requirements.
-3. Extract JSON from LLM output, fill the PPT template by duplicating slides and replacing shapes in the template file.
+The template workflow is powered by a YAML config (see `yaml_example.yaml`). The config plays two roles:
 
-The third stage is rigid and fixed, so custom templates must be pre-labeled consistently with the definitions in the schema.
+1. **type_map** — maps slide `type` values (e.g., `title`, `items_page_4`) to the slide index inside the reference template. These indices tell the renderer which base slide to duplicate.
+2. **Page definitions** — each `<name>_page` block describes all fields that can appear on that slide. Every field specifies `type`, optional length constraints, and additional hints that are injected into the LLM’s JSON schema via `gen_schema.build_schema`.
 
-First, prepare a template by referring to existing templates, and arrange the following types of pages in order:
+Supported field types include `str`, `int`, `content` (rich text/image/table payload), `content_list`, `item_list`, `str_list`, and `image`. When the agent finishes generating content, `fill_template_with_yaml_config` reads the YAML config, looks up the target slide via `type_map`, duplicates the correct template page, and renders each field based on the declared type mappings. To customize a template:
 
-1. Single-column content page (content)
-2. Title page (title)
-3. Section title page (section_title)
-4. Double-column content page
-5. Bullet points (3 items)
-6. Bullet points (4 items)
-7. Bullet points (4 items)
-8. Bullet points (4 items, showing upward trend)
-9. Bullet points (4 items, with single-word headings)
-10. Bullet points (6 items, displaying process/timeline)
-11. Bullet points (4 items, wrapping around an image)
-12. Bullet points (5 items, displaying process/timeline)
-13. Acknowledgments page
+1. Duplicate `yaml_example.yaml`, adjust `type_map` to match the slide order in your PPT template.
+2. Update or add page blocks so that every slide type you want the agent to produce has the correct field definitions.
+3. Run the script with `--yaml_path <your_config.yaml>` to load the new schema and automatically align the agent output with your PPT.
 
-Then, for each page, enter the *selection pane* and rename specific elements so that their names correspond exactly to the requirements specified in the schema. You may refer to the existing template, JSON schmea and the Python code for proper labeling.
+### Use custom templates
 
-JSON schema can be customized too. The script `synthesis_config.py` can be a handy tool to update agent config file.
+- Use the **Selection Pane** in PowerPoint to rename shapes so their names exactly match YAML field names (for example: `title`, `subtitle`, `item_title1`, `item_content1`, `label1`, `content1`).
+- **No duplicate names** on the same slide. Each shape name must be unique so the renderer can target it deterministically.
+- **Refer to existing templates** in `examples/ppt_gen/templates` and the field definitions in `yaml_example.yaml` as a naming guide.

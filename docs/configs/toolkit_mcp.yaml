@@ -1,0 +1,35 @@
+# ===========================================================================================
+# Example config for mcp toolkits with full yaml configuration, this file is the same as
+#   the builtin version in @configs/tools/mcp/github.yaml . The toolkit configs in @configs/tools/*
+#   can then be loaded into agent configs via hydra defaults, see ./agent_with_hydra.yaml 
+#   for details.
+# Exampled configs:
+#   - stdio: configs/tools/mcp/memory.yaml
+#   - streamable_http / sse: configs/tools/mcp/github.yaml
+# Doc: https://tencentcloudadp.github.io/youtu-agent/tools/
+#   Reference config data structure: utu/config/agent_config.py
+# ============================================================================================
+
+# -------------------------------------------------------------------------------------------
+# basic configs
+mode: mcp
+name: github
+mcp_transport: streamable_http  # stdio | sse | streamable_http
+mcp_client_session_timeout_seconds: 20
+
+# Setup tools you want to use in this toolkit.
+# op1: set activated_tools to null if you want to use all tools
+# activated_tools: null
+# op2: specify the activated tools you want to use
+activated_tools: ...
+
+# -------------------------------------------------------------------------------------------
+# Toolkit's customize configs. The `config` field follows the needed params for mcp servers. 
+#   - streamable_http / sse: url, headers, timeout, sse_read_timeout
+#   - stdio: command, args, env, cwd, encoding
+# Reference https://openai.github.io/openai-agents-python/ref/mcp/server/ for definitions of 
+#   `MCPServerStdioParams, MCPServerSseParams, MCPServerStreamableHttpParams`
+config:
+  url: https://api.githubcopilot.com/mcp/
+  headers:
+    Authorization: Bearer ${oc.env:GITHUB_TOKEN}

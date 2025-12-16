@@ -32,6 +32,15 @@ if TYPE_CHECKING:
 
 # Used to clean ANSI escape sequences
 ANSI_ESCAPE = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]")
+MAX_MEMORY_GB = 16
+CODE_HEADER = f"""
+import resource
+try:
+    memory_limit_bytes = {MAX_MEMORY_GB * 1024 * 1024 * 1024}
+    resource.setrlimit(resource.RLIMIT_AS, (memory_limit_bytes, memory_limit_bytes))
+except (ValueError, resource.error):
+    pass
+"""
 
 
 def execute_python_code_sync(code: str, workdir: str):
@@ -45,6 +54,7 @@ def execute_python_code_sync(code: str, workdir: str):
         code_clean = code.strip()
         if code_clean.startswith("```python"):
             code_clean = code_clean.split("```python")[1].split("```")[0].strip()
+        code_clean = CODE_HEADER + code_clean
 
         # Create and change to working directory
         os.makedirs(workdir, exist_ok=True)

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import mermaid from 'mermaid';
 import BrokenImagePlaceholder from './BrokenImagePlaceholder';
+import DOMPurify from 'dompurify';
 
 interface MermaidProps {
   chart: string;
@@ -47,7 +48,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, mermaidId }) => {
 
   const renderChartAsync = async () => {
     const svg = await renderChart();
-    setSvg(svg);
+    setSvg(DOMPurify.sanitize(svg));
     setWasOK(true);
   };
 
@@ -66,7 +67,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, mermaidId }) => {
 
   return (
     <div className="mermaid-container">
-      {wasOK ? <div className="mermaid" dangerouslySetInnerHTML={{ __html: svg }} /> : <BrokenImagePlaceholder
+      {wasOK ? <div className="mermaid" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(svg) }} /> : <BrokenImagePlaceholder
         src={chart}
         alt="Mermaid Chart"
       />}

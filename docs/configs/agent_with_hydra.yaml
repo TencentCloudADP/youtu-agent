@@ -1,0 +1,37 @@
+# ===========================================================================================
+# Example config for simple agent with hydra syntax, this file is the same as the full 
+#   version in ./agent_simple.yaml . After learning hydra, you can understand the configs
+#   we defined in @configs/**/*.yaml and customize your own agent config easily. e.g., 
+#   @configs/agents/simple/chitchat.yaml
+# Ref: 
+#   https://github.com/facebookresearch/hydra
+#   https://hydra.cc/docs/intro/
+# ============================================================================================
+
+# -------------------------------------------------------------------------------------------
+# hydra defaults, we use the predefined configs in @configs/model/*, @configs/tools/* to avoid 
+#   redundancy. E.g., the line `/tools/search@toolkits.search` means that we load the search 
+#   toolkit config defined in @configs/tools/search.yaml into the `/toolkits/search` field. And 
+#   then we can overwrite some parameters below if needed. For instance, we change the search engine
+#   to `jina` instead of the default `google` here.
+
+# @package _global_  # used as root package
+defaults:
+  - /model/base@model  # load base LLM model defined in @configs/model/base.yaml
+  - /tools/search@toolkits.search  # load search toolkit defined in @configs/tools/search.yaml
+  - _self_
+
+# You can overwrite the predefined configs loaded from defaults. e.g. we can change the temperature
+#   of the LLM model to 0, or change the search engine to jina
+model:
+  model_settings:
+    temperature: 0
+toolkits:
+  search:
+    search_engine: jina
+
+# -------------------------------------------------------------------------------------------
+# We only config key agent configs here, and leave the rest to defaults
+agent:
+  name: utu-base
+  instructions: "You are a helpful assistant."

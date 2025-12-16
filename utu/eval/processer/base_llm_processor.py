@@ -47,12 +47,12 @@ class BaseLLMJudgeProcesser(BaseProcesser):
 
         if correct_answer == "unknown":
             # if correct answer is unknown, we cannot judge
-            data.update(judged_response="invalid", correct=False)
+            data.update(judged_response="invalid", correct=False, reward=0.0)
             return data
 
         # if exact match, return directly(maybe extract exact answer from response first)
         if self._extract_exact_answer(response) == correct_answer:
-            data.update(judged_response="Exact match", correct=True)
+            data.update(judged_response="Exact match", correct=True, reward=1.0)
             return data
 
         messages = self._get_judge_messages(question=question, response=response, correct_answer=correct_answer)
@@ -69,8 +69,8 @@ class BaseLLMJudgeProcesser(BaseProcesser):
     def calculate_metrics(self, samples: list[EvaluationSample]) -> dict:
         """Caculate metrics from the judged data."""
         return {
-            **MetricsUtils.calculate_overall_metrics(samples),
-            **MetricsUtils.calculate_level_metrics(samples),
+            **MetricsUtils.calculate_pass_at_k_metrics(samples, k=self.config.pass_k),
+            **MetricsUtils.calculate_level_pass_at_k_metrics(samples, k=self.config.pass_k),
         }
 
     def _get_judge_messages(self, question: str, response: str, correct_answer: str) -> list:

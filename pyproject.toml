@@ -83,6 +83,14 @@ utils = [
     "docker>=7.1.0",
     "tiktoken>=0.11.0",
 ]
+# PPT generation example dependencies
+ppt-gen = [
+    "pillow>=11.3.0",
+    "python-pptx>=1.0.2",
+    "pymupdf>=1.26.4",
+    "matplotlib>=3.10.6",
+]
+
 
 
 [dependency-groups]

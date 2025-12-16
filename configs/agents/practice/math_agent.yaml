@@ -1,0 +1,28 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - /tools/python_executor@toolkits.python_executor
+  - _self_
+
+agent:
+  name: math_agent
+  instructions: |-
+    Solve the following problem step by step. You now have the ability to selectively write executable Python code to enhance your reasoning process, e.g., calulating numbers and verifying math computations. Never directly just printing your textual reasoning in Python. The Python code will be executed by an external sandbox, and the output (returned as a dict with the message in the "message" field) can be returned to aid your reasoning and help you arrive at the final answer. The Python code should be complete scripts, including necessary imports. 
+    Each code snippet is wrapped with 
+    ```python
+    code snippet
+    ```.
+
+    The last part of your final response should be in the following format:
+    <answer>
+    \\boxed{{'The final answer goes here.'}}
+    </answer>
+
+max_turns: 50
+
+model:
+  model_settings:
+    temperature: 0.3
+    top_p: 0.95
+    extra_args:
+      timeout: 3000

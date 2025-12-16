@@ -18,25 +18,33 @@
 |
 </p>
 
-`Youtu-Agent`は、自律エージェントを構築・実行・評価するための柔軟で高性能なフレームワークです。ベンチマークテストでトップクラスの成績を収めるだけでなく、オープンソースモデルを活用してデータ分析、ファイル処理、深層学習などの高度な機能を実現できる強力なエージェント機能も備えています。
+`Youtu-Agent`は、自律エージェントを構築・実行・評価するための柔軟で高性能なフレームワークです。ベンチマークテストでトップクラスの成績を収めるだけでなく、オープンソースモデルを活用してデータ分析、ファイル処理、深層学習などの高度な機能を実現できる強力なエージェント機能も備えています。さらに、本フレームワークは経験学習またはエンドツーエンドトレーニングを通じてエージェント機能を強化することもサポートしています。
 
 <img src="docs/assets/mascot.png" alt="Youtu-agent Logo" width="200" align="left" style="margin-right:20px;">
 
 主なハイライト：
 - **パフォーマンスの検証**：WebWalkerQAではpass@1で71.47%、GAIA（純テキストサブセット）ではpass@1で72.8%を達成しました。これは`DeepSeek-V3`シリーズのモデルのみを使用しており（ClaudeやGPTは使用していません）、強力なオープンソースの出発点を築きました。
+- **自動ツール＆エージェント生成**：モジュール設計と構造化されたコンフィグシステムに基づいて、Youtu-AgentはLLMを通じたツールとエージェントの自動生成をサポートしており、新しいアプリケーションシナリオへの迅速な対応とマニュアル設定のオーバーヘッド削減を実現します。
+- **自動エージェント経験学習**：[Training-Free GRPO](https://arxiv.org/abs/2510.08191)を通じて、エージェントは過去の経験を活用してエージェント機能を継続的に最適化し、最小限のコストで大幅なパフォーマンス向上を実現します。詳しくは[エージェント学習ドキュメント](https://tencentcloudadp.github.io/youtu-agent/practice/)をご覧ください。
+- **エージェントトレーニング**：Youtu-Agentはエージェントモデルのパラメータファインチューニングもサポートし、エンドツーエンドのRLトレーニングを通じてモデル能力を向上させます。
 - **オープンソースに優しく、コストに敏感**：アクセスしやすく、低コストでのデプロイを最適化しており、クローズドなモデルに依存しません。
 - **実際の使用例**：CSV分析、文献レビュー、個人ファイルの整理、ポッドキャストやビデオの生成などのタスクを箱から出してすぐにサポートします。（近日公開予定）
 - **柔軟なアーキテクチャ**：[openai-agents](https://github.com/openai/openai-agents-python)に基づいて構築されており、`DeepSeek`から`gpt-oss`までのさまざまなモデルAPI、ツールの統合、フレームワークの実装と互換性があります。
-- **自動化とシンプルさ**：YAMLベースの設定、自動エージェント生成、簡素化された設定により、手動の作業負担が減ります。
 
 ## 🗞️ ニュース
 
+- 🚀 [2025-12-10] **Youtu-Agent x Agent-Lightning トレーニング統合が利用可能！** [Agent-Lightning](https://github.com/microsoft/agent-lightning/) チームと協力して、コード/数学と検索環境での効率的なモデルトレーニングを実装しました（ReTool、SearchR1）。Youtu-Agentの最適化により、分散トレーニングは128 GPUのマルチノードデプロイにシームレスにスケールできるようになりました。詳細は [rl/agl ブランチ](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl) をご覧ください。
+- 🎉 [2025-11-12] **Training-Free GRPO がメインブランチで利用可能に！** [Training-Free Group Relative Policy Optimization](https://arxiv.org/abs/2510.08191) によるエージェント学習モジュールがメインブランチに統合されました。ファインチューニング不要で、極めて低コスト（約8ドル）でエージェントの性能を向上させることができます。数学推論とウェブ検索タスクの使用方法と例については、[エージェント学習ドキュメント](https://tencentcloudadp.github.io/youtu-agent/practice/)をご覧ください。
 - 📢 [2025-11-03] 新しい例を追加しました：[**PPT生成**](examples/ppt_gen/README.md)と[**RAG**](configs/agents/examples/rag.yaml)の例を追加しました。
 - 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191)。DeepSeek-V3.2 のRLが8ドルで？本当に実現しました！トレーニング不要の GRPO が DeepSeek-V3.2 を凍結したまま約100件のサンプルからトークン事前分布を学習し、RL のコストをおよそ8ドルまで抑えつつ数学とウェブ検索タスクで改善を確認しました！コードブランチ [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO) [[X ポスト](https://x.com/cai_cecilia47/status/1976558824640393559)]。
 - 🛠️ [2025-09-28] エージェント自動生成に加えて、要件を一度伝えるだけで`Youtu-Agent`がツールを構築してくれる自動ツール生成機能をリリースしました。[[詳細](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)]。
+
+<details>
+<summary><b>📰 過去のお知らせ</b></summary>
 - 📺 [2025-09-09] 「Youtu-Agent」の設計思想と基本的な使い方についてライブ配信を行いました。[[動画](https://www.bilibili.com/video/BV1mypqz4EvS)] [[資料](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)]。
 - 🎁 [2025-09-02] [テンセントクラウド国際サイト](https://www.tencentcloud.com/)では、DeepSeek APIの新規ユーザーに対して**300万枚の無料トークン**を提供しています（**2025年9月1日から2025年10月31日まで**）。`Youtu-Agent`でDeepSeekモデルを使用したい場合は、[無料トライアルをクリック](https://www.tencentcloud.com/document/product/1255/70381)してください！企業向けのエージェントソリューションについては、[エージェント開発プラットフォームADP](https://adp.tencentcloud.com)もご覧ください。
 - 📺 [2025-08-28] 新しくリリースされたDeepSeek-V3.1モデルについてライブ配信を行い、`Youtu-Agent`フレームワークでの使用方法を紹介しました。[[動画](https://www.bilibili.com/video/BV1XwayzrETi/)] [[資料](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)]。
+</details>
 
 ## 🌟 ベンチマークパフォーマンス
 

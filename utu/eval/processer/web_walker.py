@@ -21,8 +21,8 @@ class WebWalkerQAProcesser(BaseLLMJudgeProcesser):
     def calculate_metrics(self, samples: list[EvaluationSample]) -> dict:
         """Calculate metrics from the judged data."""
         return {
-            **MetricsUtils.calculate_overall_metrics(samples),
-            **MetricsUtils.calculate_level_metrics(samples),
+            **MetricsUtils.calculate_pass_at_k_metrics(samples, k=self.config.pass_k),
+            **MetricsUtils.calculate_level_pass_at_k_metrics(samples, k=self.config.pass_k),
         }
 
     def _parse_judge_response(self, response: str) -> dict:

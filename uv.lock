@@ -5965,6 +5965,12 @@ local-python = [
     { name = "scipy", version = "1.16.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "seaborn" },
 ]
+ppt-gen = [
+    { name = "matplotlib" },
+    { name = "pillow" },
+    { name = "pymupdf" },
+    { name = "python-pptx" },
+]
 scholar = [
     { name = "arxiv" },
 ]
@@ -6036,6 +6042,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "litellm", marker = "extra == 'litllm'", specifier = ">=1.77.0" },
     { name = "matplotlib", marker = "extra == 'local-python'", specifier = ">=3.10.6" },
+    { name = "matplotlib", marker = "extra == 'ppt-gen'", specifier = ">=3.10.6" },
     { name = "mcp", specifier = ">=1.12.3" },
     { name = "openai-agents", specifier = "==0.5.0" },
     { name = "openinference-instrumentation-openai", specifier = ">=0.1.30" },
@@ -6043,10 +6050,13 @@ requires-dist = [
     { name = "opentelemetry-exporter-otlp", specifier = ">=1.37.0" },
     { name = "pexpect", marker = "extra == 'local-bash'", specifier = ">=4.9.0" },
     { name = "pillow", marker = "extra == 'image'", specifier = ">=11.3.0" },
+    { name = "pillow", marker = "extra == 'ppt-gen'", specifier = ">=11.3.0" },
     { name = "prompt-toolkit", specifier = ">=3.0.52" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "pymupdf", marker = "extra == 'documents'", specifier = ">=1.26.4" },
+    { name = "pymupdf", marker = "extra == 'ppt-gen'", specifier = ">=1.26.4" },
     { name = "python-pptx", marker = "extra == 'documents'", specifier = ">=1.0.2" },
+    { name = "python-pptx", marker = "extra == 'ppt-gen'", specifier = ">=1.0.2" },
     { name = "requests", specifier = ">=2.32.4" },
     { name = "rich", specifier = ">=14.1.0" },
     { name = "scipy", marker = "extra == 'local-python'", specifier = ">=1.15.3" },
@@ -6055,7 +6065,7 @@ requires-dist = [
     { name = "tiktoken", marker = "extra == 'utils'", specifier = ">=0.11.0" },
     { name = "wikipedia-api", marker = "extra == 'wiki'", specifier = ">=0.8.1" },
 ]
-provides-extras = ["litllm", "search", "scholar", "wiki", "e2b", "local-python", "local-bash", "documents", "image", "video", "utils"]
+provides-extras = ["litllm", "search", "scholar", "wiki", "e2b", "local-python", "local-bash", "documents", "image", "video", "utils", "ppt-gen"]
 
 [package.metadata.requires-dev]
 dev = [
