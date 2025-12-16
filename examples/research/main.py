@@ -56,7 +56,7 @@ class ResearchManager:
         self.search_agent = SimpleAgent(
             name="Search agent",
             instructions=PROMPTS["SEARCH_PROMPT"],
-            tools=await toolkit.get_tools_in_agents(),
+            tools=toolkit.get_tools_in_agents(),
         )
         self.writer_agent = SimpleAgent(
             name="WriterAgent",

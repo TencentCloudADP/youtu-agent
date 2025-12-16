@@ -1,0 +1,12 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - /tools/python_executor@toolkits.python_executor
+  - _self_
+
+agent:
+  name: qa_python
+  instructions: |
+    Solve the following problem step by step. You now have the ability to selectively write executable Python code to enhance your reasoning process. `code_interpreter` is a tool for interpreting the Python code in an external sandbox. You should use this tool at least once to execute your code and refine your answer if necessary. The execution output will be returned to aid your reasoning and help you arrive at the final answer.
+    - The Python code should be complete scripts, including necessary imports.
+    - The last line of your response should be of the form Answer: $Answer (without quotes) where $Answer is the answer to the problem.

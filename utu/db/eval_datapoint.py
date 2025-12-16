@@ -11,7 +11,7 @@ class DatasetSample(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     dataset: str = ""  # dataset name, for exp
-    index: int | None = Field(default=None)  # The index of the datapoint in the dataset, starting from 1
+    index: int | None = Field(default=None)  # The index of the datapoint in the dataset
     source: str = ""  # dataset name for mixed dataset
     source_index: int | None = Field(default=None)  # The index of the datapoint in the source dataset, if available
 
@@ -55,6 +55,7 @@ class EvaluationSample(UTUBaseModel, SQLModel, table=True):
     judged_response: str | None = Field(default=None)
     reasoning: str | None = Field(default=None)
     correct: bool | None = Field(default=None)
+    reward: float | None = Field(default=None)  # 0-1
     confidence: int | None = Field(default=None)
     # id
     exp_id: str = Field(default="default")
@@ -78,6 +79,7 @@ class EvaluationSample(UTUBaseModel, SQLModel, table=True):
             "trajectories",
             "judged_response",
             "correct",
+            "reward",
             "confidence",
         ]
         return {k: getattr(self, k) for k in keys if getattr(self, k) is not None}

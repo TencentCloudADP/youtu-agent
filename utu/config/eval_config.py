@@ -27,7 +27,7 @@ class EvalConfig(ConfigBaseModel):
     """Experiment ID"""
 
     # data
-    db_url: str = EnvUtils.get_env("DB_URL", "sqlite:///test.db")
+    db_url: str = EnvUtils.get_env("UTU_DB_URL", "sqlite:///test.db")
     """Database URL"""
     data: DataConfig = None
     """Data config"""
@@ -37,6 +37,8 @@ class EvalConfig(ConfigBaseModel):
     """Agent config for rollout"""
     concurrency: int = 1
     """Rollout parallelism"""
+    pass_k: int = 1
+    """Rollout k for each sample"""
 
     # judgement
     judge_model: ModelConfigs = Field(default_factory=ModelConfigs)
@@ -45,3 +47,8 @@ class EvalConfig(ConfigBaseModel):
     """Judgement parallelism"""
     eval_method: str = None
     """Evaluation method"""
+    # optional verify function for custom judgement (used by `train` processors etc.)
+    verify_filename: str | None = None
+    """Optional: Python filename under `utu/train/verify/` that contains a verify function."""
+    verify_func_name: str | None = None
+    """Optional: The function name inside the verify file to call for judgement."""

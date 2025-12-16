@@ -28,3 +28,11 @@ class ConfigBaseModel(BaseModel):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({', '.join(f'{k}={v!r}' for k, v in secure_repr(self.__repr_args__()))})"
+
+    def model_dump(
+        self,
+        *,
+        exclude_none: bool = True,  # avoid passing temperature=None to avoid SGLang error
+        **kwargs,
+    ) -> dict[str, Any]:
+        return super().model_dump(exclude_none=exclude_none, **kwargs)

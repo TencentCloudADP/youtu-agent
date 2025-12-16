@@ -47,7 +47,7 @@ def search_toolkit() -> SearchToolkit:
 
 
 async def test_tool_schema(search_toolkit: SearchToolkit):
-    tools = await search_toolkit.get_tools_in_agents()
+    tools = search_toolkit.get_tools_in_agents()
     for tool in tools:
         print(f"{tool.name}: {tool.description}")
         print(json.dumps(tool.params_json_schema, indent=2, ensure_ascii=False))

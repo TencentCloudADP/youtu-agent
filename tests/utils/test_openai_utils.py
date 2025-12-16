@@ -28,6 +28,15 @@ tools = [
 tools_response = [OpenAIUtils.tool_chatcompletion_to_responses(t) for t in tools]
 
 
+# test ModelConfig -----------------------------------------------------------------------
+async def test_model_config():
+    # test the `ModelParamsConfig` config -- NOTE passing temperature=None will lead to SGLang error!
+    config = ConfigLoader.load_model_config("base")
+    client = SimplifiedAsyncOpenAI(**config.model_provider.model_dump())
+    res = await client.query_one(messages=messages, tools=tools, **config.model_params.model_dump())
+    print(res)
+
+
 # test chat completions -----------------------------------------------------------------------
 # for model test, use the .chat.completions.create API
 async def test_model():

@@ -1,0 +1,12 @@
+# @package _global_
+# https://github.com/modelcontextprotocol/servers/tree/main/src/time
+name: time
+mode: mcp
+activated_tools:
+  - get_current_time
+  - convert_time
+mcp_transport: stdio
+mcp_client_session_timeout_seconds: 20
+config:
+  command: uvx
+  args: ["mcp-server-time", "--local-timezone=Asia/Shanghai"]

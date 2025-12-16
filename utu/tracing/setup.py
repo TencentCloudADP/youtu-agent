@@ -4,8 +4,6 @@ https://github.com/Arize-ai/openinference/tree/main/python/instrumentation/openi
 session-level tracing in @phoenix https://arize.com/docs/phoenix/tracing/how-to-tracing/setup-tracing/setup-sessions
 """
 
-import os
-
 from agents import add_trace_processor, set_tracing_disabled
 from openinference.instrumentation.openai import OpenAIInstrumentor
 
@@ -16,7 +14,7 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 from opentelemetry.sdk.trace import Resource, TracerProvider
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 
-from ..utils import SQLModelUtils, get_logger
+from ..utils import EnvUtils, SQLModelUtils, get_logger
 from .db_tracer import DBTracingProcessor
 from .otel_agents_instrumentor import OpenAIAgentsInstrumentor
 
@@ -39,16 +37,25 @@ def setup_otel_tracing(
         logger.warning("OpenTelemetry tracing is already set up! Skipping...")
         return
 
-    endpoint = endpoint or os.getenv("PHOENIX_ENDPOINT")
-    project_name = project_name or os.getenv("PHOENIX_PROJECT_NAME")
+    endpoint = endpoint or EnvUtils.get_env("PHOENIX_ENDPOINT", "")
+    project_name = project_name or EnvUtils.get_env("PHOENIX_PROJECT_NAME", "")
     if not endpoint or not project_name:
         logger.warning("PHOENIX_ENDPOINT or PHOENIX_PROJECT_NAME is not set! Skipping OpenTelemetry tracing.")
         set_tracing_disabled(True)  # we disable the openai's default tracing
         return
 
+    # https://arize.com/docs/phoenix/tracing/how-to-tracing/setup-tracing/custom-spans
+    # create your key: https://app.phoenix.arize.com/s/_space_name_/settings/general
+    if endpoint.startswith("https://app.phoenix.arize.com"):
+        api_key = EnvUtils.get_env("PHOENIX_API_KEY", "")
+        if not api_key:
+            logger.warning(f"You use PHOENIX_ENDPOINT={endpoint} but PHOENIX_API_KEY is not set! Tracing may not work.")
+        headers = {"Authorization": f"Bearer {api_key}"} if api_key else None
+    else:
+        headers = None
     logger.info(f"Setting up OpenTelemetry tracing with endpoint: {endpoint}, project name: {project_name}")
     OTEL_TRACING_PROVIDER = TracerProvider(resource=Resource({ResourceAttributes.PROJECT_NAME: project_name}))
-    OTEL_TRACING_PROVIDER.add_span_processor(SimpleSpanProcessor(OTLPSpanExporter(endpoint)))
+    OTEL_TRACING_PROVIDER.add_span_processor(SimpleSpanProcessor(OTLPSpanExporter(endpoint=endpoint, headers=headers)))
     if debug:
         OTEL_TRACING_PROVIDER.add_span_processor(SimpleSpanProcessor(ConsoleSpanExporter()))
 
@@ -66,7 +73,7 @@ def setup_db_tracing() -> None:
         return
 
     if not SQLModelUtils.check_db_available():
-        logger.warning("DB_URL not set or database connection failed! Tracing will not be stored into database!")
+        logger.warning("UTU_DB_URL not set or database connection failed! Tracing will not be stored into database!")
         return
     logger.info("Setting up DB tracing")
     DB_TRACING_PROCESSOR = DBTracingProcessor()

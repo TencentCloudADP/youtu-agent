@@ -1,0 +1,1072 @@
+﻿Breed;Age_in_years;Age_in_months;Gender;Neutered_or_spayed;Body_length;Weight;Fur_colour_dominant;Fur_pattern;Eye_colour;Allowed_outdoor;Preferred_food;Owner_play_time_minutes;Sleep_time_hours;Country;Latitude;Longitude
+Angora;0.25;3;female;FALSE;19;2;white;solid;blue;FALSE;wet;46;16;France;43.296482;5.36978
+Angora;0.33;4;male;FALSE;19;2.5;white;solid;blue;FALSE;wet;48;16;France;43.61166;3.87771
+Angora;0.5;6;male;FALSE;20;2.8;black;solid;green;FALSE;wet;41;11;France;44.837789;-0.57918
+Angora;0.5;6;female;FALSE;21;3;white;solid;blue;FALSE;wet;24;8;France;43.61166;3.87771
+Angora;0.5;6;male;FALSE;21;3;red/cream;tabby;green;FALSE;wet;51;10;France;48.864716;2.349014
+Angora;0.5;6;female;FALSE;21;3;white;solid;amber;FALSE;wet;30;10;France;43.61166;3.87771
+Angora;0.58;7;male;FALSE;22;3;white;solid;amber;FALSE;wet;47;9;France;47.218371;-1.553621
+Angora;0.58;7;male;FALSE;23;3;red/cream;solid;blue;FALSE;wet;55;11;France;47.218371;-1.553621
+Angora;0.58;7;female;FALSE;25;3;black;tortie;blue;FALSE;wet;20;12;France;43.296482;5.36978
+Angora;0.67;8;female;FALSE;25;3;white;solid;blue;FALSE;wet;33;17;France;44.837789;-0.57918
+Angora;0.67;8;female;FALSE;26;3;black;solid;green;FALSE;wet;39;18;France;43.296482;5.36978
+Angora;0.67;8;male;TRUE;26;3.3;white;solid;amber;FALSE;wet;38;19;France;43.61166;3.87771
+Angora;0.75;9;male;TRUE;27;3.3;white;solid;amber;FALSE;wet;46;16;France;48.864716;2.349014
+Angora;1.08;13;male;FALSE;28;3.2;white;solid;blue;FALSE;wet;35;14;France;45.76342;4.834277
+Angora;1.33;16;male;TRUE;30;3.5;red/cream;tabby;blue;FALSE;dry;38;20;France;48.864716;2.349014
+Angora;0.83;10;male;FALSE;31;3.4;white;solid;green;FALSE;dry;56;17;France;48.864716;2.349014
+Angora;1.42;17;female;TRUE;31;3.9;white;solid;green;FALSE;wet;48;14;France;47.218371;-1.553621
+Angora;0.92;11;female;TRUE;31;3.9;white;solid;amber;FALSE;wet;55;19;France;44.837789;-0.57918
+Angora;1;12;male;FALSE;31;3.5;white;solid;blue;TRUE;wet;42;14;France;43.296482;5.36978
+Angora;1;12;male;TRUE;35;3.9;white;solid;amber;FALSE;wet;41;17;France;45.76342;4.834277
+Angora;4.33;52;male;FALSE;25;4;white;solid;blue;FALSE;dry;36;14;France;44.837789;-0.57918
+Angora;1.17;14;female;FALSE;34;3.8;white;solid;blue;TRUE;wet;23;17;France;48.864716;2.349014
+Angora;3;36;male;TRUE;38;5;white;solid;amber;FALSE;wet;16;14;France;43.296482;5.36978
+Angora;1.17;14;female;TRUE;25;3;white;solid;amber;FALSE;wet;19;17;France;45.76342;4.834277
+Angora;4;48;male;TRUE;39;4.6;white;solid;amber;FALSE;wet;33;14;France;45.76342;4.834277
+Angora;5.83;70;male;TRUE;37;4.6;black;solid;green;TRUE;dry;9;16;France;48.864716;2.349014
+Angora;1.25;15;female;TRUE;26;3.4;white;solid;blue;FALSE;wet;25;15;France;43.296482;5.36978
+Angora;5.33;64;male;TRUE;44;4.6;white;solid;blue;TRUE;wet;20;16;France;44.837789;-0.57918
+Angora;1.25;15;male;TRUE;40;3.8;red/cream;tabby;blue;FALSE;wet;35;17;France;45.76342;4.834277
+Angora;4.92;59;male;FALSE;41;5;black;solid;green;FALSE;dry;31;14;France;47.218371;-1.553621
+Angora;1.5;18;male;FALSE;40;3.6;white;solid;blue;FALSE;wet;27;14;France;43.296482;5.36978
+Angora;1.58;19;female;TRUE;33;3.5;white;solid;amber;FALSE;dry;18;18;France;48.864716;2.349014
+Angora;1.58;19;female;TRUE;33;3.2;white;solid;amber;TRUE;wet;12;19;France;48.864716;2.349014
+Angora;4.5;54;male;TRUE;37;5.6;white;solid;blue;FALSE;wet;9;14;France;47.218371;-1.553621
+Angora;4.75;57;male;FALSE;41;4.2;black;solid;blue;TRUE;dry;19;14;France;44.837789;-0.57918
+Angora;1.67;20;female;TRUE;35;5;white;solid;amber;FALSE;wet;10;15;France;45.76342;4.834277
+Angora;1.67;20;male;TRUE;28;3.1;white;solid;amber;TRUE;wet;39;18;France;43.296482;5.36978
+Angora;1.67;20;male;FALSE;36;3.9;black;solid;green;FALSE;wet;35;19;France;43.61166;3.87771
+Angora;1.75;21;female;TRUE;28;4.9;white;solid;amber;FALSE;wet;10;17;France;48.864716;2.349014
+Angora;1.75;21;female;TRUE;34;4.7;black;solid;blue;FALSE;dry;23;19;France;45.76342;4.834277
+Angora;1.75;21;female;FALSE;34;4;white;solid;blue;TRUE;wet;25;20;France;44.837789;-0.57918
+Angora;1.83;22;female;TRUE;22;2.9;black;solid;green;FALSE;wet;40;20;France;44.837789;-0.57918
+Angora;1.83;22;male;FALSE;41;4.7;white;solid;blue;FALSE;dry;45;20;France;43.61166;3.87771
+Angora;1.83;22;female;TRUE;24;4.3;black;bicolor;amber;TRUE;wet;30;16;France;48.864716;2.349014
+Angora;1.92;23;female;FALSE;35;2.7;white;solid;amber;FALSE;dry;21;18;France;43.61166;3.87771
+Angora;1.92;23;female;TRUE;33;3.4;white;solid;amber;FALSE;wet;14;16;France;44.837789;-0.57918
+Angora;2;24;female;FALSE;32;2.4;black;solid;green;FALSE;wet;11;14;France;47.218371;-1.553621
+Angora;2;24;female;TRUE;35;3.8;white;solid;blue;FALSE;wet;15;14;France;48.864716;2.349014
+Angora;2;24;male;TRUE;38;3.7;white;solid;blue;TRUE;dry;23;16;France;44.837789;-0.57918
+Angora;2.08;25;female;FALSE;33;2.9;white;solid;amber;FALSE;wet;36;14;France;48.864716;2.349014
+Angora;2.08;25;male;FALSE;41;4.1;black;solid;green;FALSE;wet;11;16;France;48.864716;2.349014
+Angora;2.17;26;female;TRUE;35;2.6;white;solid;blue;FALSE;wet;28;17;France;48.864716;2.349014
+Angora;2.25;27;male;FALSE;38;4.6;red/cream;tabby;blue;FALSE;wet;11;14;France;44.837789;-0.57918
+Angora;2.25;27;female;FALSE;34;3.7;black;solid;green;FALSE;wet;10;14;France;43.61166;3.87771
+Angora;2.25;27;male;TRUE;25;3.1;white;solid;amber;FALSE;wet;39;16;France;47.218371;-1.553621
+Angora;2.25;27;male;TRUE;38;5.3;white;solid;amber;FALSE;wet;39;14;France;48.864716;2.349014
+Angora;2.33;28;female;FALSE;36;4;red/cream;solid;blue;FALSE;dry;19;14;France;47.218371;-1.553621
+Angora;2.33;28;female;FALSE;36;2.4;white;solid;blue;FALSE;wet;19;16;France;45.76342;4.834277
+Angora;2.33;28;male;TRUE;39;3.9;white;solid;blue;FALSE;wet;34;14;France;45.76342;4.834277
+Angora;2.33;28;female;TRUE;36;3.3;white;solid;amber;FALSE;dry;32;17;France;45.76342;4.834277
+Angora;2.33;28;female;TRUE;39;2.7;black;solid;green;TRUE;dry;33;14;France;43.296482;5.36978
+Angora;2.42;29;male;FALSE;39;4.3;white;solid;blue;FALSE;wet;37;14;France;48.864716;2.349014
+Angora;2.5;30;female;TRUE;35;3.6;white;solid;green;FALSE;wet;18;14;France;44.837789;-0.57918
+Angora;2.5;30;male;FALSE;37;4.7;white;solid;amber;FALSE;wet;44;16;France;44.837789;-0.57918
+Angora;2.58;31;male;TRUE;40;4.5;red/cream;solid;blue;FALSE;wet;38;14;France;48.864716;2.349014
+Angora;2.58;31;female;FALSE;32;3;white;solid;blue;FALSE;dry;30;16;France;44.837789;-0.57918
+Angora;2.67;32;female;TRUE;38;3.9;red/cream;solid;blue;FALSE;wet;37;14;France;44.837789;-0.57918
+Angora;2.67;32;male;FALSE;40;4;black;solid;blue;FALSE;dry;30;14;France;43.296482;5.36978
+Angora;2.67;32;female;TRUE;34;3.9;black;solid;green;TRUE;dry;21;14;France;45.76342;4.834277
+Angora;2.92;35;female;TRUE;34;4.1;white;solid;green;TRUE;wet;28;14;France;43.296482;5.36978
+Angora;2.92;35;female;TRUE;32;2.5;white;solid;amber;FALSE;wet;33;14;France;48.864716;2.349014
+Angora;2.92;35;male;TRUE;41;3.8;white;solid;amber;FALSE;wet;21;14;USA;40.71427;-74.00597
+Angora;2.92;35;male;FALSE;39;4.1;white;solid;blue;FALSE;wet;28;14;USA;40.71427;-74.00597
+Angora;3;36;male;TRUE;39;4.4;white;solid;green;FALSE;dry;16;15;USA;40.71427;-74.00597
+Angora;3;36;male;FALSE;39;4.8;white;solid;blue;FALSE;wet;44;14;USA;37.77493;-122.41942
+Angora;3.08;37;male;TRUE;39;5.1;red/cream;tabby;blue;FALSE;dry;25;16;USA;47.60621;-122.33207
+Angora;3.08;37;male;TRUE;38;3.7;black;solid;green;TRUE;wet;25;14;USA;47.60621;-122.33207
+Angora;3.08;37;male;TRUE;40;5.3;white;solid;blue;FALSE;dry;11;14;France;44.837789;-0.57918
+Angora;3.17;38;female;FALSE;36;4;white;solid;amber;FALSE;wet;11;14;USA;40.71427;-74.00597
+Angora;3.25;39;male;FALSE;40;4.5;black;bicolor;blue;FALSE;wet;12;16;USA;47.60621;-122.33207
+Angora;3.42;41;male;TRUE;41;4.4;white;solid;amber;FALSE;dry;24;17;USA;45.52345;-122.67621
+Angora;3.5;42;male;TRUE;39;4.8;black;solid;blue;FALSE;wet;15;16;USA;45.52345;-122.67621
+Angora;3.5;42;male;TRUE;40;3.9;white;solid;green;TRUE;dry;13;16;USA;47.60621;-122.33207
+Angora;3.5;42;female;FALSE;33;4.3;white;solid;amber;FALSE;dry;37;14;USA;41.881832;-87.623177
+Angora;3.58;43;female;TRUE;35;3.4;white;solid;blue;FALSE;dry;23;16;France;48.864716;2.349014
+Angora;3.58;43;female;TRUE;34;3.3;white;solid;blue;FALSE;wet;20;14;USA;41.881832;-87.623177
+Angora;3.67;44;male;FALSE;39;4.5;white;solid;amber;FALSE;wet;23;14;USA;47.60621;-122.33207
+Angora;3.67;44;male;FALSE;37;4.6;white;solid;amber;FALSE;wet;32;14;France;43.61166;3.87771
+Angora;3.67;44;male;TRUE;37;4.2;white;solid;blue;FALSE;wet;33;14;USA;37.77493;-122.41942
+Angora;3.75;45;male;TRUE;43;3.9;white;solid;blue;FALSE;wet;38;14;USA;39.29038;-76.61219
+Angora;3.83;46;male;FALSE;37;4.1;white;solid;green;FALSE;wet;38;16;USA;38.89511;-77.03637
+Angora;3.83;46;male;TRUE;40;4.8;black;bicolor;amber;TRUE;wet;11;15;USA;40.71427;-74.00597
+Angora;3.83;46;male;FALSE;39;4;red/cream;tabby;blue;FALSE;dry;18;14;France;47.218371;-1.553621
+Angora;3.92;47;female;TRUE;34;4.7;white;solid;amber;FALSE;dry;25;14;USA;40.71427;-74.00597
+Angora;3.92;47;female;TRUE;37;3.3;black;solid;amber;FALSE;dry;25;15;USA;42.35843;-71.05977
+Angora;3.92;47;female;TRUE;35;2.8;white;solid;blue;FALSE;wet;28;14;USA;38.89511;-77.03637
+Angora;3.92;47;male;FALSE;39;4.4;white;solid;blue;FALSE;wet;23;15;USA;41.881832;-87.623177
+Angora;4;48;male;TRUE;36;4.8;white;solid;green;FALSE;wet;28;17;USA;38.89511;-77.03637
+Angora;4.08;49;male;FALSE;37;4.8;white;solid;green;FALSE;wet;38;14;USA;39.29038;-76.61219
+Angora;4.08;49;female;FALSE;35;4.7;white;solid;blue;FALSE;wet;11;14;USA;40.71427;-74.00597
+Angora;4.08;49;male;TRUE;37;5.6;white;solid;blue;FALSE;wet;12;14;USA;42.35843;-71.05977
+Angora;4.17;50;female;TRUE;37;3.8;white;solid;amber;FALSE;dry;23;14;USA;42.35843;-71.05977
+Angora;4.17;50;male;FALSE;41;4.5;white;solid;amber;FALSE;wet;24;16;USA;38.89511;-77.03637
+Angora;4.17;50;female;TRUE;35;2.8;white;solid;amber;TRUE;dry;28;14;USA;45.52345;-122.67621
+Angora;4.25;51;male;TRUE;37;4.6;white;solid;amber;FALSE;dry;36;14;France;45.76342;4.834277
+Angora;4.33;52;female;TRUE;34;4.3;white;solid;blue;FALSE;wet;37;16;USA;42.35843;-71.05977
+Angora;4.33;52;female;TRUE;35;3.8;black;solid;amber;FALSE;wet;30;14;USA;45.52345;-122.67621
+Angora;4.33;52;female;TRUE;32;2.4;white;solid;blue;FALSE;wet;40;14;USA;47.60621;-122.33207
+Angora;4.42;53;male;FALSE;39;4.4;white;solid;blue;FALSE;wet;34;16;USA;38.89511;-77.03637
+Angora;4.5;54;male;TRUE;41;5.1;white;solid;amber;FALSE;dry;19;14;USA;40.71427;-74.00597
+Angora;4.5;54;male;FALSE;39;4.3;white;solid;blue;FALSE;wet;39;16;USA;37.77493;-122.41942
+Angora;4.58;55;female;FALSE;35;3.4;white;solid;blue;FALSE;wet;36;14;USA;40.71427;-74.00597
+Angora;4.58;55;female;TRUE;37;2.5;white;solid;amber;TRUE;wet;39;17;USA;38.89511;-77.03637
+Angora;4.58;55;male;FALSE;35;4.3;white;solid;amber;FALSE;dry;36;17;USA;38.89511;-77.03637
+Angora;4.58;55;female;TRUE;37;3.4;white;solid;amber;FALSE;dry;24;14;USA;38.89511;-77.03637
+Angora;4.58;55;male;TRUE;38;5.1;red/cream;solid;blue;FALSE;wet;17;14;USA;38.89511;-77.03637
+Angora;4.75;57;female;FALSE;38;3.9;white;solid;amber;FALSE;wet;14;16;USA;40.71427;-74.00597
+Angora;4.75;57;female;TRUE;38;3.1;white;solid;amber;FALSE;dry;23;14;USA;38.89511;-77.03637
+Angora;4.75;57;male;FALSE;37;4;white;solid;blue;FALSE;dry;32;16;USA;40.71427;-74.00597
+Angora;4.83;58;male;TRUE;40;4.5;white;solid;amber;FALSE;wet;18;14;USA;37.77493;-122.41942
+Angora;4.83;58;female;TRUE;37;3;white;solid;amber;FALSE;wet;20;14;France;43.296482;5.36978
+Angora;4.83;58;male;FALSE;36;3.7;white;solid;blue;FALSE;wet;32;17;USA;38.89511;-77.03637
+Angora;4.92;59;male;TRUE;36;4.4;white;solid;green;FALSE;dry;29;16;USA;40.71427;-74.00597
+Angora;4.92;59;male;FALSE;41;4.9;white;solid;amber;FALSE;wet;14;14;USA;38.89511;-77.03637
+Angora;4.92;59;male;TRUE;40;4;red/cream;tabby;amber;TRUE;wet;31;14;USA;40.71427;-74.00597
+Angora;4.92;59;female;TRUE;38;4.6;white;solid;blue;FALSE;wet;28;17;USA;41.881832;-87.623177
+Angora;5;60;female;TRUE;39;4.7;white;solid;blue;FALSE;dry;32;14;USA;40.71427;-74.00597
+Angora;5;60;male;TRUE;37;5.2;white;solid;amber;FALSE;dry;29;14;USA;45.52345;-122.67621
+Angora;5.08;61;male;TRUE;40;4.7;white;solid;amber;FALSE;wet;31;14;USA;42.35843;-71.05977
+Angora;5.08;61;female;FALSE;39;3.4;white;solid;blue;FALSE;wet;27;16;USA;42.35843;-71.05977
+Angora;5.08;61;female;TRUE;37;3.1;white;solid;blue;FALSE;dry;29;14;USA;40.71427;-74.00597
+Angora;5.17;62;female;FALSE;39;3.9;white;solid;blue;FALSE;dry;35;17;Germany;50.110924;8.682127
+Angora;5.17;62;female;TRUE;34;3.4;white;solid;green;FALSE;dry;9;14;Germany;52.520008;13.404954
+Angora;5.17;62;female;TRUE;38;3.9;white;solid;green;TRUE;wet;9;14;Germany;48.137154;11.576124
+Angora;5.17;62;female;FALSE;38;2.7;white;solid;amber;FALSE;wet;27;14;Germany;48.137154;11.576124
+Angora;5.17;62;male;TRUE;36;4.3;white;solid;amber;FALSE;wet;19;14;Germany;48.137154;11.576124
+Angora;5.17;62;male;TRUE;40;4.9;white;solid;blue;FALSE;wet;39;14;Germany;50.110924;8.682127
+Angora;5.17;62;male;FALSE;36;3.5;white;solid;blue;FALSE;wet;37;14;Germany;52.520008;13.404954
+Angora;5.17;62;female;FALSE;39;4.1;white;solid;blue;FALSE;wet;17;16;Germany;50.110924;8.682127
+Angora;5.25;63;female;TRUE;31;2.4;white;solid;blue;FALSE;wet;29;16;Germany;48.137154;11.576124
+Angora;5.25;63;female;FALSE;37;3.1;white;solid;blue;FALSE;dry;23;14;Germany;52.520008;13.404954
+Angora;5.33;64;female;TRUE;35;3.4;white;solid;blue;FALSE;dry;26;14;Germany;50.110924;8.682127
+Angora;5.33;64;male;FALSE;36;4.5;white;solid;blue;FALSE;wet;9;14;Germany;52.520008;13.404954
+Angora;5.33;64;female;TRUE;37;2.9;white;solid;blue;TRUE;dry;16;14;Germany;48.137154;11.576124
+Angora;5.42;65;male;TRUE;38;4.3;black;solid;amber;FALSE;wet;23;17;Germany;50.110924;8.682127
+Angora;5.42;65;female;FALSE;39;4.1;white;solid;blue;FALSE;wet;27;17;Germany;51.227741;6.773456
+Angora;5.5;66;male;TRUE;40;5.2;white;solid;green;FALSE;dry;17;14;Germany;52.520008;13.404954
+Angora;5.58;67;male;FALSE;40;4.4;black;solid;blue;FALSE;wet;27;14;Germany;52.520008;13.404954
+Angora;5.67;68;male;TRUE;39;5.5;white;solid;blue;FALSE;wet;12;14;Germany;52.520008;13.404954
+Angora;5.67;68;male;FALSE;41;4.3;white;solid;blue;FALSE;dry;24;14;Germany;50.110924;8.682127
+Angora;5.67;68;male;TRUE;36;5.1;white;solid;green;FALSE;dry;37;14;Germany;52.520008;13.404954
+Angora;5.67;68;male;TRUE;37;5.3;red/cream;tabby;blue;FALSE;wet;37;15;Germany;51.227741;6.773456
+Angora;5.75;69;male;FALSE;39;4.4;white;solid;amber;FALSE;dry;39;15;Germany;50.110924;8.682127
+Angora;5.75;69;female;TRUE;38;4.4;black;bicolor;amber;FALSE;dry;18;14;USA;42.35843;-71.05977
+Angora;5.75;69;female;TRUE;38;3.2;white;solid;amber;TRUE;wet;25;15;USA;42.35843;-71.05977
+Angora;5.75;69;female;TRUE;31;3.1;white;solid;blue;FALSE;wet;9;15;USA;40.71427;-74.00597
+Angora;5.92;71;female;TRUE;39;4.8;white;solid;green;FALSE;wet;12;16;USA;42.35843;-71.05977
+Angora;5.92;71;male;FALSE;38;4.3;white;solid;green;FALSE;dry;26;13;USA;40.71427;-74.00597
+Angora;5.92;71;male;TRUE;41;3.9;white;solid;amber;FALSE;wet;29;13;USA;42.35843;-71.05977
+Angora;5.92;71;female;TRUE;36;4.7;white;solid;amber;FALSE;dry;29;16;USA;40.71427;-74.00597
+Angora;6;72;male;FALSE;36;4.8;white;solid;blue;FALSE;wet;33;17;USA;40.71427;-74.00597
+Angora;6;72;female;FALSE;36;3.6;white;solid;green;FALSE;dry;26;13;France;45.76342;4.834277
+Angora;6.08;73;male;TRUE;38;4.4;white;solid;blue;FALSE;wet;16;14;USA;37.77493;-122.41942
+Angora;6.08;73;female;TRUE;38;3.4;white;solid;blue;FALSE;wet;38;16;USA;38.89511;-77.03637
+Angora;6.08;73;male;FALSE;41;3.7;white;solid;blue;FALSE;dry;39;16;USA;40.71427;-74.00597
+Angora;6.25;75;male;FALSE;39;4.2;white;solid;blue;FALSE;wet;24;13;USA;37.77493;-122.41942
+Angora;6.25;75;male;FALSE;38;3.6;white;solid;amber;FALSE;wet;23;16;France;43.61166;3.87771
+Angora;6.25;75;male;FALSE;41;4.4;white;solid;amber;FALSE;wet;24;13;USA;39.29038;-76.61219
+Angora;6.33;76;female;FALSE;37;3.1;white;solid;green;FALSE;dry;30;13;USA;40.71427;-74.00597
+Angora;6.42;77;male;TRUE;36;4.7;white;solid;amber;FALSE;wet;12;16;USA;41.881832;-87.623177
+Angora;6.5;78;female;TRUE;37;4.5;red/cream;solid;blue;FALSE;wet;30;17;USA;47.60621;-122.33207
+Angora;6.5;78;male;TRUE;36;4;white;solid;blue;TRUE;dry;18;16;USA;41.881832;-87.623177
+Angora;6.5;78;male;FALSE;39;4.2;black;bicolor;amber;FALSE;wet;15;17;USA;47.60621;-122.33207
+Angora;6.5;78;female;FALSE;34;3.8;white;solid;blue;FALSE;wet;21;14;USA;42.35843;-71.05977
+Angora;6.5;78;female;TRUE;38;5.2;white;solid;blue;FALSE;wet;9;13;USA;40.71427;-74.00597
+Angora;6.58;79;male;FALSE;40;4.2;red/cream;tabby;blue;FALSE;wet;12;14;USA;39.29038;-76.61219
+Angora;6.58;79;male;TRUE;41;3.8;red/cream;tabby;green;FALSE;dry;23;16;USA;40.71427;-74.00597
+Angora;6.58;79;male;FALSE;41;3.9;white;solid;amber;FALSE;dry;16;17;Canada;43.65107;-79.347015
+Angora;6.67;80;male;TRUE;40;4.8;white;solid;blue;FALSE;dry;13;14;Canada;51.049999;-114.066666
+Angora;6.67;80;female;FALSE;34;2.2;white;solid;amber;FALSE;dry;34;17;Canada;43.65107;-79.347015
+Angora;6.75;81;female;FALSE;37;2.4;white;solid;blue;FALSE;dry;16;14;Canada;45.42153;-75.697193
+Angora;6.75;81;male;TRUE;39;4.4;white;solid;amber;FALSE;dry;24;14;Canada;49.246292;-123.116226
+Angora;6.75;81;male;TRUE;40;4.5;white;solid;blue;TRUE;wet;17;14;Canada;43.65107;-79.347015
+Angora;6.83;82;female;FALSE;37;2.8;white;solid;amber;FALSE;dry;36;14;Canada;45.508888;-73.561668
+Angora;6.92;83;male;TRUE;41;4.7;white;solid;blue;FALSE;wet;26;14;Canada;43.65107;-79.347015
+Angora;6.92;83;male;TRUE;38;4.5;white;solid;amber;FALSE;wet;32;16;Canada;45.508888;-73.561668
+Angora;6.92;83;female;TRUE;39;4.3;white;solid;amber;FALSE;wet;22;14;Canada;49.246292;-123.116226
+Angora;7;84;male;TRUE;40;4.7;white;solid;blue;TRUE;dry;20;14;Canada;49.246292;-123.116226
+Angora;7;84;male;TRUE;39;4.4;white;solid;amber;FALSE;dry;16;14;Canada;51.049999;-114.066666
+Angora;7.08;85;female;FALSE;35;2.5;white;solid;blue;FALSE;wet;27;14;Canada;45.42153;-75.697193
+Angora;7.17;86;male;TRUE;40;5.4;white;solid;amber;FALSE;wet;9;20;Canada;49.246292;-123.116226
+Angora;7.25;87;male;FALSE;39;4;white;solid;green;FALSE;wet;37;20;Canada;49.246292;-123.116226
+Angora;7.25;87;male;TRUE;36;4.9;white;solid;amber;FALSE;dry;29;19;Canada;45.508888;-73.561668
+Angora;7.25;87;male;FALSE;38;4.4;white;solid;amber;FALSE;wet;27;16;Canada;49.246292;-123.116226
+Angora;7.25;87;female;FALSE;33;4;black;bicolor;amber;FALSE;dry;16;14;Canada;51.049999;-114.066666
+Angora;7.25;87;male;FALSE;40;4.2;white;solid;blue;FALSE;dry;17;19;Canada;51.049999;-114.066666
+Angora;7.25;87;male;TRUE;40;5.4;red/cream;tabby;blue;FALSE;wet;12;20;USA;47.60621;-122.33207
+Angora;7.25;87;female;TRUE;33;2.5;white;solid;blue;FALSE;dry;23;18;USA;38.89511;-77.03637
+Angora;7.33;88;male;FALSE;41;3.9;black;bicolor;blue;FALSE;dry;27;14;USA;37.77493;-122.41942
+Angora;7.42;89;female;TRUE;35;3.9;white;solid;blue;TRUE;dry;25;19;USA;42.35843;-71.05977
+Angora;7.42;89;female;TRUE;34;3.3;white;solid;amber;FALSE;wet;32;14;USA;40.71427;-74.00597
+Angora;7.58;91;male;TRUE;39;5.4;white;solid;amber;FALSE;wet;5;14;USA;40.71427;-74.00597
+Angora;7.58;91;male;TRUE;40;5.5;red/cream;tabby;blue;FALSE;dry;14;14;USA;38.89511;-77.03637
+Angora;7.67;92;male;FALSE;36;4.9;white;solid;blue;FALSE;dry;31;18;USA;38.89511;-77.03637
+Angora;7.67;92;male;TRUE;40;5.3;black;solid;blue;FALSE;dry;39;18;USA;40.71427;-74.00597
+Angora;7.75;93;female;TRUE;33;3.1;white;solid;blue;TRUE;wet;26;18;USA;38.89511;-77.03637
+Angora;7.75;93;male;TRUE;42;4.7;white;solid;green;FALSE;wet;16;14;USA;45.52345;-122.67621
+Angora;7.75;93;female;FALSE;37;2.8;white;solid;green;FALSE;dry;28;18;USA;47.60621;-122.33207
+Angora;7.75;93;male;TRUE;37;4.2;white;solid;blue;FALSE;wet;15;18;USA;38.89511;-77.03637
+Angora;7.75;93;male;FALSE;41;3.8;black;solid;blue;FALSE;wet;30;20;USA;40.71427;-74.00597
+Angora;7.83;94;male;FALSE;37;3.5;white;solid;amber;FALSE;wet;25;14;USA;42.35843;-71.05977
+Angora;7.83;94;male;TRUE;38;4.6;white;solid;amber;FALSE;wet;37;14;USA;40.71427;-74.00597
+Angora;7.83;94;male;TRUE;38;4;white;solid;amber;FALSE;dry;27;16;USA;39.29038;-76.61219
+Angora;7.83;94;male;TRUE;40;5.3;white;solid;amber;FALSE;wet;25;18;USA;38.89511;-77.03637
+Angora;7.83;94;female;TRUE;33;4;white;bicolor;blue;TRUE;wet;10;16;USA;42.35843;-71.05977
+Angora;7.83;94;male;FALSE;40;4.3;white;solid;blue;FALSE;wet;25;18;USA;42.35843;-71.05977
+Angora;7.83;94;male;TRUE;39;5;red/cream;solid;blue;FALSE;wet;24;16;USA;40.71427;-74.00597
+Angora;7.92;95;male;TRUE;39;3.8;white;solid;amber;FALSE;wet;32;19;USA;37.77493;-122.41942
+Angora;8;96;female;FALSE;37;3.4;black;bicolor;blue;FALSE;wet;29;17;USA;42.35843;-71.05977
+Angora;8;96;male;FALSE;36;4.5;white;solid;green;FALSE;dry;28;16;USA;45.52345;-122.67621
+Angora;8;96;female;TRUE;34;4.9;white;solid;amber;FALSE;wet;17;19;USA;40.71427;-74.00597
+Angora;7.17;86;male;FALSE;36;3.5;red/cream;solid;blue;FALSE;dry;29;20;USA;38.89511;-77.03637
+Angora;8.08;97;female;FALSE;33;3.1;white;solid;amber;FALSE;wet;18;19;USA;40.71427;-74.00597
+Angora;8.08;97;male;TRUE;41;4.2;black;bicolor;amber;TRUE;wet;9;18;USA;42.35843;-71.05977
+Angora;8.08;97;male;TRUE;37;3.8;red/cream;tabby;blue;FALSE;wet;27;16;USA;41.881832;-87.623177
+Angora;4;48;female;TRUE;36;2.4;white;solid;blue;TRUE;wet;14;14;USA;37.77493;-122.41942
+Angora;8.25;99;female;TRUE;34;3.6;white;solid;amber;FALSE;wet;25;19;USA;39.29038;-76.61219
+Angora;4.17;50;female;FALSE;35;2.8;white;solid;blue;FALSE;dry;20;14;USA;45.52345;-122.67621
+Angora;5.08;61;female;FALSE;36;2.3;white;solid;blue;FALSE;dry;16;16;USA;45.52345;-122.67621
+Angora;4.58;55;female;TRUE;35;2.8;white;solid;amber;FALSE;dry;25;17;USA;38.89511;-77.03637
+Angora;8.5;102;male;FALSE;40;4;white;solid;blue;FALSE;dry;18;14;USA;45.52345;-122.67621
+Angora;7.08;85;male;TRUE;36;4.8;black;bicolor;blue;TRUE;wet;9;16;USA;40.71427;-74.00597
+Angora;7;84;female;FALSE;33;3;white;solid;blue;FALSE;dry;34;14;USA;47.60621;-122.33207
+Angora;8.58;103;male;FALSE;39;4.4;white;solid;amber;FALSE;wet;18;16;USA;42.35843;-71.05977
+Angora;7.17;86;female;FALSE;38;4.6;white;solid;blue;FALSE;wet;21;14;USA;47.60621;-122.33207
+Angora;8.58;103;male;TRUE;52;5;red/cream;solid;blue;FALSE;wet;30;16;USA;38.89511;-77.03637
+Angora;8.67;104;female;TRUE;35;4.1;white;solid;amber;FALSE;dry;15;16;USA;40.71427;-74.00597
+Angora;4.75;57;female;TRUE;34;2.7;white;solid;blue;TRUE;wet;22;14;USA;47.60621;-122.33207
+Angora;6.83;82;female;TRUE;36;3.6;white;solid;blue;FALSE;wet;32;17;USA;42.35843;-71.05977
+Angora;7.5;90;female;FALSE;36;3.5;white;solid;green;FALSE;wet;16;14;USA;38.89511;-77.03637
+Angora;7.58;91;male;FALSE;36;3.6;white;solid;blue;FALSE;wet;39;18;USA;41.881832;-87.623177
+Angora;8.92;107;female;TRUE;34;4.5;black;bicolor;amber;FALSE;dry;13;19;USA;40.71427;-74.00597
+Angora;6.75;81;female;FALSE;33;2.9;white;solid;green;FALSE;wet;20;16;USA;45.52345;-122.67621
+Angora;9;108;female;TRUE;38;3.7;white;solid;amber;TRUE;dry;6;17;USA;38.89511;-77.03637
+Angora;7.33;88;female;FALSE;39;4.3;white;solid;amber;FALSE;wet;16;13;USA;38.89511;-77.03637
+Angora;5.17;62;female;FALSE;36;2.5;white;solid;amber;FALSE;wet;27;13;USA;45.52345;-122.67621
+Angora;9.08;109;male;TRUE;58;5.2;black;bicolor;blue;FALSE;wet;30;20;USA;42.35843;-71.05977
+Angora;9.17;110;female;FALSE;35;4.1;white;solid;green;FALSE;wet;20;16;USA;47.60621;-122.33207
+Angora;6.5;78;male;TRUE;39;3.5;white;solid;amber;FALSE;wet;25;17;USA;38.89511;-77.03637
+Angora;9.25;111;male;TRUE;38;5;white;solid;amber;FALSE;wet;27;16;USA;38.89511;-77.03637
+Angora;9.25;111;male;FALSE;38;3.9;white;solid;amber;FALSE;wet;22;19;USA;38.89511;-77.03637
+Angora;9.33;112;female;FALSE;36;3.9;white;solid;green;FALSE;wet;25;14;USA;38.89511;-77.03637
+Angora;8.33;100;male;TRUE;41;4.1;white;solid;blue;FALSE;dry;18;14;USA;40.71427;-74.00597
+Angora;4.25;51;female;FALSE;33;2.7;white;solid;amber;FALSE;dry;38;17;USA;40.71427;-74.00597
+Angora;6.42;77;female;TRUE;36;2.5;white;solid;blue;TRUE;wet;19;17;USA;38.89511;-77.03637
+Angora;9.5;114;female;TRUE;38;4.1;white;solid;blue;FALSE;wet;18;19;USA;42.35843;-71.05977
+Angora;9.58;115;male;TRUE;36;4;white;solid;green;FALSE;dry;28;16;USA;40.71427;-74.00597
+Angora;3;36;female;TRUE;39;3.1;white;solid;amber;FALSE;wet;28;13;USA;40.71427;-74.00597
+Angora;9.58;115;male;TRUE;61;5;black;bicolor;blue;TRUE;wet;13;20;USA;40.71427;-74.00597
+Angora;9.67;116;female;TRUE;36;4.1;white;solid;blue;FALSE;wet;17;20;USA;40.71427;-74.00597
+Angora;5.92;71;female;TRUE;35;3.3;white;solid;blue;FALSE;wet;34;13;USA;40.71427;-74.00597
+Angora;9.67;116;male;FALSE;39;5.2;white;solid;amber;FALSE;dry;14;18;USA;39.29038;-76.61219
+Angora;9.67;116;female;FALSE;37;4.6;white;solid;blue;FALSE;wet;11;20;USA;39.29038;-76.61219
+Angora;6.33;76;female;TRUE;38;4.8;white;solid;blue;FALSE;dry;16;13;UK;53.480759;-2.242631
+Angora;8.42;101;male;FALSE;40;4.3;white;solid;amber;FALSE;wet;26;16;UK;53.800755;-1.549077
+Angora;9.75;117;male;FALSE;38;4.4;white;solid;blue;FALSE;wet;18;18;UK;52.486244;-1.890401
+Angora;9.75;117;male;FALSE;37;4.9;white;solid;blue;FALSE;wet;13;17;UK;52.486244;-1.890401
+Angora;4;48;female;TRUE;37;2.6;black;bicolor;blue;FALSE;wet;30;14;UK;53.480759;-2.242631
+Angora;3;36;female;TRUE;35;3.3;black;bicolor;blue;FALSE;dry;23;14;UK;51.507351;-0.127758
+Angora;9.83;118;female;FALSE;35;4.9;white;solid;blue;FALSE;wet;11;17;UK;52.486244;-1.890401
+Angora;9.83;118;female;TRUE;39;2.9;white;solid;amber;TRUE;dry;6;14;UK;53.480759;-2.242631
+Angora;9.83;118;male;FALSE;48;5.2;red/cream;tabby;blue;FALSE;dry;22;16;UK;53.408371;-2.991573
+Angora;8.42;101;female;TRUE;36;4;white;solid;blue;TRUE;wet;18;20;UK;53.480759;-2.242631
+Angora;4.92;59;female;TRUE;35;2.9;white;solid;amber;FALSE;dry;38;13;UK;51.507351;-0.127758
+Angora;7.08;85;male;FALSE;40;5;black;tortie;blue;FALSE;wet;39;17;UK;52.486244;-1.890401
+Angora;5.08;61;female;FALSE;33;2.4;white;solid;blue;FALSE;wet;13;13;UK;53.800755;-1.549077
+Angora;10;120;male;FALSE;36;3.8;white;solid;amber;FALSE;wet;23;14;UK;53.480759;-2.242631
+Angora;11.25;135;male;TRUE;40;4.4;white;solid;blue;FALSE;wet;13;18;UK;53.480759;-2.242631
+Angora;10;120;female;TRUE;37;3.7;white;solid;blue;TRUE;wet;19;17;USA;40.71427;-74.00597
+Angora;5.83;70;female;TRUE;35;2.6;red/cream;solid;blue;FALSE;wet;23;13;USA;41.881832;-87.623177
+Maine coon;0.25;3;female;FALSE;22;3.3;brown/chocolate;tabby;blue;FALSE;wet;50;16;USA;37.77493;-122.41942
+Maine coon;0.17;2;male;FALSE;25;3.7;white;solid;blue;FALSE;wet;60;16;USA;38.89511;-77.03637
+Maine coon;0.42;5;male;FALSE;25;3.3;brown/chocolate;solid;yellow;FALSE;wet;20;16;USA;40.71427;-74.00597
+Maine coon;0.5;6;male;FALSE;26;3.3;brown/chocolate;tabby;yellow;FALSE;wet;54;10;UK;53.408371;-2.991573
+Maine coon;0.5;6;female;FALSE;30;3.5;brown/chocolate;tabby;yellow;FALSE;wet;39;10;UK;52.486244;-1.890401
+Maine coon;0.5;6;female;FALSE;31;3;white;solid;blue;FALSE;wet;24;16;UK;51.507351;-0.127758
+Maine coon;0.5;6;female;FALSE;34;3;black;tortie;yellow;FALSE;wet;41;13;UK;52.486244;-1.890401
+Maine coon;0.58;7;male;FALSE;35;3.7;white;solid;blue;FALSE;wet;54;16;UK;51.507351;-0.127758
+Maine coon;0.67;8;female;TRUE;36;3.2;brown/chocolate;tabby;blue;FALSE;wet;47;15;UK;53.480759;-2.242631
+Maine coon;0.67;8;male;FALSE;38;3.6;white;solid;blue;FALSE;dry;40;16;UK;53.408371;-2.991573
+Maine coon;0.67;8;male;TRUE;40;3.1;brown/chocolate;solid;yellow;FALSE;dry;54;18;UK;52.486244;-1.890401
+Maine coon;5;60;female;FALSE;38;3.9;white;solid;blue;FALSE;wet;36;16;UK;51.507351;-0.127758
+Maine coon;1.08;13;female;TRUE;42;3.1;black;solid;green;FALSE;wet;40;19;UK;52.486244;-1.890401
+Maine coon;0.75;9;female;FALSE;34;3.6;white;solid;blue;FALSE;wet;28;20;UK;52.486244;-1.890401
+Maine coon;0.75;9;female;TRUE;34;3.8;brown/chocolate;tabby;yellow;FALSE;wet;31;19;UK;51.507351;-0.127758
+Maine coon;1.08;13;female;FALSE;31;3;white;solid;blue;FALSE;dry;28;16;UK;51.507351;-0.127758
+Maine coon;0.75;9;male;FALSE;52;3.4;black;bicolor;yellow;FALSE;wet;22;20;UK;53.480759;-2.242631
+Maine coon;4.83;58;female;TRUE;32;4;black;bicolor;yellow;FALSE;wet;21;13;UK;53.480759;-2.242631
+Maine coon;3.67;44;female;TRUE;53;4;brown/chocolate;tabby;yellow;FALSE;wet;32;13;UK;51.507351;-0.127758
+Maine coon;4.75;57;male;TRUE;56;4;red/cream;tabby;blue;FALSE;wet;44;13;UK;53.408371;-2.991573
+Maine coon;1.08;13;female;TRUE;31;3.7;black;bicolor;green;FALSE;dry;28;18;UK;53.408371;-2.991573
+Maine coon;0.92;11;female;FALSE;39;3;white;solid;blue;FALSE;wet;33;19;USA;41.881832;-87.623177
+Maine coon;1.42;17;female;TRUE;37;3.2;white;solid;blue;FALSE;wet;27;18;USA;39.29038;-76.61219
+Maine coon;1;12;male;TRUE;28;3.6;white;solid;blue;FALSE;wet;12;19;UK;52.486244;-1.890401
+Maine coon;3.17;38;male;TRUE;32;3.9;white;solid;blue;TRUE;dry;28;17;UK;53.480759;-2.242631
+Maine coon;1;12;male;FALSE;46;3.5;black;bicolor;yellow;FALSE;wet;17;17;UK;53.408371;-2.991573
+Maine coon;1;12;female;TRUE;31;3.2;white;solid;blue;FALSE;wet;26;20;UK;53.800755;-1.549077
+Maine coon;5.17;62;female;FALSE;38;4;brown/chocolate;tabby;green;FALSE;wet;38;13;UK;53.408371;-2.991573
+Maine coon;6.58;79;male;FALSE;48;3.9;black;solid;yellow;FALSE;wet;36;13;France;47.218371;-1.553621
+Maine coon;1.08;13;male;FALSE;55;3.8;black;solid;yellow;FALSE;wet;36;18;France;47.218371;-1.553621
+Maine coon;4;48;male;FALSE;54;4;white;solid;yellow;FALSE;wet;11;13;France;48.864716;2.349014
+Maine coon;4.5;54;male;TRUE;60;5.2;black;solid;blue;FALSE;dry;16;13;France;43.296482;5.36978
+Maine coon;1.17;14;female;TRUE;35;3.3;white;solid;blue;FALSE;dry;18;18;France;47.218371;-1.553621
+Maine coon;1.17;14;male;FALSE;35;4.3;black;bicolor;yellow;FALSE;wet;11;19;France;43.296482;5.36978
+Maine coon;1.33;16;male;TRUE;56;3.8;black;solid;yellow;FALSE;wet;22;21;France;44.837789;-0.57918
+Maine coon;1.33;16;female;TRUE;50;3.3;black;solid;yellow;FALSE;wet;17;21;France;48.864716;2.349014
+Maine coon;5.58;67;male;TRUE;56;4.2;black;solid;yellow;FALSE;wet;17;16;France;48.864716;2.349014
+Maine coon;1.42;17;female;FALSE;30;3.2;black;bicolor;yellow;FALSE;dry;39;18;France;45.76342;4.834277
+Maine coon;1.42;17;male;TRUE;47;3.6;red/cream;tabby;yellow;FALSE;wet;22;19;France;44.837789;-0.57918
+Maine coon;1.5;18;male;FALSE;46;4.3;brown/chocolate;tabby;yellow;FALSE;dry;13;18;France;47.218371;-1.553621
+Maine coon;1.5;18;female;FALSE;38;3.2;brown/chocolate;tabby;blue;FALSE;dry;17;15;France;48.864716;2.349014
+Maine coon;1.58;19;female;TRUE;60;3.7;black;solid;yellow;TRUE;wet;37;19;UK;51.507351;-0.127758
+Maine coon;6.5;78;male;FALSE;53;4;brown/chocolate;tabby;yellow;FALSE;wet;31;13;UK;51.507351;-0.127758
+Maine coon;1.58;19;male;TRUE;54;4.5;red/cream;tabby;green;FALSE;wet;14;19;UK;53.800755;-1.549077
+Maine coon;5.75;69;male;FALSE;31;3.9;white;solid;blue;FALSE;dry;29;13;UK;53.800755;-1.549077
+Maine coon;1.58;19;female;TRUE;53;5;black;solid;yellow;FALSE;wet;19;17;UK;53.800755;-1.549077
+Maine coon;1.67;20;male;TRUE;35;3.9;brown/chocolate;tabby;yellow;FALSE;wet;34;19;UK;53.800755;-1.549077
+Maine coon;1.67;20;male;FALSE;32;3.8;white;solid;blue;FALSE;wet;27;18;UK;51.507351;-0.127758
+Maine coon;1.75;21;male;TRUE;36;3.3;red/cream;tabby;yellow;FALSE;wet;37;21;France;43.61166;3.87771
+Maine coon;1.75;21;female;TRUE;53;4;black;bicolor;yellow;FALSE;dry;20;19;UK;53.480759;-2.242631
+Maine coon;1.75;21;female;TRUE;60;4.5;black;solid;yellow;FALSE;dry;12;16;UK;53.408371;-2.991573
+Maine coon;1.75;21;male;TRUE;58;3.1;black;solid;yellow;TRUE;wet;26;13;UK;53.408371;-2.991573
+Maine coon;1.75;21;male;FALSE;42;3.7;black;solid;yellow;FALSE;wet;13;19;UK;51.507351;-0.127758
+Maine coon;1.83;22;female;TRUE;58;5.3;red/cream;solid;yellow;FALSE;dry;14;20;UK;52.486244;-1.890401
+Maine coon;1.83;22;female;FALSE;59;6.3;black;solid;yellow;FALSE;wet;13;16;UK;51.507351;-0.127758
+Maine coon;1.92;23;male;TRUE;40;3.4;red/cream;tabby;yellow;FALSE;dry;12;20;Germany;51.227741;6.773456
+Maine coon;1.92;23;female;TRUE;36;3.2;white;solid;blue;FALSE;dry;44;13;UK;51.507351;-0.127758
+Maine coon;1.92;23;male;TRUE;53;4;red/cream;solid;yellow;FALSE;dry;30;18;Germany;52.520008;13.404954
+Maine coon;2;24;male;TRUE;31;3;white;solid;yellow;TRUE;wet;34;13;UK;52.486244;-1.890401
+Maine coon;2;24;female;TRUE;46;3.8;black;solid;yellow;FALSE;wet;24;13;UK;51.507351;-0.127758
+Maine coon;2;24;female;FALSE;32;3.8;white;solid;blue;FALSE;dry;23;13;UK;52.486244;-1.890401
+Maine coon;2;24;female;FALSE;38;3.3;brown/chocolate;tabby;yellow;FALSE;dry;29;13;UK;51.507351;-0.127758
+Maine coon;2.08;25;female;TRUE;76;6.31;black;solid;yellow;FALSE;wet;33;13;UK;53.480759;-2.242631
+Maine coon;2.08;25;female;FALSE;78;7.3;black;solid;yellow;FALSE;wet;14;13;UK;53.480759;-2.242631
+Maine coon;2.17;26;female;FALSE;70;6;black;solid;yellow;FALSE;dry;25;13;UK;53.480759;-2.242631
+Maine coon;2.17;26;female;FALSE;56;6.09;black;solid;green;FALSE;wet;38;13;UK;52.486244;-1.890401
+Maine coon;2.17;26;male;FALSE;85;9;red/cream;tabby;yellow;FALSE;wet;32;13;UK;53.480759;-2.242631
+Maine coon;2.17;26;female;TRUE;66;5.36;brown/chocolate;tabby;yellow;FALSE;wet;39;13;UK;52.486244;-1.890401
+Maine coon;2.17;26;male;TRUE;51;9.4;brown/chocolate;tabby;yellow;FALSE;wet;39;17;UK;53.408371;-2.991573
+Maine coon;2.17;26;male;TRUE;93;11.3;black;solid;yellow;FALSE;wet;29;13;UK;53.408371;-2.991573
+Maine coon;2.17;26;female;TRUE;65;4.9;brown/chocolate;tabby;yellow;FALSE;dry;10;13;UK;52.486244;-1.890401
+Maine coon;2.17;26;female;FALSE;59;6.61;black;solid;yellow;FALSE;wet;16;16;UK;53.408371;-2.991573
+Maine coon;2.25;27;female;FALSE;66;8.42;brown/chocolate;tabby;yellow;FALSE;dry;15;13;UK;53.800755;-1.549077
+Maine coon;2.25;27;female;TRUE;55;8.47;black;solid;yellow;FALSE;wet;10;13;UK;52.486244;-1.890401
+Maine coon;2.33;28;male;FALSE;74;7.2;brown/chocolate;tabby;yellow;FALSE;wet;19;13;UK;51.507351;-0.127758
+Maine coon;2.33;28;male;TRUE;68;9.9;red/cream;tabby;yellow;FALSE;dry;16;17;UK;53.408371;-2.991573
+Maine coon;2.33;28;female;TRUE;80;6.9;black;solid;yellow;TRUE;wet;41;16;UK;52.486244;-1.890401
+Maine coon;2.42;29;male;TRUE;71;8.3;red/cream;tabby;yellow;FALSE;wet;12;17;Germany;51.227741;6.773456
+Maine coon;2.5;30;male;FALSE;56;8.5;brown/chocolate;tabby;green;FALSE;wet;10;16;Germany;52.520008;13.404954
+Maine coon;2.5;30;male;TRUE;61;9.7;black;solid;yellow;FALSE;wet;21;13;Germany;48.137154;11.576124
+Maine coon;2.5;30;male;TRUE;72;9.1;red/cream;tabby;yellow;FALSE;wet;24;13;Germany;48.137154;11.576124
+Maine coon;2.58;31;female;TRUE;79;7.15;brown/chocolate;tabby;green;FALSE;dry;32;13;Germany;50.110924;8.682127
+Maine coon;2.58;31;male;TRUE;85;9.4;red/cream;tabby;green;FALSE;dry;44;13;Germany;52.520008;13.404954
+Maine coon;2.58;31;male;TRUE;55;8;brown/chocolate;tabby;yellow;FALSE;dry;17;13;UK;52.486244;-1.890401
+Maine coon;2.58;31;male;TRUE;85;9.6;black;solid;yellow;TRUE;dry;27;13;UK;53.480759;-2.242631
+Maine coon;2.58;31;female;TRUE;45;6.09;black;solid;yellow;FALSE;dry;35;13;UK;53.408371;-2.991573
+Maine coon;2.67;32;male;TRUE;60;9.6;brown/chocolate;tabby;yellow;FALSE;wet;14;13;UK;53.480759;-2.242631
+Maine coon;2.75;33;female;FALSE;69;7.77;black;solid;yellow;FALSE;dry;32;17;UK;52.486244;-1.890401
+Maine coon;2.83;34;female;TRUE;53;3.75;red/cream;solid;yellow;FALSE;wet;20;13;UK;53.480759;-2.242631
+Maine coon;2.83;34;female;TRUE;77;5;black;solid;yellow;FALSE;wet;28;17;UK;53.408371;-2.991573
+Maine coon;2.83;34;male;TRUE;83;10.8;red/cream;tabby;green;FALSE;dry;31;17;USA;42.35843;-71.05977
+Maine coon;2.92;35;male;TRUE;52;8.4;black;bicolor;yellow;FALSE;dry;12;13;USA;40.71427;-74.00597
+Maine coon;2.92;35;male;FALSE;72;8;white;solid;yellow;FALSE;wet;25;17;USA;40.71427;-74.00597
+Maine coon;3;36;male;TRUE;70;7.1;black;solid;yellow;FALSE;wet;28;16;USA;45.52345;-122.67621
+Maine coon;3;36;female;TRUE;60;4.96;brown/chocolate;tabby;yellow;FALSE;dry;18;13;USA;45.52345;-122.67621
+Maine coon;3;36;female;FALSE;41;5.36;black;solid;yellow;FALSE;wet;18;13;USA;39.29038;-76.61219
+Maine coon;3.08;37;male;TRUE;62;10.4;red/cream;tabby;yellow;TRUE;wet;30;16;USA;41.881832;-87.623177
+Maine coon;3.08;37;female;FALSE;79;6.55;black;solid;yellow;FALSE;wet;12;13;USA;42.35843;-71.05977
+Maine coon;3.17;38;female;TRUE;62;7.12;brown/chocolate;solid;yellow;FALSE;wet;10;13;USA;41.881832;-87.623177
+Maine coon;3.17;38;male;FALSE;53;7.1;black;bicolor;yellow;FALSE;wet;26;16;Germany;48.137154;11.576124
+Maine coon;3.17;38;male;FALSE;80;9.8;black;solid;yellow;FALSE;dry;16;13;Germany;52.520008;13.404954
+Maine coon;3.25;39;male;TRUE;72;10.8;brown/chocolate;solid;yellow;FALSE;dry;12;13;Germany;50.110924;8.682127
+Maine coon;3.33;40;female;TRUE;80;5.47;black;solid;yellow;FALSE;wet;24;17;Germany;50.110924;8.682127
+Maine coon;3.42;41;male;TRUE;60;10.1;brown/chocolate;tabby;yellow;FALSE;wet;15;13;Germany;50.110924;8.682127
+Maine coon;3.42;41;male;FALSE;73;9.8;brown/chocolate;solid;yellow;FALSE;wet;37;13;Germany;52.520008;13.404954
+Maine coon;3.58;43;female;FALSE;71;5.79;red/cream;solid;yellow;FALSE;dry;20;13;Germany;50.110924;8.682127
+Maine coon;3.58;43;male;FALSE;67;10.5;brown/chocolate;tabby;yellow;FALSE;wet;12;16;Germany;48.137154;11.576124
+Maine coon;3.58;43;female;FALSE;75;8.22;black;solid;yellow;FALSE;wet;39;16;USA;40.71427;-74.00597
+Maine coon;3.58;43;female;TRUE;51;6.67;brown/chocolate;tabby;yellow;TRUE;dry;32;13;USA;42.35843;-71.05977
+Maine coon;3.67;44;male;TRUE;53;7.3;brown/chocolate;tabby;yellow;FALSE;wet;36;13;USA;45.52345;-122.67621
+Maine coon;3.75;45;female;TRUE;67;4.8;black;solid;green;FALSE;dry;20;13;USA;39.29038;-76.61219
+Maine coon;3.83;46;female;TRUE;72;7.1;black;bicolor;yellow;FALSE;wet;26;13;USA;38.89511;-77.03637
+Maine coon;3.83;46;female;TRUE;47;5.65;black;solid;green;FALSE;wet;20;13;USA;39.29038;-76.61219
+Maine coon;3.83;46;female;FALSE;42;7.01;brown/chocolate;bicolor;yellow;FALSE;dry;27;13;USA;42.35843;-71.05977
+Maine coon;3.83;46;female;TRUE;37;5.96;white;solid;blue;FALSE;wet;29;13;USA;47.60621;-122.33207
+Maine coon;3.92;47;male;TRUE;67;7.8;brown/chocolate;tabby;green;FALSE;dry;35;13;USA;38.89511;-77.03637
+Maine coon;4.08;49;female;TRUE;49;6.28;black;bicolor;yellow;TRUE;wet;10;13;USA;38.89511;-77.03637
+Maine coon;4.08;49;female;TRUE;67;7.09;black;solid;yellow;FALSE;dry;27;13;USA;38.89511;-77.03637
+Maine coon;4.08;49;male;FALSE;86;8.4;black;bicolor;yellow;FALSE;wet;11;13;USA;38.89511;-77.03637
+Maine coon;4.08;49;female;FALSE;38;5.06;white;solid;blue;FALSE;wet;9;13;USA;37.77493;-122.41942
+Maine coon;4.17;50;female;TRUE;39;8.21;brown/chocolate;solid;yellow;FALSE;wet;4;13;USA;40.71427;-74.00597
+Maine coon;4.17;50;male;TRUE;79;11.5;red/cream;tabby;green;FALSE;wet;18;13;USA;40.71427;-74.00597
+Maine coon;4.17;50;female;FALSE;57;7.44;black;solid;yellow;FALSE;dry;13;13;USA;38.89511;-77.03637
+Maine coon;4.25;51;female;TRUE;69;8.68;black;bicolor;yellow;FALSE;dry;9;13;USA;40.71427;-74.00597
+Maine coon;4.25;51;female;TRUE;70;5;black;solid;yellow;FALSE;dry;30;16;USA;40.71427;-74.00597
+Maine coon;4.25;51;male;TRUE;83;10.5;brown/chocolate;tabby;yellow;TRUE;dry;37;13;USA;47.60621;-122.33207
+Maine coon;4.25;51;male;FALSE;83;11.3;black;solid;yellow;FALSE;dry;36;16;USA;42.35843;-71.05977
+Maine coon;4.33;52;male;TRUE;70;9.7;white;solid;blue;FALSE;wet;38;13;USA;45.52345;-122.67621
+Maine coon;4.33;52;female;TRUE;48;4.88;black;solid;yellow;FALSE;wet;25;13;USA;42.35843;-71.05977
+Maine coon;4.33;52;male;TRUE;63;10.3;brown/chocolate;tabby;yellow;FALSE;dry;27;13;USA;41.881832;-87.623177
+Maine coon;4.42;53;female;TRUE;77;6.39;black;solid;yellow;FALSE;wet;33;16;USA;39.29038;-76.61219
+Maine coon;4.42;53;female;FALSE;79;6.25;black;solid;green;FALSE;wet;19;13;USA;38.89511;-77.03637
+Maine coon;4.42;53;female;FALSE;46;6.62;black;tortie;yellow;FALSE;wet;12;13;USA;42.35843;-71.05977
+Maine coon;4.5;54;female;TRUE;72;4.8;black;solid;yellow;FALSE;wet;26;17;USA;40.71427;-74.00597
+Maine coon;4.58;55;male;FALSE;58;7.5;red/cream;tabby;yellow;FALSE;wet;18;13;USA;38.89511;-77.03637
+Maine coon;4.58;55;male;TRUE;57;8.7;red/cream;solid;yellow;FALSE;dry;19;13;USA;40.71427;-74.00597
+Maine coon;4.67;56;male;TRUE;71;7;brown/chocolate;tabby;yellow;TRUE;wet;21;13;USA;40.71427;-74.00597
+Maine coon;4.67;56;male;TRUE;51;9;brown/chocolate;tabby;yellow;FALSE;wet;21;13;USA;42.35843;-71.05977
+Maine coon;4.75;57;female;TRUE;50;5.92;black;solid;yellow;FALSE;wet;9;13;USA;40.71427;-74.00597
+Maine coon;4.75;57;female;TRUE;48;6.31;black;solid;green;FALSE;wet;34;13;USA;37.77493;-122.41942
+Maine coon;4.75;57;male;TRUE;84;11.3;black;solid;yellow;TRUE;wet;15;13;USA;40.71427;-74.00597
+Maine coon;4.83;58;male;FALSE;54;7;brown/chocolate;tabby;green;FALSE;wet;37;13;USA;47.60621;-122.33207
+Maine coon;4.83;58;female;FALSE;74;4.95;black;tortie;yellow;FALSE;wet;27;13;USA;40.71427;-74.00597
+Maine coon;4.83;58;female;TRUE;42;6.19;brown/chocolate;tabby;yellow;FALSE;dry;25;13;USA;40.71427;-74.00597
+Maine coon;4.92;59;female;TRUE;39;4.54;white;solid;blue;FALSE;dry;34;13;USA;42.35843;-71.05977
+Maine coon;4.92;59;female;TRUE;56;8.89;black;solid;yellow;FALSE;wet;12;13;USA;41.881832;-87.623177
+Maine coon;5;60;female;TRUE;59;5.76;black;solid;yellow;FALSE;dry;34;13;USA;47.60621;-122.33207
+Maine coon;5;60;male;FALSE;48;8.1;black;solid;yellow;FALSE;wet;31;17;USA;37.77493;-122.41942
+Maine coon;5;60;male;TRUE;76;8.4;black;solid;green;FALSE;wet;27;13;USA;45.52345;-122.67621
+Maine coon;5;60;female;TRUE;68;4.23;black;solid;yellow;FALSE;wet;16;16;USA;41.881832;-87.623177
+Maine coon;5;60;male;TRUE;77;10.6;red/cream;tabby;yellow;TRUE;wet;22;13;USA;40.71427;-74.00597
+Maine coon;5;60;male;FALSE;72;8.1;brown/chocolate;solid;yellow;FALSE;dry;11;13;USA;45.52345;-122.67621
+Maine coon;5.08;61;female;TRUE;49;8.26;black;solid;yellow;FALSE;dry;34;13;USA;47.60621;-122.33207
+Maine coon;5.08;61;male;TRUE;85;9.8;black;solid;yellow;FALSE;dry;23;13;USA;40.71427;-74.00597
+Maine coon;5.17;62;female;TRUE;72;5.31;black;solid;yellow;FALSE;wet;24;13;USA;40.71427;-74.00597
+Maine coon;5.17;62;male;FALSE;83;10.5;black;solid;yellow;FALSE;wet;37;17;USA;47.60621;-122.33207
+Maine coon;5.17;62;female;TRUE;42;6.11;black;solid;yellow;FALSE;wet;30;13;USA;40.71427;-74.00597
+Maine coon;5.17;62;male;TRUE;68;9.7;red/cream;solid;yellow;FALSE;wet;9;16;USA;39.29038;-76.61219
+Maine coon;5.25;63;male;TRUE;88;8.8;brown/chocolate;solid;yellow;TRUE;dry;4;13;USA;37.77493;-122.41942
+Maine coon;5.25;63;female;TRUE;51;7.89;black;solid;yellow;FALSE;dry;29;13;USA;38.89511;-77.03637
+Maine coon;5.25;63;female;TRUE;53;3.76;brown/chocolate;solid;yellow;FALSE;wet;18;13;Canada;45.508888;-73.561668
+Maine coon;5.25;63;male;FALSE;79;11.6;black;solid;yellow;FALSE;dry;11;13;Canada;49.246292;-123.116226
+Maine coon;5.33;64;female;FALSE;64;6.67;black;bicolor;yellow;FALSE;wet;24;13;Canada;51.049999;-114.066666
+Maine coon;5.33;64;female;TRUE;53;7.1;black;solid;yellow;TRUE;wet;18;16;Canada;51.049999;-114.066666
+Maine coon;5.42;65;female;TRUE;57;8.18;brown/chocolate;tabby;yellow;FALSE;wet;14;16;Canada;43.65107;-79.347015
+Maine coon;5.42;65;male;FALSE;66;7.5;red/cream;tabby;yellow;FALSE;wet;10;13;Canada;49.246292;-123.116226
+Maine coon;5.42;65;male;TRUE;51;9.2;black;solid;yellow;FALSE;dry;18;13;Canada;43.65107;-79.347015
+Maine coon;5.5;66;female;TRUE;52;6.36;black;solid;yellow;TRUE;dry;10;13;Canada;51.049999;-114.066666
+Maine coon;5.5;66;male;TRUE;57;10;black;solid;yellow;FALSE;dry;34;13;Canada;43.65107;-79.347015
+Maine coon;5.58;67;male;FALSE;68;10.2;red/cream;tabby;green;FALSE;wet;36;16;Canada;49.246292;-123.116226
+Maine coon;5.58;67;female;TRUE;73;7.6;black;solid;green;FALSE;wet;27;13;Canada;49.246292;-123.116226
+Maine coon;5.58;67;female;TRUE;73;6.15;black;solid;yellow;FALSE;wet;35;13;Canada;51.049999;-114.066666
+Maine coon;5.58;67;female;FALSE;39;4.76;white;solid;blue;FALSE;wet;10;17;Canada;43.65107;-79.347015
+Maine coon;5.58;67;female;FALSE;70;4.6;black;tortie;yellow;FALSE;wet;18;13;Canada;45.508888;-73.561668
+Maine coon;5.67;68;female;TRUE;71;5.2;black;solid;yellow;FALSE;dry;18;13;Canada;51.049999;-114.066666
+Maine coon;5.67;68;female;FALSE;56;5.8;black;solid;green;FALSE;wet;31;13;Canada;45.508888;-73.561668
+Maine coon;5.67;68;male;TRUE;83;8.1;brown/chocolate;tabby;yellow;FALSE;dry;28;13;Canada;49.246292;-123.116226
+Maine coon;5.67;68;male;FALSE;80;9.6;red/cream;tabby;yellow;FALSE;dry;13;17;Canada;45.42153;-75.697193
+Maine coon;5.75;69;female;TRUE;43;7.65;brown/chocolate;tortie;green;FALSE;wet;36;16;Canada;43.65107;-79.347015
+Maine coon;5.75;69;female;TRUE;39;6.29;white;solid;blue;FALSE;wet;30;13;Canada;51.049999;-114.066666
+Maine coon;5.75;69;male;TRUE;51;8.9;black;solid;yellow;TRUE;dry;14;13;USA;41.881832;-87.623177
+Maine coon;5.75;69;female;FALSE;68;5.58;black;tortie;yellow;FALSE;dry;15;16;USA;39.29038;-76.61219
+Maine coon;5.75;69;female;TRUE;51;5.91;white;solid;yellow;TRUE;wet;13;13;USA;45.52345;-122.67621
+Maine coon;5.83;70;male;TRUE;51;7.9;black;solid;yellow;TRUE;wet;21;13;USA;40.71427;-74.00597
+Maine coon;5.92;71;male;FALSE;76;10.4;red/cream;tabby;yellow;FALSE;wet;28;13;USA;38.89511;-77.03637
+Maine coon;5.92;71;female;TRUE;43;5.59;black;solid;yellow;FALSE;wet;18;13;USA;42.35843;-71.05977
+Maine coon;5.92;71;male;TRUE;56;7;red/cream;tabby;yellow;FALSE;dry;30;13;USA;42.35843;-71.05977
+Maine coon;6;72;female;TRUE;59;7.56;black;solid;yellow;FALSE;wet;20;16;USA;38.89511;-77.03637
+Maine coon;6;72;male;FALSE;83;10;black;solid;green;FALSE;wet;10;13;USA;42.35843;-71.05977
+Maine coon;6.08;73;male;FALSE;72;9.3;brown/chocolate;tabby;green;FALSE;wet;35;13;USA;40.71427;-74.00597
+Maine coon;6.17;74;male;TRUE;58;9.1;black;solid;yellow;TRUE;wet;20;13;USA;41.881832;-87.623177
+Maine coon;6.17;74;female;FALSE;55;5;black;solid;yellow;FALSE;dry;31;13;USA;38.89511;-77.03637
+Maine coon;6.17;74;male;FALSE;87;11.5;black;bicolor;yellow;FALSE;wet;30;13;USA;42.35843;-71.05977
+Maine coon;6.17;74;female;TRUE;45;3.65;brown/chocolate;solid;yellow;FALSE;dry;22;16;USA;40.71427;-74.00597
+Maine coon;6.25;75;male;FALSE;87;8.3;brown/chocolate;tabby;yellow;FALSE;dry;36;13;USA;47.60621;-122.33207
+Maine coon;6.25;75;female;FALSE;54;4.13;brown/chocolate;tabby;yellow;FALSE;dry;36;13;USA;40.71427;-74.00597
+Maine coon;6.25;75;male;TRUE;56;8.2;red/cream;tabby;yellow;FALSE;wet;23;13;USA;38.89511;-77.03637
+Maine coon;6.25;75;male;TRUE;60;9.9;red/cream;tabby;yellow;FALSE;wet;10;17;USA;47.60621;-122.33207
+Maine coon;6.25;75;male;TRUE;73;11.2;white;solid;blue;FALSE;wet;21;13;Germany;52.520008;13.404954
+Maine coon;6.33;76;female;TRUE;41;6.92;black;solid;yellow;TRUE;wet;27;13;USA;47.60621;-122.33207
+Maine coon;6.33;76;female;TRUE;42;8.13;brown/chocolate;tabby;yellow;FALSE;dry;19;16;USA;38.89511;-77.03637
+Maine coon;6.33;76;female;TRUE;41;4.2;brown/chocolate;tabby;green;FALSE;wet;17;13;USA;38.89511;-77.03637
+Maine coon;6.33;76;female;FALSE;62;8.31;black;solid;yellow;FALSE;dry;9;13;USA;40.71427;-74.00597
+Maine coon;6.42;77;male;FALSE;70;8.1;brown/chocolate;tabby;yellow;FALSE;wet;27;13;USA;39.29038;-76.61219
+Maine coon;6.42;77;male;TRUE;66;11.3;brown/chocolate;tabby;yellow;FALSE;wet;33;13;USA;39.29038;-76.61219
+Maine coon;6.42;77;female;FALSE;63;6.84;black;solid;yellow;FALSE;wet;13;16;USA;42.35843;-71.05977
+Maine coon;6.5;78;male;FALSE;84;11.3;brown/chocolate;tabby;yellow;FALSE;wet;11;13;USA;37.77493;-122.41942
+Maine coon;6.67;80;male;TRUE;59;8.4;black;solid;green;TRUE;dry;27;17;USA;40.71427;-74.00597
+Maine coon;6.67;80;male;TRUE;76;9.4;black;solid;yellow;FALSE;wet;36;17;USA;42.35843;-71.05977
+Maine coon;6.67;80;male;FALSE;84;10.2;red/cream;tabby;yellow;FALSE;dry;33;17;USA;40.71427;-74.00597
+Maine coon;6.75;81;male;TRUE;51;8.7;black;solid;yellow;FALSE;wet;13;13;USA;45.52345;-122.67621
+Maine coon;6.75;81;male;TRUE;75;11.7;brown/chocolate;tabby;yellow;FALSE;wet;18;13;USA;37.77493;-122.41942
+Maine coon;6.75;81;male;TRUE;56;9.7;white;solid;yellow;TRUE;wet;18;17;USA;41.881832;-87.623177
+Maine coon;6.83;82;female;FALSE;76;7.24;brown/chocolate;tabby;yellow;FALSE;dry;35;16;Germany;48.137154;11.576124
+Maine coon;6.83;82;female;TRUE;63;7.82;brown/chocolate;tortie;yellow;FALSE;wet;18;16;Germany;48.137154;11.576124
+Maine coon;6.83;82;male;TRUE;78;8.7;black;solid;yellow;FALSE;wet;9;13;Germany;48.137154;11.576124
+Maine coon;6.83;82;male;TRUE;78;7.5;brown/chocolate;tabby;green;TRUE;dry;9;16;Germany;52.520008;13.404954
+Maine coon;6.83;82;female;FALSE;49;8.41;black;solid;yellow;FALSE;dry;34;13;Germany;48.137154;11.576124
+Maine coon;6.83;82;female;TRUE;37;6.98;white;solid;yellow;FALSE;wet;34;13;Germany;51.227741;6.773456
+Maine coon;6.92;83;male;TRUE;48;6.2;red/cream;tabby;yellow;FALSE;wet;23;17;Germany;51.227741;6.773456
+Maine coon;6.92;83;male;TRUE;59;9.8;black;solid;yellow;FALSE;wet;36;17;Germany;51.227741;6.773456
+Maine coon;6.92;83;male;FALSE;75;9.3;black;solid;yellow;FALSE;wet;25;16;Germany;52.520008;13.404954
+Maine coon;6.92;83;male;FALSE;78;8.8;red/cream;tabby;yellow;FALSE;wet;29;13;Germany;50.110924;8.682127
+Maine coon;7;84;female;TRUE;42;3.99;black;solid;yellow;TRUE;wet;21;13;Germany;50.110924;8.682127
+Maine coon;7;84;male;FALSE;88;10.1;black;solid;yellow;FALSE;wet;40;16;USA;37.77493;-122.41942
+Maine coon;7;84;male;TRUE;78;11;red/cream;tabby;yellow;FALSE;wet;29;13;Germany;50.110924;8.682127
+Maine coon;7;84;female;TRUE;41;8.23;black;solid;yellow;FALSE;dry;25;13;USA;40.71427;-74.00597
+Maine coon;7;84;female;FALSE;52;7.96;black;tortie;yellow;FALSE;wet;30;13;USA;39.29038;-76.61219
+Maine coon;7.08;85;female;TRUE;65;6.7;brown/chocolate;solid;yellow;FALSE;wet;26;17;USA;40.71427;-74.00597
+Maine coon;7.08;85;female;TRUE;80;5.62;black;solid;yellow;TRUE;wet;11;19;USA;45.52345;-122.67621
+Maine coon;7.17;86;male;TRUE;78;11;red/cream;tabby;yellow;FALSE;wet;39;16;USA;39.29038;-76.61219
+Maine coon;7.17;86;male;TRUE;65;8.7;brown/chocolate;tabby;yellow;FALSE;wet;11;19;USA;42.35843;-71.05977
+Maine coon;7.17;86;male;TRUE;62;7;black;solid;yellow;TRUE;wet;9;17;USA;42.35843;-71.05977
+Maine coon;7.17;86;male;TRUE;73;8;black;solid;yellow;FALSE;dry;9;17;USA;37.77493;-122.41942
+Maine coon;7.17;86;female;TRUE;48;7.3;black;solid;yellow;FALSE;dry;37;19;USA;37.77493;-122.41942
+Maine coon;7.17;86;female;FALSE;49;7;black;solid;yellow;FALSE;wet;27;19;USA;42.35843;-71.05977
+Maine coon;7.25;87;female;TRUE;49;6.43;red/cream;solid;yellow;FALSE;dry;37;17;USA;42.35843;-71.05977
+Maine coon;7.25;87;female;TRUE;72;5.28;black;solid;green;TRUE;wet;23;19;USA;38.89511;-77.03637
+Maine coon;7.25;87;female;FALSE;73;8.14;brown/chocolate;tabby;yellow;FALSE;wet;17;21;USA;42.35843;-71.05977
+Maine coon;7.25;87;male;TRUE;69;10.4;red/cream;tabby;yellow;FALSE;wet;37;19;USA;40.71427;-74.00597
+Maine coon;7.25;87;male;TRUE;67;8.5;brown/chocolate;tabby;yellow;FALSE;dry;20;17;USA;42.35843;-71.05977
+Maine coon;7.42;89;male;TRUE;77;11.3;brown/chocolate;tabby;yellow;TRUE;wet;12;17;USA;42.35843;-71.05977
+Maine coon;7.42;89;male;TRUE;52;9;black;solid;yellow;FALSE;wet;9;16;USA;42.35843;-71.05977
+Maine coon;7.42;89;male;TRUE;89;10.5;brown/chocolate;solid;yellow;FALSE;dry;10;19;USA;42.35843;-71.05977
+Maine coon;7.5;90;male;FALSE;79;8.1;black;solid;green;FALSE;wet;21;13;USA;40.71427;-74.00597
+Maine coon;7.5;90;female;FALSE;65;7.86;brown/chocolate;tabby;yellow;FALSE;wet;34;19;USA;38.89511;-77.03637
+Maine coon;7.5;90;female;TRUE;51;7.86;black;solid;yellow;FALSE;wet;36;21;USA;37.77493;-122.41942
+Maine coon;7.5;90;male;TRUE;48;8.2;black;solid;yellow;TRUE;wet;27;16;USA;40.71427;-74.00597
+Maine coon;7.58;91;male;FALSE;85;7.9;black;solid;yellow;FALSE;dry;35;16;USA;47.60621;-122.33207
+Maine coon;7.58;91;male;FALSE;85;7.4;black;solid;yellow;FALSE;dry;37;17;USA;39.29038;-76.61219
+Maine coon;7.67;92;female;FALSE;34;3.61;black;bicolor;green;FALSE;wet;32;13;USA;38.89511;-77.03637
+Maine coon;7.67;92;male;FALSE;79;11.3;black;solid;green;FALSE;wet;19;16;USA;42.35843;-71.05977
+Maine coon;7.67;92;male;TRUE;102;10.1;black;solid;yellow;FALSE;wet;16;13;USA;47.60621;-122.33207
+Maine coon;7.83;94;female;FALSE;77;5.84;brown/chocolate;tabby;green;FALSE;dry;23;18;USA;42.35843;-71.05977
+Maine coon;7.83;94;male;TRUE;56;11.1;black;solid;yellow;FALSE;wet;12;16;USA;37.77493;-122.41942
+Maine coon;7.92;95;male;FALSE;75;9.5;black;solid;yellow;FALSE;wet;35;19;USA;40.71427;-74.00597
+Maine coon;7.92;95;male;TRUE;81;7.3;red/cream;tabby;yellow;FALSE;wet;17;20;USA;39.29038;-76.61219
+Maine coon;7.92;95;male;FALSE;81;7.6;brown/chocolate;tabby;yellow;FALSE;wet;11;13;USA;41.881832;-87.623177
+Maine coon;8;96;male;TRUE;97;10.9;black;solid;yellow;TRUE;dry;11;20;USA;45.52345;-122.67621
+Maine coon;8.17;98;female;TRUE;40;5.45;black;solid;yellow;FALSE;wet;29;17;USA;39.29038;-76.61219
+Maine coon;4;48;female;FALSE;74;5.3;black;tortie;yellow;FALSE;wet;11;13;USA;39.29038;-76.61219
+Maine coon;8.25;99;male;TRUE;79;10.4;black;solid;yellow;FALSE;wet;29;20;USA;40.71427;-74.00597
+Maine coon;8.33;100;female;FALSE;62;5.49;black;solid;yellow;FALSE;wet;10;18;USA;37.77493;-122.41942
+Maine coon;7.67;92;female;TRUE;39;7.98;white;solid;blue;FALSE;wet;37;21;USA;45.52345;-122.67621
+Maine coon;8.33;100;female;FALSE;57;8.3;brown/chocolate;tabby;yellow;FALSE;wet;11;18;USA;47.60621;-122.33207
+Maine coon;8.42;101;female;TRUE;65;7.79;red/cream;bicolor;yellow;FALSE;wet;15;19;USA;37.77493;-122.41942
+Maine coon;7.58;91;female;FALSE;80;7.9;black;solid;yellow;FALSE;wet;38;18;USA;42.35843;-71.05977
+Maine coon;8.5;102;male;TRUE;67;10.9;black;solid;green;FALSE;dry;20;20;USA;42.35843;-71.05977
+Maine coon;6.17;74;female;TRUE;56;3.9;black;solid;yellow;TRUE;wet;27;13;USA;42.35843;-71.05977
+Maine coon;8.58;103;female;TRUE;71;7.05;black;solid;green;FALSE;wet;29;18;USA;47.60621;-122.33207
+Maine coon;8.58;103;male;FALSE;85;9.2;red/cream;tabby;green;FALSE;wet;31;20;USA;40.71427;-74.00597
+Maine coon;8.58;103;male;FALSE;86;10;red/cream;bicolor;yellow;FALSE;wet;35;19;USA;40.71427;-74.00597
+Maine coon;6.42;77;female;TRUE;38;7.82;red/cream;solid;yellow;FALSE;dry;17;16;USA;42.35843;-71.05977
+Maine coon;7.83;94;male;TRUE;68;11.6;black;solid;yellow;FALSE;dry;26;21;USA;42.35843;-71.05977
+Maine coon;5.42;65;female;TRUE;48;4.15;brown/chocolate;bicolor;yellow;FALSE;wet;36;13;USA;37.77493;-122.41942
+Maine coon;8.67;104;female;FALSE;54;7.99;black;solid;yellow;FALSE;dry;27;21;USA;37.77493;-122.41942
+Maine coon;5.58;67;female;TRUE;65;5.16;black;solid;yellow;FALSE;wet;13;13;USA;45.52345;-122.67621
+Maine coon;6.42;77;female;FALSE;66;5;black;solid;green;FALSE;wet;10;13;USA;38.89511;-77.03637
+Maine coon;8.75;105;female;FALSE;55;7.35;black;solid;yellow;FALSE;wet;13;17;USA;39.29038;-76.61219
+Maine coon;5;60;female;TRUE;64;5.23;black;solid;yellow;TRUE;dry;37;13;USA;38.89511;-77.03637
+Maine coon;7.42;89;female;TRUE;42;7.27;black;solid;yellow;FALSE;dry;12;17;USA;42.35843;-71.05977
+Maine coon;8.92;107;female;TRUE;59;7.75;black;solid;yellow;FALSE;wet;18;20;USA;40.71427;-74.00597
+Maine coon;8.92;107;female;FALSE;75;6;black;solid;yellow;FALSE;dry;27;16;USA;42.35843;-71.05977
+Maine coon;4.83;58;female;TRUE;42;5.12;brown/chocolate;tortie;yellow;FALSE;wet;36;13;USA;38.89511;-77.03637
+Maine coon;7.33;88;female;FALSE;79;8.5;black;solid;green;FALSE;wet;12;17;USA;40.71427;-74.00597
+Maine coon;8.92;107;female;TRUE;36;5.77;brown/chocolate;tabby;yellow;FALSE;wet;5;16;USA;40.71427;-74.00597
+Maine coon;8.92;107;female;TRUE;46;8.07;black;solid;yellow;TRUE;wet;16;20;USA;41.881832;-87.623177
+Maine coon;8.92;107;female;TRUE;36;6.95;white;solid;yellow;FALSE;wet;26;19;USA;40.71427;-74.00597
+Maine coon;7.58;91;male;FALSE;65;9.7;brown/chocolate;tabby;yellow;FALSE;wet;39;20;USA;40.71427;-74.00597
+Maine coon;9;108;female;TRUE;64;6.93;brown/chocolate;tabby;yellow;FALSE;dry;34;20;USA;40.71427;-74.00597
+Maine coon;9;108;male;TRUE;83;11.3;black;solid;yellow;FALSE;wet;15;21;USA;42.35843;-71.05977
+Maine coon;9;108;male;TRUE;83;11.6;red/cream;solid;yellow;FALSE;wet;37;20;USA;47.60621;-122.33207
+Maine coon;9;108;male;TRUE;75;9.7;red/cream;solid;yellow;TRUE;dry;12;19;USA;40.71427;-74.00597
+Maine coon;9.08;109;male;FALSE;60;8.3;black;solid;yellow;FALSE;wet;13;20;USA;40.71427;-74.00597
+Maine coon;9.08;109;male;FALSE;61;7.9;black;solid;yellow;FALSE;dry;18;19;USA;39.29038;-76.61219
+Maine coon;9.17;110;male;TRUE;88;10.5;black;solid;yellow;FALSE;wet;10;19;USA;40.71427;-74.00597
+Maine coon;8.5;102;female;FALSE;70;6.01;black;solid;yellow;FALSE;wet;37;21;USA;38.89511;-77.03637
+Maine coon;9.25;111;male;TRUE;66;11.3;red/cream;solid;yellow;FALSE;wet;12;19;USA;42.35843;-71.05977
+Maine coon;9.25;111;male;TRUE;69;9.5;black;solid;yellow;FALSE;wet;25;19;USA;40.71427;-74.00597
+Maine coon;8.17;98;male;TRUE;52;8.7;black;solid;yellow;FALSE;wet;23;20;USA;42.35843;-71.05977
+Maine coon;9.33;112;male;TRUE;65;6.2;black;solid;yellow;FALSE;wet;21;21;USA;38.89511;-77.03637
+Maine coon;9.33;112;female;TRUE;64;5.18;black;solid;yellow;FALSE;wet;45;18;USA;39.29038;-76.61219
+Maine coon;9.42;113;female;TRUE;49;6.45;brown/chocolate;tabby;yellow;TRUE;wet;23;16;USA;47.60621;-122.33207
+Maine coon;4.92;59;female;FALSE;78;5.1;black;solid;yellow;FALSE;wet;21;13;USA;40.71427;-74.00597
+Maine coon;9.42;113;male;FALSE;69;8.7;black;bicolor;yellow;FALSE;wet;31;19;USA;38.89511;-77.03637
+Maine coon;8.17;98;male;FALSE;67;7;black;solid;yellow;FALSE;dry;22;20;USA;39.29038;-76.61219
+Maine coon;6.5;78;female;FALSE;51;5.3;black;tortie;yellow;FALSE;wet;11;13;USA;40.71427;-74.00597
+Maine coon;9.5;114;male;TRUE;87;7.3;black;solid;yellow;FALSE;dry;16;20;USA;47.60621;-122.33207
+Maine coon;9.5;114;female;TRUE;46;8.34;black;solid;yellow;FALSE;wet;24;17;USA;39.29038;-76.61219
+Maine coon;9.58;115;female;TRUE;76;7.11;brown/chocolate;tabby;yellow;FALSE;wet;15;20;USA;41.881832;-87.623177
+Maine coon;7.67;92;male;TRUE;55;8.4;red/cream;tabby;yellow;FALSE;dry;18;21;USA;37.77493;-122.41942
+Maine coon;4.92;59;female;FALSE;48;4.86;black;solid;yellow;FALSE;wet;16;16;USA;38.89511;-77.03637
+Maine coon;9.58;115;male;TRUE;78;12.1;black;bicolor;yellow;FALSE;dry;10;19;USA;47.60621;-122.33207
+Maine coon;9.67;116;female;FALSE;65;6.61;brown/chocolate;tabby;yellow;FALSE;dry;23;21;USA;42.35843;-71.05977
+Maine coon;7.58;91;male;TRUE;59;8.1;black;solid;yellow;FALSE;wet;38;18;USA;42.35843;-71.05977
+Maine coon;9.67;116;female;FALSE;54;8.13;black;solid;yellow;FALSE;dry;11;21;USA;40.71427;-74.00597
+Maine coon;9.75;117;male;TRUE;74;7.4;brown/chocolate;tabby;yellow;TRUE;dry;16;18;USA;38.89511;-77.03637
+Maine coon;7;84;male;TRUE;63;8.9;black;solid;yellow;FALSE;dry;17;16;USA;42.35843;-71.05977
+Maine coon;4.08;49;female;FALSE;37;3.51;white;solid;blue;FALSE;dry;17;16;USA;40.71427;-74.00597
+Maine coon;6.5;78;male;TRUE;70;10.9;black;solid;yellow;FALSE;wet;19;13;USA;40.71427;-74.00597
+Maine coon;9.83;118;female;FALSE;76;8.58;black;tortie;yellow;FALSE;dry;28;19;USA;40.71427;-74.00597
+Maine coon;9.83;118;female;FALSE;72;7.57;brown/chocolate;tabby;green;FALSE;wet;17;19;USA;40.71427;-74.00597
+Maine coon;7.17;86;male;TRUE;48;7.8;red/cream;tabby;yellow;FALSE;wet;27;17;USA;39.29038;-76.61219
+Maine coon;10.25;123;female;TRUE;60;8.22;black;solid;yellow;FALSE;dry;9;21;USA;38.89511;-77.03637
+Maine coon;6.33;76;female;TRUE;65;5.4;black;solid;yellow;FALSE;wet;25;13;USA;38.89511;-77.03637
+Maine coon;10;120;female;FALSE;53;6.5;black;tortie;yellow;FALSE;dry;14;17;USA;42.35843;-71.05977
+Ragdoll;0.25;3;female;TRUE;21;3.1;red/cream;bicolor;blue;FALSE;wet;60;10;USA;38.89511;-77.03637
+Ragdoll;0.33;4;male;FALSE;21;3;red/cream;colorpoint;blue;FALSE;dry;21;16;USA;37.77493;-122.41942
+Ragdoll;0.33;4;female;FALSE;21;3;seal;tortie;green;FALSE;wet;31;16;UK;51.507351;-0.127758
+Ragdoll;0.33;4;male;FALSE;21;3;seal;colorpoint;blue;FALSE;wet;16;17;UK;53.480759;-2.242631
+Ragdoll;0.33;4;female;FALSE;21;3.3;red/cream;bicolor;blue;FALSE;dry;14;16;UK;52.486244;-1.890401
+Ragdoll;0.33;4;female;TRUE;22;3.2;seal;colorpoint;green;FALSE;dry;16;20;UK;53.480759;-2.242631
+Ragdoll;0.33;4;female;FALSE;22;3.2;seal;colorpoint;blue;FALSE;wet;46;15;UK;51.507351;-0.127758
+Ragdoll;0.33;4;male;FALSE;22;3.2;seal;colorpoint;blue;FALSE;wet;48;21;UK;51.507351;-0.127758
+Ragdoll;0.42;5;female;FALSE;22;3.2;seal;bicolor;green;FALSE;wet;27;13;UK;51.507351;-0.127758
+Ragdoll;0.42;5;male;FALSE;22;3.2;red/cream;bicolor;blue;FALSE;wet;29;13;UK;53.408371;-2.991573
+Ragdoll;0.42;5;male;FALSE;23;3.5;red/cream;colorpoint;blue;FALSE;wet;49;11;UK;53.480759;-2.242631
+Ragdoll;6.5;78;male;FALSE;26;4.2;red/cream;bicolor;blue;FALSE;wet;42;13;UK;51.507351;-0.127758
+Ragdoll;0.42;5;female;FALSE;26;3.7;red/cream;bicolor;blue;FALSE;wet;28;12;UK;53.800755;-1.549077
+Ragdoll;6.67;80;female;FALSE;26;4;seal;colorpoint;blue;FALSE;wet;27;16;UK;53.408371;-2.991573
+Ragdoll;3.25;39;male;FALSE;25;4.3;seal;colorpoint;blue;FALSE;wet;18;13;UK;53.800755;-1.549077
+Ragdoll;0.42;5;female;TRUE;21;3.9;seal;colorpoint;green;FALSE;wet;48;14;UK;51.507351;-0.127758
+Ragdoll;4;48;female;FALSE;27;4.4;seal;colorpoint;green;FALSE;wet;26;13;UK;53.408371;-2.991573
+Ragdoll;0.5;6;female;FALSE;25;3.8;seal;colorpoint;blue;FALSE;wet;18;15;UK;51.507351;-0.127758
+Ragdoll;3.42;41;male;FALSE;30;4.8;seal;colorpoint;blue;FALSE;wet;31;13;UK;52.486244;-1.890401
+Ragdoll;3;36;male;FALSE;26;4.9;red/cream;bicolor;blue;FALSE;wet;20;16;UK;52.486244;-1.890401
+Ragdoll;1.08;13;male;FALSE;29;4;red/cream;colorpoint;green;FALSE;wet;46;16;UK;53.408371;-2.991573
+Ragdoll;6.5;78;female;FALSE;26;4.1;seal;tortie;blue;FALSE;wet;22;13;UK;51.507351;-0.127758
+Ragdoll;2.92;35;male;FALSE;29;5;seal;colorpoint;blue;FALSE;wet;21;16;USA;40.71427;-74.00597
+Ragdoll;1.5;18;male;FALSE;30;5.3;red/cream;colorpoint;blue;FALSE;wet;11;17;USA;38.89511;-77.03637
+Ragdoll;0.5;6;male;FALSE;30;4.2;red/cream;bicolor;amber;FALSE;wet;43;11;Germany;48.137154;11.576124
+Ragdoll;6.92;83;female;FALSE;22;4;lilac;bicolor;green;FALSE;wet;34;13;Germany;52.520008;13.404954
+Ragdoll;0.58;7;female;FALSE;20;4.3;brown/chocolate;colorpoint;green;FALSE;wet;28;14;Germany;52.520008;13.404954
+Ragdoll;3.42;41;female;FALSE;22;4.4;seal;colorpoint;blue;FALSE;wet;14;16;Germany;52.520008;13.404954
+Ragdoll;0.58;7;female;TRUE;21;3.9;seal;colorpoint;blue;FALSE;wet;21;12;Germany;50.110924;8.682127
+Ragdoll;0.58;7;female;FALSE;24;3.7;brown/chocolate;colorpoint;blue;FALSE;wet;17;13;Germany;50.110924;8.682127
+Ragdoll;4.67;56;male;FALSE;26;4.5;seal;bicolor;blue;FALSE;wet;37;13;Germany;50.110924;8.682127
+Ragdoll;1.33;16;female;FALSE;28;4.4;seal;colorpoint;blue;FALSE;dry;36;19;Germany;48.137154;11.576124
+Ragdoll;0.67;8;female;TRUE;23;3.8;seal;colorpoint;green;FALSE;wet;26;21;Germany;51.227741;6.773456
+Ragdoll;0.67;8;female;TRUE;22;3.8;seal;colorpoint;green;FALSE;wet;38;17;Germany;48.137154;11.576124
+Ragdoll;0.67;8;female;TRUE;21;3.7;brown/chocolate;colorpoint;blue;FALSE;wet;47;16;Germany;48.137154;11.576124
+Ragdoll;0.67;8;male;TRUE;31;4.3;red/cream;bicolor;blue;FALSE;wet;56;20;Germany;50.110924;8.682127
+Ragdoll;0.75;9;female;TRUE;25;3.8;seal;colorpoint;blue;FALSE;wet;32;19;Germany;51.227741;6.773456
+Ragdoll;3.08;37;male;TRUE;25;4.5;brown/chocolate;colorpoint;blue;FALSE;wet;19;16;Germany;52.520008;13.404954
+Ragdoll;1.67;20;female;TRUE;22;4.3;seal;bicolor;green;FALSE;dry;45;19;Germany;48.137154;11.576124
+Ragdoll;0.83;10;female;TRUE;26;3.5;seal;colorpoint;blue;FALSE;dry;53;20;Germany;50.110924;8.682127
+Ragdoll;0.83;10;female;TRUE;24;3.9;seal;tortie;blue;FALSE;wet;42;20;Germany;52.520008;13.404954
+Ragdoll;1.42;17;female;FALSE;21;4.3;seal;colorpoint;blue;FALSE;dry;30;19;USA;37.77493;-122.41942
+Ragdoll;1;12;female;FALSE;28;4.4;seal;colorpoint;blue;FALSE;wet;16;18;USA;40.71427;-74.00597
+Ragdoll;4.08;49;female;FALSE;26;4.3;seal;tortie;blue;FALSE;wet;9;17;USA;38.89511;-77.03637
+Ragdoll;1;12;male;TRUE;31;4.4;brown/chocolate;colorpoint;blue;TRUE;dry;17;15;USA;38.89511;-77.03637
+Ragdoll;1;12;female;FALSE;26;3.9;seal;colorpoint;blue;FALSE;dry;11;17;USA;38.89511;-77.03637
+Ragdoll;1;12;female;FALSE;26;4;seal;colorpoint;blue;FALSE;wet;17;19;USA;47.60621;-122.33207
+Ragdoll;4.25;51;male;TRUE;28;4.8;red/cream;bicolor;green;FALSE;wet;14;13;USA;45.52345;-122.67621
+Ragdoll;1.08;13;female;TRUE;21;3.8;seal;bicolor;blue;FALSE;wet;22;20;USA;47.60621;-122.33207
+Ragdoll;1.17;14;female;TRUE;24;3.9;brown/chocolate;colorpoint;blue;FALSE;wet;34;21;USA;47.60621;-122.33207
+Ragdoll;4.75;57;male;TRUE;27;4.7;brown/chocolate;colorpoint;blue;FALSE;dry;16;13;USA;40.71427;-74.00597
+Ragdoll;1.17;14;female;TRUE;26;4.1;seal;colorpoint;blue;FALSE;wet;38;18;USA;41.881832;-87.623177
+Ragdoll;1.17;14;female;FALSE;22;3.8;brown/chocolate;colorpoint;blue;FALSE;dry;4;20;Canada;45.508888;-73.561668
+Ragdoll;1.17;14;female;TRUE;20;4.3;seal;colorpoint;green;FALSE;dry;30;15;Canada;45.42153;-75.697193
+Ragdoll;1.25;15;female;TRUE;26;3.8;seal;tortie;blue;FALSE;dry;27;18;Canada;45.42153;-75.697193
+Ragdoll;1.25;15;female;TRUE;21;3.5;seal;colorpoint;blue;FALSE;wet;34;17;Canada;45.508888;-73.561668
+Ragdoll;1.25;15;female;TRUE;27;3.8;seal;colorpoint;blue;FALSE;dry;19;20;Canada;49.246292;-123.116226
+Ragdoll;1.25;15;male;TRUE;25;4.7;brown/chocolate;colorpoint;blue;FALSE;dry;22;18;Canada;51.049999;-114.066666
+Ragdoll;1.33;16;female;TRUE;27;3.6;seal;colorpoint;blue;TRUE;wet;38;16;Canada;51.049999;-114.066666
+Ragdoll;1.42;17;female;TRUE;21;3.8;brown/chocolate;colorpoint;blue;FALSE;dry;29;21;Canada;45.508888;-73.561668
+Ragdoll;1.42;17;female;TRUE;28;4.2;seal;bicolor;blue;FALSE;wet;19;21;Canada;51.049999;-114.066666
+Ragdoll;1.42;17;female;TRUE;27;4.1;seal;bicolor;blue;FALSE;dry;36;19;Canada;43.65107;-79.347015
+Ragdoll;1.5;18;male;FALSE;29;5.1;brown/chocolate;colorpoint;blue;FALSE;dry;3;18;UK;53.800755;-1.549077
+Ragdoll;1.5;18;female;TRUE;23;3.9;seal;colorpoint;blue;FALSE;dry;4;20;UK;53.800755;-1.549077
+Ragdoll;1.5;18;male;TRUE;28;4.1;brown/chocolate;colorpoint;blue;FALSE;dry;37;17;UK;53.408371;-2.991573
+Ragdoll;1.5;18;male;FALSE;28;4.4;seal;colorpoint;blue;FALSE;wet;10;21;UK;53.800755;-1.549077
+Ragdoll;4;48;female;TRUE;27;4.5;seal;colorpoint;blue;FALSE;wet;23;15;UK;53.800755;-1.549077
+Ragdoll;3.42;41;male;TRUE;28;4.9;brown/chocolate;colorpoint;blue;TRUE;wet;10;15;UK;53.800755;-1.549077
+Ragdoll;1.58;19;male;FALSE;28;4.4;red/cream;bicolor;blue;FALSE;wet;35;19;UK;53.800755;-1.549077
+Ragdoll;1.58;19;female;TRUE;22;4.2;seal;colorpoint;blue;FALSE;wet;30;18;UK;52.486244;-1.890401
+Ragdoll;1.58;19;female;FALSE;26;4.1;seal;colorpoint;blue;FALSE;wet;20;20;UK;52.486244;-1.890401
+Ragdoll;5.67;68;male;TRUE;26;4.7;seal;colorpoint;blue;FALSE;dry;18;15;UK;51.507351;-0.127758
+Ragdoll;5.67;68;female;TRUE;27;4.9;seal;colorpoint;green;FALSE;dry;12;16;UK;51.507351;-0.127758
+Ragdoll;1.67;20;male;FALSE;31;4.7;seal;colorpoint;blue;FALSE;wet;30;19;UK;53.800755;-1.549077
+Ragdoll;1.67;20;female;TRUE;20;3.5;seal;tortie;blue;FALSE;wet;32;20;UK;53.480759;-2.242631
+Ragdoll;3.92;47;male;TRUE;28;5;seal;colorpoint;blue;FALSE;wet;2;15;UK;53.800755;-1.549077
+Ragdoll;1.75;21;male;FALSE;29;4.1;seal;colorpoint;blue;TRUE;wet;11;17;Canada;49.246292;-123.116226
+Ragdoll;1.83;22;female;TRUE;28;4;seal;colorpoint;blue;FALSE;wet;25;16;Canada;49.246292;-123.116226
+Ragdoll;1.83;22;male;TRUE;26;4.9;seal;colorpoint;blue;FALSE;dry;32;21;Canada;51.049999;-114.066666
+Ragdoll;1.83;22;female;TRUE;24;3.8;seal;colorpoint;blue;FALSE;wet;4;17;Canada;43.65107;-79.347015
+Ragdoll;1.92;23;male;TRUE;31;4.8;seal;mitted;blue;FALSE;dry;35;19;Canada;49.246292;-123.116226
+Ragdoll;4.5;54;male;TRUE;26;5.1;seal;colorpoint;blue;FALSE;wet;12;15;Canada;51.049999;-114.066666
+Ragdoll;4;48;male;TRUE;30;5;red/cream;bicolor;green;FALSE;wet;13;15;Canada;51.049999;-114.066666
+Ragdoll;4.25;51;male;FALSE;30;5.2;seal;colorpoint;blue;FALSE;dry;7;15;Canada;45.508888;-73.561668
+Ragdoll;2;24;female;TRUE;21;4;brown/chocolate;colorpoint;blue;FALSE;dry;22;17;Canada;45.42153;-75.697193
+Ragdoll;2;24;male;TRUE;27;4.9;red/cream;colorpoint;green;FALSE;dry;29;15;Canada;45.508888;-73.561668
+Ragdoll;2;24;female;TRUE;20;3.5;seal;colorpoint;blue;FALSE;wet;20;15;Canada;45.42153;-75.697193
+Ragdoll;2;24;female;TRUE;23;3.9;brown/chocolate;colorpoint;blue;FALSE;wet;22;15;USA;42.35843;-71.05977
+Ragdoll;5.17;62;female;TRUE;26;4.7;seal;colorpoint;blue;FALSE;wet;13;15;USA;40.71427;-74.00597
+Ragdoll;2.08;25;female;TRUE;23;4.33;seal;mitted;green;FALSE;wet;8;17;USA;42.35843;-71.05977
+Ragdoll;2.08;25;female;TRUE;21;4.72;seal;colorpoint;green;FALSE;dry;34;15;USA;47.60621;-122.33207
+Ragdoll;2.08;25;male;TRUE;25;6.05;seal;colorpoint;blue;FALSE;wet;5;15;USA;47.60621;-122.33207
+Ragdoll;2.08;25;female;TRUE;28;4.57;seal;colorpoint;blue;FALSE;wet;12;16;USA;42.35843;-71.05977
+Ragdoll;2.17;26;male;TRUE;27;7.39;seal;colorpoint;blue;FALSE;dry;23;16;USA;38.89511;-77.03637
+Ragdoll;2.17;26;male;TRUE;35;8.29;red/cream;colorpoint;blue;FALSE;wet;29;15;USA;38.89511;-77.03637
+Ragdoll;2.17;26;female;TRUE;20;6;seal;colorpoint;green;FALSE;dry;6;15;USA;42.35843;-71.05977
+Ragdoll;2.17;26;female;TRUE;22;5.66;seal;bicolor;blue;FALSE;wet;28;15;USA;38.89511;-77.03637
+Ragdoll;5.92;71;male;TRUE;27;8.62;brown/chocolate;colorpoint;green;FALSE;dry;29;15;USA;42.35843;-71.05977
+Ragdoll;2.25;27;female;TRUE;25;6.78;brown/chocolate;colorpoint;blue;FALSE;wet;16;16;USA;42.35843;-71.05977
+Ragdoll;2.33;28;female;TRUE;36;5.3;seal;colorpoint;blue;FALSE;wet;12;15;USA;42.35843;-71.05977
+Ragdoll;2.33;28;male;TRUE;31;6.87;seal;colorpoint;blue;FALSE;wet;31;15;USA;38.89511;-77.03637
+Ragdoll;2.33;28;female;TRUE;20;4.7;brown/chocolate;colorpoint;green;FALSE;wet;24;15;USA;38.89511;-77.03637
+Ragdoll;2.33;28;male;TRUE;28;6.3;seal;colorpoint;blue;FALSE;dry;7;15;USA;40.71427;-74.00597
+Ragdoll;2.42;29;female;TRUE;22;5.3;brown/chocolate;tortie;blue;FALSE;dry;1;15;USA;47.60621;-122.33207
+Ragdoll;2.42;29;female;FALSE;28;4.39;seal;colorpoint;blue;FALSE;wet;5;15;USA;39.29038;-76.61219
+Ragdoll;2.5;30;male;TRUE;27;6.8;red/cream;bicolor;blue;FALSE;wet;21;15;USA;47.60621;-122.33207
+Ragdoll;2.5;30;male;FALSE;29;6.77;seal;colorpoint;blue;FALSE;wet;3;15;USA;45.52345;-122.67621
+Ragdoll;2.5;30;female;TRUE;24;4.88;seal;colorpoint;blue;FALSE;wet;21;17;USA;40.71427;-74.00597
+Ragdoll;2.5;30;male;FALSE;27;6.72;seal;colorpoint;blue;FALSE;wet;8;15;USA;45.52345;-122.67621
+Ragdoll;2.58;31;male;TRUE;28;5;seal;colorpoint;green;FALSE;dry;14;15;USA;39.29038;-76.61219
+Ragdoll;2.67;32;male;TRUE;53;6.15;seal;bicolor;green;FALSE;dry;32;15;USA;37.77493;-122.41942
+Ragdoll;2.67;32;female;TRUE;40;4.61;seal;tortie;blue;TRUE;wet;22;15;USA;45.52345;-122.67621
+Ragdoll;2.67;32;female;FALSE;45;5.31;seal;colorpoint;blue;FALSE;dry;22;15;USA;42.35843;-71.05977
+Ragdoll;2.67;32;male;FALSE;51;5.53;red/cream;bicolor;blue;FALSE;wet;25;15;USA;40.71427;-74.00597
+Ragdoll;2.67;32;male;TRUE;52;7.41;seal;colorpoint;blue;FALSE;wet;5;15;USA;42.35843;-71.05977
+Ragdoll;2.75;33;female;FALSE;43;4.65;brown/chocolate;mitted;green;FALSE;wet;21;17;USA;40.71427;-74.00597
+Ragdoll;2.75;33;female;TRUE;47;4.63;seal;colorpoint;blue;FALSE;dry;34;17;USA;38.89511;-77.03637
+Ragdoll;2.75;33;female;FALSE;48;6;brown/chocolate;bicolor;green;FALSE;wet;15;17;USA;42.35843;-71.05977
+Ragdoll;2.83;34;female;FALSE;38;5.3;seal;colorpoint;blue;FALSE;wet;31;17;USA;38.89511;-77.03637
+Ragdoll;2.83;34;male;TRUE;43;5.97;seal;colorpoint;blue;FALSE;wet;29;15;USA;37.77493;-122.41942
+Ragdoll;2.83;34;male;TRUE;51;5.67;seal;colorpoint;green;FALSE;wet;24;17;USA;38.89511;-77.03637
+Ragdoll;2.83;34;male;TRUE;49;8.92;seal;colorpoint;blue;FALSE;wet;41;15;USA;37.77493;-122.41942
+Ragdoll;2.92;35;male;FALSE;43;6.96;seal;colorpoint;blue;TRUE;wet;5;15;USA;42.35843;-71.05977
+Ragdoll;2.92;35;male;TRUE;44;6.7;red/cream;bicolor;green;FALSE;dry;17;15;USA;38.89511;-77.03637
+Ragdoll;3;36;female;TRUE;45;6.1;seal;colorpoint;blue;FALSE;wet;38;15;USA;38.89511;-77.03637
+Ragdoll;3;36;male;TRUE;55;9;seal;colorpoint;blue;FALSE;wet;12;16;USA;40.71427;-74.00597
+Ragdoll;3;36;male;TRUE;51;7.65;seal;colorpoint;blue;FALSE;dry;30;17;USA;40.71427;-74.00597
+Ragdoll;3;36;female;FALSE;44;5.64;seal;colorpoint;blue;FALSE;wet;24;15;USA;45.52345;-122.67621
+Ragdoll;3;36;male;FALSE;50;7.48;seal;colorpoint;blue;FALSE;wet;27;17;USA;40.71427;-74.00597
+Ragdoll;3;36;male;TRUE;22;5.5;brown/chocolate;colorpoint;blue;FALSE;wet;13;17;USA;41.881832;-87.623177
+Ragdoll;3.08;37;female;TRUE;41;5.35;brown/chocolate;tortie;green;FALSE;wet;24;15;USA;41.881832;-87.623177
+Ragdoll;3.08;37;female;FALSE;45;4.4;seal;colorpoint;blue;FALSE;wet;25;15;USA;37.77493;-122.41942
+Ragdoll;3.08;37;female;TRUE;39;6.75;seal;colorpoint;blue;FALSE;dry;12;15;USA;47.60621;-122.33207
+Ragdoll;3.17;38;female;TRUE;38;5.73;seal;colorpoint;blue;FALSE;wet;2;15;USA;42.35843;-71.05977
+Ragdoll;3.17;38;male;TRUE;43;6.56;brown/chocolate;colorpoint;green;FALSE;wet;25;15;USA;41.881832;-87.623177
+Ragdoll;3.17;38;female;FALSE;48;6.39;seal;colorpoint;blue;FALSE;wet;32;16;USA;41.881832;-87.623177
+Ragdoll;3.17;38;female;FALSE;47;4.38;seal;colorpoint;blue;FALSE;wet;14;16;USA;40.71427;-74.00597
+Ragdoll;3.17;38;male;TRUE;46;7.79;seal;colorpoint;blue;FALSE;dry;13;15;USA;40.71427;-74.00597
+Ragdoll;3.17;38;female;TRUE;39;5.34;seal;colorpoint;blue;FALSE;wet;29;17;USA;38.89511;-77.03637
+Ragdoll;3.17;38;female;TRUE;47;6.42;seal;colorpoint;blue;FALSE;wet;26;15;USA;38.89511;-77.03637
+Ragdoll;3.17;38;female;TRUE;41;6.77;red/cream;colorpoint;green;FALSE;wet;16;15;USA;45.52345;-122.67621
+Ragdoll;3.17;38;female;TRUE;38;3.98;seal;colorpoint;blue;TRUE;dry;22;15;USA;39.29038;-76.61219
+Ragdoll;3.25;39;male;TRUE;52;6.8;red/cream;colorpoint;blue;FALSE;dry;1;15;USA;39.29038;-76.61219
+Ragdoll;3.25;39;female;FALSE;39;4.22;brown/chocolate;colorpoint;blue;FALSE;wet;31;15;USA;45.52345;-122.67621
+Ragdoll;3.25;39;male;TRUE;31;5.4;seal;colorpoint;blue;FALSE;wet;2;15;USA;45.52345;-122.67621
+Ragdoll;3.25;39;male;TRUE;48;7.78;red/cream;bicolor;blue;FALSE;wet;16;16;USA;38.89511;-77.03637
+Ragdoll;3.25;39;male;TRUE;49;7.87;seal;colorpoint;green;FALSE;wet;20;15;USA;39.29038;-76.61219
+Ragdoll;3.25;39;female;TRUE;47;4.44;seal;colorpoint;blue;FALSE;dry;30;15;USA;42.35843;-71.05977
+Ragdoll;3.25;39;male;TRUE;30;4.9;brown/chocolate;colorpoint;blue;FALSE;dry;29;15;USA;41.881832;-87.623177
+Ragdoll;3.33;40;male;FALSE;50;6.3;brown/chocolate;colorpoint;blue;FALSE;wet;2;15;USA;38.89511;-77.03637
+Ragdoll;3.33;40;male;TRUE;43;6.35;red/cream;colorpoint;blue;FALSE;dry;22;15;USA;40.71427;-74.00597
+Ragdoll;3.33;40;female;FALSE;47;4.59;seal;colorpoint;blue;FALSE;dry;27;17;USA;40.71427;-74.00597
+Ragdoll;3.33;40;male;TRUE;53;6.67;seal;colorpoint;blue;FALSE;dry;24;15;USA;42.35843;-71.05977
+Ragdoll;3.33;40;female;FALSE;50;4.88;seal;colorpoint;green;TRUE;dry;27;15;USA;38.89511;-77.03637
+Ragdoll;3.33;40;female;FALSE;39;4.72;seal;tortie;blue;FALSE;wet;31;16;USA;42.35843;-71.05977
+Ragdoll;3.33;40;female;TRUE;42;6.07;seal;bicolor;blue;FALSE;wet;30;15;USA;47.60621;-122.33207
+Ragdoll;3.33;40;male;TRUE;43;7.65;seal;colorpoint;blue;FALSE;dry;35;15;USA;40.71427;-74.00597
+Ragdoll;3.42;41;male;FALSE;50;6.83;seal;colorpoint;blue;FALSE;dry;7;15;USA;47.60621;-122.33207
+Ragdoll;3.42;41;male;TRUE;29;8.5;red/cream;colorpoint;blue;FALSE;wet;22;15;USA;47.60621;-122.33207
+Ragdoll;3.5;42;female;FALSE;47;5.36;seal;colorpoint;green;FALSE;wet;9;15;USA;39.29038;-76.61219
+Ragdoll;3.5;42;male;FALSE;46;6.79;brown/chocolate;colorpoint;blue;FALSE;wet;4;15;USA;39.29038;-76.61219
+Ragdoll;3.5;42;male;TRUE;51;7.32;red/cream;colorpoint;blue;FALSE;wet;22;15;USA;37.77493;-122.41942
+Ragdoll;3.5;42;female;FALSE;40;4.69;seal;colorpoint;green;FALSE;dry;17;15;France;43.61166;3.87771
+Ragdoll;3.58;43;male;TRUE;43;6.68;seal;colorpoint;blue;TRUE;dry;25;17;France;44.837789;-0.57918
+Ragdoll;3.58;43;female;TRUE;48;3.98;seal;colorpoint;blue;FALSE;dry;31;15;France;44.837789;-0.57918
+Ragdoll;3.58;43;male;FALSE;50;8.02;brown/chocolate;colorpoint;blue;FALSE;wet;13;15;France;45.76342;4.834277
+Ragdoll;3.58;43;male;TRUE;51;8.33;seal;colorpoint;green;FALSE;wet;18;16;France;43.61166;3.87771
+Ragdoll;3.58;43;male;TRUE;45;6.79;red/cream;colorpoint;blue;FALSE;wet;3;15;France;48.864716;2.349014
+Ragdoll;3.67;44;female;FALSE;41;6.32;seal;colorpoint;green;FALSE;wet;9;17;France;48.864716;2.349014
+Ragdoll;3.67;44;female;TRUE;38;4.26;seal;colorpoint;blue;FALSE;wet;23;16;France;48.864716;2.349014
+Ragdoll;3.67;44;female;FALSE;44;4.91;brown/chocolate;colorpoint;blue;FALSE;wet;6;15;France;48.864716;2.349014
+Ragdoll;3.75;45;male;TRUE;42;6.76;seal;colorpoint;blue;FALSE;wet;4;17;France;47.218371;-1.553621
+Ragdoll;3.75;45;male;TRUE;49;5.6;red/cream;bicolor;blue;FALSE;wet;31;15;France;45.76342;4.834277
+Ragdoll;3.83;46;male;FALSE;53;7.54;seal;colorpoint;blue;FALSE;dry;6;15;USA;38.89511;-77.03637
+Ragdoll;3.83;46;male;TRUE;45;7.93;brown/chocolate;colorpoint;blue;FALSE;wet;29;16;USA;39.29038;-76.61219
+Ragdoll;3.83;46;female;TRUE;45;5.22;seal;colorpoint;green;FALSE;dry;29;15;USA;39.29038;-76.61219
+Ragdoll;3.83;46;male;TRUE;46;8.6;red/cream;bicolor;blue;TRUE;wet;13;17;USA;47.60621;-122.33207
+Ragdoll;3.83;46;female;FALSE;40;3.74;seal;tortie;blue;FALSE;wet;16;16;USA;39.29038;-76.61219
+Ragdoll;3.83;46;female;TRUE;40;6.89;seal;colorpoint;blue;FALSE;dry;7;15;USA;38.89511;-77.03637
+Ragdoll;3.92;47;male;TRUE;46;8.13;seal;colorpoint;green;FALSE;wet;21;17;USA;42.35843;-71.05977
+Ragdoll;3.92;47;male;TRUE;46;7.33;seal;colorpoint;green;FALSE;wet;4;15;USA;40.71427;-74.00597
+Ragdoll;3.92;47;female;FALSE;38;5.81;seal;colorpoint;amber;FALSE;wet;21;12;USA;41.881832;-87.623177
+Ragdoll;4;48;female;TRUE;40;3.97;seal;colorpoint;blue;FALSE;wet;13;12;USA;45.52345;-122.67621
+Ragdoll;4.08;49;male;TRUE;51;5.89;seal;colorpoint;blue;FALSE;wet;29;16;USA;42.35843;-71.05977
+Ragdoll;4.08;49;male;TRUE;49;8.81;seal;colorpoint;blue;FALSE;wet;5;17;USA;39.29038;-76.61219
+Ragdoll;4.17;50;female;TRUE;42;4.19;seal;colorpoint;blue;FALSE;wet;19;12;USA;45.52345;-122.67621
+Ragdoll;4.25;51;male;TRUE;43;6.85;seal;colorpoint;blue;TRUE;dry;30;16;USA;38.89511;-77.03637
+Ragdoll;4.33;52;male;TRUE;49;8.2;seal;colorpoint;green;FALSE;wet;32;16;USA;42.35843;-71.05977
+Ragdoll;4.33;52;male;FALSE;42;6.71;red/cream;colorpoint;blue;FALSE;wet;33;12;USA;38.89511;-77.03637
+Ragdoll;4.33;52;male;FALSE;47;5.64;seal;colorpoint;blue;FALSE;dry;18;15;USA;45.52345;-122.67621
+Ragdoll;4.42;53;male;TRUE;53;5.7;red/cream;bicolor;blue;FALSE;dry;17;16;USA;38.89511;-77.03637
+Ragdoll;4.42;53;female;FALSE;46;4.75;brown/chocolate;colorpoint;blue;FALSE;dry;8;12;USA;38.89511;-77.03637
+Ragdoll;4.42;53;female;FALSE;44;5.56;seal;colorpoint;blue;FALSE;wet;7;12;USA;45.52345;-122.67621
+Ragdoll;4.42;53;female;FALSE;50;5.09;seal;bicolor;green;FALSE;wet;13;12;USA;39.29038;-76.61219
+Ragdoll;4.5;54;female;TRUE;40;6.93;seal;colorpoint;blue;FALSE;wet;3;12;USA;37.77493;-122.41942
+Ragdoll;4.5;54;female;FALSE;45;6.47;seal;colorpoint;blue;FALSE;wet;20;16;USA;37.77493;-122.41942
+Ragdoll;4.5;54;female;FALSE;41;5.38;seal;colorpoint;blue;FALSE;wet;9;17;USA;47.60621;-122.33207
+Ragdoll;4.58;55;female;FALSE;46;5.5;brown/chocolate;bicolor;green;FALSE;wet;14;16;USA;40.71427;-74.00597
+Ragdoll;4.58;55;male;TRUE;50;8.46;seal;colorpoint;green;TRUE;wet;28;17;USA;38.89511;-77.03637
+Ragdoll;4.58;55;male;TRUE;46;8.05;seal;mitted;blue;FALSE;wet;25;16;USA;39.29038;-76.61219
+Ragdoll;4.58;55;female;TRUE;38;5.71;red/cream;tortie;blue;FALSE;wet;27;12;USA;42.35843;-71.05977
+Ragdoll;4.58;55;male;TRUE;47;8.38;seal;colorpoint;blue;FALSE;wet;15;12;USA;40.71427;-74.00597
+Ragdoll;4.58;55;female;TRUE;39;4.23;seal;colorpoint;blue;FALSE;wet;18;12;USA;37.77493;-122.41942
+Ragdoll;4.58;55;male;FALSE;46;6.18;seal;colorpoint;blue;FALSE;wet;12;12;USA;42.35843;-71.05977
+Ragdoll;4.67;56;male;TRUE;57;8.54;seal;colorpoint;blue;FALSE;dry;22;12;USA;37.77493;-122.41942
+Ragdoll;4.67;56;male;TRUE;44;6.27;seal;colorpoint;green;FALSE;wet;7;12;USA;42.35843;-71.05977
+Ragdoll;4.67;56;female;FALSE;48;5.81;seal;colorpoint;blue;FALSE;wet;17;12;USA;40.71427;-74.00597
+Ragdoll;4.75;57;female;FALSE;42;5.49;seal;colorpoint;blue;FALSE;dry;11;16;USA;47.60621;-122.33207
+Ragdoll;4.75;57;male;TRUE;44;5.73;seal;colorpoint;blue;FALSE;wet;27;15;USA;40.71427;-74.00597
+Ragdoll;4.83;58;female;TRUE;40;4.44;seal;colorpoint;green;FALSE;wet;36;12;USA;38.89511;-77.03637
+Ragdoll;4.83;58;male;TRUE;52;7.72;red/cream;colorpoint;blue;FALSE;wet;0;12;USA;38.89511;-77.03637
+Ragdoll;4.83;58;male;FALSE;43;6.95;red/cream;bicolor;blue;FALSE;wet;11;12;USA;38.89511;-77.03637
+Ragdoll;4.83;58;male;FALSE;57;7.98;seal;colorpoint;blue;FALSE;dry;31;12;USA;42.35843;-71.05977
+Ragdoll;4.83;58;female;TRUE;44;4.21;brown/chocolate;colorpoint;green;FALSE;wet;35;12;USA;41.881832;-87.623177
+Ragdoll;4.83;58;male;TRUE;51;8.14;seal;colorpoint;green;FALSE;dry;6;12;USA;42.35843;-71.05977
+Ragdoll;4.92;59;female;TRUE;38;6.21;seal;colorpoint;blue;FALSE;wet;27;16;USA;38.89511;-77.03637
+Ragdoll;4.92;59;female;FALSE;38;4.51;seal;mitted;blue;FALSE;wet;14;12;USA;42.35843;-71.05977
+Ragdoll;4.92;59;male;FALSE;51;7.99;seal;colorpoint;blue;FALSE;dry;36;12;USA;38.89511;-77.03637
+Ragdoll;4.92;59;male;FALSE;48;7.78;seal;colorpoint;blue;FALSE;wet;14;12;USA;40.71427;-74.00597
+Ragdoll;4.92;59;male;TRUE;47;7.19;seal;colorpoint;blue;FALSE;wet;14;15;USA;41.881832;-87.623177
+Ragdoll;5.08;61;female;FALSE;40;4.16;brown/chocolate;colorpoint;green;FALSE;wet;32;16;USA;39.29038;-76.61219
+Ragdoll;5.08;61;female;FALSE;44;6.75;seal;colorpoint;blue;FALSE;dry;9;15;USA;37.77493;-122.41942
+Ragdoll;5.08;61;female;TRUE;48;6.71;seal;colorpoint;blue;FALSE;wet;7;15;USA;38.89511;-77.03637
+Ragdoll;5.17;62;male;TRUE;51;7.78;red/cream;colorpoint;blue;FALSE;wet;6;16;USA;37.77493;-122.41942
+Ragdoll;5.17;62;male;FALSE;49;7.06;red/cream;colorpoint;blue;FALSE;dry;12;12;USA;42.35843;-71.05977
+Ragdoll;5.17;62;female;TRUE;50;5.59;seal;colorpoint;green;FALSE;wet;10;17;USA;42.35843;-71.05977
+Ragdoll;5.25;63;female;FALSE;50;4.88;brown/chocolate;colorpoint;blue;FALSE;dry;33;12;USA;40.71427;-74.00597
+Ragdoll;5.25;63;male;TRUE;45;5.97;seal;colorpoint;blue;FALSE;dry;30;12;USA;47.60621;-122.33207
+Ragdoll;5.42;65;male;TRUE;61;9.19;seal;colorpoint;blue;FALSE;dry;11;12;USA;39.29038;-76.61219
+Ragdoll;5.5;66;male;FALSE;45;6.63;seal;colorpoint;blue;FALSE;dry;23;12;USA;38.89511;-77.03637
+Ragdoll;5.5;66;male;TRUE;48;8.74;seal;colorpoint;green;FALSE;wet;10;12;USA;40.71427;-74.00597
+Ragdoll;5.5;66;male;TRUE;47;7.43;red/cream;bicolor;blue;FALSE;dry;20;15;USA;47.60621;-122.33207
+Ragdoll;5.58;67;male;FALSE;52;7.3;red/cream;bicolor;green;FALSE;wet;1;15;Germany;48.137154;11.576124
+Ragdoll;5.58;67;male;TRUE;48;6.17;seal;colorpoint;blue;FALSE;wet;17;15;Germany;50.110924;8.682127
+Ragdoll;5.58;67;female;FALSE;42;6.52;seal;colorpoint;blue;FALSE;wet;9;17;Germany;51.227741;6.773456
+Ragdoll;5.58;67;male;FALSE;52;7.55;seal;colorpoint;blue;FALSE;wet;26;12;Germany;50.110924;8.682127
+Ragdoll;5.58;67;male;TRUE;46;6.17;seal;colorpoint;blue;FALSE;wet;15;12;Germany;50.110924;8.682127
+Ragdoll;5.67;68;female;FALSE;43;5.58;seal;colorpoint;blue;FALSE;wet;24;12;Germany;50.110924;8.682127
+Ragdoll;5.67;68;female;TRUE;43;7.21;seal;colorpoint;green;FALSE;wet;3;15;Germany;51.227741;6.773456
+Ragdoll;5.67;68;male;FALSE;46;5.62;red/cream;colorpoint;blue;FALSE;wet;32;12;Germany;51.227741;6.773456
+Ragdoll;5.67;68;male;FALSE;52;5.94;red/cream;colorpoint;blue;FALSE;wet;30;12;Germany;51.227741;6.773456
+Ragdoll;5.67;68;male;TRUE;45;5.87;seal;colorpoint;blue;FALSE;wet;14;12;Germany;52.520008;13.404954
+Ragdoll;5.67;68;female;TRUE;41;4.95;seal;colorpoint;blue;FALSE;wet;9;12;USA;38.89511;-77.03637
+Ragdoll;5.67;68;male;TRUE;53;7.12;red/cream;colorpoint;blue;TRUE;wet;24;17;USA;40.71427;-74.00597
+Ragdoll;5.67;68;female;TRUE;40;5.49;seal;colorpoint;blue;FALSE;dry;26;12;USA;38.89511;-77.03637
+Ragdoll;5.75;69;male;FALSE;48;5.73;seal;colorpoint;blue;FALSE;wet;10;12;USA;40.71427;-74.00597
+Ragdoll;5.75;69;male;TRUE;43;7.13;seal;bicolor;amber;FALSE;wet;12;12;USA;40.71427;-74.00597
+Ragdoll;5.83;70;female;TRUE;39;6.9;seal;mitted;blue;FALSE;wet;2;16;USA;41.881832;-87.623177
+Ragdoll;5.83;70;male;TRUE;44;8.59;seal;colorpoint;blue;FALSE;wet;10;12;USA;41.881832;-87.623177
+Ragdoll;5.83;70;female;FALSE;45;7.08;lilac;colorpoint;blue;FALSE;wet;9;12;USA;42.35843;-71.05977
+Ragdoll;6;72;female;TRUE;42;6.69;brown/chocolate;colorpoint;blue;FALSE;wet;9;16;USA;40.71427;-74.00597
+Ragdoll;6;72;female;FALSE;45;3.73;red/cream;mitted;blue;FALSE;wet;15;16;USA;40.71427;-74.00597
+Ragdoll;6;72;male;TRUE;44;5.71;seal;colorpoint;blue;FALSE;wet;28;15;USA;38.89511;-77.03637
+Ragdoll;6;72;male;TRUE;48;8.97;seal;colorpoint;blue;FALSE;wet;17;12;USA;38.89511;-77.03637
+Ragdoll;6;72;female;FALSE;38;3.86;seal;colorpoint;green;FALSE;wet;23;16;USA;45.52345;-122.67621
+Ragdoll;6.08;73;female;TRUE;45;5.84;seal;colorpoint;blue;FALSE;wet;30;12;USA;40.71427;-74.00597
+Ragdoll;6.08;73;male;TRUE;51;7.25;red/cream;colorpoint;blue;FALSE;wet;18;16;USA;40.71427;-74.00597
+Ragdoll;6.08;73;female;FALSE;36;5.43;seal;colorpoint;blue;FALSE;wet;4;12;USA;40.71427;-74.00597
+Ragdoll;6.08;73;female;TRUE;45;6.06;seal;colorpoint;blue;FALSE;wet;31;17;USA;38.89511;-77.03637
+Ragdoll;6.08;73;female;TRUE;42;4.62;seal;colorpoint;blue;FALSE;wet;11;15;USA;37.77493;-122.41942
+Ragdoll;6.08;73;female;TRUE;40;5.01;seal;colorpoint;green;FALSE;wet;15;16;USA;47.60621;-122.33207
+Ragdoll;6.08;73;male;FALSE;43;6.22;seal;bicolor;blue;FALSE;wet;20;15;USA;40.71427;-74.00597
+Ragdoll;6.08;73;female;TRUE;41;6.47;seal;colorpoint;blue;FALSE;dry;18;12;USA;45.52345;-122.67621
+Ragdoll;6.17;74;male;TRUE;43;8.27;brown/chocolate;colorpoint;blue;FALSE;wet;5;17;UK;52.486244;-1.890401
+Ragdoll;6.17;74;male;FALSE;51;7.25;seal;colorpoint;blue;FALSE;wet;15;12;UK;53.408371;-2.991573
+Ragdoll;6.17;74;female;TRUE;40;6.84;seal;bicolor;blue;FALSE;dry;9;17;UK;51.507351;-0.127758
+Ragdoll;6.25;75;female;FALSE;48;5.26;red/cream;colorpoint;blue;FALSE;dry;27;12;UK;51.507351;-0.127758
+Ragdoll;6.25;75;female;FALSE;50;3.99;seal;colorpoint;blue;FALSE;wet;10;16;UK;53.408371;-2.991573
+Ragdoll;6.25;75;male;TRUE;44;8.22;seal;colorpoint;blue;FALSE;wet;23;17;UK;51.507351;-0.127758
+Ragdoll;6.25;75;male;FALSE;44;7.43;seal;bicolor;green;FALSE;wet;12;12;UK;51.507351;-0.127758
+Ragdoll;6.25;75;female;FALSE;48;6.29;seal;colorpoint;blue;TRUE;dry;10;12;UK;53.800755;-1.549077
+Ragdoll;6.25;75;male;TRUE;47;6.21;seal;colorpoint;blue;FALSE;dry;27;12;UK;53.408371;-2.991573
+Ragdoll;6.33;76;female;TRUE;38;5.6;seal;tortie;blue;FALSE;wet;18;17;UK;53.480759;-2.242631
+Ragdoll;6.33;76;female;FALSE;47;6.89;seal;colorpoint;blue;FALSE;dry;9;12;UK;51.507351;-0.127758
+Ragdoll;6.5;78;female;TRUE;46;6.21;seal;colorpoint;blue;FALSE;dry;27;12;UK;51.507351;-0.127758
+Ragdoll;6.5;78;male;TRUE;46;7.54;seal;mitted;green;FALSE;wet;1;12;UK;51.507351;-0.127758
+Ragdoll;6.5;78;female;TRUE;38;6.93;brown/chocolate;tortie;blue;FALSE;wet;5;12;USA;37.77493;-122.41942
+Ragdoll;6.5;78;male;TRUE;51;7.31;seal;colorpoint;blue;FALSE;wet;22;17;Germany;52.520008;13.404954
+Ragdoll;6.58;79;female;TRUE;48;6.53;seal;tortie;blue;FALSE;dry;19;12;USA;37.77493;-122.41942
+Ragdoll;6.58;79;female;TRUE;38;6.25;seal;colorpoint;blue;FALSE;wet;18;17;USA;45.52345;-122.67621
+Ragdoll;6.67;80;female;FALSE;46;6.6;seal;bicolor;blue;FALSE;dry;3;12;Germany;52.520008;13.404954
+Ragdoll;6.67;80;male;TRUE;44;6.27;brown/chocolate;colorpoint;blue;FALSE;wet;7;12;Germany;48.137154;11.576124
+Ragdoll;6.75;81;male;TRUE;53;7.92;red/cream;bicolor;green;FALSE;wet;18;12;Germany;50.110924;8.682127
+Ragdoll;6.75;81;female;TRUE;44;4.41;seal;colorpoint;blue;FALSE;dry;6;17;Germany;52.520008;13.404954
+Ragdoll;6.83;82;female;FALSE;49;4.08;lilac;colorpoint;blue;FALSE;wet;33;12;Germany;50.110924;8.682127
+Ragdoll;6.92;83;male;TRUE;45;7.67;seal;colorpoint;blue;FALSE;wet;26;15;Germany;48.137154;11.576124
+Ragdoll;7;84;male;TRUE;48;8.23;seal;colorpoint;blue;FALSE;wet;28;12;Germany;52.520008;13.404954
+Ragdoll;7;84;female;FALSE;40;5.79;seal;tortie;blue;FALSE;wet;5;15;Germany;52.520008;13.404954
+Ragdoll;7;84;male;TRUE;52;7.22;seal;colorpoint;green;FALSE;wet;13;17;Germany;50.110924;8.682127
+Ragdoll;7.08;85;male;TRUE;48;7.18;brown/chocolate;colorpoint;blue;FALSE;wet;21;17;USA;40.71427;-74.00597
+Ragdoll;7.08;85;male;TRUE;45;8.18;seal;colorpoint;blue;FALSE;wet;25;21;USA;42.35843;-71.05977
+Ragdoll;7.08;85;female;FALSE;48;3.92;seal;mitted;blue;FALSE;dry;9;17;USA;45.52345;-122.67621
+Ragdoll;7.08;85;female;TRUE;31;5.28;brown/chocolate;colorpoint;blue;FALSE;wet;7;16;USA;40.71427;-74.00597
+Ragdoll;7.17;86;female;FALSE;46;5.04;seal;colorpoint;blue;FALSE;wet;34;19;USA;38.89511;-77.03637
+Ragdoll;7.17;86;male;TRUE;43;9;brown/chocolate;bicolor;blue;FALSE;wet;5;20;USA;40.71427;-74.00597
+Ragdoll;7.25;87;male;FALSE;50;6.34;red/cream;colorpoint;blue;TRUE;wet;25;18;USA;40.71427;-74.00597
+Ragdoll;7.25;87;male;TRUE;43;5.84;seal;colorpoint;green;FALSE;dry;20;20;USA;42.35843;-71.05977
+Ragdoll;7.25;87;female;FALSE;50;3.66;seal;colorpoint;blue;FALSE;wet;20;20;USA;38.89511;-77.03637
+Ragdoll;7.33;88;female;TRUE;38;6.24;brown/chocolate;mitted;blue;FALSE;wet;16;20;USA;45.52345;-122.67621
+Ragdoll;7.33;88;male;TRUE;58;8.29;seal;colorpoint;blue;FALSE;wet;4;15;USA;40.71427;-74.00597
+Ragdoll;7.33;88;male;TRUE;47;8.95;seal;colorpoint;blue;FALSE;wet;21;18;USA;42.35843;-71.05977
+Ragdoll;7.5;90;male;FALSE;51;6.74;seal;colorpoint;blue;FALSE;wet;24;15;USA;38.89511;-77.03637
+Ragdoll;7.5;90;female;TRUE;50;4.39;seal;colorpoint;blue;FALSE;wet;9;19;USA;42.35843;-71.05977
+Ragdoll;7.5;90;male;FALSE;49;7.25;seal;colorpoint;blue;FALSE;dry;12;17;USA;42.35843;-71.05977
+Ragdoll;7.58;91;male;TRUE;45;6.31;seal;colorpoint;blue;FALSE;wet;34;19;USA;38.89511;-77.03637
+Ragdoll;7.58;91;male;TRUE;47;5.79;seal;colorpoint;blue;FALSE;wet;16;21;USA;45.52345;-122.67621
+Ragdoll;7.58;91;male;TRUE;47;7.73;seal;colorpoint;green;FALSE;dry;10;16;USA;38.89511;-77.03637
+Ragdoll;7.58;91;male;TRUE;43;7.08;seal;colorpoint;blue;FALSE;wet;3;15;Canada;45.42153;-75.697193
+Ragdoll;7.58;91;male;TRUE;49;7.91;seal;colorpoint;green;FALSE;wet;26;18;Canada;51.049999;-114.066666
+Ragdoll;7.67;92;female;TRUE;50;5.04;red/cream;colorpoint;blue;FALSE;wet;7;19;Canada;51.049999;-114.066666
+Ragdoll;7.67;92;male;FALSE;45;7.03;seal;colorpoint;blue;FALSE;wet;21;19;Canada;43.65107;-79.347015
+Ragdoll;7.67;92;female;TRUE;49;4.87;seal;colorpoint;blue;TRUE;wet;29;18;Canada;51.049999;-114.066666
+Ragdoll;7.67;92;male;TRUE;62;7.2;brown/chocolate;bicolor;green;FALSE;wet;13;17;Canada;51.049999;-114.066666
+Ragdoll;7.67;92;female;TRUE;48;6.75;brown/chocolate;colorpoint;blue;FALSE;dry;27;20;Canada;49.246292;-123.116226
+Ragdoll;7.67;92;male;TRUE;49;7.24;red/cream;colorpoint;blue;FALSE;wet;23;17;Canada;51.049999;-114.066666
+Ragdoll;7.75;93;male;TRUE;49;7.36;seal;colorpoint;blue;FALSE;wet;14;19;Canada;51.049999;-114.066666
+Ragdoll;7.75;93;female;FALSE;47;5.91;seal;colorpoint;blue;FALSE;wet;28;21;Canada;45.508888;-73.561668
+Ragdoll;7.75;93;male;TRUE;43;8.89;seal;bicolor;blue;FALSE;wet;27;19;Canada;51.049999;-114.066666
+Ragdoll;7.75;93;male;TRUE;63;8.68;red/cream;bicolor;green;FALSE;wet;5;16;Canada;51.049999;-114.066666
+Ragdoll;7.75;93;female;TRUE;38;5.52;seal;colorpoint;blue;FALSE;wet;13;16;Canada;45.508888;-73.561668
+Ragdoll;7.75;93;male;FALSE;48;7.72;seal;bicolor;blue;FALSE;wet;26;17;Canada;43.65107;-79.347015
+Ragdoll;7.83;94;female;FALSE;44;7.07;brown/chocolate;colorpoint;blue;FALSE;dry;2;15;Canada;45.508888;-73.561668
+Ragdoll;7.83;94;male;TRUE;50;6.42;brown/chocolate;bicolor;green;FALSE;wet;13;18;USA;40.71427;-74.00597
+Ragdoll;7.83;94;female;TRUE;38;6.2;seal;colorpoint;blue;FALSE;wet;0;18;USA;47.60621;-122.33207
+Ragdoll;7.92;95;female;FALSE;48;4.65;brown/chocolate;colorpoint;blue;FALSE;wet;18;16;USA;42.35843;-71.05977
+Ragdoll;7.92;95;male;FALSE;49;6.28;seal;colorpoint;green;FALSE;wet;34;18;USA;39.29038;-76.61219
+Ragdoll;8;96;male;TRUE;45;7.67;seal;colorpoint;blue;FALSE;wet;15;20;USA;42.35843;-71.05977
+Ragdoll;8;96;male;TRUE;46;7.62;brown/chocolate;colorpoint;blue;FALSE;wet;19;18;USA;37.77493;-122.41942
+Ragdoll;8;96;female;TRUE;41;5.77;seal;colorpoint;blue;FALSE;wet;30;19;USA;39.29038;-76.61219
+Ragdoll;8;96;male;TRUE;48;6.58;seal;colorpoint;blue;FALSE;dry;18;16;USA;42.35843;-71.05977
+Ragdoll;7.83;94;female;TRUE;45;3.98;seal;colorpoint;blue;FALSE;dry;19;21;USA;38.89511;-77.03637
+Ragdoll;8;96;female;TRUE;48;4.28;seal;bicolor;blue;FALSE;wet;31;16;USA;41.881832;-87.623177
+Ragdoll;8.08;97;male;FALSE;51;7.66;seal;colorpoint;blue;FALSE;wet;10;19;USA;42.35843;-71.05977
+Ragdoll;7.92;95;female;TRUE;47;6.73;seal;colorpoint;green;FALSE;wet;27;15;USA;45.52345;-122.67621
+Ragdoll;8.08;97;male;TRUE;47;8.41;red/cream;colorpoint;blue;FALSE;dry;10;19;USA;42.35843;-71.05977
+Ragdoll;8.17;98;female;TRUE;38;6.99;seal;tortie;blue;FALSE;dry;2;16;USA;38.89511;-77.03637
+Ragdoll;8.17;98;male;FALSE;53;8.38;seal;colorpoint;blue;FALSE;wet;28;20;USA;47.60621;-122.33207
+Ragdoll;8.17;98;male;TRUE;44;8.59;seal;colorpoint;blue;FALSE;wet;36;19;USA;40.71427;-74.00597
+Ragdoll;8.17;98;male;FALSE;48;5.74;seal;colorpoint;blue;FALSE;dry;22;20;USA;42.35843;-71.05977
+Ragdoll;8.17;98;female;FALSE;44;6.16;brown/chocolate;colorpoint;blue;FALSE;dry;28;20;USA;39.29038;-76.61219
+Ragdoll;8.17;98;male;TRUE;50;8.7;red/cream;colorpoint;blue;FALSE;wet;8;19;USA;41.881832;-87.623177
+Ragdoll;8.25;99;male;TRUE;46;9.07;seal;colorpoint;blue;FALSE;dry;7;16;USA;47.60621;-122.33207
+Ragdoll;8.25;99;female;TRUE;39;5.03;seal;bicolor;blue;FALSE;wet;10;19;USA;42.35843;-71.05977
+Ragdoll;8.25;99;male;TRUE;44;6.76;seal;colorpoint;green;FALSE;wet;26;19;USA;45.52345;-122.67621
+Ragdoll;8.42;101;male;FALSE;53;5.99;seal;colorpoint;blue;FALSE;dry;13;17;USA;42.35843;-71.05977
+Ragdoll;8.42;101;female;TRUE;41;5.7;brown/chocolate;colorpoint;blue;FALSE;dry;29;20;USA;42.35843;-71.05977
+Ragdoll;8.5;102;female;TRUE;47;5.86;brown/chocolate;colorpoint;blue;FALSE;dry;9;20;USA;40.71427;-74.00597
+Ragdoll;8.5;102;male;TRUE;45;8.45;seal;colorpoint;blue;FALSE;wet;21;20;USA;42.35843;-71.05977
+Ragdoll;8.5;102;male;TRUE;52;8.33;seal;colorpoint;blue;FALSE;wet;22;17;USA;37.77493;-122.41942
+Ragdoll;8.58;103;female;FALSE;50;5.51;seal;colorpoint;blue;FALSE;wet;32;18;USA;42.35843;-71.05977
+Ragdoll;8.58;103;female;TRUE;44;5.7;seal;colorpoint;blue;FALSE;wet;12;20;USA;39.29038;-76.61219
+Ragdoll;8.58;103;male;FALSE;46;6.61;brown/chocolate;colorpoint;blue;FALSE;wet;14;19;USA;38.89511;-77.03637
+Ragdoll;8.58;103;male;FALSE;53;6.37;brown/chocolate;colorpoint;green;FALSE;wet;34;18;USA;38.89511;-77.03637
+Ragdoll;4.58;55;female;TRUE;46;4.37;seal;tortie;blue;FALSE;wet;13;12;USA;38.89511;-77.03637
+Ragdoll;8.67;104;female;TRUE;48;6.46;seal;tortie;blue;FALSE;wet;20;18;USA;40.71427;-74.00597
+Ragdoll;8.75;105;female;FALSE;43;6.1;seal;colorpoint;blue;FALSE;wet;15;20;USA;38.89511;-77.03637
+Ragdoll;8.75;105;male;FALSE;50;6.79;seal;colorpoint;blue;FALSE;wet;33;21;USA;40.71427;-74.00597
+Ragdoll;4.5;54;female;TRUE;45;4.33;seal;tortie;blue;FALSE;wet;26;15;USA;38.89511;-77.03637
+Ragdoll;8.75;105;female;TRUE;38;6.04;seal;colorpoint;blue;TRUE;wet;30;19;USA;42.35843;-71.05977
+Ragdoll;8.75;105;female;FALSE;43;6.4;seal;colorpoint;blue;FALSE;wet;18;18;USA;47.60621;-122.33207
+Ragdoll;5.58;67;female;FALSE;45;4.31;seal;colorpoint;blue;FALSE;dry;16;12;USA;39.29038;-76.61219
+Ragdoll;8.83;106;female;FALSE;41;5.72;seal;bicolor;blue;FALSE;wet;11;20;USA;38.89511;-77.03637
+Ragdoll;8.92;107;male;TRUE;44;5.82;seal;colorpoint;blue;FALSE;wet;25;20;USA;39.29038;-76.61219
+Ragdoll;8.92;107;male;TRUE;52;7.18;red/cream;colorpoint;blue;FALSE;wet;19;19;USA;47.60621;-122.33207
+Ragdoll;8.92;107;male;TRUE;55;9.13;seal;colorpoint;green;FALSE;wet;15;18;USA;41.881832;-87.623177
+Ragdoll;8.92;107;female;FALSE;43;6.82;seal;colorpoint;blue;FALSE;wet;13;18;USA;37.77493;-122.41942
+Ragdoll;9;108;male;TRUE;45;6.66;seal;bicolor;blue;FALSE;wet;8;19;USA;45.52345;-122.67621
+Ragdoll;9;108;male;FALSE;52;7.99;red/cream;colorpoint;blue;FALSE;wet;25;17;USA;38.89511;-77.03637
+Ragdoll;9;108;female;FALSE;47;6.36;seal;colorpoint;blue;FALSE;wet;30;19;USA;38.89511;-77.03637
+Ragdoll;9;108;male;TRUE;43;6.42;red/cream;colorpoint;blue;FALSE;wet;20;17;USA;38.89511;-77.03637
+Ragdoll;9.08;109;male;FALSE;46;5.72;seal;colorpoint;blue;FALSE;wet;21;18;USA;37.77493;-122.41942
+Ragdoll;5.08;61;female;TRUE;38;4.37;seal;tortie;green;FALSE;wet;18;17;USA;38.89511;-77.03637
+Ragdoll;9.08;109;male;TRUE;47;7.91;seal;colorpoint;blue;FALSE;dry;8;20;USA;38.89511;-77.03637
+Ragdoll;9.08;109;male;FALSE;46;6.15;brown/chocolate;colorpoint;blue;FALSE;wet;13;21;USA;40.71427;-74.00597
+Ragdoll;9.17;110;female;TRUE;49;5.73;red/cream;colorpoint;blue;FALSE;wet;30;17;USA;42.35843;-71.05977
+Ragdoll;9.17;110;male;TRUE;46;5.84;seal;colorpoint;blue;FALSE;wet;23;18;USA;45.52345;-122.67621
+Ragdoll;9.17;110;male;TRUE;50;7.52;brown/chocolate;colorpoint;green;FALSE;wet;29;18;USA;47.60621;-122.33207
+Ragdoll;2.67;32;female;FALSE;38;4.59;seal;colorpoint;blue;FALSE;wet;8;12;USA;38.89511;-77.03637
+Ragdoll;9.25;111;female;FALSE;48;3.71;seal;bicolor;blue;FALSE;wet;15;18;USA;38.89511;-77.03637
+Ragdoll;9.25;111;female;FALSE;48;6.11;seal;colorpoint;green;FALSE;dry;14;20;USA;42.35843;-71.05977
+Ragdoll;9.25;111;male;TRUE;47;8.61;seal;colorpoint;blue;FALSE;dry;6;17;USA;45.52345;-122.67621
+Ragdoll;9.25;111;female;TRUE;48;5.49;seal;colorpoint;blue;FALSE;dry;28;20;USA;39.29038;-76.61219
+Ragdoll;9.33;112;male;FALSE;50;7.16;brown/chocolate;colorpoint;blue;FALSE;wet;27;19;USA;40.71427;-74.00597
+Ragdoll;5.58;67;female;FALSE;49;4.57;seal;colorpoint;blue;FALSE;wet;29;16;USA;38.89511;-77.03637
+Ragdoll;9.33;112;female;TRUE;39;6.15;seal;colorpoint;blue;FALSE;wet;13;19;USA;40.71427;-74.00597
+Ragdoll;9.33;112;female;TRUE;47;7.34;lilac;colorpoint;blue;FALSE;wet;11;16;USA;40.71427;-74.00597
+Ragdoll;9.42;113;male;TRUE;46;8.17;brown/chocolate;colorpoint;blue;FALSE;wet;22;16;USA;40.71427;-74.00597
+Ragdoll;9.42;113;female;TRUE;38;6.38;seal;colorpoint;blue;FALSE;wet;38;21;USA;38.89511;-77.03637
+Ragdoll;9.42;113;female;TRUE;45;6.48;brown/chocolate;colorpoint;blue;FALSE;wet;27;17;USA;42.35843;-71.05977
+Ragdoll;9.42;113;male;TRUE;54;9.15;seal;colorpoint;green;FALSE;wet;6;18;USA;38.89511;-77.03637
+Ragdoll;9.5;114;female;TRUE;48;4.76;seal;colorpoint;blue;FALSE;wet;13;19;USA;40.71427;-74.00597
+Ragdoll;5.17;62;female;FALSE;40;4.07;seal;colorpoint;blue;FALSE;wet;22;15;USA;39.29038;-76.61219
+Ragdoll;9.5;114;male;TRUE;58;9.06;red/cream;colorpoint;blue;FALSE;wet;0;18;USA;40.71427;-74.00597
+Ragdoll;9.5;114;male;FALSE;53;7.09;seal;colorpoint;green;FALSE;wet;21;20;USA;41.881832;-87.623177
+Ragdoll;9.58;115;male;TRUE;51;7.7;red/cream;colorpoint;blue;FALSE;wet;23;19;USA;40.71427;-74.00597
+Ragdoll;9.58;115;male;TRUE;46;5.87;red/cream;colorpoint;blue;FALSE;dry;29;19;USA;42.35843;-71.05977
+Ragdoll;9.58;115;male;FALSE;50;6.91;seal;colorpoint;blue;FALSE;wet;30;16;USA;41.881832;-87.623177
+Ragdoll;9.58;115;male;TRUE;48;8.58;seal;colorpoint;green;FALSE;dry;18;21;USA;40.71427;-74.00597
+Ragdoll;4;48;female;TRUE;44;3.91;seal;bicolor;blue;FALSE;dry;36;17;USA;40.71427;-74.00597
+Ragdoll;9.67;116;male;TRUE;43;9.33;seal;colorpoint;blue;FALSE;wet;14;16;USA;41.881832;-87.623177
+Ragdoll;9.67;116;female;TRUE;38;6.37;seal;colorpoint;blue;FALSE;wet;31;19;USA;39.29038;-76.61219
+Ragdoll;9.67;116;female;TRUE;42;6.31;seal;colorpoint;blue;FALSE;wet;16;17;USA;40.71427;-74.00597
+Ragdoll;9.75;117;male;FALSE;47;6;seal;colorpoint;green;FALSE;dry;24;17;USA;40.71427;-74.00597
+Ragdoll;4.67;56;female;FALSE;47;5;seal;mitted;blue;FALSE;wet;8;12;USA;41.881832;-87.623177
+Ragdoll;5.58;67;female;FALSE;35;5.59;brown/chocolate;tortie;blue;FALSE;wet;11;17;USA;39.29038;-76.61219
+Ragdoll;9.83;118;male;FALSE;56;8.4;seal;colorpoint;blue;FALSE;wet;18;19;USA;45.52345;-122.67621
+Ragdoll;9.83;118;male;TRUE;45;9.08;seal;colorpoint;green;FALSE;wet;24;17;USA;37.77493;-122.41942
+Ragdoll;9.83;118;female;TRUE;41;5.76;lilac;colorpoint;blue;FALSE;wet;19;16;USA;45.52345;-122.67621
+Ragdoll;9.83;118;female;TRUE;44;6.25;seal;colorpoint;blue;FALSE;wet;18;19;USA;42.35843;-71.05977
+Ragdoll;4.67;56;female;TRUE;49;4.62;seal;colorpoint;blue;TRUE;wet;24;12;USA;47.60621;-122.33207
+Ragdoll;4.67;56;female;TRUE;42;3.74;seal;colorpoint;blue;FALSE;wet;24;12;USA;41.881832;-87.623177
+Ragdoll;10.83;130;female;TRUE;41;6.51;seal;colorpoint;blue;FALSE;dry;31;18;USA;40.71427;-74.00597
+Ragdoll;9.92;119;female;TRUE;33;6.07;seal;colorpoint;green;FALSE;dry;4;19;USA;39.29038;-76.61219
+Ragdoll;3.08;37;female;TRUE;45;4.06;red/cream;bicolor;blue;FALSE;wet;16;15;USA;38.89511;-77.03637
+Ragdoll;10.5;126;female;TRUE;43;5.58;seal;bicolor;blue;FALSE;wet;0;19;USA;45.52345;-122.67621
+Ragdoll;10;120;male;TRUE;48;7.59;brown/chocolate;colorpoint;blue;FALSE;dry;16;16;USA;37.77493;-122.41942
+Ragdoll;0.08;1;male;FALSE;11;0.6;seal;colorpoint;blue;FALSE;wet;20;21;USA;38.89511;-77.03637
+Ragdoll;0.08;1;male;FALSE;12;0.8;seal;colorpoint;blue;FALSE;wet;31;20;USA;41.881832;-87.623177
+Ragdoll;0.08;1;male;FALSE;11;0.7;seal;colorpoint;blue;FALSE;dry;40;19;USA;40.71427;-74.00597
+Ragdoll;0.08;1;male;FALSE;12;0.9;seal;colorpoint;blue;FALSE;wet;29;20;USA;47.60621;-122.33207
+Ragdoll;0.08;1;male;FALSE;12;0.6;seal;colorpoint;blue;FALSE;wet;30;22;USA;40.71427;-74.00597
+Ragdoll;0.17;2;female;FALSE;14;0.9;seal;colorpoint;blue;FALSE;wet;20;18;USA;40.71427;-74.00597
+Ragdoll;0.08;1;male;FALSE;10;0.8;red/cream;bicolor;blue;TRUE;dry;26;21;USA;41.881832;-87.623177
+Ragdoll;0.17;2;female;FALSE;14;1.3;red/cream;bicolor;blue;FALSE;wet;21;20;USA;40.71427;-74.00597
+Ragdoll;0.08;1;female;FALSE;11;0.9;red/cream;bicolor;blue;FALSE;wet;23;21;USA;41.881832;-87.623177
+Ragdoll;0.08;1;male;FALSE;15;0.8;red/cream;bicolor;blue;FALSE;dry;34;21;USA;42.35843;-71.05977
+Ragdoll;0.08;1;female;FALSE;10;0.8;red/cream;tortie;blue;FALSE;wet;39;21;USA;45.52345;-122.67621
+Ragdoll;0.17;2;female;FALSE;14;1.1;brown/chocolate;colorpoint;blue;FALSE;wet;35;18;USA;42.35843;-71.05977
+Ragdoll;0.08;1;male;FALSE;15;0.8;brown/chocolate;colorpoint;blue;FALSE;dry;39;22;USA;37.77493;-122.41942
+Ragdoll;0.08;1;male;FALSE;10;0.9;red/cream;colorpoint;blue;FALSE;wet;31;20;USA;47.60621;-122.33207
+Ragdoll;0.17;2;female;FALSE;13;0.8;red/cream;colorpoint;blue;FALSE;wet;30;18;USA;40.71427;-74.00597
+Ragdoll;0.08;1;female;FALSE;13;0.7;red/cream;colorpoint;blue;FALSE;wet;37;22;USA;39.29038;-76.61219
+Ragdoll;0.17;2;female;FALSE;16;0.8;red/cream;colorpoint;blue;TRUE;wet;34;18;USA;40.71427;-74.00597
+Ragdoll;0.17;2;female;FALSE;16;1.1;red/cream;tortie;blue;FALSE;dry;31;18;USA;42.35843;-71.05977
+Ragdoll;0.17;2;male;FALSE;17;1.2;red/cream;bicolor;blue;FALSE;wet;39;18;USA;41.881832;-87.623177
+Angora;0.08;1;male;FALSE;12;0.8;white;solid;blue;FALSE;wet;36;19;USA;42.35843;-71.05977
+Angora;0.08;1;female;FALSE;13;0.8;white;solid;blue;FALSE;wet;31;20;USA;38.89511;-77.03637
+Angora;0.17;2;female;FALSE;16;0.8;white;solid;blue;FALSE;wet;36;20;USA;40.71427;-74.00597
+Angora;0.17;2;male;FALSE;17;0.8;black;solid;blue;FALSE;dry;40;20;USA;40.71427;-74.00597
+Angora;0.17;2;male;FALSE;15;1.1;white;solid;green;FALSE;wet;22;20;USA;41.881832;-87.623177
+Angora;0.17;2;female;FALSE;17;0.9;white;solid;blue;FALSE;wet;38;20;USA;42.35843;-71.05977
+Angora;0.08;1;female;FALSE;15;0.7;white;solid;blue;FALSE;wet;40;22;UK;51.507351;-0.127758
+Angora;0.17;2;male;FALSE;14;0.7;black;solid;blue;FALSE;dry;40;20;USA;40.71427;-74.00597
+Angora;0.17;2;male;FALSE;15;0.8;white;solid;green;FALSE;wet;38;20;USA;45.52345;-122.67621
+Angora;0.08;1;female;FALSE;14;0.7;white;solid;blue;TRUE;wet;37;20;USA;40.71427;-74.00597
+Angora;0.17;2;female;FALSE;14;0.7;white;solid;blue;FALSE;wet;32;18;Germany;50.110924;8.682127
+Angora;0.17;2;female;FALSE;17;0.8;white;solid;green;FALSE;wet;39;19;USA;37.77493;-122.41942
+Angora;0.17;2;female;FALSE;14;0.8;white;solid;blue;FALSE;dry;24;18;USA;38.89511;-77.03637
+Angora;0.17;2;male;FALSE;16;1.2;white;solid;blue;FALSE;wet;34;19;USA;41.881832;-87.623177
+Maine coon;0.08;1;male;FALSE;15;0.7;white;solid;blue;FALSE;wet;25;19;USA;38.89511;-77.03637
+Maine coon;0.08;1;female;FALSE;15;0.8;brown/chocolate;tabby;green;FALSE;wet;34;21;USA;40.71427;-74.00597
+Maine coon;0.08;1;female;FALSE;13;0.8;red/cream;tabby;blue;FALSE;wet;30;22;USA;39.29038;-76.61219
+Maine coon;0.08;1;male;FALSE;15;0.8;black;bicolor;green;FALSE;dry;40;21;USA;42.35843;-71.05977
+Maine coon;0.17;2;male;FALSE;14;1.2;red/cream;tabby;blue;FALSE;wet;38;18;USA;40.71427;-74.00597
+Maine coon;0.08;1;female;FALSE;15;0.5;red/cream;tortie;blue;FALSE;wet;22;21;USA;40.71427;-74.00597
+Maine coon;0.08;1;female;FALSE;12;0.8;brown/chocolate;tabby;green;TRUE;wet;33;20;USA;40.71427;-74.00597
+Maine coon;0.08;1;male;FALSE;13;0.7;brown/chocolate;tabby;blue;FALSE;dry;36;19;USA;38.89511;-77.03637
+Maine coon;0.17;2;male;FALSE;15;1.3;brown/chocolate;tabby;green;FALSE;wet;21;20;UK;53.480759;-2.242631
+Maine coon;0.17;2;female;FALSE;15;1.4;brown/chocolate;tabby;blue;FALSE;wet;23;18;UK;53.800755;-1.549077
+Maine coon;0.17;2;female;FALSE;12;0.9;brown/chocolate;solid;green;FALSE;wet;31;19;UK;53.480759;-2.242631
+Maine coon;0.17;2;female;FALSE;15;1.2;white;solid;blue;FALSE;wet;35;20;UK;51.507351;-0.127758
+Maine coon;0.17;2;female;FALSE;17;1;black;bicolor;blue;FALSE;wet;36;19;UK;51.507351;-0.127758
+Maine coon;0.17;2;male;FALSE;14;0.7;red/cream;tabby;blue;FALSE;wet;20;20;UK;51.507351;-0.127758
+Maine coon;0.17;2;male;FALSE;16;1.1;red/cream;tabby;green;FALSE;wet;34;19;UK;52.486244;-1.890401
+Maine coon;0.17;2;female;FALSE;15;1.1;red/cream;solid;blue;FALSE;wet;39;20;UK;51.507351;-0.127758

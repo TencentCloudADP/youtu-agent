@@ -2,15 +2,14 @@
 
 Toolkits are collections of related tools that an agent can use to perform actions. They are the primary way to extend an agent's capabilities.
 
-## `AsyncBaseToolkit`
+There are three main types of toolkits:
+- **builtin**: The toolkits provided by default in the framework.
+- **mcp**: The toolkits accessible via the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP).
+- **customized**: The toolkits created by users.
 
-All toolkits inherit from the `AsyncBaseToolkit` abstract base class. This class provides a standardized interface for creating and managing tools. The core requirement for any toolkit is to implement the `get_tools_map()` method, which returns a dictionary mapping tool names to their corresponding Python functions.
+## Builtin Toolkits
 
-The base class automatically handles the conversion of these functions into `FunctionTool` objects that the agent runner can understand and execute.
-
-All available toolkits are registered in the `TOOLKIT_MAP` dictionary within `utu/tools/__init__.py`.
-
-## Summary of Core Toolkits
+All builtin toolkits inherit from the `AsyncBaseToolkit` abstract base class. This class provides a standardized interface for creating and managing tools.
 
 Here is a summary of some key toolkits available in the framework:
 
@@ -28,3 +27,40 @@ Here is a summary of some key toolkits available in the framework:
 | **[ArxivToolkit][utu.tools.arxiv_toolkit.ArxivToolkit]** | `search_papers`, `download_papers` | A wrapper around the `arxiv.py` library to search for and download academic papers from arXiv.org. |
 | **[GitHubToolkit][utu.tools.github_toolkit.GitHubToolkit]** | `get_repo_info` | Fetches repository metadata (stars, forks, language, etc.) from the GitHub REST API. |
 -->
+
+
+## MCP Toolkits
+
+We provide examples of MCP toolkits in the `examples/mcp` directory, including transports of `stdio`, `sse` and `streamable_http`. You should easily run them. E.g., for the stdio example:
+
+```sh
+python examples/mcp/stdio_example/main.py
+```
+
+If you are not familiar with MCP, please refer to the [MCP documentation](https://modelcontextprotocol.io/docs/getting-started/intro).
+
+
+## How to Inspect Toolkits
+
+We provide two useful scripts to inspect and test toolkits:
+
+### Dump Tool Schemas
+
+This script dumps add tools registered in `TOOLKIT_MAP` into a `.xlsx` file. The default output file is `tools.xlsx`.
+
+```sh
+python scripts/utils/dump_tool_schemas.py
+```
+
+### Inspect & Test Tools
+
+You can start a local MCP server that exposes the tools via HTTP. This allows you to interactively test the tools using an MCP client. E.g. [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector).
+
+```sh
+# start the MCP server
+python scripts/utils/start_tools_mcp.py --toolkits search image github
+
+# start the MCP inspector
+npx @modelcontextprotocol/inspector
+# ... connect to the MCP server with Streamable HTTP transport URL http://localhost:3005/mcp
+```

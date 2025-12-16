@@ -1,6 +1,0 @@
-name: bash_remote
-mode: builtin
-activated_tools: null
-config:
-    server_url: "${oc.env:REMOTE_SHELL_URL}"
-    server_key: "${oc.env:REMOTE_SHELL_KEY}"

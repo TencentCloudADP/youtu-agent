@@ -1,0 +1,8 @@
+*.png
+*.html
+*.html.*
+*.pptx
+*.json
+*.md
+data/
+templates/*

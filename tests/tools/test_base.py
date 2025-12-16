@@ -7,7 +7,7 @@ async def test_tools_map():
     config = ConfigLoader.load_toolkit_config("search")
     toolkit = SearchToolkit(config=config)
     print(toolkit.tools_map)
-    print(await toolkit.get_tools_in_agents())
+    print(toolkit.get_tools_in_agents())
 
 
 def test_get_tools_map():

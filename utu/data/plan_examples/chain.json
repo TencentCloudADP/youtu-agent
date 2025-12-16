@@ -1,0 +1,33 @@
+[
+    {
+        "question": "A system that was revised in a work published in the first decade of the 21st century, which itself was associated with the expansion of a Japanese company's presence in the United States during that period, has had significant influence on the field of education. What is the name of the original educational framework that was revised in the aforementioned work?",
+        "available_agents": [
+            {
+                "name": "SearchAgent",
+                "description": "Web search, information retrieval, research material collection, API data fetching"
+            }
+        ],
+        "analysis": "This question requires identifying an educational framework that was revised in early 2000s work connected to Japanese company expansion in the US. The search needs to connect Japanese business expansion with educational publications during 2000-2010, then identify the specific revised educational framework.",
+        "plan": [
+            {"name": "SearchAgent", "task": "Search for Japanese companies that expanded their presence in the United States during 2000-2010"},
+            {"name": "SearchAgent", "task": "Identify educational works and publications released in the first decade of the 21st century"},
+            {"name": "SearchAgent", "task": "Find connections between Japanese company US expansion and educational publications during 2000-2010"},
+            {"name": "SearchAgent", "task": "Research educational frameworks and systems that were revised during the first decade of 21st century"},
+            {"name": "SearchAgent", "task": "Locate the specific educational work that revised an existing educational system and was associated with Japanese company expansion"}
+        ]
+    },
+    {
+        "question": "What is the capital city of Canada?",
+        "available_agents": [
+            {
+                "name": "SearchAgent",
+                "description": "Web search, information retrieval, research material collection, API data fetching"
+            }
+        ],
+        "analysis": "This question is straightforward: identify the capital of Canada, which is a single factual lookup.",
+        "plan": [
+            {"name": "SearchAgent", "task": "Search for the capital city of Canada"}
+        ]
+    }
+]
+

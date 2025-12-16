@@ -1,0 +1,21 @@
+# @package _global_
+# https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+name: memory
+mode: mcp
+activated_tools: 
+  - create_entities
+  - create_relations
+  - add_observations
+  - delete_entities
+  - delete_observations
+  - delete_relations
+  - read_graph
+  - search_nodes
+  - open_nodes
+mcp_transport: stdio
+mcp_client_session_timeout_seconds: 20
+config:
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-memory"]
+  # env:
+  #   MEMORY_FILE_PATH: ${oc.env:MCP_MEMORY_FILE_PATH}  # default: memory.json in the server directory

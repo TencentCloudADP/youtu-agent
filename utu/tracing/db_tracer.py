@@ -16,12 +16,12 @@ logger = get_logger(__name__)
 class DBTracingProcessor(TracingProcessor):
     """Basic tracing processor that stores events into database.
 
-    Required environment variables: `DB_URL`
+    Required environment variables: `UTU_DB_URL`
     """
 
     def __init__(self) -> None:
         if not SQLModelUtils.check_db_available():
-            logger.warning("DB_URL not set or database connection failed! Tracing will not be stored into database!")
+            logger.warning("UTU_DB_URL not set or connection failed! Tracing will not be stored into database!")
             self.enabled = False
         else:
             self.enabled = True

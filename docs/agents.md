@@ -25,9 +25,9 @@ agent = get_agent(config)
 
 A single LLM is responsible for the entire task-solving process. It operates in a loop:
 
-1.  **Reason**: The agent analyzes the current task and its context.
-2.  **Act**: Based on its reasoning, it selects and invokes an appropriate tool.
-3.  **Observe**: It observes the result from the tool and incorporates the new information into its context.
+1. **Reason**: The agent analyzes the current task and its context.
+2. **Act**: Based on its reasoning, it selects and invokes an appropriate tool.
+3. **Observe**: It observes the result from the tool and incorporates the new information into its context.
 
 This loop continues until the agent determines that the task is complete and generates a final answer.
 
@@ -58,12 +58,14 @@ from utu.agents import SimpleAgent
 async with SimpleAgent(instructions="Always answer with prefix `Aloha!`") as agent:
     await agent.chat("What's the weather in Beijing today?")
 ```
+
 > Besides `chat`, you can also use the `chat_streamed` method for streaming output.
 
 #### 2. Using Built-in Tools
 For more complex behavior, you can use a YAML configuration file to define the agent and its toolkits.
 
 **Python Code:**
+
 ```python
 from utu.agents import SimpleAgent
 
@@ -72,6 +74,7 @@ async with SimpleAgent(config="sample_tool.yaml") as agent:
 ```
 
 **YAML Configuration (`configs/agents/sample_tool.yaml`):**
+
 ```yaml
 # configs/agents/sample_tool.yaml
 defaults:
@@ -88,6 +91,7 @@ agent:
 `SimpleAgent` can also connect to tools running as separate processes via the Multi-Component Protocol (MCP). This is configured by setting the toolkit `mode` to `mcp`.
 
 **Python Code:**
+
 ```python
 from utu.agents import SimpleAgent
 
@@ -96,6 +100,7 @@ async with SimpleAgent(config="sample_mcp.yaml") as agent:
 ```
 
 **YAML Configuration (`configs/agents/sample_mcp.yaml`):**
+
 ```yaml
 # configs/agents/sample_mcp.yaml
 defaults:
@@ -126,19 +131,19 @@ agent:
 
 The orchestra consists of three distinct roles:
 
-1.  **Planner Agent**: The "brain" of the operation. It receives the user's high-level goal and its sole responsibility is to create a detailed, step-by-step plan. Each step in the plan is a subtask assigned to a specific worker.
+1. **Planner Agent**: The "brain" of the operation. It receives the user's high-level goal and its sole responsibility is to create a detailed, step-by-step plan. Each step in the plan is a subtask assigned to a specific worker.
 
-2.  **Worker Agent(s)**: The "hands" of the operation. Each worker is a specialized `SimpleAgent` equipped with a specific set of tools (e.g., a `SearchWorker` with web search tools, a `CodeWorker` with file system and code execution tools). A worker receives a single subtask from the plan and executes it.
+2. **Worker Agent(s)**: The "hands" of the operation. Each worker is a specialized `SimpleAgent` equipped with a specific set of tools (e.g., a `SearchWorker` with web search tools, a `CodeWorker` with file system and code execution tools). A worker receives a single subtask from the plan and executes it.
 
-3.  **Reporter Agent**: The "mouth" of the operation. After all subtasks are completed by the workers, the reporter gathers all the results and synthesizes them into a single, coherent, final answer for the user.
+3. **Reporter Agent**: The "mouth" of the operation. After all subtasks are completed by the workers, the reporter gathers all the results and synthesizes them into a single, coherent, final answer for the user.
 
 ### Workflow
 
 The process is a clear, sequential flow:
 
-1.  **Plan**: The Planner creates a multi-step plan.
-2.  **Work**: The `OrchestraAgent` iterates through the plan, dispatching each subtask to the designated Worker and collecting the result.
-3.  **Report**: The Reporter synthesizes the collected results into the final answer.
+1. **Plan**: The Planner creates a multi-step plan.
+2. **Work**: The `OrchestraAgent` iterates through the plan, dispatching each subtask to the designated Worker and collecting the result.
+3. **Report**: The Reporter synthesizes the collected results into the final answer.
 
 ```mermaid
 graph TD

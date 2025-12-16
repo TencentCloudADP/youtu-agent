@@ -1,0 +1,21 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+  name: browser-use
+  instructions: |-
+    You are a helpful browser agent. Try your best to answer user's question.
+
+env:
+  # v1: with tione
+  # name: browser_tione
+  # config:
+  #   state_keep: true  # whether to keep all the browser states in history messages
+
+  # v2: with e2b
+  name: browser_e2b
+
+context_manager:
+  name: env

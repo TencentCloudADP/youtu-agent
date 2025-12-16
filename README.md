@@ -5,6 +5,7 @@
 <!-- <a href=https://arxiv.org/abs/2502.14345><img src=https://img.shields.io/badge/arXiv-2502.14345-b31b1b.svg></a> -->
 <a href=https://github.com/TencentCloudADP/youtu-agent><img src=https://img.shields.io/badge/GitHub-Tencent-blue.svg></a>
 <a href=https://deepwiki.com/TencentCloudADP/youtu-agent><img src=https://img.shields.io/badge/DeepWiki-Tencent-blue.svg></a>
+<a href=https://arxiv.org/abs/2510.08191><img src=https://img.shields.io/badge/arXiv-2510.08191-b31b1b.svg></a>
 </div>
 
 <p align="center">
@@ -14,26 +15,38 @@
 | <a href="#-examples"><b>💡 Examples</b> </a> 
 | <a href="#-features"><b>✨ Features</b> </a> 
 | <a href="#-getting-started"><b>🚀 Getting Started</b> </a> 
-| <a href="https://discord.gg/svwuqgUx"><b>📢 Join Community</b> </a> 
+| 📢 <a href="https://discord.gg/QjqhkHQVVM"><b>Join Discord</b></a> or <a href="https://github.com/user-attachments/assets/354cd8e7-e108-4348-9355-04440052f408"><b>WeChat</b></a> 
+|
 </p>
 
 
-`Youtu-Agent` is a flexible, high-performance framework for building, running, and evaluating autonomous agents. Beyond topping the benchmarks, this framework delivers powerful agent capabilities, e.g. data analysis, file processing, and deep research, all with open-source models.
+`Youtu-Agent` is a flexible, high-performance framework for building, running, and evaluating autonomous agents. Beyond topping the benchmarks, this framework delivers powerful agent capabilities, e.g. data analysis, file processing, and deep research, all with open-source models. Additionally, the framework supports experience-based learning and end-to-end RL training to enhance agent capabilities.
 
 <img src="docs/assets/mascot.png" alt="Youtu-agent Logo" width="200" align="left" style="margin-right:20px;">
 
 Key highlights:
 - **Verified performance**: Achieved 71.47% on WebWalkerQA (pass@1) and 72.8% on GAIA (text-only subset, pass@1), using purely `DeepSeek-V3` series models (without Claude or GPT), establishing a strong open-source starting point.
+- **Automatic Tool and Agent Generation**: Built on modular design and structured configuration system, Youtu-Agent supports automatic generation of tools and agents through LLMs, enabling rapid adaptation to new application scenarios and reducing manual configuration overhead.
+- **Automatic Agent Experience Learning**: Through [Training-Free GRPO](https://arxiv.org/abs/2510.08191), agents can continuously optimize their capabilities using historical experiences, delivering significant performance improvements with minimal cost.
+- **Agent Training**: Youtu-Agent also supports parameter fine-tuning of agent models through end-to-end RL training to enhance model capabilities.
 - **Open-source friendly & cost-aware**: Optimized for accessible, low-cost deployment without reliance on closed models.
 - **Practical use cases**: Out-of-the-box support for tasks like CSV analysis, literature review, personal file organization, and podcast and video generation (coming soon).
 - **Flexible architecture**: Built on [openai-agents](https://github.com/openai/openai-agents-python), with extensible support for diverse model APIs (form `DeepSeek` to `gpt-oss`), tool integrations, and framework implementations.
-- **Automation & simplicity**: YAML-based configs, auto agent generation, and streamlined setup reduce manual overhead.
 
 ## 🗞️ News
 
+- 🚀 [2025-12-10] **Youtu-Agent x Agent-Lightning training integration available!** We've collaborated with the [Agent-Lightning](https://github.com/microsoft/agent-lightning/) team to implement efficient model training in verious scenarios. With ours efforts, training can now seamlessly scale to multi-node deployment on 128 GPUs. See details in the [rl/agl branch](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl).
+- 🎉 [2025-11-12] **Training-Free GRPO now available in main branch!** The agent practice module powered by [Training-Free Group Relative Policy Optimization](https://arxiv.org/abs/2510.08191) is now integrated into the main branch. Enhance your agents' performance without fine-tuning at minimal cost (~$8 for RL runs). See our [Agent Practice Documentation](https://tencentcloudadp.github.io/youtu-agent/practice/) for usage and examples on math reasoning and web search tasks.
+- 📢 [2025-11-03] New examples: we add the [**PPT generation**](examples/ppt_gen/README.md) and [**RAG**](configs/agents/examples/rag.yaml) examples.
+- 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191). RL for DeepSeek-V3.2 at $8? Yes, it's possible! Training-free GRPO keeps DeepSeek-V3.2 frozen, learns a token prior from ~100 samples for ~$8 RL runs, delivers verified math and web search gains! [code in branch [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO)] [[x thread](https://x.com/cai_cecilia47/status/1976558824640393559)].
+- 🛠️ [2025-09-28] Agent auto-generation now ships with companion tooling: describe a capability once and let `Youtu-Agent` build the tool for you. [[details](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)].
+
+<details>
+<summary><b>📰 Previous announcements</b></summary>
 - 📺 [2025-09-09] We hosted a live sharing the design philosophy and basic usage of `Youtu-Agent`. [[video](https://www.bilibili.com/video/BV1mypqz4EvS)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)].
 - 🎁 [2025-09-02] [Tencent Cloud International](https://www.tencentcloud.com/) offers new users of the DeepSeek API **3 million free tokens** (**Sep 1 – Oct 31, 2025**). [Try it out](https://www.tencentcloud.com/document/product/1255/70381) for free if you want to use DeepSeek models in `Youtu-Agent`! For enterprise agent solutions, also check out [Agent Development Platform](https://adp.tencentcloud.com) (ADP).
 - 📺 [2025-08-28] We hosted a live sharing updates about DeepSeek-V3.1 and how to use it in the `Youtu-Agent` framework. [[video](https://www.bilibili.com/video/BV1XwayzrETi/)] [[documentation](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)].
+</details>
 
 ## 🌟 Benchmark Performance
 
@@ -97,21 +110,43 @@ Click on the images to view detailed videos.
              style="object-fit: cover; border-radius: 8px;"></video>
     </td>
   </tr>
+  <tr >
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>RAG</strong><br>A RAG example by integration with RAGFlow service.
+    </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>PPT Generation</strong><br>An example that generate PPT file according to given content.
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <video src="https://github.com/user-attachments/assets/4d74ef6f-7a84-4102-9666-0fbfe02e0d2f" 
+             controls muted preload="metadata" 
+             width="100%" height="300"
+             style="object-fit: cover; border-radius: 8px;"></video>
+    </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <video src="https://github.com/user-attachments/assets/91568e27-bf77-44d6-baa6-b178d2d88255" 
+             controls muted preload="metadata" 
+             width="100%" height="300"
+             style="object-fit: cover; border-radius: 8px;"></video>
+    </td>
+  </tr>
 </table>
 
 > [!NOTE]
 > See the [`examples`](./examples) directory and [documentation](https://tencentcloudadp.github.io/youtu-agent/examples/) for more details.
 
-### 🤖 Automatic Agent Generation
+### 🤖 Automatic Tool and Agent Generation
 
-A standout feature of `Youtu-Agent` is its ability to **automatically generate agent configurations**. In other frameworks, defining a task-specific agent often requires writing code or carefully crafting prompts. In contrast, `Youtu-Agent` uses simple YAML-based configs, which enables streamlined automation: a built-in "meta-agent" chats with you to capture requirements, then generates and saves the config automatically.
+A standout feature of `Youtu-Agent` is its ability to **automatically generate tools alongside agent configurations**. Other frameworks often make you hand-code functions or hand-craft prompts before an agent can even run. Here, you simply describe the task: the built-in meta-agent interviews you, assembles the necessary tools, produces YAML configs, and saves everything so you can execute it immediately.
 
 ```bash
 # Interactively clarify your requirements and auto-generate a config
 python scripts/gen_simple_agent.py
 
 # Run the generated config
-python scripts/cli_chat.py --stream --config generated/xxx
+python scripts/cli_chat.py --config generated/xxx
 ```
 
 <table>
@@ -119,11 +154,21 @@ python scripts/cli_chat.py --stream --config generated/xxx
     <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
       <strong>Automatic Agent Generation</strong><br>Interactively clarify your requirements, automatically generate the agent configuration, and run it right away.
     </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>Automatic Tool Generation</strong><br>Describe the behaviors you need, let the meta-agent draft tool code and schemas, then drop them straight into your workflow.
+    </td>
   </tr>
   <tr>
     <td style="border: 1px solid black; padding:10px; vertical-align:top; width: 400px;">
       <video src="https://github.com/user-attachments/assets/0c2ee833-507e-4141-8de4-148ff3d9f9ef" 
              poster="https://img.youtube.com/vi/JVpHDJtKBo8/maxresdefault.jpg" 
+             controls muted preload="metadata" 
+             width="100%" height="auto" 
+             style="object-fit: cover; border-radius: 8px;"></video>
+    </td>
+    <td style="border: 1px solid black; padding:10px; vertical-align:top; width: 400px;">
+      <video src="https://github.com/user-attachments/assets/37878544-cfda-4a8a-9b42-a7361782c750" 
+             poster="https://img.youtube.com/vi/zjGooBuqdSE/maxresdefault.jpg" 
              controls muted preload="metadata" 
              width="100%" height="auto" 
              style="object-fit: cover; border-radius: 8px;"></video>
@@ -256,9 +301,9 @@ You can launch an interactive CLI chatbot with this agent by running:
 ```bash
 # NOTE: You need to set `SERPER_API_KEY` and `JINA_API_KEY` in `.env` for web search access.
 # (We plan to replace these with free alternatives in the future)
-python scripts/cli_chat.py --stream --config simple/base_search
+python scripts/cli_chat.py --config simple/base_search
 # To avoid using the search toolkit, you can run:
-python scripts/cli_chat.py --stream --config simple/base
+python scripts/cli_chat.py --config simple/base
 ```
 
 📖 More details: [Quickstart Documentation](https://tencentcloudadp.github.io/youtu-agent/quickstart)
@@ -356,6 +401,16 @@ We welcome contributions from the community! If you'd like to help improve Youtu
 If you find this work useful, please consider citing:
 
 ```bibtex
+@misc{training_free_grpo,
+      title={Training-Free Group Relative Policy Optimization}, 
+      author={Tencent Youtu Lab},
+      year={2025},
+      eprint={2510.08191},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2510.08191}, 
+}
+
 @misc{youtu-agent-2025,
   title={Youtu-agent: A Simple yet Powerful Agent Framework},
   author={Tencent Youtu Lab},
@@ -365,7 +420,3 @@ If you find this work useful, please consider citing:
   howpublished = {\url{https://github.com/TencentCloudADP/youtu-agent}},
 }
 ```
-
-## ⭐ Star History
-
-![Star History Chart](https://api.star-history.com/svg?repos=TencentCloudADP/youtu-agent&type=Date)

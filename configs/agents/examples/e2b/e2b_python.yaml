@@ -1,0 +1,16 @@
+# @package _global_
+defaults:
+  - /tools/e2b/python_executor@toolkits.PythonTool
+  - /tools/e2b/bash@toolkits.BashTool
+  - /tools/e2b/file_edit@toolkits.FileTool
+  - _self_
+
+env:
+  name: e2b
+
+agent:
+  name: e2b_python_agent
+  instructions: |-
+    You are a helpful assistant that can use python, cli and file.
+
+max_turns: 100

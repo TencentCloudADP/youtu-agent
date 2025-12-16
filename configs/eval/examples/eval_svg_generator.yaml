@@ -1,0 +1,11 @@
+# @package _global_
+defaults:
+  - /agents/examples/svg_generator@agent
+  - _self_
+
+exp_id: "example_svg_gen"
+
+data:
+  dataset: example_svg_gen
+
+concurrency: 16

@@ -1,0 +1,15 @@
+# @package _global_
+# https://github.com/github/github-mcp-server
+name: github
+mode: mcp
+activated_tools: 
+  - search_repositories
+  - search_code
+  # ... a lot of tools, see full list at github
+mcp_transport: streamable_http
+mcp_client_session_timeout_seconds: 20
+config:
+  url: https://api.githubcopilot.com/mcp/
+  headers:
+    # setup your GitHub Personal Access Token at https://github.com/settings/personal-access-tokens
+    Authorization: Bearer ${oc.env:GITHUB_TOKEN}

@@ -30,6 +30,7 @@ from openai import AsyncOpenAI
 from openai.types.chat import ChatCompletionMessageParam, ChatCompletionToolParam
 from openai.types.responses import ResponseFunctionToolCall
 
+from .image import encode_image
 from .openai_utils import OpenAIChatCompletionParams
 from .print_utils import PrintUtils
 
@@ -272,8 +273,10 @@ class AgentsUtils:
                     PrintUtils.print_info(f"  >>> Skipping item: {item.__class__.__name__}")
             elif isinstance(event, AgentUpdatedStreamEvent):
                 PrintUtils.print_info(f">> new agent: {event.new_agent.name}")
+            # skip events from youtu-agent
+            elif event.type in ("orchestrator_stream_event", "orchestra_stream_event", "simple_agent_generated"):
+                pass
             else:
-                # TODO: support OrchestraStreamEvent?
                 logger.warning(f"Unknown event type: {event.type}! {event}")
         print()  # Newline after stream?
 
@@ -316,6 +319,13 @@ class AgentsUtils:
             params_json_schema=tool["function"].get("parameters", None),
             on_invoke_tool=None,
         )
+
+    @staticmethod
+    def get_message_from_image(image_url: str) -> dict:
+        """Get a message dict for image input."""
+        # from openai.types.responses.response_input_item_param import Message
+        # from openai.types.responses.response_input_image_param import ResponseInputImageParam
+        return {"role": "user", "content": [{"type": "input_image", "image_url": encode_image(image_url)}]}
 
 
 class SimplifiedOpenAIChatCompletionsModel(OpenAIChatCompletionsModel):

@@ -83,7 +83,7 @@ class PrintUtils:
         msg: str,
         color: str = "red",
         add_prefix: bool = False,
-        prefix: str = "[ERROR]",
+        prefix: str = "",
         end: str = "\n",
         flush: bool = True,
     ):
@@ -92,3 +92,21 @@ class PrintUtils:
     @staticmethod
     def format_json(obj: dict, indent: int = None) -> str:
         return json.dumps(obj, indent=indent, ensure_ascii=False)
+
+    @staticmethod
+    def truncate_text(text: str | dict, max_length: int = 100, oneline: bool = True) -> str:
+        """Truncate text to max_length, adding ellipsis if truncated.
+
+        Args:
+            text: The text to truncate
+            max_length: Maximum length of the returned text
+            oneline: Whether to convert text to a single line by removing newlines
+        """
+        if isinstance(text, dict):
+            text = PrintUtils.format_json(text)
+        if oneline:
+            text = " ".join(text.splitlines())
+        if len(text) <= max_length:
+            return text
+        else:
+            return text[: max_length - 3] + "..."

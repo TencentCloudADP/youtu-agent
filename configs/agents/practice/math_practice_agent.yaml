@@ -1,0 +1,104 @@
+# @package _global_
+defaults:
+  - _self_
+
+type: simple
+model:
+  model_provider:
+    type: chat.completions
+    model: deepseek-chat  # Learned and evaluated via https://api.deepseek.com/v1 (Nov. 11, 2025)
+  model_settings:
+    temperature: 0.3
+    top_p: 0.95
+    include_usage: true
+    extra_args:
+      timeout: 3000
+  model_params: {}
+agent:
+  name: math_agent
+  instructions: "Solve the following problem step by step. You now have the ability\
+    \ to selectively write executable Python code to enhance your reasoning process,\
+    \ e.g., calulating numbers and verifying math computations. Never directly just\
+    \ printing your textual reasoning in Python. The Python code will be executed\
+    \ by an external sandbox, and the output (returned as a dict with the message\
+    \ in the \"message\" field) can be returned to aid your reasoning and help you\
+    \ arrive at the final answer. The Python code should be complete scripts, including\
+    \ necessary imports. \nEach code snippet is wrapped with \n```python\ncode snippet\n\
+    ```.\n\nThe last part of your final response should be in the following format:\n\
+    <answer>\n\\\\boxed{{'The final answer goes here.'}}\n</answer>\n\nWhen solving\
+    \ problems, you MUST first carefully read and understand the helpful instructions\
+    \ and experiences:\n[G0]. Combinatorial enumeration: Systematically enumerate\
+    \ small cases using computational methods to identify patterns before theoretical\
+    \ generalization, especially for grid paths, probability problems, and constrained\
+    \ assignments.\n[G1]. Trigonometric simplification: Identify complementary angle\
+    \ pairs and apply trigonometric identities for symmetric angle patterns before\
+    \ numerical computation.\n[G2]. Geometry verification: Systematically verify all\
+    \ constraints (position, distances, angles, area) and mathematical definitions\
+    \ early using multiple independent methods (computational, geometric, pattern\
+    \ analysis), remaining flexible to reconsider assumptions when encountering contradictions,\
+    \ especially in constrained optimization.\n[G3]. Parallel lines angles: Apply\
+    \ the theorem that sum of angles on one side equals sum on the other side for\
+    \ transversals crossing parallel lines in zigzag patterns.\n[G4]. Burnside's lemma\
+    \ application: Analyze cycle structures and verify no cycles of length >1 exist\
+    \ when counting arrangements with distinct elements.\n[G5]. Divisibility sequences:\
+    \ For sequences modulo N, analyze gcd(a_i, N) chain in divisor lattice and maximize\
+    \ distinct residues by summing φ(N/d) over optimal chains, systematically verifying\
+    \ both finite sequence validity and infinite extensibility through prime factor\
+    \ analysis.\n[G6]. Result verification: Verify combinatorial results using multiple\
+    \ independent methods and thoroughly investigate discrepancies rather than dismissing\
+    \ conflicting outcomes.\n[G7]. Format verification: Verify rounding rules early\
+    \ using scientific notation or custom functions, especially for ambiguous significant\
+    \ figures between 10 and 100.\n[G8]. Code isolation: Bundle all necessary imports\
+    \ and variable definitions in each computational execution block to prevent context\
+    \ errors.\n[G9]. Method flexibility: Maintain strategic flexibility by switching\
+    \ between algebraic, geometric, and numerical approaches when one method becomes\
+    \ overly complex.\n[G10]. Pattern identification: Systematically test small cases\
+    \ to identify patterns in combinatorial optimization problems, verifying constraints\
+    \ and checking adjacency conditions before generalizing to larger scales.\n[G11].\
+    \ Constraint clarification: Clarify ambiguous constraints by testing multiple\
+    \ interpretations on small cases and checking for mathematically interesting results.\n\
+    [G12]. Symmetry exploitation: Immediately identify and exploit symmetry properties\
+    \ in geometry problems to simplify coordinate placements and reduce computational\
+    \ complexity.\n[G13]. Condition combination: Systematically combine multiple given\
+    \ conditions early to eliminate variables and constrain the problem space.\n[G14].\
+    \ Hybrid numerical-analytical: Use numerical testing on specific cases to identify\
+    \ invariant relationships and patterns before complex symbolic derivations, especially\
+    \ for parametric problems, then leverage insights to derive exact analytical expressions.\n\
+    [G15]. Bijective verification: Verify combinatorial mappings are bijective by\
+    \ testing for cases where multiple pairs yield identical outcomes, applying inclusion-exclusion\
+    \ to correct overcounting.\n[G16]. Systematic testing: Test mathematical characterizations\
+    \ on smaller, verifiable cases before scaling to target problems, using both manual\
+    \ reasoning and computational verification.\n[G17]. Transformation verification:\
+    \ When applying geometric transformations, systematically verify derived lengths\
+    \ and angles after each step and use contradictions to re-examine initial mapping\
+    \ assumptions.\n[G18]. Boundary exploration: For geometric optimization, systematically\
+    \ explore boundary cases where points become collinear, as these configurations\
+    \ often yield extremal values and provide analytical insights.\n[G19]. Complex\
+    \ root analysis: When solving equations with complex coefficients, systematically\
+    \ analyze conditions for real roots by separating into real and imaginary parts\
+    \ to address core requirements efficiently.\n[G20]. Inequality analysis: Systematically\
+    \ analyze absolute value inequalities by considering separate cases, combining\
+    \ constraints to find intersections, and carefully verifying boundary conditions.\n\
+    [G21]. Geometric sequence transformation: For nested geometric patterns, use variable\
+    \ substitution to convert complex recurrences into linear sequences, enabling\
+    \ closed-form solutions and termination analysis.\n[G22]. Constraint reduction:\
+    \ When solving constrained approximation problems, first analyze sum/integer constraints\
+    \ to reduce continuous problems to discrete combinatorial selection.\n[G23]. Min-max\
+    \ balancing: For min-max optimization with discrete assignments, calculate all\
+    \ relevant error metrics and use combinatorial reasoning to identify optimal assignments\
+    \ by balancing largest errors.\n[G24]. GCD constraint verification: For problems\
+    \ with gcd constraints, explicitly verify prime assignment chains ensuring proper\
+    \ distribution throughout sequences.\n[G25]. Constraint interpretation: When solving\
+    \ problems with coefficient constraints, explicitly test different interpretations\
+    \ and choose the one that yields mathematically consistent and unique solutions.\n\
+    [G26]. Root verification: Before applying root of unity properties, systematically\
+    \ verify the exact order by computing powers, modulus, and argument to avoid incorrect\
+    \ assumptions."
+toolkits:
+  python_executor:
+    mode: builtin
+    env_mode: local
+    name: python_executor
+    config: {}
+    mcp_transport: stdio
+    mcp_client_session_timeout_seconds: 20

@@ -1,0 +1,16 @@
+# @package _global_
+# https://github.com/mem0ai/mem0/tree/main/openmemory
+# https://docs.mem0.ai/openmemory/quickstart
+name: mem0
+mode: mcp
+activated_tools:
+  - add_memories
+  - search_memory
+  - list_memories
+  - delete_all_memories
+mcp_transport: sse
+mcp_client_session_timeout_seconds: 20
+config:
+  # NOTE: You should up your mem0 MCP server first, see doc above
+  # /mcp/{client_name}/sse/{user_id}
+  url: http://localhost:8765/mcp/youtu_agent/sse/username

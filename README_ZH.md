@@ -5,6 +5,7 @@
 <!-- <a href=https://arxiv.org/abs/2502.14345><img src=https://img.shields.io/badge/arXiv-2502.14345-b31b1b.svg></a> -->
 <a href=https://github.com/TencentCloudADP/youtu-agent><img src=https://img.shields.io/badge/GitHub-腾讯-blue.svg></a>
 <a href=https://deepwiki.com/TencentCloudADP/youtu-agent><img src=https://img.shields.io/badge/DeepWiki-Tencent-blue.svg></a>
+<a href=https://arxiv.org/abs/2510.08191><img src=https://img.shields.io/badge/arXiv-2510.08191-b31b1b.svg></a>
 </div>
 
 <p align="center">
@@ -13,26 +14,38 @@
 | <a href="#-示例"><b>💡 示例</b> </a> 
 | <a href="#-特性"><b>✨ 特性</b> </a> 
 | <a href="#-快速开始"><b>🚀 快速开始</b> </a> 
-| 
+| 📢 <a href="https://discord.gg/QjqhkHQVVM"><b>Join Discord</b></a> or <a href="https://github.com/user-attachments/assets/354cd8e7-e108-4348-9355-04440052f408"><b>WeChat</b></a> 
+|
 </p>
 
 
-`Youtu-Agent` 是一个灵活、高性能的框架，用于构建、运行和评估自主智能体。除了在基准测试中名列前茅，该框架还提供了强大的智能体能力，采用开源模型即可实现例如数据分析、文件处理、深度研究等功能。
+`Youtu-Agent` 是一个灵活、高性能的框架，用于构建、运行和评估自主智能体。除了在基准测试中名列前茅，该框架还提供了强大的智能体能力，采用开源模型即可实现例如数据分析、文件处理、深度研究等功能。此外，本框架也支持通过经验学习或者端到端训练来提升智能体能力。
 
 <img src="docs/assets/mascot.png" alt="Youtu-agent Logo" width="200" align="left" style="margin-right:20px;">
 
 主要亮点：
 - **验证性能**：在 WebWalkerQA 上达到 71.47% 的 pass@1，在 GAIA（纯文本子集）上达到 72.8% 的 pass@1，纯粹使用 `DeepSeek-V3` 系列模型（不使用 Claude 或 GPT），建立了强大的开源起点。
+- **自动化工具和智能体生成**：基于模块化设计和结构化配置体系，Youtu-Agent 支持通过 LLM 来自动生成工具和智能体，从而快速适配新的应用场景，减少人工配置开销。
+- **自动智能体经验学习**：通过 [Training-Free GRPO](https://arxiv.org/abs/2510.08191)，智能体可以通过历史的经验来持续地优化智能体能力，以极低成本提升性能。详见[智能体实践文档](https://tencentcloudadp.github.io/youtu-agent/practice/)。
+- **智能体训练**：Youtu-Agent 也支持对于智能体模型进行参数微调，通过端到端的 RL 训练提升模型能力。
 - **开源友好且成本敏感**：针对可访问、低成本部署进行了优化，不依赖封闭模型。
 - **实际用例**：开箱即用地支持 CSV 分析、文献综述、个人文件整理以及播客和视频生成等任务。（即将推出）
 - **灵活的架构**：基于 [openai-agents](https://github.com/openai/openai-agents-python) 构建，可兼容各种模型 API（从 `DeepSeek` 到 `gpt-oss`）、工具集成和框架实现。
-- **自动化与简洁性**：基于 YAML 的配置、自动智能体生成和简化的设置减少了手动开销。
 
 ## 🗞️ 新闻
 
+- 🚀 [2025-12-10] **Youtu-Agent x Agent-Lightning 训练集成！** 我们与 [Agent-Lightning](https://github.com/microsoft/agent-lightning/) 团队合作，在代码/数学和搜索环境下实现了高效的模型训练（ReTool、SearchR1）。通过 Youtu-Agent 的优化，分布式训练现在可以无缝扩展到 128 GPU 的多节点部署。详见 [rl/agl 分支](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl)。
+- 🎉 [2025-11-12] **Training-Free GRPO 已在主分支发布！** 由 [Training-Free Group Relative Policy Optimization](https://arxiv.org/abs/2510.08191) 驱动的智能体实践模块现已集成到主分支。无需微调即可以极低成本（约 8 美元）提升智能体性能。查看我们的[智能体实践文档](https://tencentcloudadp.github.io/youtu-agent/practice/)了解数学推理和网页搜索任务的使用方法和示例。
+- 📢 [2025-11-03] 新增示例：我们添加了 [**PPT 生成**](examples/ppt_gen/README.md)和 [**RAG**](configs/agents/examples/rag.yaml) 示例。
+- 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191)。DeepSeek-V3.2 的强化学习只需 8 美元？真的可以！Training-Free GRPO 让 DeepSeek-V3.2 保持冻结，仅用约 100 条样本学习 token 先验，把整次 RL 成本压到约 8 美元，并在数学与网页搜索任务上获得验证提升！代码分支 [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO) [[X 帖子](https://x.com/cai_cecilia47/status/1976558824640393559)]。
+- 🛠️ [2025-09-28] 自动智能体功能现已配套上线自动工具生成：描述所需能力，`Youtu-Agent` 即可完成工具构建。[[详情](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)]。
+
+<details>
+<summary><b>📰 往期公告</b></summary>
 - 📺 [2025-09-09] 我们举办了一场直播，分享了 `Youtu-Agent` 的设计理念与基础用法。[[视频](https://www.bilibili.com/video/BV1mypqz4EvS)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)]。
 - 🎁 [2025-09-02] [腾讯云国际站](https://www.tencentcloud.com/) 为 DeepSeek API 新用户提供 **300 万免费令牌**（**2025年9月1日 – 2025年10月31日**）。如果想在 `Youtu-Agent` 中使用 DeepSeek 模型，[点击免费试用](https://www.tencentcloud.com/document/product/1255/70381)！如需企业级智能体解决方案，也可查看 [智能体开发平台 ADP](https://adp.tencentcloud.com)。
 - 📺 [2025-08-28] 我们围绕新发布的 DeepSeek-V3.1 模型进行了直播分享，并介绍了如何在 `Youtu-Agent` 框架中使用该模型。[[视频](https://www.bilibili.com/video/BV1XwayzrETi/)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)]。
+</details>
 
 ## 🌟 基准性能
 
@@ -74,21 +87,43 @@
       <br><strong>论文分析</strong><br>解析给定论文，进行分析，并整理相关文献以得出最终结果。
     </td>
   </tr>
+  <tr >
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>RAG</strong><br>通过集成 RAGFlow 服务的 RAG 示例。
+    </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>PPT 生成</strong><br>根据给定内容生成 PPT 文件的示例。
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <video src="https://github.com/user-attachments/assets/4d74ef6f-7a84-4102-9666-0fbfe02e0d2f"
+             controls muted preload="metadata"
+             width="100%" height="300"
+             style="object-fit: cover; border-radius: 8px;"></video>
+    </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <video src="https://github.com/user-attachments/assets/91568e27-bf77-44d6-baa6-b178d2d88255"
+             controls muted preload="metadata"
+             width="100%" height="300"
+             style="object-fit: cover; border-radius: 8px;"></video>
+    </td>
+  </tr>
 </table>
 
 > [!NOTE]
 > 更多详情请参见 [`examples`](./examples) 目录和[文档](https://tencentcloudadp.github.io/youtu-agent/examples/)。
 
-### 🤖 自动智能体生成
+### 🤖 自动工具与智能体生成
 
-`Youtu-Agent`的突出优势在于其**自动化生成智能体及其配置**的能力。在其他框架中，定义特定任务的智能体通常需要编写代码或是精心设计提示词，而`Youtu-Agent`采用基于 YAML 的简洁配置方案，实现了高效自动化：内置的“元智能体”与用户对话并捕获需求，然后自动生成并保存配置。
+`Youtu-Agent` 的核心亮点之一，是它可以**同时自动生成工具与智能体配置**。在其他框架里，想让智能体落地通常得先手写函数或精心编写提示词；在这里只需描述任务。内置的元智能体会与用户对话梳理需求，自动拼装所需工具、产出 YAML 配置，并保存好后即可直接运行。
 
 ```bash
 # Interactively clarify your requirements and auto-generate a config
 python scripts/gen_simple_agent.py
 
 # Run the generated config
-python scripts/cli_chat.py --stream --config generated/xxx
+python scripts/cli_chat.py --config generated/xxx
 ```
 
 <table border="1" style="border-collapse: collapse;">
@@ -97,7 +132,15 @@ python scripts/cli_chat.py --stream --config generated/xxx
       <a href="https://www.youtube.com/watch?v=JVpHDJtKBo8">
         <img src="https://img.youtube.com/vi/JVpHDJtKBo8/0.jpg" alt="Automatic Agent Generation" width="420" height="236">
       </a>
-      <br><strong>自动智能体生成</strong><br>交互式对话的方式捕获需求，自动生成agent配置，并立即运行。
+      <br><strong>自动智能体生成</strong><br>交互式对话的方式捕获需求，自动生成 agent 配置，并立即运行。
+    </td>
+    <td style="border: 1px solid black; width:420px; padding:10px; vertical-align:top;">
+      <video src="https://github.com/user-attachments/assets/37878544-cfda-4a8a-9b42-a7361782c750" 
+             poster="https://img.youtube.com/vi/zjGooBuqdSE/maxresdefault.jpg" 
+             controls muted preload="metadata" 
+             width="100%" height="auto" 
+             style="object-fit: cover; border-radius: 8px;"></video>
+      <br><strong>自动工具生成</strong><br>描述所需的能力，由元智能体生成工具代码与 schema，并直接接入你的工作流。
     </td>
   </tr>
 </table>
@@ -189,7 +232,7 @@ UTU_LLM_BASE_URL=https://api.deepseek.com/v1
 UTU_LLM_API_KEY=<替换为你的 API Key>
 ```
 
-> 腾讯云为新用户提供免费 DeepSeek API 额度。点击[此处](https://lke.cloud.tencent.com/lke/#/trialProduct?source=act)申请，完成后请参考以下 `.env` 文件配置。如果赠送额度已失效，可以点击[此处](https://buy.cloud.tencent.com/tcadp)购买额度包，或前往[系统管理设置页](https://console.cloud.tencent.com/lkeap/settings)启用“原子能力_DeepSeek API”后付费以激活 API Key：
+> 点击[此处](https://lke.cloud.tencent.com/lke/#/trialProduct?source=act)申请腾讯云 DeepSeek API（OpenAI SDK 格式），完成后请参考以下 `.env` 文件配置。如果赠送额度已失效，可以点击[此处](https://buy.cloud.tencent.com/tcadp)购买额度包，或前往[系统管理设置页](https://console.cloud.tencent.com/lkeap/settings)启用“原子能力_DeepSeek API”后付费以激活 API Key：
 
 ```bash
 # 设置你的 LLM 配置, 可参考 https://www.tencentcloud.com/document/product/1255/70381
@@ -222,9 +265,9 @@ agent:
 
 ```bash
 # NOTE: 你需要在 .env 中配置 `SERPER_API_KEY` 和 `JINA_API_KEY` (我们计划在未来替换为免费工具)
-python scripts/cli_chat.py --stream --config simple/base_search
+python scripts/cli_chat.py --config simple/base_search
 # 如果你不想使用搜索工具，可以运行
-python scripts/cli_chat.py --stream --config simple/base
+python scripts/cli_chat.py --config simple/base
 ```
 
 📖 更多内容请参考：[快速开始文档](https://tencentcloudadp.github.io/youtu-agent/quickstart)
@@ -322,6 +365,16 @@ python scripts/run_eval.py --config_name ww --exp_id <your_exp_id> --dataset Web
 如果您觉得这项工作有帮助，请考虑引用：
 
 ```bibtex
+@misc{training_free_grpo,
+  title={Training-Free Group Relative Policy Optimization},
+  author={Tencent Youtu Lab},
+  year={2025},
+  eprint={2510.08191},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2510.08191},
+}
+
 @misc{youtu-agent-2025,
   title={Youtu-agent: A Simple yet Powerful Agent Framework},
   author={Tencent Youtu Lab},
@@ -331,7 +384,3 @@ python scripts/run_eval.py --config_name ww --exp_id <your_exp_id> --dataset Web
   howpublished = {\url{https://github.com/TencentCloudADP/youtu-agent}},
 }
 ```
-
-## ⭐ Star History
-
-![Star History Chart](https://api.star-history.com/svg?repos=TencentCloudADP/youtu-agent&type=Date)

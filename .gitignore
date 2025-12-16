@@ -65,7 +65,13 @@ wheels/
 
 # Misc
 # temp files
-_*
+# _*
+.NOTES
 # temp config
 test.yaml
 pgs
+CLAUDE.md
+.mcp.json
+.specify
+alembic.ini
+alembic/

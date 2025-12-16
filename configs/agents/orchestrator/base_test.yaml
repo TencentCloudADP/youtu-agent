@@ -1,0 +1,33 @@
+# @package _global_
+
+# quick response in planning mode, for testing
+defaults:
+  # planner model
+  - /model/base@orchestrator_model
+  # router agent
+  - /agents/router/force_plan@orchestrator_router
+  - _self_
+
+type: orchestrator
+
+orchestrator_config:
+  name: TestOrchestratorAgent
+  additional_instructions: ""
+  examples_path: plan_examples/chain.json  # default examples for task-decomposition. (in /utu/data/)
+  add_chitchat_subagent: true  # add chitchat subagent
+
+orchestrator_workers:
+  MathAgent:
+    agent:
+      name: MathAgent
+      instructions: You are a math expert.
+  TranslatorAgent:
+    agent:
+      name: TranslatorAgent
+      instructions: You are a helpful assistant that masters multiple languages.
+
+orchestrator_workers_info:
+  - name: MathAgent
+    desciption: This agent is good at math. You can ask it to solve math problems.
+  - name: TranslatorAgent
+    desciption: When you need to translate text, you can use this agent.

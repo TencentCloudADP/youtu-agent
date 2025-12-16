@@ -4,7 +4,14 @@ import agents as ag
 from pydantic import BaseModel
 
 from utu.agents.orchestra import OrchestraStreamEvent
+from utu.agents.orchestrator import OrchestratorStreamEvent
 from utu.meta.simple_agent_generator import SimpleAgentGeneratedEvent
+from utu.utils.log import get_logger
+
+
+class UnknowEventError(Exception):
+    def __init__(self, event_name: str, event_type: str):
+        super().__init__(f"Unknown event name: {event_name}, event type: {event_type}")
 
 
 class WorkerDescription(BaseModel):
@@ -42,9 +49,21 @@ class ReportItem(BaseModel):
     output: str
 
 
+class PlanItemOrchestrator(BaseModel):
+    analysis: str
+    tasks: list[str]
+
+
+class TaskItemOrchestrator(BaseModel):
+    agent_name: str
+    task: str
+    is_reporter: bool
+    report: str | None = None
+
+
 class OrchestraContent(BaseModel):
-    type: Literal["plan", "worker", "report"]
-    item: PlanItem | WorkerItem | ReportItem
+    type: Literal["plan", "worker", "report", "plan_start", "report_start"]
+    item: PlanItem | WorkerItem | ReportItem | None = None
 
 
 class ExampleContent(BaseModel):
@@ -66,14 +85,14 @@ class SwitchAgentContent(BaseModel):
     type: Literal["switch_agent"] = "switch_agent"
     ok: bool
     name: str
-    agent_type: Literal["simple", "orchestra", "other"]
+    agent_type: Literal["simple", "orchestra", "orchestrator", "other"]
     sub_agents: list[str] | None = None
 
 
 class InitContent(BaseModel):
     type: Literal["init"] = "init"
     default_agent: str
-    agent_type: Literal["simple", "orchestra", "other"]
+    agent_type: Literal["simple", "orchestra", "orchestrator", "other"]
     sub_agents: list[str] | None = None
 
 
@@ -94,11 +113,25 @@ class ErrorContent(BaseModel):
     message: str
 
 
+class OrchestratorContent(BaseModel):
+    """Orchestrator event"""
+
+    type: Literal["orchestrator"] = "orchestrator"
+    sub_type: Literal[
+        "plan.start",  # alway with none item
+        "plan.done",  # alway with plan item
+        "task.start",  # alway with task item
+        "task.done",  # alway with task item (with report)
+    ]
+    item: PlanItemOrchestrator | TaskItemOrchestrator | None = None
+
+
 class Event(BaseModel):
     type: Literal[
         "raw",
         "init",
         "orchestra",
+        "orchestrator",
         "finish",
         "example",
         "new",
@@ -112,6 +145,7 @@ class Event(BaseModel):
     data: (
         TextDeltaContent
         | OrchestraContent
+        | OrchestratorContent
         | GeneratedAgentContent
         | ExampleContent
         | NewAgentContent
@@ -223,8 +257,19 @@ async def handle_orchestra_events(event: OrchestraStreamEvent) -> Event | None:
     elif event.name == "report":
         report_item = ReportItem(output=item.output)
         event_to_send = Event(type="orchestra", data=OrchestraContent(type="report", item=report_item))
+    elif event.name == "plan_start":
+        event_to_send = Event(
+            type="orchestra",
+            data=OrchestraContent(type="plan_start", item=None),
+        )
+    elif event.name == "report_start":
+        event_to_send = Event(
+            type="orchestra",
+            data=OrchestraContent(type="report_start", item=None),
+        )
     else:
-        pass
+        get_logger(__name__).error(f"Unknown orchestra event name: {event.name}")
+        event_to_send = None
     return event_to_send
 
 
@@ -265,4 +310,43 @@ async def handle_generated_agent(event: SimpleAgentGeneratedEvent) -> Event | No
         type="generated_agent_config",
         data=GeneratedAgentContent(filename=event.filename, config_content=event.config_content),
     )
+    return event_to_send
+
+
+async def handle_orchestrator_events(event: OrchestratorStreamEvent) -> Event | None:
+    event_to_send = None
+    if event.name == "plan.start":
+        event_to_send = Event(
+            type="orchestrator", data=OrchestratorContent(type="orchestrator", sub_type="plan.start", item=None)
+        )
+    elif event.name == "plan.done":
+        item = PlanItemOrchestrator(
+            analysis=event.item.analysis, tasks=[f"{task.task} ({task.agent_name})" for task in event.item.tasks]
+        )
+        event_to_send = Event(
+            type="orchestrator", data=OrchestratorContent(type="orchestrator", sub_type="plan.done", item=item)
+        )
+    elif event.name == "task.start":
+        if event.item:
+            item = TaskItemOrchestrator(
+                agent_name=event.item.agent_name, task=event.item.task, is_reporter=event.item.is_last_task, report=""
+            )
+            event_to_send = Event(
+                type="orchestrator", data=OrchestratorContent(type="orchestrator", sub_type="task.start", item=item)
+            )
+    elif event.name == "task.done":
+        if event.item:
+            item = TaskItemOrchestrator(
+                agent_name=event.item.agent_name,
+                task=event.item.task,
+                is_reporter=event.item.is_last_task,
+                report=event.item.result,
+            )
+        else:
+            item = None
+        event_to_send = Event(
+            type="orchestrator", data=OrchestratorContent(type="orchestrator", sub_type="task.done", item=item)
+        )
+    else:
+        get_logger(__name__).error(f"Unknown orchestrator event name: {event.name}")
     return event_to_send

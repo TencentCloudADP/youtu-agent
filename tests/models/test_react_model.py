@@ -13,7 +13,7 @@ async def test_react_model():
         name="test_agent",
         instructions="You are a helpful assistant.",
         model=model,
-        tools=await SearchToolkit().get_tools_in_agents(),
+        tools=SearchToolkit().get_tools_in_agents(),
         mcp_servers=[],
     )
 

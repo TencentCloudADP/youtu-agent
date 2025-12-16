@@ -19,13 +19,15 @@ class ToolkitConfig(ConfigBaseModel):
 
     mode: Literal["builtin", "customized", "mcp"] = "builtin"
     """Toolkit mode."""
+    env_mode: Literal["local", "e2b"] = "local"
+    """Environment mode for the toolkit."""
     name: str | None = None
     """Toolkit name."""
     activated_tools: list[str] | None = None
     """Activated tools, if None, all tools will be activated."""
     config: dict | None = Field(default_factory=dict)
-    """Toolkit config."""
-    config_llm: ModelConfigs | None = None
+    """Specified  configs for certain toolkit. We use raw dict for simplicity"""
+    config_llm: ModelConfigs | None = None  # | dict[str, ModelConfigs]
     """LLM config if used in toolkit."""
     customized_filepath: str | None = None
     """Customized toolkit filepath."""
@@ -33,8 +35,8 @@ class ToolkitConfig(ConfigBaseModel):
     """Customized toolkit classname."""
     mcp_transport: Literal["stdio", "sse", "streamable_http"] = "stdio"
     """MCP transport."""
-    mcp_client_session_timeout_seconds: int = 5
-    """The read timeout passed to the MCP ClientSession."""
+    mcp_client_session_timeout_seconds: int = 20
+    """The read timeout passed to the MCP ClientSession. We set it bigger to avoid timeout expections."""
 
 
 class ContextManagerConfig(ConfigBaseModel):
@@ -50,8 +52,8 @@ class EnvConfig(ConfigBaseModel):
 class AgentConfig(ConfigBaseModel):
     """Overall agent config"""
 
-    type: Literal["simple", "orchestra", "workforce"] = "simple"
-    """Agent type, "simple" or "orchestra". """
+    type: Literal["simple", "orchestra", "orchestrator", "workforce"] = "simple"
+    """Agent type"""
 
     # simple agent config
     model: ModelConfigs = Field(default_factory=ModelConfigs)
@@ -64,8 +66,10 @@ class AgentConfig(ConfigBaseModel):
     """Env config"""
     toolkits: dict[str, ToolkitConfig] = Field(default_factory=dict)
     """Toolkits config"""
-    max_turns: int = 20
-    """Max turns"""
+    max_turns: int = 50
+    """Max turns for simple agent. This param is derived from @openai-agents"""
+    stop_at_tool_names: list[str] | None = None
+    """Stop at tools for simple agent. This param is derived from @openai-agents"""
 
     # orchestra agent config
     planner_model: ModelConfigs = Field(default_factory=ModelConfigs)
@@ -106,3 +110,19 @@ class AgentConfig(ConfigBaseModel):
     """Workforce executor config (dict)"""
     workforce_executor_infos: list[dict] = Field(default_factory=list)
     """Workforce executor infos, list of {name, desc, strengths, weaknesses}"""
+
+    # orchestrator agent config
+    orchestrator_router: "AgentConfig" = None
+    """Orchestrator router agent config"""
+    orchestrator_config: dict = Field(default_factory=dict)
+    """Orchestrator config (dict)\n
+    - `name`: name of the orchestrator-workers system
+    - `examples_path`: path to planner examples. default utu/data/plan_examples/chain.json
+    - `additional_instructions`: additional instructions for planner
+    - `add_chitchat_subagent`: whether to add chitchat subagent. default True"""
+    orchestrator_model: ModelConfigs = Field(default_factory=ModelConfigs)
+    """Planner model config"""
+    orchestrator_workers: dict[str, "AgentConfig"] = Field(default_factory=dict)
+    """Workers config"""
+    orchestrator_workers_info: list[dict] = Field(default_factory=list)
+    """Workers info, list of {name, description}"""

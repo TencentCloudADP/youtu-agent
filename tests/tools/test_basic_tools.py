@@ -2,7 +2,6 @@ import pytest
 
 from utu.config import ConfigLoader
 from utu.tools import (
-    BashRemoteToolkit,
     CodesnipToolkit,
     GitHubToolkit,
     WikipediaSearchTool,
@@ -51,18 +50,3 @@ def codesnip_toolkit() -> CodesnipToolkit:
 async def test_run_code(codesnip_toolkit: CodesnipToolkit):
     result = await codesnip_toolkit.run_code("print('hello world')", "python")
     print(result)
-
-
-@pytest.fixture
-def bash_remote_toolkit() -> BashRemoteToolkit:
-    config = ConfigLoader.load_toolkit_config("bash_remote")
-    return BashRemoteToolkit(config=config)
-
-
-async def test_remote_bash(bash_remote_toolkit: BashRemoteToolkit):
-    await bash_remote_toolkit.build()
-    # "curl https://httpbin.org/get"
-    cmd = "pwd"
-    result = await bash_remote_toolkit.exec(cmd)
-    print(result)
-    await bash_remote_toolkit.cleanup()

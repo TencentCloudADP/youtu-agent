@@ -1,18 +1,19 @@
-# import logging
 from collections.abc import Collection
 from typing import Any, cast
 
 from openinference.instrumentation import OITracer, TraceConfig
-from openinference.instrumentation.openai_agents.package import _instruments
-from openinference.instrumentation.openai_agents.version import __version__
 from opentelemetry import trace as trace_api
 from opentelemetry.instrumentation.instrumentor import BaseInstrumentor  # type: ignore
 from opentelemetry.trace import Tracer
 
 from ..utils import get_logger
 
+# from openinference.instrumentation.openai_agents.package import _instruments
+# from openinference.instrumentation.openai_agents.version import __version__
+_instruments = ("openai-agents >= 0.2.6",)
+__version__ = "1.3.0"
+
 logger = get_logger(__name__)
-# logger.addHandler(logging.NullHandler())
 
 
 class OpenAIAgentsInstrumentor(BaseInstrumentor):  # type: ignore

@@ -13,7 +13,6 @@
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
     "@ant-design/pro-components": "^2.8.10",
-    "react-json-view": "^1.21.3",
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
@@ -22,20 +21,23 @@
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.7",
     "antd": "^5.26.5",
+    "better-sqlite3": "^12.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.2",
     "install": "^0.13.0",
     "lucide-react": "^0.525.0",
-    "next": "15.3.5",
+    "next": "^15.3.6",
     "next-themes": "^0.4.6",
     "npm": "^11.5.2",
     "postgres": "^3.4.7",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "react-json-view": "^1.21.3",
     "react-markdown": "^10.1.0",
     "tailwind-merge": "^3.3.1",
-    "tailwind-variants": "^1.0.0"
+    "tailwind-variants": "^1.0.0",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -46,7 +48,6 @@
     "dotenv": "^17.1.0",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9",
-    "eslint-config-next": "15.3.5",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",
     "typescript": "^5"

@@ -1,9 +1,0 @@
-# @package _global_
-defaults:
-  - /model/base@model
-  - /tools/search@toolkits.search
-  - _self_
-
-agent:
-    name: utu-simple
-    instructions: "You are a helpful assistant."

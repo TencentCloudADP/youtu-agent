@@ -1,0 +1,6 @@
+PROBLEM_WITH_EXPERIENCE_TEMPLATE: |
+  Please solve the problem:
+  {{ problem }}
+
+  When solving problems, you MUST first carefully read and understand the helpful instructions and experiences:
+  {{ experiences }}

@@ -91,6 +91,6 @@ class OrchestraTaskRecorder(TaskRecorder):
 
 @dataclass
 class OrchestraStreamEvent:
-    name: Literal["plan", "worker", "report"]
-    item: CreatePlanResult | WorkerResult | AnalysisResult
+    name: Literal["plan_start", "plan", "worker", "report_start", "report"]
+    item: CreatePlanResult | WorkerResult | AnalysisResult | None = None
     type: Literal["orchestra_stream_event"] = "orchestra_stream_event"

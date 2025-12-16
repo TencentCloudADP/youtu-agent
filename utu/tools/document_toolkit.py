@@ -4,6 +4,8 @@ Support backends:
 
 - Chunkr: <https://github.com/lumina-ai-inc/chunkr>
 - pymupdf: <https://github.com/pymupdf/PyMuPDF>
+
+- [ ] unify the filepath cache logic (also suppoort audio_toolkit, image_toolkit)
 """
 
 from ..config import ToolkitConfig
@@ -35,17 +37,19 @@ class DocumentToolkit(AsyncBaseToolkit):
         logger.info(f"[tool] parse_document: {self.md5_to_path[md5]}")
         return await self.parser.parse(self.md5_to_path[md5])
 
-    def handle_path(self, path: str) -> str:
-        md5 = FileUtils.get_file_md5(path)
-        if FileUtils.is_web_url(path):
+    def handle_path(self, path_or_url: str) -> str:
+        md5 = FileUtils.get_file_md5(path_or_url)
+        logger.info(f"md5 for {path_or_url}: {md5}")
+        if FileUtils.is_web_url(path_or_url):
             # download document to data/_document, with md5
-            fn = CACHE_DIR / "documents" / f"{md5}{FileUtils.get_file_ext(path)}"
+            fn = CACHE_DIR / "documents" / f"{md5}{FileUtils.get_file_ext(path_or_url)}"
             fn.parent.mkdir(parents=True, exist_ok=True)
             if not fn.exists():
-                path = FileUtils.download_file(path, fn)
-                logger.info(f"Downloaded document file to {path}")
-                path = fn
-        self.md5_to_path[md5] = path  # record md5 to map
+                logger.info(f"Downloaded document file to {path_or_url}")
+                FileUtils.download_file(url=path_or_url, save_path=fn)
+            self.md5_to_path[md5] = fn  # record md5 to map
+        else:
+            self.md5_to_path[md5] = path_or_url
         return md5
 
     @register_tool

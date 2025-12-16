@@ -1,14 +1,13 @@
-import argparse
 import asyncio
 
 import art
 
-from utu.agents import SimpleAgent
-from utu.config import AgentConfig, ConfigLoader
-from utu.utils import PrintUtils
+from utu.agents import OrchestratorAgent, SimpleAgent, get_agent
+from utu.utils import AgentsUtils, PrintUtils
+from utu.utils.script_utils import parse_cli_args
 
 USAGE_MSG = f"""{"-" * 100}
-Usage: python cli_chat.py --config_name <config_name>
+Usage: `python cli_chat.py --config_name <config_name>`
 Quit: exit, quit, q
 {"-" * 100}""".strip()
 
@@ -18,31 +17,28 @@ async def main():
     PrintUtils.print_info(text, color="blue")
     PrintUtils.print_info(USAGE_MSG, color="yellow")
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config_name", type=str, default="simple/base", help="Configuration name")
-    parser.add_argument("--agent_model", type=str, default=None, help="Agent model.")
-    parser.add_argument("--tools", type=str, nargs="*", help="List of tool names to load")
-    parser.add_argument("--stream", action="store_true", help="Stream the output.")
-    args = parser.parse_args()
+    config = parse_cli_args()
+    agent = get_agent(config=config)
+    if isinstance(agent, SimpleAgent):
+        await agent.build()
+    history = None
+    while True:
+        user_input = await PrintUtils.async_print_input("> ")
+        if user_input.strip().lower() in ["exit", "quit", "q"]:
+            break
+        if not user_input.strip():
+            continue
 
-    config: AgentConfig = ConfigLoader.load_agent_config(args.config_name)
-    if args.agent_model:
-        config.model.model = args.agent_model
-    if args.tools:
-        # load toolkits from config
-        for tool_name in args.tools:
-            config.toolkits[tool_name] = ConfigLoader.load_toolkit_config(tool_name)
-
-    async with SimpleAgent(config=config) as agent:
-        # TODO: use an unified trace_id, or use session
-        while True:
-            user_input = await PrintUtils.async_print_input("> ")
-            if user_input.lower() in ["exit", "quit", "q"]:
-                break
-            if args.stream:
-                await agent.chat_streamed(user_input)
-            else:
-                await agent.chat(user_input)
+        if isinstance(agent, SimpleAgent):
+            await agent.chat_streamed(user_input)
+        elif isinstance(agent, OrchestratorAgent):
+            history = agent.run_streamed(user_input, history)
+            await AgentsUtils.print_stream_events(history.stream_events())
+        else:
+            PrintUtils.print_error(f"Unsupported agent type: {type(agent)}")
+            return
+    if isinstance(agent, SimpleAgent):
+        await agent.cleanup()
 
 
 if __name__ == "__main__":

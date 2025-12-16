@@ -1,15 +1,18 @@
 import asyncio
 import json
+import sys
 import traceback
+import warnings
 from importlib import resources
 
 import agents as ag
 import tornado.web
 import tornado.websocket
 
+from utu.agents import OrchestratorAgent, SimpleAgent
 from utu.agents.orchestra import OrchestraStreamEvent
 from utu.agents.orchestra_agent import OrchestraAgent
-from utu.agents.simple_agent import SimpleAgent
+from utu.agents.orchestrator import OrchestratorStreamEvent
 from utu.utils import EnvUtils
 
 from .common import (
@@ -22,10 +25,27 @@ from .common import (
     handle_tool_call_output,
 )
 
+# Add a visible deprecation warning that will be shown when the module is imported
+warnings.simplefilter("always", DeprecationWarning)  # Ensure deprecation warnings are shown
+warnings.warn(
+    "The webui_chatbot module is deprecated and will be removed in a future release. "
+    "Please migrate to the webui_agents implementation.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+# Print a warning to stderr for better visibility
+print(
+    "WARNING: The webui_chatbot module is deprecated and will be removed in a future release. "
+    "Please migrate to the webui_agents implementation.",
+    file=sys.stderr,
+)
+
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
-    def initialize(self, agent: SimpleAgent | OrchestraAgent, example_query: str = ""):
-        self.agent: SimpleAgent | OrchestraAgent = agent
+    def initialize(self, agent: SimpleAgent | OrchestraAgent | OrchestratorAgent, example_query: str = ""):
+        self.agent: SimpleAgent | OrchestraAgent | OrchestratorAgent = agent
+        self.history = None  # recorder for multi-turn chat. Now only used for OrchestraAgent
         self.example_query = example_query
 
     def check_origin(self, origin):
@@ -41,7 +61,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
     async def send_event(self, event: Event):
         # print in green color
-        print(f"\033[92mSending event: {event.model_dump()}\033[0m")
+        # print(f"\033[92mSending event: {event.model_dump()}\033[0m")
         self.write_message(event.model_dump())
 
     async def on_message(self, message: str):
@@ -64,12 +84,15 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                         # print in red color
                         print(f"\033[91mInput items: {self.agent.input_items}\033[0m")
                         stream = self.agent.run_streamed(self.agent.input_items)
+                    elif isinstance(self.agent, OrchestratorAgent):
+                        stream = self.agent.run_streamed(content.query, self.history)
+                        self.history = stream
                     else:
                         raise ValueError(f"Unsupported agent type: {type(self.agent).__name__}")
 
                     async for event in stream.stream_events():
                         event_to_send = None
-                        print(f"--------------------\n{event}")
+                        # print(f"--------------------\n{event}")
                         if isinstance(event, ag.RawResponsesStreamEvent):
                             event_to_send = await handle_raw_stream_events(event)
                         elif isinstance(event, ag.RunItemStreamEvent):
@@ -78,6 +101,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                             event_to_send = await handle_new_agent(event)
                         elif isinstance(event, OrchestraStreamEvent):
                             event_to_send = await handle_orchestra_events(event)
+                        elif isinstance(event, OrchestratorStreamEvent):
+                            print(f"> {event}")
                         else:
                             pass
                         if event_to_send:
@@ -118,6 +143,18 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
 
 class WebUIChatbot:
+    """
+    DEPRECATED: This module is deprecated and will be removed in a future release.
+
+    This implementation has been superseded by the newer implementation in webui_agents.py.
+    Please migrate to the new implementation at your earliest convenience.
+
+    Migration Guide:
+    - Replace WebUIChatbot with the corresponding implementation in webui_agents.py
+    - Update your code to use the new API endpoints and components
+    - Refer to the project documentation for the latest best practices
+    """
+
     def __init__(self, agent: SimpleAgent | OrchestraAgent, example_query: str = ""):
         self.agent = agent
         self.example_query = example_query
@@ -146,8 +183,7 @@ class WebUIChatbot:
         )
 
     async def __launch(self, port: int = 8848, ip: str = "127.0.0.1", autoload: bool | None = None):
-        # 兼容性检查：某些版本的OrchestraAgent可能没有build方法
-        if hasattr(self.agent, 'build'):
+        if hasattr(self.agent, "build"):
             await self.agent.build()
         app = self.make_app()
         app.listen(port, address=ip)

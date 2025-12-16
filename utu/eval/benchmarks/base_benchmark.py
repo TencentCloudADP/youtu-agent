@@ -2,9 +2,10 @@ import asyncio
 import json
 import time
 
+from agents import gen_trace_id, trace
 from tqdm import tqdm
 
-from ...agents import BaseAgent, get_agent
+from ...agents import get_agent
 from ...config import ConfigLoader, EvalConfig
 from ...utils import AgentsUtils, get_logger
 from ..data import DBDataManager, EvaluationSample
@@ -25,7 +26,6 @@ class BaseBenchmark:
 
     dataset: DBDataManager
     _source_to_processer: dict[str, BaseProcesser] = {}
-    _source_to_agent: dict[str, BaseAgent] = {}
 
     def __init__(self, config: EvalConfig | str) -> None:
         # config
@@ -40,14 +40,17 @@ class BaseBenchmark:
             raise ValueError(f"No samples found for data config '{self.config.data}'! Please check the data config.")
 
     async def main(self):
-        logger.info(f"> Running with config: \n{json.dumps(self.config.model_dump(), indent=2, ensure_ascii=False)}")
-        self.preprocess()
-        await self.rollout()
-        await self.judge()
-        logger.info("> Running stat...")
-        await self.stat()
-        logger.info("> Cleaning up...")
-        await self.cleanup()
+        with trace(f"[{self.config.exp_id}] Evaluation", trace_id=gen_trace_id()):
+            logger.info(
+                f"> Running with config: \n{json.dumps(self.config.model_dump(), indent=2, ensure_ascii=False)}"
+            )
+            self.preprocess()
+            await self.rollout()
+            await self.judge()
+            logger.info("> Running stat...")
+            await self.stat()
+            logger.info("> Cleaning up...")
+            await self.cleanup()
 
     def preprocess(self) -> None:
         """Preprocess the dataset before rollout."""
@@ -69,7 +72,7 @@ class BaseBenchmark:
         self.dataset.save(sample)
         return sample
 
-    async def rollout(self) -> None:
+    async def rollout(self, max_retries: int = 3) -> None:
         """Rollout the datapoints."""
         samples = self.dataset.get_samples(stage="init")
         logger.info(f"Rollout {len(samples)} samples...")
@@ -78,13 +81,16 @@ class BaseBenchmark:
 
         async def rollout_with_semaphore(item: EvaluationSample):
             async with semaphore:
-                try:
-                    return await self.rollout_one(item)
-                except Exception as e:  # pylint: disable=broad-except
-                    logger.error(
-                        f">>>>>>>>>>>>>\nError running rollout on sample '{item.raw_question}': {e}\n<<<<<<<<<<<<<",
-                        exc_info=True,
-                    )
+                for i in range(max_retries):
+                    if i > 0:
+                        logger.warning(f"Retrying rollout for sample '{item.raw_question}', attempt {i + 1}")
+                    try:
+                        return await self.rollout_one(item)
+                    except Exception as e:  # pylint: disable=broad-except
+                        logger.error(
+                            f">>>>>>>>>>>>>\nError running rollout on sample '{item.raw_question}': {e}\n<<<<<<<<<<<<<",
+                            exc_info=True,
+                        )
 
         tasks = [rollout_with_semaphore(item) for item in samples]
         results = []
@@ -97,7 +103,8 @@ class BaseBenchmark:
 
     async def rollout_one(self, sample: EvaluationSample) -> EvaluationSample:
         agent = get_agent(self.config.agent)
-        await agent.build()
+        if hasattr(agent, "build"):  # hack, should be removed!
+            await agent.build()
         trace_id = AgentsUtils.gen_trace_id()
         start_time = time.time()
         result = await agent.run(sample.augmented_question, trace_id=trace_id)
@@ -120,6 +127,14 @@ class BaseBenchmark:
         Args:
             stage (str|None, optional): The stage of samples to judge. If set to None, you can rejudge all samples.
         """
+        if stage == "rollout":
+            num_init_samples = len(self.dataset.get_samples(stage="init"))
+            if num_init_samples > 0:
+                logger.error(
+                    f"There are {num_init_samples} samples might failed unexpectedly in rollout stage."
+                    "Please rerun the benchmarking to continue for final results."
+                )
+                exit(1)
         samples = self.dataset.get_samples(stage=stage)
         logger.info(f"Judging {len(samples)} samples...")
 
@@ -182,5 +197,4 @@ class BaseBenchmark:
         return data_by_benchmark
 
     async def cleanup(self):
-        for agent in self._source_to_agent.values():
-            await agent.cleanup()
+        pass

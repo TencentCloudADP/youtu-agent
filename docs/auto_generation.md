@@ -46,7 +46,7 @@ agent:
 Then, interact with your agent by running:
 
 ```bash
-python scripts/cli_chat.py --stream --config bilibili
+python scripts/cli_chat.py --config bilibili
 ```
 
 
@@ -71,5 +71,5 @@ The script will guide you through the setup process and save the resulting confi
 Once the configuration is created, you can run your new agent using the `cli_chat.py` script. Be sure to replace `xxx` with the name of your generated config file.
 
 ```bash
-python scripts/cli_chat.py --stream --config generated/xxx
+python scripts/cli_chat.py --config generated/xxx
 ```

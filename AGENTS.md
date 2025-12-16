@@ -14,7 +14,7 @@
 - Lint/format: `make format` or `make lint`; check only: `make format-check`.
 - Tests: `uv run pytest -q` or `pytest tests/tools/test_search_toolkit.py`.
 - Docs: `make build-docs` (static), `make serve-docs` (live), `make deploy-docs` (gh-pages).
-- Run CLI: `uv run python scripts/cli_chat.py --stream --config default`.
+- Run CLI: `uv run python scripts/cli_chat.py --config simple/base.yaml`.
 - Build UI wheel: `make build-ui` (requires `npm`).
 
 ## Coding Style & Naming Conventions

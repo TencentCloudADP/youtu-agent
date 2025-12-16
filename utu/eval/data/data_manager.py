@@ -51,19 +51,22 @@ class DBDataManager(BaseDataManager):
             ).all()
             logger.info(f"Loaded {len(datapoints)} samples from {self.config.data.dataset}.")
             samples = []
+            logger.info(f"Duplicate {self.config.pass_k} times for each sample.")
             for dp in datapoints:
-                sample = EvaluationSample(
-                    dataset=dp.dataset,
-                    dataset_index=dp.index,
-                    source=dp.source,
-                    raw_question=dp.question,
-                    level=dp.level,
-                    correct_answer=dp.answer,
-                    file_name=dp.file_name,
-                    meta=dp.meta,
-                    exp_id=self.config.exp_id,  # add exp_id
-                )
-                samples.append(sample)
+                for _ in range(self.config.pass_k):
+                    sample = EvaluationSample(
+                        dataset=dp.dataset,
+                        dataset_index=dp.index,
+                        source=dp.source,
+                        raw_question=dp.question,
+                        level=dp.level,
+                        correct_answer=dp.answer,
+                        file_name=dp.file_name,
+                        meta=dp.meta,
+                        exp_id=self.config.exp_id,  # add exp_id
+                    )
+                    samples.append(sample)
+            logger.info(f"Created {len(samples)} samples for exp_id {self.config.exp_id}.")
 
             self.data = samples
             self.save(self.data)  # save to db

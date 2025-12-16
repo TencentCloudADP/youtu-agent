@@ -36,6 +36,7 @@ UTU_LLM_API_KEY=YOUR_API_KEY
 When using the `ImageToolkit` or `AudioToolkit`, you need to configure LLMs that support multimodal capabilities.
 
 **Image (Vision) LLM:**
+
 ```sh
 # Image LLM type
 UTU_IMAGE_LLM_TYPE=
@@ -48,6 +49,7 @@ UTU_IMAGE_LLM_API_KEY=
 ```
 
 **Audio LLM:**
+
 ```sh
 # Audio LLM model name (e.g., whisper-1)
 UTU_AUDIO_LLM_MODEL=
@@ -80,8 +82,8 @@ Some Toolkits require their own API Keys or specific configurations.
 
 The search toolkit integrates the following two services by default:
 
-1.  **Web Search**: Uses the efficient Google Search API provided by [Serper](https://serper.dev/). You will need to register and obtain an API Key.
-2.  **Web Content Extraction**: Uses the [Jina AI Reader](https://jina.ai/reader/) to convert web page content into an LLM-friendly Markdown format. This also requires registration and an API Key.
+1. **Web Search**: Uses the efficient Google Search API provided by [Serper](https://serper.dev/). You will need to register and obtain an API Key.
+2. **Web Content Extraction**: Uses the [Jina AI Reader](https://jina.ai/reader/) to convert web page content into an LLM-friendly Markdown format. This also requires registration and an API Key.
 
 Configure them in your `.env` file as follows:
 

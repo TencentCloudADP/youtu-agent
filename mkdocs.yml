@@ -109,6 +109,9 @@ nav:
     - QuickStart (for beginner): quickstart_beginner.md
     - QuickStart: quickstart.md
     - Start with Docker: docker.md
+  - Howto:
+    - Evaluate an Agent: howto/eval.md
+    - Customize an YAML Config: howto/config.md
   - Documentation:
     - Config: config.md
     - Environment Variables: environment_variables.md
@@ -116,6 +119,7 @@ nav:
     - Agent Environments: env.md
     - Tools: tools.md
     - Evaluation: eval.md
+    - Agent Practice: practice.md
     - WebUI: frontend.md
     - Automatic Generation: auto_generation.md
   - Examples: 

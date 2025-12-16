@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - /tools/search@toolkits.search
+  - _self_
+
+agent:
+  name: utu-base
+  instructions: "You are a helpful assistant."
+
+max_turns: 20
+
+model:
+  model_settings:
+    temperature: 0.3
+    top_p: 0.95
+    extra_args:
+      timeout: 3000

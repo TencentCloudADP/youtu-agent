@@ -21,8 +21,31 @@ body {
   color: rgb(var(--foreground));
   background: var(--background);
   font-family: var(--font-sans), serif;
+  transition: background-color 0.3s ease;
 }
 
 .react-json-view {
   white-space: pre-wrap;
+}
+
+body.light-mode {
+  background-color: white;
+  color: #333333;
+}
+
+body.dark-mode {
+  background-color: #272822;
+  color: #f8f8f2;
+}
+
+[data-theme="dark"] {
+  background-color: #272822;
+  color: #f8f8f2;
+  transition: background-color 0.3s ease;
+}
+
+[data-theme="light"] {
+  background-color: white;
+  color: #333333;
+  transition: background-color 0.3s ease;
 }

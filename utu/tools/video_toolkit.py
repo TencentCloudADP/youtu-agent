@@ -3,8 +3,11 @@ https://github.com/googleapis/python-genai
 https://ai.google.dev/gemini-api/docs/api-key
 """
 
-from google import genai
-from google.genai.types import HttpOptions, Part
+try:
+    from google import genai
+    from google.genai.types import HttpOptions, Part
+except ImportError:
+    pass
 
 from ..config import ToolkitConfig
 from ..utils import get_logger

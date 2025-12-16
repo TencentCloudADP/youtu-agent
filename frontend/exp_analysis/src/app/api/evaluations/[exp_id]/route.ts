@@ -48,7 +48,7 @@ export async function GET(req: Request) {
 
     if (tools) {
       conditions.push(sql`
-        LOWER(${evaluationData.trajectory}) LIKE ${'%' + tools.toLowerCase() + '%'}
+        LOWER(${evaluationData.trajectories}) LIKE ${'%' + tools.toLowerCase() + '%'}
       `);
     }
 

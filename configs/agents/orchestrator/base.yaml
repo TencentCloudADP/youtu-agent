@@ -1,0 +1,21 @@
+# @package _global_
+defaults:
+  # planner model
+  - /model/base@orchestrator_model
+  # router agent
+  - /agents/router/base@orchestrator_router
+  # workers
+  - /agents/simple/search_agent@orchestrator_workers.SearchAgent
+  - _self_
+
+type: orchestrator
+
+orchestrator_config:
+  name: BaseOrchestratorAgent
+  additional_instructions: ""
+  examples_path: plan_examples/chain.json  # default examples for task-decomposition. (in /utu/data/)
+  add_chitchat_subagent: true  # add chitchat subagent
+
+orchestrator_workers_info:
+  - name: SearchAgent
+    description: Performs focused, in-depth information retrieval. Excels at locating reliable sources, synthesizing knowledge from multiple references, and answering research-oriented queries.

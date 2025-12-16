@@ -1,5 +1,8 @@
 import hashlib
+import json
+import os
 import pathlib
+import re
 import tempfile
 from typing import Any
 from urllib.parse import urlparse
@@ -104,3 +107,47 @@ class FileUtils:
     @staticmethod
     def get_jinja_template_str(template_str: str) -> Template:
         return Template(template_str)
+
+    @staticmethod
+    def load_json(file_path: str | pathlib.Path) -> dict[str, Any]:
+        if isinstance(file_path, str):
+            file_path = pathlib.Path(file_path)
+        if not file_path.exists():
+            raise FileNotFoundError(f"File {file_path} does not exist")
+        with file_path.open() as f:
+            return json.load(f)
+
+    @staticmethod
+    def load_json_data(file_path: str | pathlib.Path) -> list[dict[str, Any]]:
+        if isinstance(file_path, str) and not os.path.exists(file_path):
+            file_path = DIR_ROOT / "utu" / "data" / file_path
+        return FileUtils.load_json(file_path)
+
+    @staticmethod
+    def save_json(file_path: str | pathlib.Path, data: dict[str, Any]) -> None:
+        if isinstance(file_path, str):
+            file_path = pathlib.Path(file_path)
+        with file_path.open("w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+    @staticmethod
+    def apply_diff(content: str, diff: str) -> str:
+        modified_content = content
+        pattern = r"<<<<<<< SEARCH\n(.*?)\n=======\n(.*?)\n>>>>>>> REPLACE"
+        matches = re.findall(pattern, diff, re.DOTALL)
+        if not matches:
+            raise ValueError("No valid diff blocks found in the provided diff")
+
+        # Apply each search/replace pair
+        for search_text, replace_text in matches:
+            if search_text in modified_content:
+                modified_content = modified_content.replace(search_text, replace_text)
+            else:
+                raise ValueError(f"Search text not found in content: {search_text[:50]}...")
+        return modified_content
+
+    @staticmethod
+    def file_exists(file_path: str | pathlib.Path) -> bool:
+        if isinstance(file_path, str):
+            file_path = pathlib.Path(file_path)
+        return file_path.exists()

@@ -4,13 +4,12 @@ from agents import Agent, AgentOutputSchemaBase, Runner, RunResultStreaming, TRe
 
 from ..config import ModelConfigs
 from ..utils import AgentsUtils, get_logger
-from .base_agent import BaseAgent
 from .common import TaskRecorder
 
 logger = get_logger(__name__)
 
 
-class LLMAgent(BaseAgent):
+class LLMAgent:
     """Minimal agent that wraps a model."""
 
     def __init__(

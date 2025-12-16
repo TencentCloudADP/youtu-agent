@@ -1,0 +1,10 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - /tools/search@toolkits.search
+  - /tools/python_executor@toolkits.python_executor
+  - _self_
+
+agent:
+  name: chitchat
+  instructions: "You are a helpful assistant."

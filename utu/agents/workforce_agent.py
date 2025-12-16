@@ -8,13 +8,12 @@ from agents import trace
 
 from ..config import AgentConfig, ConfigLoader
 from ..utils import AgentsUtils, get_logger
-from .base_agent import BaseAgent
 from .workforce import AnswererAgent, AssignerAgent, ExecutorAgent, PlannerAgent, WorkspaceTaskRecorder
 
 logger = get_logger(__name__)
 
 
-class WorkforceAgent(BaseAgent):
+class WorkforceAgent:
     name = "workforce_agent"
 
     def __init__(self, config: AgentConfig | str):

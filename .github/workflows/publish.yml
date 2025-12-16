@@ -1,0 +1,34 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:  # allow manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # environment:
+    #   name: pypi
+    #   url: https://pypi.org/p/youtu-agent
+    permissions:
+      id-token: write  # Important for trusted publishing to PyPI
+    # env:
+    #   OPENAI_API_KEY: fake-for-tests
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+    - name: Install dependencies
+      run: make sync
+    - name: Build package
+      run: uv build
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1

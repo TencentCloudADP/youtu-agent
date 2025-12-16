@@ -9,7 +9,11 @@ from io import BytesIO
 from urllib.parse import urlparse
 
 import requests
-from PIL import Image
+
+try:
+    from PIL import Image
+except ImportError:
+    pass
 
 from ..config import ToolkitConfig
 from ..utils import EnvUtils, SimplifiedAsyncOpenAI, get_logger

@@ -1,8 +1,11 @@
 import os
+from typing import TYPE_CHECKING
 
-import pandas as pd
 from phoenix.client import Client
 from phoenix.client.types.spans import SpanQuery
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 
 class PhoenixUtils:
@@ -17,7 +20,7 @@ class PhoenixUtils:
 
     def get_spans(
         self, condition: str, select: list[str] = None, limit: int = 10, root_spans_only: bool = True
-    ) -> pd.DataFrame:
+    ) -> "pd.DataFrame":
         if not select:
             query = SpanQuery().where(condition)
         else:

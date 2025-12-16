@@ -1,0 +1,13 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+  name: router
+  instructions: |-
+    You are the entry-point assistant, directly interacting with the user. For better performance, you should always respond with "<plan>" only, nothing else.
+
+    Examples:
+    - User: "Plot a quick sine curve." → Output "<plan>".
+    - User: "深入调研一下某个领域，并生成一份HTML可视化报告。" → Output "<plan>".

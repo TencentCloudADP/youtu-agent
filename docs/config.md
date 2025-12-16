@@ -9,6 +9,7 @@ All configurations are stored as `.yaml` files inside the `/configs` directory.
 The `ConfigLoader` is the main entry point for loading configurations from YAML files into `pydantic` models. It abstracts away the file paths and loading logic.
 
 **Usage:**
+
 ```python
 from utu.config import ConfigLoader
 
@@ -25,7 +26,7 @@ eval_config = ConfigLoader.load_eval_config("my_eval")
 
 `AgentConfig` is the central data structure for defining an agent. It specifies everything the agent needs to operate, including its model, tools, and personality.
 
-### Key Components:
+### Key Components
 
 - **`type`**: The agent's architecture. Can be:
     - `simple`: A single agent that performs a task.
@@ -44,7 +45,7 @@ For the `orchestra` type, `AgentConfig` also includes fields for defining the pl
 
 `EvalConfig` defines a complete evaluation experiment. It specifies the dataset to use, the agent to test, and how to judge the results.
 
-### Key Components:
+### Key Components for Evaluation
 
 - **`data`**: (`DataConfig`) Defines the dataset to be used for the evaluation, including its name/path and the relevant fields (`question_field`, `gt_field`).
 - **`rollout`**: This section defines the execution phase of the evaluation.

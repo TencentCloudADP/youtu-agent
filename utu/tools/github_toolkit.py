@@ -6,10 +6,16 @@ from urllib.parse import urlparse
 
 import requests
 
+from ..utils import EnvUtils
 from .base import AsyncBaseToolkit, register_tool
 
 
 class GitHubToolkit(AsyncBaseToolkit):
+    """GitHub Toolkit
+
+    - API key: `GITHUB_TOKEN`
+    """
+
     @register_tool
     async def get_repo_info(self, github_url) -> dict:
         """Get the info of the specified github repo
@@ -25,7 +31,7 @@ class GitHubToolkit(AsyncBaseToolkit):
             return {"error": "Invalid GitHub repository URL"}
         api_url = f"https://api.github.com/repos/{path_parts[0]}/{path_parts[1]}"
         headers = {
-            "Authorization": f"Bearer {self.config.config.get('github_token')}",
+            "Authorization": f"Bearer {EnvUtils.get_env('GITHUB_TOKEN')}",
             "X-GitHub-Api-Version": "2022-11-28",
         }
         try:

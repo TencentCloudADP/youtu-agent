@@ -2,9 +2,12 @@ import json
 import pathlib
 import re
 
+from agents import RunResultStreaming
+
+from ...agents.llm_agent import LLMAgent
 from ...config import AgentConfig
-from ...utils import FileUtils, SimplifiedAsyncOpenAI
-from .common import AgentInfo, CreatePlanResult, OrchestraTaskRecorder, Subtask
+from ...utils import FileUtils
+from .common import AgentInfo, CreatePlanResult, OrchestraStreamEvent, OrchestraTaskRecorder, Subtask
 
 
 class OutputParser:
@@ -36,64 +39,67 @@ class OutputParser:
         for agent_name, task_desc, completed_str in task_matches:
             completed = completed_str.lower() == "true"
             tasks.append(Subtask(agent_name=agent_name, task=task_desc, completed=completed))
+        # check validity
+        assert len(tasks) > 0, "No tasks parsed from plan"
         return tasks
 
 
 class PlannerAgent:
     def __init__(self, config: AgentConfig):
         self.config = config
-        self.llm = SimplifiedAsyncOpenAI(**self.config.planner_model.model_provider.model_dump())
+        self.prompts = FileUtils.load_prompts("agents/orchestra/planner.yaml")
+
         self.output_parser = OutputParser()
-        self.jinja_env = FileUtils.get_jinja_env("agents/orchestra")
-        self.planner_examples = self._load_planner_examples()
-        self.available_agents = self._load_available_agents()
+        self._load_planner_examples()
+        self._load_available_agents()
 
-    @property
-    def name(self) -> str:
-        return self.config.planner_config.get("name", "planner")
-
-    def _load_planner_examples(self) -> list[dict]:
+    def _load_planner_examples(self) -> None:
         examples_path = self.config.planner_config.get("examples_path", "")
         if examples_path and pathlib.Path(examples_path).exists():
             examples_path = pathlib.Path(examples_path)
         else:
             examples_path = pathlib.Path(__file__).parent / "data" / "planner_examples.json"
         with open(examples_path, encoding="utf-8") as f:
-            return json.load(f)
+            self.planner_examples = json.load(f)
 
-    def _load_available_agents(self) -> list[AgentInfo]:
+    def _load_available_agents(self) -> None:
         available_agents = []
         for info in self.config.workers_info:
             available_agents.append(AgentInfo(**info))
-        return available_agents
+        self.available_agents = available_agents
 
-    async def build(self):
-        pass
+    @property
+    def name(self) -> str:
+        return self.config.planner_config.get("name", "planner")
 
     async def create_plan(self, task_recorder: OrchestraTaskRecorder) -> CreatePlanResult:
-        sp = self.jinja_env.get_template("planner_sp.j2").render(
-            planning_examples=self._format_planner_examples(self.planner_examples)
-        )
-        up = self.jinja_env.get_template("planner_up.j2").render(
-            available_agents=self._format_available_agents(self.available_agents),
-            question=task_recorder.task,
-            background_info=await self._get_background_info(task_recorder),
-        )
-        messages = [{"role": "system", "content": sp}, {"role": "user", "content": up}]
-        response = await self.llm.query_one(messages=messages, **self.config.planner_model.model_params.model_dump())
-        return self.output_parser.parse(response)
-
-    def _format_planner_examples(self, examples: list[dict]) -> str:
         # format examples to string. example: {question, available_agents, analysis, plan}
         examples_str = []
-        for example in examples:
+        for example in self.planner_examples:
             examples_str.append(
                 f"Question: {example['question']}\n"
                 f"Available Agents: {example['available_agents']}\n\n"
                 f"<analysis>{example['analysis']}</analysis>\n"
                 f"<plan>{json.dumps(example['plan'], ensure_ascii=False)}</plan>\n"
             )
-        return "\n".join(examples_str)
+        examples_str = "\n".join(examples_str)
+        sp = FileUtils.get_jinja_template_str(self.prompts["PLANNER_SP"]).render(planning_examples=examples_str)
+        llm = LLMAgent(
+            name="planner",
+            instructions=sp,
+            model_config=self.config.workforce_planner_model,
+        )
+        up = FileUtils.get_jinja_template_str(self.prompts["PLANNER_UP"]).render(
+            available_agents=self._format_available_agents(self.available_agents),
+            question=task_recorder.task,
+            background_info=await self._get_background_info(task_recorder),
+        )
+        task_recorder._event_queue.put_nowait(OrchestraStreamEvent(name="plan_start"))
+        res = llm.run_streamed(up)
+        await self._process_streamed(res, task_recorder)
+        plan = self.output_parser.parse(res.final_output)
+        task_recorder._event_queue.put_nowait(OrchestraStreamEvent(name="plan", item=plan))
+        return plan
 
     def _format_available_agents(self, agents: list[AgentInfo]) -> str:
         agents_str = []
@@ -110,3 +116,7 @@ class PlannerAgent:
     async def _get_background_info(self, task_recorder: OrchestraTaskRecorder) -> str:
         """Get background information for the query. Leave empty by default."""
         return ""
+
+    async def _process_streamed(self, run_result_streaming: RunResultStreaming, task_recorder: OrchestraTaskRecorder):
+        async for event in run_result_streaming.stream_events():
+            task_recorder._event_queue.put_nowait(event)

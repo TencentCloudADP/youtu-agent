@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "utu_agent_ui"
+version = "0.3.0"
+description = "UI webpages for utu-agent"
+authors = [{name = "lichaochen", email = "lichaochen@tencent.com"}]
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "build>=1.1.1",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]

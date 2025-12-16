@@ -1,14 +1,18 @@
+# ruff: noqa: I001
 import asyncio
 import logging
 import time
 from dataclasses import dataclass
 from enum import Enum
 
-import docker.errors
 import requests
 from requests.exceptions import RequestException
 
-import docker
+try:
+    import docker
+    from docker.errors import NotFound
+except ImportError:
+    pass
 
 from .port_manager import PortManager
 
@@ -201,7 +205,7 @@ class DockerManager:
                         container = self.client.containers.get(container_info.container_id)
                         container.stop(timeout=10)
                         logger.info(f"容器 {id} 停止成功")
-                    except docker.errors.NotFound:
+                    except NotFound:
                         logger.warning(f"容器 {id} 的Docker实例不存在，可能已被删除")
                     except Exception as e:  # pylint: disable=broad-except
                         logger.error(f"停止容器 {id} 时出错: {e}")
@@ -231,7 +235,7 @@ class DockerManager:
             container.stop(timeout=10)
             logger.info(f"容器 {cid} 停止成功")
             return {"success": True, "message": "容器停止成功", "id": cid}
-        except docker.errors.NotFound:
+        except NotFound:
             logger.warning(f"容器 {cid} 的Docker实例不存在，可能已被删除")
             return {"success": False, "error": "容器不存在", "id": cid}
         except Exception as e:  # pylint: disable=broad-except
@@ -360,7 +364,7 @@ class DockerManager:
                         container_info.port = None
                     container_info.container_id = None
 
-            except docker.errors.NotFound:
+            except NotFound:
                 # Docker容器不存在，更新状态
                 container_info.status = ContainerStatus.STOPPED
                 if container_info.port:

@@ -27,12 +27,12 @@ def test_load_agent_config():
     config = ConfigLoader.load_agent_config("simple/gaia_document_processing")
     config = ConfigLoader.load_agent_config("simple/gaia_web_search")
     config = ConfigLoader.load_agent_config("simple/base_search")
-    config = ConfigLoader.load_agent_config("orchestra/deep_research")
     config = ConfigLoader.load_agent_config("workforce/base")
     config = ConfigLoader.load_agent_config("examples/data_analysis")
     config = ConfigLoader.load_agent_config("examples/file_manager")
     config = ConfigLoader.load_agent_config("examples/svg_generator")
     config = ConfigLoader.load_agent_config("examples/paper_collector")
+    config = ConfigLoader.load_agent_config("orchestrator/base_test")
     print(config)
     # print(json.dumps(config.model_dump(), indent=2))
 

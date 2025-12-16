@@ -39,7 +39,7 @@ Run a simple agent defined by a configuration file. For example, to run an agent
 
 ```sh
 # python scripts/cli_chat.py --help
-python scripts/cli_chat.py --config_name simple/search_agent.yaml --stream
+python scripts/cli_chat.py --config_name simple/search_agent.yaml
 ```
 
 ### Orchestra Agent
@@ -77,7 +77,7 @@ python scripts/run_eval.py --config_name <your_eval_config> --exp_id <your_exp_i
 If you have already run the rollout and only want to re-run the judgment phase, use this script:
 
 ```sh
-python scripts/run_eval_judge.py --config_name <your_eval_config> --exp_id <your_exp_id> --dataset WebWalkerQA
+python scripts/run_eval.py --config_name <your_eval_config> --exp_id <your_exp_id> --dataset WebWalkerQA --step judge
 ```
 
 ### Dump Experiment Data
@@ -94,10 +94,10 @@ python scripts/db/dump_db.py --exp_id "<your_exp_id>"
 
 ### Database Configuration
 
-The evaluation framework uses a SQL database (defaulting to SQLite) to store datasets and experiment results. To use a different database (e.g., PostgreSQL), set the `DB_URL` environment variable:
+The evaluation framework uses a SQL database (defaulting to SQLite) to store datasets and experiment results. To use a different database (e.g., PostgreSQL), set the `UTU_DB_URL` environment variable:
 
 ```sh
-DB_URL="postgresql://user:password@host:port/database"
+UTU_DB_URL="postgresql://user:password@host:port/database"
 ```
 
 ### Tracing
@@ -115,6 +115,7 @@ The framework also supports any tracing service compatible with the `openai-agen
 ## Customizing the Agent
 
 ### Create a config file
+
 ```yaml
 # configs/agents/sample_tool.yaml
 defaults:

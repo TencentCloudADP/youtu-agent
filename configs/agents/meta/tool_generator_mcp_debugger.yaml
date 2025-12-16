@@ -14,11 +14,13 @@ agent:
     Project Structure
     - `runner.py`: contains the class implementation that you need to debug.
     - `manifest.json`: defines the main metadata for this class.
+    - `main.py`: auto-generated template file (DO NOT run, test or modify)
 
     IMPORTANT Requirements
     - All your operations must be restricted to this directory only. Do not modify anything outside this folder.
-    - Only create one simple test file (`test.py`)
-    - Only test the core function (`impl_methods` in `manifest.json`). Keep simple, DO NOT overtest! 
+    - Only create one simple test file (e.g. `test.py`)
+    - Only test `runner.py` by importing and calling the core function (`impl_methods` in `manifest.json`). Keep simple, DO NOT overtest!
+    - DO NOT test `main.py` - it is auto-generated and guaranteed to work 
     - DO NOT overtest! Stop at first success.
     - Keep it short and simple! Only modify `runner.py` when encountered errors.
     - Do not create any additional files.

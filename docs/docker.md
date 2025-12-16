@@ -6,14 +6,15 @@ This guide walks you through deploying Youtu-agent using Docker containers. It c
 ## Prerequisites
 
 - Docker installed on your system
-  - Visit https://www.docker.com/ to download and install Docker if needed
-  - Verify your installation by running `docker --version`
+    - Visit <https://www.docker.com/> to download and install Docker if needed
+    - Verify your installation by running `docker --version`
 
 ## Deployment Steps
 
 ### Step 1. Build Docker Image
 
 Build the Youtu-agent Docker image:
+
 ```bash
 docker build -t youtu-agent .
 ```
@@ -21,6 +22,7 @@ docker build -t youtu-agent .
 ### Step 2. Configure Environment
 
 1. Create a configuration file by copying the template:
+
 ```bash
 cp .env.docker.example .env
 ```
@@ -49,6 +51,7 @@ UTU_WEBUI_IP=0.0.0.0
 #### Option 1: Run the Default Web Search Agent Demo
 
 By replacing the `/path/to/your/.env`, please run:
+
 ```bash
 docker run -it \
     -p 8848:8848 \
@@ -56,7 +59,7 @@ docker run -it \
     youtu-agent
 ```
 
-The service will be accessible at http://127.0.0.1:8848
+The service will be accessible at <http://127.0.0.1:8848>
 
 #### Option 2: Interactive Shell Access
 To run other examples or custom configurations by replacing the `/path/to/your/.env`:

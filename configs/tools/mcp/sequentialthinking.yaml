@@ -1,0 +1,11 @@
+# @package _global_
+# https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking
+name: sequentialthinking
+mode: mcp
+activated_tools:
+  - sequentialthinking
+mcp_transport: stdio
+mcp_client_session_timeout_seconds: 20
+config:
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-sequential-thinking"]

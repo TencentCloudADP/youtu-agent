@@ -5,7 +5,7 @@ defaults:
 
 agent:
     name: mcp_sse_example
-    instructions: "se the tools to answer the questions."
+    instructions: "Use the tools to answer the questions."
 
 toolkits:
   example_sse_toolkit:
@@ -14,4 +14,4 @@ toolkits:
     activated_tools: null
     mcp_transport: sse
     config:
-      {"url": "http://localhost:8000/sse"}
+      url: http://localhost:8000/sse

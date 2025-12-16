@@ -92,9 +92,9 @@ Toolkits are collections of tools that grant agents their capabilities. The fram
 
 ### [Evaluation Framework (`eval.md`)](./eval.md)
 A comprehensive framework for benchmarking agent performance. It provides a standardized pipeline for:
-1.  **Data Management**: Persisting and tracking evaluation data.
-2.  **Processing**: Standardizing benchmark-specific logic.
-3.  **Execution**: Running the agent and judging its performance automatically.
+1. **Data Management**: Persisting and tracking evaluation data.
+2. **Processing**: Standardizing benchmark-specific logic.
+3. **Execution**: Running the agent and judging its performance automatically.
 
 ## Getting Started
 

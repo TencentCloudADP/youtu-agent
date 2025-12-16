@@ -44,3 +44,6 @@ class ModelConfigs(ConfigBaseModel):
     """config for agent's model settings"""
     model_params: ModelParamsConfig = Field(default_factory=ModelParamsConfig)
     """config for basic model usage, e.g. `query_one` in tools / judger"""
+
+    termination_max_tokens: int | None = None
+    """max tokens for the model, used in truncation logic"""

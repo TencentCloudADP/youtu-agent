@@ -44,7 +44,7 @@ async def search_wide(task: str, subtasks: list[str], output_schema: dict, outpu
         searcher = SimpleAgent(
             name="SearcherAgent",
             instructions=PROMPTS["searcher"].format(schema=output_schema),
-            tools=await SEARCH_TOOLKIT.get_tools_in_agents(),
+            tools=SEARCH_TOOLKIT.get_tools_in_agents(),
             # output_type=AgentOutputSchema(output_type=output_type, strict_json_schema=False),
         )
         semaphore = asyncio.Semaphore(CONCURRENCY)
@@ -79,7 +79,7 @@ class WideResearch:
         self.planner_agent = SimpleAgent(
             name="PlannerAgent",
             instructions=PROMPTS["planner"],
-            tools=[search_wide] + await SEARCH_TOOLKIT.get_tools_in_agents(),
+            tools=[search_wide] + SEARCH_TOOLKIT.get_tools_in_agents(),
         )
 
     async def run(self, task: str):

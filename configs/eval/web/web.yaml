@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - /agents/practice/web_agent@agent
+  - _self_
+
+exp_id: "web_eval"
+
+data:
+  dataset: "WebWalkerQA"
+
+concurrency: 128
+pass_k: 1
+
+verify_filename: "webwalker.py"
+verify_func_name: "verify_func"
+
+judge_model:
+  model_provider:
+    type: ${oc.env:JUDGE_LLM_TYPE}
+    model: ${oc.env:JUDGE_LLM_MODEL}
+    base_url: ${oc.env:JUDGE_LLM_BASE_URL}
+    api_key: ${oc.env:JUDGE_LLM_API_KEY}
+  model_params:
+    temperature: 0.5
+
+judge_concurrency: 128

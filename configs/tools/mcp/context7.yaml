@@ -1,0 +1,12 @@
+# @package _global_
+# https://github.com/upstash/context7
+name: context7
+mode: mcp
+activated_tools:
+  - resolve-library-id
+  - get-library-docs
+mcp_transport: stdio
+mcp_client_session_timeout_seconds: 20
+config:
+  command: "npx"
+  args: ["-y", "@upstash/context7-mcp"]  # , "--api-key", "YOUR_API_KEY"

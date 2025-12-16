@@ -1,23 +1,20 @@
 # @package _global_
 defaults:
-  - /model/base@planner_model
-  - /model/base@reporter_model
-  - /agents/simple/search_agent@workers.SearchAgent
-  - /agents/simple/paper_summarize_agent@workers.PaperSummarizeAgent
+  - /model/base@orchestrator_model
+  - /agents/router/base@orchestrator_router  # router
+  - /agents/simple/search_agent@orchestrator_workers.SearchAgent
+  - /agents/simple/paper_summarize_agent@orchestrator_workers.PaperSummarizeAgent
   - _self_
 
 
-type: orchestra
+type: orchestrator
 
-planner_config:
-  examples_path: planner_examples_data.json
+orchestrator_config:
+  name: PaperCollectorAgent
+  # examples_path: planner_examples_data.json
 
-workers_info:
+orchestrator_workers_info:
   - name: SearchAgent
-    desc: information retrieval and data collection.
-    strengths: Web search, information retrieval, research material collection, API data fetching
-    weaknesses: No access to private databases, retrieval only (no content creation/modification)
+    description: Web search, information retrieval, research material collection, API data fetching
   - name: PaperSummarizeAgent
-    desc: explore and summarize the given paper, return the abstract, related papers, core methods and experiment conclusions.
-    strengths: Analyzing scientific papers, extracting key information or related information, summarizing content.
-    weaknesses: No access to the internet.
+    description: Explore and summarize paper, return the abstract, related papers, core methods and experiment conclusions

@@ -1,42 +1,22 @@
 """
-WARNING: WIP
+- [ ] enhance expressiveness of the returned file structure.
 """
 
 import json
 import math
 import os
 import pathlib
-from collections.abc import Callable
 
-import pandas as pd
+try:
+    import pandas as pd
+except ImportError:
+    pass
 
 from ..config import ToolkitConfig
-from ..utils import SimplifiedAsyncOpenAI, async_file_cache, get_logger
-from .base import AsyncBaseToolkit
+from ..utils import SimplifiedAsyncOpenAI, get_logger
+from .base import TOOL_PROMPTS, AsyncBaseToolkit, register_tool
 
 logger = get_logger(__name__)
-
-TEMPLATE_COLUMN_QA = (
-    "You are a data analysis agent that extracts and summarizes data structure information "
-    "from tabular data files (CSV, Excel, etc.).\n\n"
-    "<column_info>\n"
-    "{column_info}\n"
-    "</column_info>\n\n"
-    "You should extract the file structure(e.g. the delimiter), and provide detail column information "
-    "(e.g. column_name, type, column explanation and sample values) for each column.\n"
-    "<output_format>\n"
-    "### File Structure\n"
-    "- Delimiter: <the delimiter used in the file, e.g. ',', '\\\\t', ' '>\n\n"
-    "### Columns\n"
-    "| Column Name | Type | Explanation | Sample Value |\n"
-    "|-------------|------|-------------|--------------|\n"
-    "| name_of_column1 | type_of_column1 | explanation_of_column1, i.e. what the column represents "
-    "| sample_value_of_column1 |\n"
-    "| name_of_column2 | type_of_column2 | explanation_of_column2, i.e. what the column represents "
-    "| sample_value_of_column2 |\n"
-    "| ... | ... | ... | ... |\n"
-    "</output_format>"
-).strip()
 
 
 class TabularDataToolkit(AsyncBaseToolkit):
@@ -47,17 +27,6 @@ class TabularDataToolkit(AsyncBaseToolkit):
         )
 
     def get_tabular_columns(self, file_path: str, return_feat: list[str] = None) -> str:
-        """Extract raw column metadata from tabular data files.
-
-        Directly reads file and returns basic column information:
-        column names, data types, and sample values.
-
-        Args:
-            file_path (str): Path to the tabular data file.
-
-        Returns:
-            str: Formatted string with raw column information.
-        """
         logger.info(f"[tool] get_tabular_columns: {file_path}")
         if not os.path.exists(file_path):
             return self._stringify_column_info([{"error": f"File '{file_path}' does not exist."}])
@@ -104,42 +73,27 @@ class TabularDataToolkit(AsyncBaseToolkit):
             logger.error(error_msg)
             return self._stringify_column_info([{"error": error_msg}], return_feat=return_feat)
 
-    @async_file_cache(mode="file", expire_time=None)
+    @register_tool
     async def get_column_info(self, file_path: str) -> str:
-        """Intelligently analyze and interpret column information.
-
-        Builds on get_tabular_columns() to provide simple file structure analysis
-        and column meaning interpretation.
+        """Get basic column information from a tabular data file (e.g. csv, xlsx).
 
         Args:
             file_path (str): Path to the tabular data file.
 
         Returns:
-            str: Analysis with file structure and column explanations.
+            str: Basic column information including column name, type, and sample value.
         """
         column_info_str = self.get_tabular_columns(file_path)
-        prompt = TEMPLATE_COLUMN_QA.format(column_info=column_info_str)
+        prompt = TOOL_PROMPTS["tabular_column_info"].format(column_info=column_info_str)
         logger.info(f"[tool] get_column_info: {file_path}")
 
-        try:
-            response = await self.llm.query_one(
-                messages=[{"role": "user", "content": prompt}],
-                # **self.config.config_llm.model_params.model_dump()
-            )
-            return response
-        except Exception as e:  # pylint: disable=broad-except
-            error_msg = f"Error during LLM processing: {str(e)}"
-            logger.error(error_msg)
-            return error_msg
+        response = await self.llm.query_one(
+            messages=[{"role": "user", "content": prompt}],
+            # **self.config.config_llm.model_params.model_dump()
+        )
+        return response
 
-    def _load_tabular_data(self, file_path: str) -> pd.DataFrame:
-        """Load tabular data from a file and return as a DataFrame.
-
-        Returns:
-            pd.DataFrame: DataFrame containing the tabular data.
-        Raises:
-            Exception: If the file cannot be loaded as tabular data.
-        """
+    def _load_tabular_data(self, file_path: str) -> "pd.DataFrame":
         # Get file extension to determine how to read the file
         file_ext = pathlib.Path(file_path).suffix.lower()
 
@@ -198,10 +152,3 @@ class TabularDataToolkit(AsyncBaseToolkit):
                 f"- Column {i + 1}: {json.dumps({k: col[k] for k in return_keys if k in col}, ensure_ascii=False)}"
             )
         return "\n".join(lines)
-
-    async def get_tools_map(self) -> dict[str, Callable]:
-        """Return a mapping of tool names to their corresponding methods."""
-        return {
-            # "get_tabular_columns": self.get_tabular_columns,
-            # "get_column_info": self.get_column_info,
-        }

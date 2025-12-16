@@ -1,31 +1,34 @@
+"""[WIP] refactoring!"""
+
+import argparse
 import pathlib
 
-from examples.data_analysis.planner import DAPlannerAgent
-from utu.agents import OrchestraAgent
-from utu.config import ConfigLoader
-from utu.ui import ExampleConfig
-from utu.ui.webui_chatbot import WebUIChatbot
+from utu.ui.webui_agents import WebUIAgents
+from utu.utils.env import EnvUtils
+
+DEFAULT_CONFIG = "simple/base.yaml"
+DEFAULT_IP = EnvUtils.get_env("UTU_WEBUI_IP", "127.0.0.1")
+DEFAULT_PORT = EnvUtils.get_env("UTU_WEBUI_PORT", "8848")
+DEFAULT_AUTOLOAD = EnvUtils.get_env("UTU_WEBUI_AUTOLOAD", "false") == "true"
 
 
 def main():
-    env_and_args = ExampleConfig()
-    # Set up the agent
-    config = ConfigLoader.load_agent_config("examples/data_analysis")
-    config.planner_config["examples_path"] = pathlib.Path(__file__).parent / "planner_examples_data.json"
-    config.reporter_config["template_path"] = pathlib.Path(__file__).parent / "web_reporter_sp.j2"
-    runner = OrchestraAgent(config)
-    planner = DAPlannerAgent(config)
-    # await runner.build()
-    runner.set_planner(planner)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", type=str, default=DEFAULT_IP)
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--autoload", type=bool, default=DEFAULT_AUTOLOAD)
+    args = parser.parse_args()
 
     # Run the agent with a sample question
     # data from https://www.kaggle.com/datasets/joannanplkrk/its-raining-cats
-    fn = pathlib.Path(__file__).parent / "data" / "cat_breeds_clean.csv"
 
+    fn = pathlib.Path(__file__).parent / "demo_data_cat_breeds_clean.csv"
+    assert fn.exists(), f"File {fn} does not exist."
     question = f"请分析位于`{fn}`的猫品种数据，提取有价值的信息。"
-    ui = WebUIChatbot(runner, example_query=question)
 
-    ui.launch(port=env_and_args.port, ip=env_and_args.ip, autoload=env_and_args.autoload)
+    webui = WebUIAgents(default_config="examples/data_analysis", example_query=question)
+    print(f"Server started at http://{args.ip}:{args.port}/")
+    webui.launch(ip=args.ip, port=args.port, autoload=args.autoload)
 
 
 if __name__ == "__main__":
