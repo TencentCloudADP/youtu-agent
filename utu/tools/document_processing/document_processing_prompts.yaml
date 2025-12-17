@@ -1,0 +1,82 @@
+
+POSTPROCESS_QA_RELEVANCE: |
+  I have retrieved some information from a long document. 
+  Now I have split the document into multiple parts. Your task is to identify whether the given part contains the relevant information based on the query.
+
+  If it does, return only "True". If it doesn't, return only "False". Do not return any other information.
+
+  Document part:
+  <document_part>
+  {part}
+  </document_part>
+
+  Query:
+  <query>
+  {query}
+  </query>
+
+POSTPROCESS_QA_PROGRESSIVE: |
+  Based on the following document part and the previous answer based on previous document parts, please provide an updated comprehensive answer to the query.
+
+  New document part:
+  <document_part>
+  {part}
+  </document_part>
+
+
+  Previous answer based on previous document parts:
+  <previous_answer>
+  {previous_answer}
+  </previous_answer>
+
+  Query:
+  <query>
+  {query}
+  </query>
+
+  Please integrate the information from the new document part with the previous answer to provide a more complete and accurate response. If the new information contradicts the previous answer, please clarify and provide the most accurate information.
+
+POSTPROCESS_QA_FIRST: |
+  Based on the following document part, please answer the query.
+
+  Document part:
+  <document_part>
+  {part}
+  </document_part>
+
+  Query:
+  <query>
+  {query}
+  </query>
+
+  Please provide a comprehensive answer based on the information available in this document part.
+
+POSTPROCESS_QA_SHORT: |
+  Based on the following document content, please answer the query.
+
+  Document content:
+  <document_content>
+  {result}
+  </document_content>
+
+  Query:
+  <query>
+  {query}
+  </query>
+
+  Please provide a comprehensive answer based on the information available in the document.
+
+FINAL_QA: |
+  Based on the following webpage content, please answer the query accurately and comprehensively.
+
+  Webpage content:
+  <content>
+  {content}
+  </content>
+
+  Query:
+  <query>
+  {query}
+  </query>
+
+  Please provide a detailed answer based on the information available in the webpage content. If the content doesn't contain enough information to answer the query, please indicate what information is missing.

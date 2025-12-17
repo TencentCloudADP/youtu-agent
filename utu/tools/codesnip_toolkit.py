@@ -121,7 +121,17 @@ class CodesnipToolkit(AsyncBaseToolkit):
         """A tool for executing code.
         """
         # Extract code from markdown code blocks if present
-        code = self._extract_code_from_markdown(code)
+        code = str(self._extract_code_from_markdown(code))
+
+        # NOTE: some script may not explicitly print result, we need to add a print statement to the end of the script
+        lines = code.split("\n")
+        for i, line in reversed(list(enumerate(lines))):
+            if line == "":
+                continue
+            if not lines[i].startswith("print"):
+                lines[i] = f"print({line})"
+            break
+        code = "\n".join(lines)
 
         # Only expose `code` in the tool schema; internally we fix language to python.
         language = "python"

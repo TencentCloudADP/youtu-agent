@@ -17,6 +17,11 @@ from .user_interaction_toolkit import UserInteractionToolkit
 from .utils import get_tools_map as get_tools_map, get_tools_schema as get_tools_schema, register_tool as register_tool
 from .video_toolkit import VideoToolkit
 from .wikipedia_toolkit import WikipediaSearchTool
+from .wikilocal_toolkit import WikiToolkit
+from .document_processing_toolkit import DocumentProcessingToolkit
+
+
+
 
 TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "search": SearchToolkit,
@@ -26,6 +31,8 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "github": GitHubToolkit,
     "arxiv": ArxivToolkit,
     "wikipedia": WikipediaSearchTool,
+    "wikilocal": WikiToolkit,
+    "extract_web_content": DocumentProcessingToolkit,
     "codesnip": CodesnipToolkit,
     "bash": BashToolkit,
     "python_executor": PythonExecutorToolkit,
@@ -36,6 +43,7 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "memory_simple": SimpleMemoryToolkit,
     "user_interaction": UserInteractionToolkit,
 }
+
 
 
 def get_toolkits_map(names: list[str] | None = None) -> dict[str, AsyncBaseToolkit]:

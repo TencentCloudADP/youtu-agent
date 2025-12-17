@@ -1,0 +1,10 @@
+name: wikilocal
+mode: builtin
+activated_tools: null
+config:
+    num_workers: 120
+    rate_limit: 120
+    timeout: 90
+    enable_global_rate_limit: true
+    retrieval_service_url: ${oc.env:WIKILOCAL_RETRIEVAL_SERVICE_URL}
+

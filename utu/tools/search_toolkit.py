@@ -104,14 +104,17 @@ class SearchToolkit(AsyncBaseToolkit):
         result = f"Summary: {res_summary}\n\nRelated Links: {res_links}"
         return result
 
+
     async def _qa(self, content: str, query: str) -> str:
         template = TOOL_PROMPTS["search_qa"].format(content=content, query=query)
         return await self.llm.query_one(
             messages=[{"role": "user", "content": template}], **self.config.config_llm.model_params.model_dump()
         )
 
+
     async def _extract_links(self, url: str, content: str, query: str) -> str:
         template = TOOL_PROMPTS["search_related"].format(url=url, content=content, query=query)
         return await self.llm.query_one(
             messages=[{"role": "user", "content": template}], **self.config.config_llm.model_params.model_dump()
         )
+

@@ -6,7 +6,8 @@ config:
   # search config
   # - `JINA_API_KEY` (Optional) for jina. Ref: https://jina.ai/
   # - `SERPER_API_KEY` is required for google. Ref: https://serper.dev/
-  search_engine: google  # google | jina | baidu | duckduckgo
+  # search_engine: google  # google | jina | baidu | duckduckgo
+  search_engine: duckduckgo
   search_params: {}  # {"gl": "cn", "hl": "zh-cn"}  # search params for google & jina
   search_banned_sites: []
 
