@@ -201,10 +201,11 @@ Previous Steps (context): {previous_steps}"""
 
 
 TOOLKIT_NAME_TO_TOOLS = {
-    # "search": ["search", "web_qa"],
+    #### "search": ["search", "web_qa"],
+    #### "python_executor": ["execute_python_code"],
+    "search": ["search_web"],
     "extract_web_content": ["extract_web_content"],
-    # "wikilocal": ["search_wiki"],
-    # "python_executor": ["execute_python_code"],
+    "wikilocal": ["search_wiki"],
     "codesnip": ["code_interpreter"],
 }
 

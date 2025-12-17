@@ -83,6 +83,30 @@ class SearchToolkit(AsyncBaseToolkit):
         return res
 
     @register_tool
+    async def search_web(self, query: str, num_results: int = 5) -> dict:
+        """web search to gather information from the web.
+
+        Tips:
+        1. search query should be concrete and not vague or super long
+        2. try to add Google search operators in query if necessary,
+        - " " for exact match;
+        - -xxx for exclude;
+        - * wildcard matching;
+        - filetype:xxx for file types;
+        - site:xxx for site search;
+        - before:YYYY-MM-DD, after:YYYY-MM-DD for time range.
+
+        Args:
+            query (str): The query to search for.
+            num_results (int, optional): The number of results to return. Defaults to 5.
+        """
+        # https://serper.dev/playground
+        logger.info(f"[tool] search: {oneline_object(query)}")
+        res = await self.search_engine.search(query, num_results)
+        logger.info(oneline_object(res))
+        return res
+
+    @register_tool
     async def web_qa(self, url: str, query: str) -> str:
         """Ask question to a webpage, you will get the answer and related links from the specified url.
 
