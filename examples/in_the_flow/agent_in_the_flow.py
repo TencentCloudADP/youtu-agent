@@ -11,6 +11,7 @@ import itertools
 from copy import deepcopy
 import json
 from agents import FunctionTool, trace
+from agents.models.chatcmpl_converter import Converter
 
 from utu.agents import LLMAgent, SimpleAgent
 from utu.config import ConfigLoader
@@ -231,7 +232,7 @@ async def get_tools(selected_tool_name: list[str]) -> list[FunctionTool]:
 
 
 
-async def summarize_memory(query, memory_evolver, memory, window_size=3):
+async def summarize_memory(query, memory_evolver, system_prompt, memory, window_size=3):
     """
     Summarize your previous steps in the memory
     """
@@ -243,12 +244,18 @@ async def summarize_memory(query, memory_evolver, memory, window_size=3):
         summaryagent_res = await memory_evolver.run(_input)
         summaryagent_output = parse_summarizer_response(response_text=summaryagent_res.final_output)
         assert all(k in summaryagent_output for k in ["summary"])
+        # ---------------------------   包装memory输出内容 --------------------------- #
+        messages_memory = Converter.items_to_messages(summaryagent_res.to_input_list())
         summary_dict[f"Step_1-Step_{num_total_steps - window_size}"] = summaryagent_output["summary"]
-    
+        messages_memory.insert(0, {"role": "system", "content": system_prompt})
+    else:
+        messages_memory = []
+
     memory_complete = memory[-window_size:]
     for mem_idx, mem in enumerate(memory_complete):
         summary_dict[f"Step_{num_total_steps - window_size + mem_idx + 1}"] = mem
-    return summary_dict
+    return messages_memory, summary_dict
+
 
 
 
@@ -262,18 +269,29 @@ async def main_agent_loop(query: str):
         memory_evolver = LLMAgent(model_config=model_config, name="custom_memory_evolver", instructions=P_MEMORY_EVOLVER)
 
         max_turns = 10
-        available_tools = list(itertools.chain.from_iterable(TOOLKIT_NAME_TO_TOOLS.values()))
+        available_tools_names = list(itertools.chain.from_iterable(TOOLKIT_NAME_TO_TOOLS.values()))
+        available_tools_schemas = await get_tools(available_tools_names)
+        available_tools = []
+        for available_tool_schema_idx, available_tool_schema in enumerate(available_tools_schemas):
+            tool_str = f"<tool{available_tool_schema_idx+1}>\nname: {available_tool_schema.name}\ndescription: {available_tool_schema.description}\n</tool{available_tool_schema_idx+1}>\n"
+            available_tools.append(tool_str)
+        available_tools = "\n\n" + "\n".join(available_tools) + "\n\n"
         print("> Available tools:", available_tools)
         previous_steps = []  # memory
         stop_flag = False
-
+        # message turn by turn
+        messages_by_turns = []
         print(f"--- Starting agent loop ---\n{query}\n")
+
         for i in range(max_turns):
+            messages_current_turn = {}
             if stop_flag:
                 break
             print(f"--- Turn {i + 1} ---")
             # ---------------------------   首先处理memory --------------------------- #
-            mem_history_dict = await summarize_memory(query, memory_evolver, previous_steps, window_size=3)
+            messages_memory, mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=3)
+            # 无tools
+            messages_current_turn["memory"] = {"tools":[], "messages": messages_memory}
             current_step = {}
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
             # import pdb;pdb.set_trace();
@@ -281,43 +299,59 @@ async def main_agent_loop(query: str):
             _input = T_PLANNER.format(query=query, available_tools=available_tools, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
             planner_res = await planner.run(_input)
             planner_output = parse_planner_response(response_text=planner_res.final_output)
-            print("> Planner output:", planner_output)
-            # import pdb;pdb.set_trace();
+            # ---------------------------   包装planner输出内容 --------------------------- #
+            messages_planner = Converter.items_to_messages(planner_res.to_input_list())
+            messages_planner.insert(0, {"role": "system", "content": P_PLANNER})
+            # 无tools
+            messages_current_turn["planner"] = {"tools": [], "messages": messages_planner}
+            print("> Planner output:", messages_planner)
             assert all(k in planner_output for k in ["justification", "context", "subgoal", "tools"])
-            # planner输出->历史队列
+            # ---------------------------   planner输出->历史队列 --------------------------- #
             current_step["subgoal"] = planner_output["subgoal"]
             current_step["tools"] = planner_output["tools"]
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
             # ---------------------------   执行tool executor --------------------------- #
-            model = AgentsUtils.get_agents_model(**model_config.model_provider.model_dump()),
+            model = AgentsUtils.get_agents_model(**model_config.model_provider.model_dump())
             tools = await get_tools(planner_output["tools"])
-            print("> Planner selected tools:", tools)
-            subagent = SimpleAgent(model=model, name="toolexecutor", instructions=None, tools=tools, tool_use_behavior="stop_on_first_tool")
+            # ---------------------------   包装tools json格式 --------------------------- #
+            tools_schema = []
+            for tool in tools:
+                if isinstance(tool, FunctionTool):
+                    tool_schema_params = tool.params_json_schema
+                    tool_schema = {
+                        "type": "function",
+                        "function":{
+                            "name": tool.name,
+                            "description": tool.description,
+                            "parameters": tool_schema_params
+                        }
+                    }
+                    tools_schema.append(tool_schema)
+            print("> Planner selected tools:", tools_schema)
+            subagent = SimpleAgent(model=model, name="tool_executor", instructions=None, tools=tools, tool_use_behavior="stop_on_first_tool")
             _input = T_SUBAGENT.format(task=planner_output["subgoal"], context=planner_output["context"])
             subagent_res = await subagent.run(_input)
             subagent_output = subagent_res.final_output
-            sub_agent_messages = subagent_res.to_input_list()
-            # import pdb;pdb.set_trace();
-            sub_agent_messages_tools = [m for m in sub_agent_messages if ("type" in m) and (m["type"] in ["function_call", "function_call_output"])]
-            sub_agent_messages_tools_woid = []
-            for m in sub_agent_messages_tools:
-                if "id" in m:
-                    m_woid = deepcopy(m)
-                    m_woid.pop("id")
-                else:
-                    m_woid = m
-                sub_agent_messages_tools_woid.append(m_woid)
-            # tool executor输出->历史队列
-            current_step["tool_calls_and_responses"] = sub_agent_messages_tools_woid
+            # ---------------------------   包装tools输出内容 --------------------------- #
+            sub_agent_messages = Converter.items_to_messages(subagent_res.to_input_list())
+            # 有tools
+            messages_current_turn["tool_executor"] = {"tools": tools_schema, "messages": sub_agent_messages}
+            sub_agent_messages_tools = [m for m in sub_agent_messages if ("role" in m) and (m["role"] in ["assistant", "tool"])]
+            # ---------------------------   tool executor输出->历史队列 --------------------------- #
+            current_step["tool_calls_and_responses"] = sub_agent_messages_tools
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
-            print("> Tool executor output:", sub_agent_messages_tools_woid)
+            print("> Tool executor output:", sub_agent_messages_tools)
             # ---------------------------   执行verifier --------------------------- #
             _input = T_VERIFIER.format(query=query, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
             verifier_res = await verifier.run(_input)
             verifier_output = parse_verifier_response(response_text=verifier_res.final_output)
-            # import pdb;pdb.set_trace();
             assert all(k in verifier_output for k in ["justification", "conclusion"])
-            # verifier输出->历史队列
+            # ---------------------------   包装verifier输出内容 --------------------------- #
+            verifier_messages = Converter.items_to_messages(verifier_res.to_input_list())
+            verifier_messages.insert(0, {"role": "system", "content": P_VERIFIER})
+            # 无tools
+            messages_current_turn["verifier"] = {"tools": [], "messages": verifier_messages}
+            # ---------------------------   verifier输出->历史队列 --------------------------- #
             current_step["verification_status"] = verifier_output["justification"]
             current_step["final_determination"] = verifier_output["conclusion"]
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
@@ -326,6 +360,7 @@ async def main_agent_loop(query: str):
                 # 停止下一轮
                 stop_flag = True
             previous_steps.append(current_step)
+            messages_by_turns.append(messages_current_turn)
 
         if stop_flag:
             print("--- Early stop triggered by Stop flag ---")
@@ -333,13 +368,18 @@ async def main_agent_loop(query: str):
             print("--- Max turns reached ---")
         # ---------------------------   执行answerer --------------------------- #
         # 存储所有历史记录 直接返回
-        mem_history_dict = await summarize_memory(query, memory_evolver, previous_steps, window_size=len(previous_steps))
+        mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=len(previous_steps))
         _input = T_ANSWERER.format(query=query, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
         answerer_res = await answerer.run(_input)
         answerer_res_output = parse_answerer_response(response_text=answerer_res.final_output)
         assert all(k in answerer_res_output for k in ["summary", "answer"])
+        # ---------------------------   包装answerer输出内容 --------------------------- #
+        answerer_messages = Converter.items_to_messages(answerer_res.to_input_list())
+        answerer_messages.insert(0, {"role": "system", "content": P_ANSWERER})
+        # 无tools
+        messages_by_turns.append({"answerer": {"tools": [], "messages": answerer_messages}})
         print("> Final Answer:", answerer_res_output)
-        return answerer_res_output["answer"]
+        return messages_by_turns, answerer_res_output["answer"]
 
 
 
