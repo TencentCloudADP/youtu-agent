@@ -449,6 +449,9 @@ To provide current weather information for Tokyo, web search is required, but it
     # query = "What is the middle name of Donald Trump?"
     query = "What is the weather in Shanghai now?"
     print("Question:\n", query)
-    print("Answer:\n", asyncio.run(main_agent_loop(query)))
-
+    messages_by_turns, final_answer = asyncio.run(main_agent_loop(query))
+    print("Answer:\n", final_answer)
+    save_jsonl_path = "/cfs_turbo/yuleiqin/Research/youtu-agent/examples/in_the_flow/debug.jsonl"
+    with open(save_jsonl_path, "w") as fw:
+        fw.write(json.dump(messages_by_turns, ensure_ascii=False)+"\n")
 
