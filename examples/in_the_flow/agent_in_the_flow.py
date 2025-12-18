@@ -453,5 +453,5 @@ To provide current weather information for Tokyo, web search is required, but it
     print("Answer:\n", final_answer)
     save_jsonl_path = "/cfs_turbo/yuleiqin/Research/youtu-agent/examples/in_the_flow/debug.jsonl"
     with open(save_jsonl_path, "w") as fw:
-        fw.write(json.dump(messages_by_turns, ensure_ascii=False)+"\n")
+        fw.write(json.dumps(messages_by_turns, ensure_ascii=False)+"\n")
 
