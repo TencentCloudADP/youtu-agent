@@ -5,8 +5,9 @@ This module is used to define the PPT template pydantic models.
 import logging
 import traceback
 import uuid
+import random
 import os
-from typing import Any, Literal, Tuple
+from typing import Any, Literal, Tuple, Dict, List, Union, Optional
 
 import requests
 import numpy as np
@@ -33,7 +34,7 @@ class Item(BaseModel):
 
 class TextContent(BaseContent):
     content_type: Literal["text"] = "text"
-    paragraph: list[Paragraph] | str
+    paragraph: Union[List[Paragraph], str]
 
 
 class BasicImage(BaseModel):
@@ -43,14 +44,14 @@ class BasicImage(BaseModel):
 class ImageContent(BaseContent):
     content_type: Literal["image"] = "image"
     image_url: str  # absolute url
-    caption: str | None = None  # be very concise within 20 words
+    caption: Optional[str] = None  # be very concise within 20 words
 
 
 class TableContent(BaseContent):
     content_type: Literal["table"] = "table"
-    header: list[str]
-    rows: list[list[str]]
-    caption: str | None = None  # be very concise within 20 words
+    header: List[str]
+    rows: List[List[str]]
+    caption: Optional[str] = None  # be very concise within 20 words
     n_rows: int  # no more than 7
     n_cols: int  # no more than 10
 
@@ -63,12 +64,12 @@ class FontAwesomeIcon(BaseModel):
 class PageConfig:
     """Configuration loader for page templates from YAML"""
 
-    def __init__(self, config: dict[str, Any]):
+    def __init__(self, config: Dict[str, Any]):
         self.type_map = {}
         self.pages = {}
         self._load_config(config)
 
-    def _load_config(self, config: dict[str, Any]):
+    def _load_config(self, config: Dict[str, Any]):
         """Load configuration from YAML config"""
 
         # Load type_map
@@ -92,7 +93,7 @@ class PageConfig:
             page_key = key
             self.pages[page_key] = value
 
-    def render(self, slide, page_json: dict[str, Any], prs):
+    def render(self, slide, page_json: Dict[str, Any], prs):
         """Render slide based on page configuration and data"""
         page_type = page_json.get("type", "")
         logging.info(f"===Rendering page type: {page_type}===")
@@ -419,7 +420,12 @@ def handle_font_awesome_icon(icon: FontAwesomeIcon, target_shape, slide, prs):
     from .fa_to_codepoint import fa_2_codepoint
     from .utils import get_fill_rgb
     
-    codepoint = fa_2_codepoint.get(icon["icon_name"], 61817)
+    # random icons: [star, "!", smile face, "*", thumb up, "v"]
+    RANDOM_ICONS = [61445, 61546, 61720, 61545, 61796, 61754]
+
+    codepoint = fa_2_codepoint.get(icon["icon_name"])
+    if codepoint is None:
+        codepoint = random.choice(RANDOM_ICONS)
     
     target_color = get_fill_rgb(target_shape, prs)
     if not target_color:

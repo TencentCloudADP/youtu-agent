@@ -234,8 +234,8 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
             "Item": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string", "maxLength": 15},
-                    "content": {"type": "string", "maxLength": 200, "minLength": 40},
+                    "title": {"type": "string", "maxLength": 12},
+                    "content": {"type": "string", "maxLength": 100, "minLength": 20},
                 },
                 "required": ["title", "content"],
                 "additionalProperties": False,
