@@ -1,0 +1,15 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+  name: browser-use
+  instructions: |-
+    You are a helpful browser agent. Try your best to answer user's question.
+
+env:
+  name: browser_e2b
+
+context_manager:
+  name: env

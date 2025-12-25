@@ -12,12 +12,12 @@ orchestrator_config:
   name: SVGGeneratorAgent
   add_chitchat_subagent: false
   additional_instructions: |-
-    Your main object is generating SVG code according to user's request. So,
+    Your ultimate object is generating SVG code according to user's request. So,
     - If user's request is not clear enough, use the ChitchatAgent to help clarify user's request. (If available)
-    - Else, use the SVGGeneratorAgent to generate SVG code after SearchAgent provides information.
+    - Once the user's intention is clear, use the SearchAgent to gather necessary information if needed, then use the SVGGeneratorAgent to generate SVG to show the result.
 
 orchestrator_workers_info:
   - name: SearchAgent
-    description: Performs focused, in-depth information retrieval. Excels at locating reliable sources, synthesizing knowledge from multiple references, and answering research-oriented queries.
+    description: Search for useful information from the web.
   - name: SVGGenerator
-    description: Creates an exquisite SVG card.
+    description: Create an SVG card to show the research result to the user.

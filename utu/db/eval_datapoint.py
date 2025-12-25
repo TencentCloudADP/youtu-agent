@@ -55,6 +55,7 @@ class EvaluationSample(UTUBaseModel, SQLModel, table=True):
     judged_response: str | None = Field(default=None)
     reasoning: str | None = Field(default=None)
     correct: bool | None = Field(default=None)
+    reward: float | None = Field(default=None)  # 0-1
     confidence: int | None = Field(default=None)
     # id
     exp_id: str = Field(default="default")
@@ -78,6 +79,7 @@ class EvaluationSample(UTUBaseModel, SQLModel, table=True):
             "trajectories",
             "judged_response",
             "correct",
+            "reward",
             "confidence",
         ]
         return {k: getattr(self, k) for k in keys if getattr(self, k) is not None}

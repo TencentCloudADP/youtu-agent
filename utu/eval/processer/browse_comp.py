@@ -34,7 +34,7 @@ class BrowseCompZHProcesser(BrowseCompProcesser):
     def calculate_metrics(self, samples: list[Datapoint]) -> dict:
         """Calculate metrics from the judged data."""
         return {
-            **MetricsUtils.calculate_overall_metrics(samples),
+            **MetricsUtils.calculate_pass_at_k_metrics(samples, k=self.config.pass_k),
             **MetricsUtils.calculate_calibration(samples),
-            **MetricsUtils.calculate_level_metrics(samples),
+            **MetricsUtils.calculate_level_pass_at_k_metrics(samples, k=self.config.pass_k),
         }

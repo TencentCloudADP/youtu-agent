@@ -6,6 +6,7 @@ from .base_match_processor import BaseMatchProcesser as BaseMatchProcesser
 from .base_processor import BaseProcesser
 from .browse_comp import BrowseCompProcesser as BrowseCompProcesser, BrowseCompZHProcesser as BrowseCompZHProcesser
 from .gaia import GAIAProcesser as GAIAProcesser
+from .training_free_grpo_processor import TrainingFreeGRPOProcesser as TrainingFreeGRPOProcesser
 from .web_walker import WebWalkerQAProcesser as WebWalkerQAProcesser
 from .xbench import XBenchProcesser as XBenchProcesser
 

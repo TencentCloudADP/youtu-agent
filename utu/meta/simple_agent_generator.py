@@ -19,33 +19,10 @@ from ..agents import SimpleAgent
 from ..agents.common import DataClassWithStreamEvents, QueueCompleteSentinel
 from ..config import ConfigLoader
 from ..tools import TOOLKIT_MAP, UserInteractionToolkit
-from ..tools.utils import get_mcp_tools_schema, get_tools_schema
+from ..tools.utils import AgentsMCPUtils, get_tools_schema
 from ..utils import DIR_ROOT, FileUtils, get_logger
 
 logger = get_logger(__name__)
-
-TOOL_SELECTION_TEMPLATE = """<available_tools>
-{available_tools}
-</available_tools>
-<requirement>
-{requirement}
-</requirement>"""
-
-CONFIG_TEMPLATE = """
-# @package _global_
-defaults:
-  - /model/base@model
-{toolkits_includes}
-  - _self_
-
-toolkits:
-{toolkits_configs}
-
-agent:
-  name: {agent_name}
-  instructions: |
-{instructions}
-"""
 
 
 @dataclass
@@ -70,14 +47,14 @@ def add_indented_lines(lines: str | list[str], indent: int = 2) -> str:
 
 class SimpleAgentGenerator:
     def __init__(self, ask_function=None, mode="local"):
-        self.jinja_env = FileUtils.get_jinja_env("meta")
+        self.prompts = FileUtils.load_prompts("meta/simple_agent_generator.yaml")
         self.output_dir = DIR_ROOT / "configs/agents/generated"
         self.output_dir.mkdir(exist_ok=True)
 
         self.mode = mode  # local | webui  # NOTE: it is not used now!
         self._initialized = False
         self.ask_function = ask_function
-        self.final_answer_call_id = None
+        self.toolkit_name_mapping = {}
 
     async def build(self):
         if self._initialized:
@@ -88,21 +65,21 @@ class SimpleAgentGenerator:
 
         self.agent_1 = SimpleAgent(
             name="clarification_agent",
-            instructions=self.jinja_env.get_template("requirements_clarification.j2").render(),
+            instructions=self.prompts["REQUIREMENT_CLARIFICATION_SP"],
             tools=self.interaction_toolkit.get_tools_in_agents(),
             tool_use_behavior=StopAtTools(stop_at_tool_names=["final_answer"]),
         )
         self.agent_2 = SimpleAgent(
             name="tool_selection_agent",
-            instructions=self.jinja_env.get_template("tools_selection.j2").render(),
+            instructions=self.prompts["TOOL_SELECTION_SP"],
         )
         self.agent_3 = SimpleAgent(
             name="instructions_generation_agent",
-            instructions=self.jinja_env.get_template("instructions_generation.j2").render(),
+            instructions=self.prompts["INSTRUCTIONS_GENERATION_SP"],
         )
         self.agent_4 = SimpleAgent(
             name="name_generation_agent",
-            instructions=self.jinja_env.get_template("name_generation.j2").render(),
+            instructions=self.prompts["NAME_GENERATION_SP"],
         )
         self._initialized = True
 
@@ -150,9 +127,12 @@ class SimpleAgentGenerator:
         toolkits_includes = []
         toolkits_configs = []
         for toolkit_name, tool_names in task_recorder.selected_tools.items():
-            toolkits_includes.append(f"- /tools/{toolkit_name}@toolkits.{toolkit_name}")
+            # Use original path (e.g., mcp/memory) instead of sanitized name (mcp_memory)
+            toolkits_includes.append(
+                f"- /tools/{self.toolkit_name_mapping.get(toolkit_name, toolkit_name)}@toolkits.{toolkit_name}"
+            )
             toolkits_configs.append(f"{toolkit_name}: {json.dumps({'activated_tools': tool_names})}")
-        config = CONFIG_TEMPLATE.format(
+        config = self.prompts["CONFIG_TEMPLATE"].format(
             agent_name=task_recorder.name,
             instructions=add_indented_lines(task_recorder.instructions, 4),
             toolkits_includes=add_indented_lines(toolkits_includes, 2),
@@ -188,19 +168,22 @@ class SimpleAgentGenerator:
                 case "builtin":
                     tools_schema = get_tools_schema(TOOLKIT_MAP[toolkit_name])
                 case "mcp":
-                    tools_schema = await get_mcp_tools_schema(config)
+                    tools_schema = await AgentsMCPUtils.get_mcp_tools_schema(config)
                 case _:
                     raise ValueError(f"Unsupported toolkit mode: {config.mode}")
             tools_schema_by_toolkit[toolkit_name] = tools_schema
         tools_descs = []
         tool_to_toolkit_name = {}  # NOTE: toolkit_name should be sanitized, e.g. mcp/memory -> mcp_memory
         for toolkit_name, tools_schema in tools_schema_by_toolkit.items():
-            toolkit_name = toolkit_name.replace("/", "_")
+            # Sanitize toolkit name for use as dictionary key and YAML identifier
+            sanitized_name = toolkit_name.replace("/", "_")
+            # Preserve original path for config file references
+            self.toolkit_name_mapping[sanitized_name] = toolkit_name
             tools_descs.extend(f"- {tool.name}: {tool.description}" for tool in tools_schema.values())
-            tool_to_toolkit_name.update({tool.name: toolkit_name for tool in tools_schema.values()})
+            tool_to_toolkit_name.update({tool.name: sanitized_name for tool in tools_schema.values()})
         logger.info(f"Available tools: {tool_to_toolkit_name}")
         tools_str = "\n".join(tools_descs)
-        query = TOOL_SELECTION_TEMPLATE.format(
+        query = self.prompts["TOOL_SELECTION_TEMPLATE"].format(
             available_tools=tools_str,
             requirement=task_recorder.requirements,
         )
@@ -222,7 +205,7 @@ class SimpleAgentGenerator:
             task_recorder.instructions = result.final_output
 
     async def step4(self, task_recorder: GeneratorTaskRecorder) -> None:
-        """Generate instructions for the agent."""
+        """Generate name for the agent."""
         async with self.agent_4 as agent:
             result = agent.run_streamed(task_recorder.requirements)
             await self._process_streamed(result, task_recorder)

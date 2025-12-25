@@ -23,10 +23,10 @@ from agents.mcp import MCPServer
 from ..config import AgentConfig, ConfigLoader, ToolkitConfig
 from ..context import BaseContextManager, build_context_manager
 from ..db import DBService, TrajectoryModel
-from ..env import BaseEnv, get_env
+from ..env import BaseEnv, E2BEnv, get_env
 from ..hooks import get_run_hooks
 from ..tools import TOOLKIT_MAP, AsyncBaseToolkit
-from ..tools.utils import get_mcp_server
+from ..tools.utils import AgentsMCPUtils
 from ..utils import AgentsUtils, get_logger, load_class_from_file
 from .common import QueueCompleteSentinel, TaskRecorder
 
@@ -55,6 +55,8 @@ class SimpleAgent:
             self.config.agent.name = name
         if instructions:
             self.config.agent.instructions = instructions
+        if self.config.stop_at_tool_names:
+            tool_use_behavior = StopAtTools(stop_at_tool_names=self.config.stop_at_tool_names)
         self.model = self._get_model(self.config, model)
         self.model_settings = self._get_model_settings(self.config, model_settings)
         self.tools: list[Tool] = tools or []
@@ -174,13 +176,19 @@ class SimpleAgent:
 
     async def _load_toolkit(self, toolkit_config: ToolkitConfig) -> AsyncBaseToolkit | MCPServer:
         if toolkit_config.mode == "builtin":
-            return await self._load_builtin_toolkit(toolkit_config)
+            toolkit = await self._load_builtin_toolkit(toolkit_config)
         elif toolkit_config.mode == "customized":
-            return await self._load_customized_toolkit(toolkit_config)
+            toolkit = await self._load_customized_toolkit(toolkit_config)
         elif toolkit_config.mode == "mcp":
-            return await self._load_mcp_server(toolkit_config)
+            toolkit = await self._load_mcp_server(toolkit_config)
         else:
             raise ValueError(f"Unknown toolkit mode: {toolkit_config.mode}")
+
+        if toolkit_config.env_mode == "e2b":
+            # setup e2b sandbox for toolkits that need it
+            assert isinstance(self.env, E2BEnv), "E2B env is required for e2b toolkit!"
+            toolkit.setup_e2b_env(self.env)
+        return toolkit
 
     async def _load_builtin_toolkit(self, toolkit_config: ToolkitConfig) -> AsyncBaseToolkit:
         logger.info(f"Loading builtin toolkit `{toolkit_config.name}` with config {toolkit_config}")
@@ -198,7 +206,7 @@ class SimpleAgent:
 
     async def _load_mcp_server(self, toolkit_config: ToolkitConfig) -> MCPServer:
         logger.info(f"Loading MCP server `{toolkit_config.name}` with params {toolkit_config.config}")
-        mcp_server = get_mcp_server(toolkit_config)
+        mcp_server = AgentsMCPUtils.get_mcp_server(toolkit_config)
         server = await self._mcps_exit_stack.enter_async_context(mcp_server)
         self._mcp_servers.append(server)
         return server

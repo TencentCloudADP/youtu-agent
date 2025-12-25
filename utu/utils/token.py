@@ -1,6 +1,9 @@
-import tiktoken
+try:
+    import tiktoken
 
-_tokenizer = tiktoken.get_encoding("cl100k_base")
+    _tokenizer = tiktoken.get_encoding("cl100k_base")
+except ImportError:
+    pass
 
 
 class TokenUtils:

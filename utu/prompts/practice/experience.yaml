@@ -1,0 +1,333 @@
+SINGLE_ROLLOUT_SUMMARY_TEMPLATE_SP: |
+  Your ultimate goal is to help improve the working agent's performance by extracting useful experiences from its past trajectories, which should focus on the learning objective and will be used in the future to guide the agent's behavior. The working agent and learning objective are defined as follows:
+  <Working Agent Objective>
+  {{ agent_objective }}
+  </Working Agent Objective>
+  <Learning Objective>
+  {{ learning_objective }}
+  </Learning Objective>
+
+  Now, your task is to analyze a single trajectory of the agent's interactions, and extract detailed information about its actions, tool usage, reasoning, and outcomes at each step. Focus on how these elements relate to the learning objective, and identify any missed opportunities for improvement.
+  
+  <Your Input>
+  - Agent input: [The specific input that provided to the working agent]
+  - Ground Truth (Optional): [If available, provide the ground truth answer to help identify relevant information]
+  - Critique: [If available, provide the critique of the agent's response to help identify shortcomings]
+  - Trajectory: A JSON-like list of steps representing the agent's interactions, including user inputs, tool calls, and tool responses.
+  </Your Input>
+
+  <Task Instructions>
+  1. **Learning Objective Focus**: Keep the learning objective in mind throughout your analysis. You need to extract insights that will help the agent improve in this specific area. Learning objective does not equals to the working agent goal, so please distinguish them carefully.
+
+  2. **Extract Step-by-Step Details**: For each step in the trajectory, describing how it can be improved towards the learning objective. When the critique is available, use it to inform your analysis and provide details. For each step, extract the following information:
+    - **Action Taken**: What the agent did (e.g., called a tool, responded to user).
+    - **Tool Called**: If applicable, the name of the tool used (e.g., `search_google_api`, `web_qa`).
+    - **Tool Parameters**: The arguments passed to the tool (e.g., query strings, URLs).
+    - **Tool Results**: **Extract all data from the tool's return that may be relevant to the task** (e.g., dates, names, numbers, events), even if the agent did not use it. Do not summarize loosely; list specific values.
+    - **Agent's Reasoning**: Infer the agent's thought process or logic behind the action (e.g., why a specific tool was chosen, how results influenced next steps).
+    - **Potential Missed Information**: Note any task-relevant information in the tool results that the agent did not explicitly use or follow up on.
+
+  3. **Ensuring Relevance**: Prioritize information directly related to the agent's task. However, do not assume the agent’s actions are correct—extract everything that could be useful, even if the agent ignored it. Omit redundant or irrelevant details to maintain clarity.
+
+  4. **Summarize Logic and Flow**: Capture the agent's overall strategy, including how it iterates based on results, handles errors, and progresses toward the working agent goal.
+
+  5. **Output Format**: Provide a clear, structured summary of the trajectory. Most of contents should focus on how it could be improved towards the learning objective.
+  </Task Instructions>
+
+  <Output Requirements>
+  How to address learning objective, distinguishing it from the working agent's goal: [briefly description]
+
+  Execution Summary:
+  1. Step 1: 
+  - Tool call: [Function called] with params [parameters]
+  - Tool results: 
+    - [Result 1]
+    - [Result 2]
+    - ...
+  - Reasoning: [Agent's interpretation]
+  - Missed: [Any relevant information not used?]
+
+  2. Step 2: 
+  - Tool call: [Function called] with params [parameters]
+  - Tool results:
+    - [Result 1]
+    - [Result 2]
+    - ...
+  - Reasoning: [Agent's interpretation]
+  - Missed: [Any relevant information not used?]
+  ...
+
+  Key Findings:
+  - [Discovery 1 that addresses the detailed or general contents required by the learning objective]
+  - [Discovery 2 that addresses the detailed or general contents required by the learning objective]
+
+  Agent Response: [Brief summary of working agent's final output]
+
+  Overall Strategies: [the agent's approach, key decisions, and how it achieved (or failed) the task, focusing on those related to the learning objective and providing sufficient details.]
+  </Output Requirements>
+
+  <Language>
+  Use the same language as the input trajectory.
+  </Language>
+
+SINGLE_ROLLOUT_SUMMARY_TEMPLATE_UP: |
+  <Working Agent Input>
+  {{ question }}
+  </Working Agent Input>
+
+  <Ground Truth>
+  {{ answer }}
+  </Ground Truth>
+
+  <Critique>
+  {{ critique }}
+  </Critique>
+
+  <Trajectory
+  {{ trajectory }}
+  </Trajectory>
+
+  Follow the requirements to provide your output:
+
+SINGLE_QUERY_GROUP_ADVANTAGE_SP: |
+  Your ultimate goal is to help improve the working agent's performance by extracting useful experiences from its past trajectories, which should focus on the learning objective and will be used in the future to guide the agent's behavior. The working agent and learning objective are defined as follows:
+  <Working Agent Objective>
+  {{ agent_objective }}
+  </Working Agent Objective>
+  <Learning Objective>
+  {{ learning_objective }}
+  </Learning Objective>
+
+  Now, your task is to review the performance of the agent across multiple trajectories, and extract high-level experiences that can guide future behavior that align with the ultimate learning objective.
+
+  <Your Input>
+  - Agent Input: [The specific input task that provided to the working agent, where reward ranges from 0 to 1 with 1 being the best]
+  - Ground Truth (Optional): [If available, provide the ground truth answer to the agent input]
+  - Trajectories: A JSON-like list of multiple trajectories, each representing an attempt by the agent to solve the input task.
+  </Your Input>
+
+  <Task Instructions>
+  1. Evaluate each trajectory by comparing with the ground truth answers (if available) w.r.t. the learning objective:
+    - Identify which responses are better and which are worse
+    - Analyze the differences between successful and unsuccessful trajectories
+
+  2. For bad responses:
+    - Diagnose the root causes of failure (reasoning errors, knowledge gaps, misinterpretations, etc.)
+    - Extract specific failure patterns and details needed for achieving the learning objective
+
+  3. For good responses:
+    - Identify the key success factors and effective strategies w.r.t. the learning objective
+    - Document what made these approaches work well towards the learning objective
+
+  4. Extract generalized insights:
+    - Derive principles that apply to future agent inputs, focusing on how to improve the learning objective
+    - If an insight requires contextual preconditions to be universally valid, explicitly frame it as "When [condition], [strategy/principle]" to maintain applicability boundaries
+  </Task Instructions>
+
+  <Output Format>
+  Include corresponding tags (e.g., <Experiences>...</Experiences>) as follows to organize the output:
+  ```output
+  <Learning Objective Focus>
+    [briefly description on how to address learning objective, distinguishing it from the working agent's goal]
+  </Learning Objective Focus>
+
+  <Performance Assessment>
+    - Good Responses: [List of good responses with brief justifications w.r.t. learning objective]
+    - Bad Responses: [List of bad responses with brief justifications]
+  </Performance Assessment>
+
+  <Comparative Analysis>
+    [Directly contrast the good and bad trajectories w.r.t. learning objective. Highlight the most critical factors that differentiated successful responses from unsuccessful ones. This should be a comparative analysis.]
+  </Comparative Analysis>
+
+  <Pattern Identification>
+    [Key elements that led to success, and common pitfalls]
+  </Pattern Identification>
+
+  <Experiences>
+    [Extract AT MOST **{{ num_experiences }}** experiences that could guide future performance of the working agent, focusing on the learning objective]
+    1. [experience 1]
+    2. [experience 2]
+    ...
+  </Experiences>
+  ```
+  </Output Format>
+
+SINGLE_QUERY_GROUP_ADVANTAGE_UP: |
+  <Agent Input>
+  {{ question }}
+  </Agent Input>
+
+  <Ground Truth>
+  {{ answer }}
+  </Ground Truth>
+
+  <Trajectories>
+  {{ trajectories }}
+  </Trajectories>
+
+  Follow the requirements to provide your output structured as above.
+
+GROUP_EXPERIENCE_UPDATE_TEMPLATE_SP: |
+  Your ultimate goal is to help improve the working agent's performance by extracting useful experiences from its past trajectories, which should focus on the learning objective and will be used in the future to guide the agent's behavior. The working agent and learning objective are defined as follows:
+  <Working Agent Objective>
+  {{ agent_objective }}
+  </Working Agent Objective>
+  <Learning Objective>
+  {{ learning_objective }}
+  </Learning Objective>
+
+  Now, your task is to perform experience optimzation with four possible operations, given existing experiences and newly input experiences derived from recent agent trajectories.
+
+  <Your Input>
+  - Existing Experiences: A list of current experiences in the pool, each with a unique ID and content.
+  - New Experiences: A list of new experiences derived from recent agent trajectories.
+  </Your Input>
+
+  <Task Instructions>
+  1. **Focusing on Learning Objective**: Always ensure that any update should focus on the learning objective for improving the working agent.
+
+  2. **Valid operations**: You can perform four operations on the existing experience pool. For each new experience, compare it with all existing experiences and decide which operation to perform.
+
+  - **ADD**: If the new experience contains entirely new information that is not present in any existing experience, choose ADD. The system will assign a new ID automatically; you do not need to generate an ID.
+
+  - **UPDATE**: If the new experience refines, expands, or improves upon an existing experience in the pool, you must update the existing experience. Specifically:
+    - If the new experience conveys the same core information as an existing one but with additional details, update the existing experience to incorporate the new information while keeping the same ID. Synthesize the best aspects to create a more comprehensive but high-level version.
+    - If the new experience conflicts slightly or adds nuance, prefer UPDATE to enhance the existing experience, but **focus on the key insight**.
+    - However, if the information is identical or very similar without meaningful addition, do not update (choose NONE).
+
+  - **DELETE**: If the new experience directly contradicts an existing experience (e.g., provides opposing guidance or outdated information), or if it is deemed irrelevant or harmful, choose DELETE. You must specify the ID of the existing experience to delete.
+
+  - **NONE**: If the new experience is already fully covered by an existing experience, or if it is redundant, irrelevant, or does not add value, choose NONE and make no change.
+
+  3. The experience should be formatted as "Experience name: Brief description." where the name is a concise phrase (one or two words) and the description is a sentence to capture the essence and address the learning objective.
+
+  <Output Requirements>
+  You MUST output a single, well-formed JSON array. Each element in the array is a JSON object representing the decision for the corresponding new experience.
+  Each decision object MUST have the following structure:
+
+  ```json
+  {
+    "operation": "ADD | UPDATE | DELETE | NONE",
+    "id": "existing_experience_id_or_null", // Required only for UPDATE and DELETE. For ADD and NONE, set this to null.
+    "content": "Experience name: Brief description."
+  }
+  ```
+  
+  Note that the number of objects in the output array MUST exactly match the number of new experiences provided as input.
+  </Output Requirements>
+
+  <Example Output>
+  For example, if you received three new experiences, your output should look like this:
+
+  ```json
+  [
+    {
+      "operation": "ADD",
+      "id": null,
+      "content": "News recency: When users ask for recent news, prioritize recent sources and use time filters for time-sensitive queries."
+    },
+    {
+      "operation": "UPDATE",
+      "id": "exp_456",
+      "content": "Product comparison: Search for top models and compare key features."
+    },
+    {
+      "operation": "NONE",
+      "id": null,
+      "content": "URL verification: Always verify the URL of a website before clicking on a search result."
+    }
+  ]
+  ```
+  </Example Output>
+
+GROUP_EXPERIENCE_UPDATE_TEMPLATE_UP: |
+  <Existing Experiences>
+  {{ existing_experiences }}
+  </Existing Experiences>
+
+  <New Experiences>
+  {{ new_experiences }}
+  </New Experiences>
+
+  Follow the requirements to provide your output structured as above.
+
+BATCH_EXPERIENCE_UPDATE_TEMPLATE_SP: |
+  Your ultimate goal is to help improve the working agent's performance by extracting useful experiences from its past trajectories, which should focus on the learning objective and will be used in the future to guide the agent's behavior. The working agent and learning objective are defined as follows:
+  <Working Agent Objective>
+  {{ agent_objective }}
+  </Working Agent Objective>
+  <Learning Objective>
+  {{ learning_objective }}
+  </Learning Objective>
+
+  Now, your task is to merge and apply a batch of experience update operations derived from working agent trajectories. 
+  
+  <Your Input>
+  - Existing Experiences with related operations: A list of current experiences in the pool, each with a unique ID and content, including the corresponding candidate update operations from a batch of samples.
+  - Other proposed update operations from the batch that do not reference existing experiences.
+  </Your Input>
+
+  Instead of processing each new experience individually, you will receive a list of proposed update operations (each with operation type, ID if applicable, and content) from a batch of samples. Your goal is to combine and reconcile these operations into a consolidated set of updates to apply to the experience pool.
+
+  <Task Instructions>
+  1. **Focusing on Learning Objective**: Always ensure that any update should focus on the learning objective for improving the working agent.
+
+  2. **Valid operations**: You can perform four operations:
+  - ADD: Add a new experience to the pool.
+  - UPDATE: Update an existing experience in the pool.
+  - DELETE: Delete an existing experience from the pool.
+  - NONE: Make no change to the pool.
+
+  3. **Combining Operations**: You must analyze the batch of operations and produce a final list of decisions that represents the net effect of the batch. 
+    - For each existing experience ID, consider all proposed operations that reference that ID (UPDATE or DELETE).
+    - If there are multiple UPDATE operations for the same ID, synthesize them into a single UPDATE that extracts the core insight or common theme. Avoid simply concatenating details; instead, focus on creating a useful principle that contributes to the learning objective.
+    - If there is a DELETE operation for an ID, it overrides any UPDATE operations for that ID; so the net operation should be DELETE. DELETE takes precedence because it indicates the experience is invalid or outdated.
+    - If multiple ADD operations have similar or identical content, merge them into one ADD to avoid duplicates. When merging, ensure the resulting experience captures the essential insight without redundant details. If they are distinct and provide unique insights, keep them as separate ADD operations. Always ensure each added experience is applicable towards the learning objective.
+    - Handle conflicts: If operations conflict, resolve them by considering the context, reliability, and specificity of their content. Prioritize insights that are most applicable towards the learning objective. If some new experiences suggest one strategy and others suggest another, create a unified strategy that encompasses both if possible, or choose the most appropriate based on common sense and generality.
+
+  <Output Requirements>
+  You MUST output a single, well-formed JSON array. Each element in the array is a JSON object representing the decision for the corresponding new experience.
+  Each decision object MUST have the following structure:
+
+  ```json
+  {
+    "operation": "ADD | UPDATE | DELETE | NONE",
+    "id": "existing_experience_id_or_null", // Required only for UPDATE and DELETE. For ADD and NONE, set this to null.
+    "content": "Experience name: Brief description."
+  }
+  ```
+  
+  Note that the number of objects in the output array MUST exactly match the number of new experiences provided as input.
+  </Output Requirements>
+
+  <Example Output>
+  For example, if you received three new experiences, your output should look like this:
+
+  ```json
+  [
+    {
+      "operation": "ADD",
+      "id": null,
+      "content": "News recency: When users ask for recent news, prioritize recent sources and use time filters for time-sensitive queries."
+    },
+    {
+      "operation": "UPDATE",
+      "id": "exp_456",
+      "content": "Product comparison: Search for top models and compare key features."
+    },
+    {
+      "operation": "NONE",
+      "id": null,
+      "content": "URL verification: Always verify the URL of a website before clicking on a search result."
+    }
+  ]
+  ```
+  </Example Output>
+
+BATCH_EXPERIENCE_UPDATE_TEMPLATE_UP: |
+  <Experiences and Proposed Operations>
+  {{ experiences_and_operations }}
+  </Experiences and Proposed Operations>
+
+  Follow the requirements to provide your output structured as above.

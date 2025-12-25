@@ -19,24 +19,33 @@
 </p>
 
 
-`Youtu-Agent` 是一个灵活、高性能的框架，用于构建、运行和评估自主智能体。除了在基准测试中名列前茅，该框架还提供了强大的智能体能力，采用开源模型即可实现例如数据分析、文件处理、深度研究等功能。
+`Youtu-Agent` 是一个灵活、高性能的框架，用于构建、运行和评估自主智能体。除了在基准测试中名列前茅，该框架还提供了强大的智能体能力，采用开源模型即可实现例如数据分析、文件处理、深度研究等功能。此外，本框架也支持通过经验学习或者端到端训练来提升智能体能力。
 
 <img src="docs/assets/mascot.png" alt="Youtu-agent Logo" width="200" align="left" style="margin-right:20px;">
 
 主要亮点：
 - **验证性能**：在 WebWalkerQA 上达到 71.47% 的 pass@1，在 GAIA（纯文本子集）上达到 72.8% 的 pass@1，纯粹使用 `DeepSeek-V3` 系列模型（不使用 Claude 或 GPT），建立了强大的开源起点。
+- **自动化工具和智能体生成**：基于模块化设计和结构化配置体系，Youtu-Agent 支持通过 LLM 来自动生成工具和智能体，从而快速适配新的应用场景，减少人工配置开销。
+- **自动智能体经验学习**：通过 [Training-Free GRPO](https://arxiv.org/abs/2510.08191)，智能体可以通过历史的经验来持续地优化智能体能力，以极低成本提升性能。详见[智能体实践文档](https://tencentcloudadp.github.io/youtu-agent/practice/)。
+- **智能体训练**：Youtu-Agent 也支持对于智能体模型进行参数微调，通过端到端的 RL 训练提升模型能力。
 - **开源友好且成本敏感**：针对可访问、低成本部署进行了优化，不依赖封闭模型。
 - **实际用例**：开箱即用地支持 CSV 分析、文献综述、个人文件整理以及播客和视频生成等任务。（即将推出）
 - **灵活的架构**：基于 [openai-agents](https://github.com/openai/openai-agents-python) 构建，可兼容各种模型 API（从 `DeepSeek` 到 `gpt-oss`）、工具集成和框架实现。
-- **自动化与简洁性**：基于 YAML 的配置、自动智能体生成和简化的设置减少了手动开销。
 
 ## 🗞️ 新闻
 
+- 🚀 [2025-12-10] **Youtu-Agent x Agent-Lightning 训练集成！** 我们与 [Agent-Lightning](https://github.com/microsoft/agent-lightning/) 团队合作，在代码/数学和搜索环境下实现了高效的模型训练（ReTool、SearchR1）。通过 Youtu-Agent 的优化，分布式训练现在可以无缝扩展到 128 GPU 的多节点部署。详见 [rl/agl 分支](https://github.com/TencentCloudADP/youtu-agent/tree/rl/agl)。
+- 🎉 [2025-11-12] **Training-Free GRPO 已在主分支发布！** 由 [Training-Free Group Relative Policy Optimization](https://arxiv.org/abs/2510.08191) 驱动的智能体实践模块现已集成到主分支。无需微调即可以极低成本（约 8 美元）提升智能体性能。查看我们的[智能体实践文档](https://tencentcloudadp.github.io/youtu-agent/practice/)了解数学推理和网页搜索任务的使用方法和示例。
+- 📢 [2025-11-03] 新增示例：我们添加了 [**PPT 生成**](examples/ppt_gen/README.md)和 [**RAG**](configs/agents/examples/rag.yaml) 示例。
 - 🚀 [2025-10-10] [**Training-Free Group Relative Policy Optimization**](https://arxiv.org/abs/2510.08191)。DeepSeek-V3.2 的强化学习只需 8 美元？真的可以！Training-Free GRPO 让 DeepSeek-V3.2 保持冻结，仅用约 100 条样本学习 token 先验，把整次 RL 成本压到约 8 美元，并在数学与网页搜索任务上获得验证提升！代码分支 [training_free_GRPO](https://github.com/TencentCloudADP/youtu-agent/tree/training_free_GRPO) [[X 帖子](https://x.com/cai_cecilia47/status/1976558824640393559)]。
 - 🛠️ [2025-09-28] 自动智能体功能现已配套上线自动工具生成：描述所需能力，`Youtu-Agent` 即可完成工具构建。[[详情](https://tencentcloudadp.github.io/youtu-agent/auto_generation/)]。
+
+<details>
+<summary><b>📰 往期公告</b></summary>
 - 📺 [2025-09-09] 我们举办了一场直播，分享了 `Youtu-Agent` 的设计理念与基础用法。[[视频](https://www.bilibili.com/video/BV1mypqz4EvS)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNLgt3CbnxRWaYWnW4)]。
 - 🎁 [2025-09-02] [腾讯云国际站](https://www.tencentcloud.com/) 为 DeepSeek API 新用户提供 **300 万免费令牌**（**2025年9月1日 – 2025年10月31日**）。如果想在 `Youtu-Agent` 中使用 DeepSeek 模型，[点击免费试用](https://www.tencentcloud.com/document/product/1255/70381)！如需企业级智能体解决方案，也可查看 [智能体开发平台 ADP](https://adp.tencentcloud.com)。
 - 📺 [2025-08-28] 我们围绕新发布的 DeepSeek-V3.1 模型进行了直播分享，并介绍了如何在 `Youtu-Agent` 框架中使用该模型。[[视频](https://www.bilibili.com/video/BV1XwayzrETi/)] [[文档](https://doc.weixin.qq.com/doc/w3_AcMATAZtAPICNvcLaY5FvTOuo7MwF)]。
+</details>
 
 ## 🌟 基准性能
 
@@ -76,6 +85,28 @@
         <img src="https://img.youtube.com/vi/v3QQg0WAnPs/0.jpg" alt="Paper Analysis" width="420" height="236">
       </a>
       <br><strong>论文分析</strong><br>解析给定论文，进行分析，并整理相关文献以得出最终结果。
+    </td>
+  </tr>
+  <tr >
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>RAG</strong><br>通过集成 RAGFlow 服务的 RAG 示例。
+    </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <strong>PPT 生成</strong><br>根据给定内容生成 PPT 文件的示例。
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <video src="https://github.com/user-attachments/assets/4d74ef6f-7a84-4102-9666-0fbfe02e0d2f"
+             controls muted preload="metadata"
+             width="100%" height="300"
+             style="object-fit: cover; border-radius: 8px;"></video>
+    </td>
+    <td style="border: 1px solid black; padding: 10px; width: 50%; vertical-align: top;">
+      <video src="https://github.com/user-attachments/assets/91568e27-bf77-44d6-baa6-b178d2d88255"
+             controls muted preload="metadata"
+             width="100%" height="300"
+             style="object-fit: cover; border-radius: 8px;"></video>
     </td>
   </tr>
 </table>

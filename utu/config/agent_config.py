@@ -19,6 +19,8 @@ class ToolkitConfig(ConfigBaseModel):
 
     mode: Literal["builtin", "customized", "mcp"] = "builtin"
     """Toolkit mode."""
+    env_mode: Literal["local", "e2b"] = "local"
+    """Environment mode for the toolkit."""
     name: str | None = None
     """Toolkit name."""
     activated_tools: list[str] | None = None
@@ -66,6 +68,8 @@ class AgentConfig(ConfigBaseModel):
     """Toolkits config"""
     max_turns: int = 50
     """Max turns for simple agent. This param is derived from @openai-agents"""
+    stop_at_tool_names: list[str] | None = None
+    """Stop at tools for simple agent. This param is derived from @openai-agents"""
 
     # orchestra agent config
     planner_model: ModelConfigs = Field(default_factory=ModelConfigs)

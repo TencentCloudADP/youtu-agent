@@ -380,7 +380,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
         filename = f"{timestamp}_{file['filename']}"
         with open(os.path.join(self.workspace, filename), "wb") as f:
             f.write(file["body"])
-        self.write({"filename": filename})
+        self.write({"filename": os.path.join(self.workspace, filename)})
 
 
 class WebUIAgents:

@@ -2,6 +2,7 @@ import re
 
 from ..data import EvaluationSample as Datapoint
 from .base_llm_processor import BaseLLMJudgeProcesser
+from .utils import MetricsUtils
 
 
 class XBenchProcesser(BaseLLMJudgeProcesser):
@@ -11,49 +12,17 @@ class XBenchProcesser(BaseLLMJudgeProcesser):
 
     def calculate_metrics(self, samples: list[Datapoint]) -> dict:
         """Calculate metrics for XBench evaluation."""
-        # 1. calculate level metrics
-        level_bin = {}
-        invalid_count = 0
-        for item in samples:
-            level = item.level
-            if level not in level_bin:
-                level_bin[level] = {"correct": 0, "wrong": 0, "unknown": 0}
-            if item.judged_response == "invalid":
-                level_bin[level]["unknown"] += 1
-                invalid_count += 1
-                continue
-            if item.correct:
-                level_bin[level]["correct"] += 1
-            else:
-                level_bin[level]["wrong"] += 1
-        # calculate overall metrics
-        for _, counts in level_bin.items():
-            total = counts["correct"] + counts["wrong"]
-            if total > 0:
-                counts["accuracy"] = round(counts["correct"] / total * 100, 4)
-            else:
-                counts["accuracy"] = 0.0
-        # 2. calculate overall accuracy
+        # Calculate confidence metrics
         total = len(samples)
-        correct_count = sum(item.correct for item in samples)
-        incorrect_count = total - correct_count - invalid_count
-
-        # 3. Calculate confidence metrics
         for item in samples:
             if item.confidence is None:
                 item.confidence = 100 if item.judged_response == "Exact match" else 0
         confidence_scores = [item.confidence for item in samples if item.judged_response != "invalid"]
 
         return {
-            "Accuracy (%)": round(correct_count / total * 100, 2),
+            **MetricsUtils.calculate_pass_at_k_metrics(samples, k=self.config.pass_k),
             "Average Confidence (%)": round(sum(confidence_scores) / total, 2),
-            "Details": {
-                "correct": correct_count,
-                "wrong": incorrect_count,
-                "unknown": invalid_count,
-                "total": total,
-                "level_metrics": level_bin,
-            },
+            **MetricsUtils.calculate_level_pass_at_k_metrics(samples, k=self.config.pass_k),
         }
 
     def _parse_judge_response(self, response: str) -> dict:

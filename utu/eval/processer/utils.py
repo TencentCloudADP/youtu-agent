@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from ..data import EvaluationSample
 
 
@@ -50,6 +52,57 @@ class MetricsUtils:
         }
 
     @staticmethod
+    def calculate_pass_at_k_metrics(samples: list[EvaluationSample], k: int = 1) -> dict:
+        """Calculate pass@k metrics by grouping samples by raw_question
+
+        Args:
+            samples: List of evaluation samples
+            k: Number of attempts to consider.
+        """
+        # Group samples by raw_question (problem)
+        problem_to_scores = defaultdict(list)
+        for sample in samples:
+            # Skip invalid responses
+            if sample.judged_response == "invalid":
+                continue
+            # Convert correct boolean to score (1 for correct, 0 for incorrect)
+            score = 1 if sample.correct else 0
+            problem_to_scores[sample.raw_question].append(score)
+
+        # Use the common helper function
+        result = MetricsUtils._calculate_pass_at_k_for_problems(problem_to_scores, k)
+        return result
+
+    @staticmethod
+    def calculate_level_pass_at_k_metrics(samples: list[EvaluationSample], k: int = 1) -> dict:
+        """Calculate pass@k metrics by level, grouping samples by level and then by raw_question
+
+        Args:
+            samples: List of evaluation samples
+            k: Number of attempts to consider. If None, uses max attempts available for each level
+        """
+        # Group samples by level, then by raw_question (problem)
+        level_to_problems = defaultdict(lambda: defaultdict(list))
+        for sample in samples:
+            # Skip invalid responses
+            if sample.judged_response == "invalid":
+                continue
+            level = sample.level
+            # Convert correct boolean to score (1 for correct, 0 for incorrect)
+            score = 1 if sample.correct else 0
+            level_to_problems[level][sample.raw_question].append(score)
+
+        level_metrics = {}
+        for level, problem_to_scores in level_to_problems.items():
+            # Use the common helper function
+            result = MetricsUtils._calculate_pass_at_k_for_problems(problem_to_scores, k)
+            level_metrics[level] = result
+
+        return {
+            "level_pass_at_k_metrics": level_metrics,
+        }
+
+    @staticmethod
     def calculate_calibration(
         samples: list[EvaluationSample],
         confidence_bins: list[tuple[int, int]] = None,
@@ -84,3 +137,39 @@ class MetricsUtils:
             avg_conf = bin_stats["conf_sum"] / samples / 100  # convert to 0-1 decimal
             error += (samples / total) * abs(accuracy - avg_conf)
         return error * 100  # convert to percentage
+
+    @staticmethod
+    def _calculate_pass_at_k_for_problems(problem_to_scores: dict, k: int = 1) -> dict:
+        """Calculate pass@k metrics for a dictionary of problems to scores
+
+        Args:
+            problem_to_scores: Dict mapping problem keys to lists of scores (0 or 1)
+            k: Number of attempts to consider. If None, uses max attempts available
+
+        Returns:
+            Tuple of (pass_at_k_rate, details_dict)
+        """
+        if not problem_to_scores:
+            return 0.0, {"total_problems": 0, "solved_problems": 0, "total_attempts": 0}
+
+        # Calculate pass@k
+        pass_at_k_count = 0
+        for scores in problem_to_scores.values():
+            # Check if any of the first k attempts is correct
+            if any(scores[:k]):
+                pass_at_k_count += 1
+
+        total_problems = len(problem_to_scores)
+        pass_at_k = pass_at_k_count / total_problems if total_problems > 0 else 0.0
+
+        # Add details
+        solved_problems = sum(1 for scores in problem_to_scores.values() if max(scores) > 0)
+        total_attempts = sum(len(scores) for scores in problem_to_scores.values())
+
+        details = {
+            "total_problems": total_problems,
+            "solved_problems": solved_problems,
+            "unsolved_problems": total_problems - solved_problems,
+            "total_attempts": total_attempts,
+        }
+        return {f"Pass@{k} (%)": round(pass_at_k * 100, 2), "Details": details}

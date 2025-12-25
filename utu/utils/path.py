@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import pathlib
+import re
 import tempfile
 from typing import Any
 from urllib.parse import urlparse
@@ -128,6 +129,22 @@ class FileUtils:
             file_path = pathlib.Path(file_path)
         with file_path.open("w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
+
+    @staticmethod
+    def apply_diff(content: str, diff: str) -> str:
+        modified_content = content
+        pattern = r"<<<<<<< SEARCH\n(.*?)\n=======\n(.*?)\n>>>>>>> REPLACE"
+        matches = re.findall(pattern, diff, re.DOTALL)
+        if not matches:
+            raise ValueError("No valid diff blocks found in the provided diff")
+
+        # Apply each search/replace pair
+        for search_text, replace_text in matches:
+            if search_text in modified_content:
+                modified_content = modified_content.replace(search_text, replace_text)
+            else:
+                raise ValueError(f"Search text not found in content: {search_text[:50]}...")
+        return modified_content
 
     @staticmethod
     def file_exists(file_path: str | pathlib.Path) -> bool:

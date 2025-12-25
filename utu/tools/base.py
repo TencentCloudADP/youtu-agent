@@ -1,11 +1,19 @@
 from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 import mcp.types as types
 from agents import FunctionTool, function_tool
 
 from ..config import ToolkitConfig
-from ..utils import ChatCompletionConverter, FileUtils
+from ..utils import ChatCompletionConverter, FileUtils, get_logger
 from .utils import MCPConverter, register_tool as register_tool
+
+if TYPE_CHECKING:
+    from e2b_code_interpreter import AsyncSandbox
+
+    from ..env import E2BEnv
+
+logger = get_logger(__name__)
 
 
 class AsyncBaseToolkit:
@@ -18,6 +26,18 @@ class AsyncBaseToolkit:
 
         self.config: ToolkitConfig = config
         self._tools_map: dict[str, Callable] = None
+
+        self.env_mode = self.config.env_mode
+        if self.env_mode == "e2b":
+            self.e2b_env: E2BEnv = None
+            self.e2b_sandbox: AsyncSandbox = None
+
+    def setup_e2b_env(self, env: "E2BEnv") -> None:
+        if self.env_mode != "e2b":
+            logger.warning(f"Toolkit should not setup e2b sandbox in env_mode {self.env_mode}!")
+            return
+        self.e2b_env = env
+        self.e2b_sandbox = env.sandbox
 
     @property
     def tools_map(self) -> dict[str, Callable]:

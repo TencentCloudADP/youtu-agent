@@ -1,0 +1,27 @@
+# @package _global_
+defaults:
+  # load the evaluation config file 
+  - /eval/web/web@evaluation
+  - _self_
+
+exp_id: "web_practice"
+
+# Practice Arguments
+practice:
+  epochs: 3
+  batch_size: 50
+  grpo_n: 3
+  rollout_concurrency: 128
+  rollout_temperature: 0.7
+  task_timeout: 1800
+  do_eval: false
+  rollout_data_truncate: 100
+  agent_objective: |
+    input: A question or task that requires web search and information gathering
+    output: A comprehensive answer based on searched web content and reliable sources
+  learning_objective: |
+    Help the agent to improve web search strategies and information synthesis capabilities by extracting general and concise guidelines.
+
+# Data Arguments
+data:
+  practice_dataset_name: "AFM_web_RL"

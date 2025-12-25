@@ -1,14 +1,8 @@
 """
-- [ ] unified OS environment
 - [ ] support advanecd tools for file viewing & editing
     https://github.com/Intelligent-Internet/ii-agent/blob/main/src/ii_agent/tools/str_replace_tool.py
-- [ ] context management (for loong files)
+- [ ] context management (for long files)
 """
-
-import re
-import shutil
-from datetime import datetime
-from pathlib import Path
 
 from ..config import ToolkitConfig
 from ..utils import get_logger
@@ -20,42 +14,17 @@ logger = get_logger(__name__)
 class FileEditToolkit(AsyncBaseToolkit):
     def __init__(self, config: ToolkitConfig = None) -> None:
         super().__init__(config)
-        workspace_root = self.config.config.get("workspace_root", "/tmp/")
-        self.setup_workspace(workspace_root)
 
-        self.default_encoding = self.config.config.get("default_encoding", "utf-8")
-        self.backup_enabled = self.config.config.get("backup_enabled", False)
-        logger.info(
-            f"FileEditToolkit initialized with output directory: {self.work_dir}, encoding: {self.default_encoding}"
-        )
+        if self.env_mode == "local":
+            from .local_env.file_edit import FileEditLocal
+
+            self.file_editor = FileEditLocal(config)
 
     def setup_workspace(self, workspace_root: str):
-        self.work_dir = Path(workspace_root).resolve()
-        self.work_dir.mkdir(parents=True, exist_ok=True)
-
-    def _sanitize_filename(self, filename: str) -> str:
-        safe = re.sub(r"[^\w\-.]", "_", filename)
-        return safe
-
-    def _resolve_filepath(self, file_path: str) -> Path:
-        path_obj = Path(file_path)
-        if not path_obj.is_absolute():
-            path_obj = self.work_dir / path_obj
-
-        sanitized_filename = self._sanitize_filename(path_obj.name)
-        path_obj = path_obj.parent / sanitized_filename
-        resolved_path = path_obj.resolve()
-        self._create_backup(resolved_path)
-        return resolved_path
-
-    def _create_backup(self, file_path: Path) -> None:
-        if not self.backup_enabled or not file_path.exists():
+        if self.env_mode != "local":
+            logger.warning(f"FileEditToolkit should not setup workspace in env_mode {self.env_mode}!")
             return
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        backup_path = file_path.parent / f"{file_path.name}.{timestamp}.bak"
-        shutil.copy2(file_path, backup_path)
-        logger.info(f"Created backup at {backup_path}")
+        self.file_editor.setup_workspace(workspace_root)
 
     @register_tool
     async def edit_file(self, path: str, diff: str) -> str:
@@ -72,26 +41,11 @@ class FileEditToolkit(AsyncBaseToolkit):
                 >>>>>>> REPLACE
                 ```
         """
-        resolved_path = self._resolve_filepath(path)
-
-        with open(resolved_path, encoding=self.default_encoding) as f:
-            content = f.read()
-        modified_content = content
-        pattern = r"<<<<<<< SEARCH\n(.*?)\n=======\n(.*?)\n>>>>>>> REPLACE"
-        matches = re.findall(pattern, diff, re.DOTALL)
-        if not matches:
-            return "Error! No valid diff blocks found in the provided diff"
-
-        # Apply each search/replace pair
-        for search_text, replace_text in matches:
-            if search_text in modified_content:
-                modified_content = modified_content.replace(search_text, replace_text)
-            else:
-                logger.warning(f"Search text not found in file: {search_text[:50]}...")
-
-        with open(resolved_path, "w", encoding=self.default_encoding) as f:
-            f.write(modified_content)
-        return f"Successfully edited file: {resolved_path}"
+        if self.env_mode == "local":
+            return await self.file_editor.edit_file(path, diff)
+        else:
+            assert self.e2b_sandbox is not None, "E2B sandbox is not set up!"
+            return await self.e2b_env.files_edit_diff(path, diff)
 
     @register_tool
     async def write_file(self, path: str, file_text: str) -> str:
@@ -101,10 +55,11 @@ class FileEditToolkit(AsyncBaseToolkit):
             path (str): The path of the file to write.
             file_text (str): The full text content to write.
         """
-        path_obj = self._resolve_filepath(path)
-        path_obj.parent.mkdir(parents=True, exist_ok=True)
-        path_obj.write_text(file_text)
-        return f"Successfully wrote file: {path_obj}"
+        if self.env_mode == "local":
+            return await self.file_editor.write_file(path, file_text)
+        else:
+            assert self.e2b_sandbox is not None, "E2B sandbox is not set up!"
+            return await self.e2b_env.files_write(path, file_text)
 
     @register_tool
     async def read_file(self, path: str) -> str:
@@ -113,5 +68,8 @@ class FileEditToolkit(AsyncBaseToolkit):
         Args:
             path (str): The path of the file to read.
         """
-        path_obj = self._resolve_filepath(path)
-        return path_obj.read_text()
+        if self.env_mode == "local":
+            return await self.file_editor.read_file(path)
+        else:
+            assert self.e2b_sandbox is not None, "E2B sandbox is not set up!"
+            return await self.e2b_env.files_read(path)

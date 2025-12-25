@@ -274,7 +274,7 @@ class AgentsUtils:
             elif isinstance(event, AgentUpdatedStreamEvent):
                 PrintUtils.print_info(f">> new agent: {event.new_agent.name}")
             # skip events from youtu-agent
-            elif event.type in ("orchestrator_stream_event", "orchestra_stream_event"):
+            elif event.type in ("orchestrator_stream_event", "orchestra_stream_event", "simple_agent_generated"):
                 pass
             else:
                 logger.warning(f"Unknown event type: {event.type}! {event}")

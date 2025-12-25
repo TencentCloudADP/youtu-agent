@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from .agent_config import AgentConfig, ToolkitConfig
 from .eval_config import EvalConfig
 from .model_config import ModelConfigs
+from .practice_config import TrainingFreeGRPOConfig
 
 TConfig = TypeVar("TConfig", bound=BaseModel)
 
@@ -59,3 +60,11 @@ class ConfigLoader:
             name = "eval/" + name
         cfg = cls._load_config_to_dict(name, config_path="../../configs")
         return EvalConfig(**cfg)
+
+    @classmethod
+    def load_training_free_grpo_config(cls, name: str = "default") -> TrainingFreeGRPOConfig:
+        """Load training-free GRPO config"""
+        if not name.startswith("practice/"):
+            name = "practice/" + name
+        cfg = cls._load_config_to_dict(name, config_path="../../configs")
+        return TrainingFreeGRPOConfig(**cfg)

@@ -9,9 +9,13 @@ agent:
     You are a helpful browser agent. Try your best to answer user's question.
 
 env:
-  name: browser_tione
-  config:
-    state_keep: true  # whether to keep all the browser states in history messages
+  # v1: with tione
+  # name: browser_tione
+  # config:
+  #   state_keep: true  # whether to keep all the browser states in history messages
+
+  # v2: with e2b
+  name: browser_e2b
 
 context_manager:
   name: env

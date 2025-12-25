@@ -1,0 +1,28 @@
+# @package _global_
+defaults:
+  # load the evaluation config file 
+  - /eval/math/math_AIME24@evaluation
+  - _self_
+
+exp_id: "math_practice"
+
+# Practice Arguments
+practice:
+  epochs: 1
+  batch_size: 50
+  grpo_n: 5
+  rollout_concurrency: 128
+  rollout_temperature: 0.7
+  task_timeout: 1800
+  do_eval: false
+  rollout_data_truncate: 100
+  agent_objective: |
+    input: A math question that could falls into any areas of mathematics
+    output: A step-by-step reasoning process that leads to the final answer
+  learning_objective: |
+    Help the agent to improve the solving capability on math questions by extracting general and concise guidelines.
+  num_experiences_per_query: 1
+
+# Data Arguments  
+data:
+  practice_dataset_name: "DAPO-Math-17k"

@@ -7,7 +7,10 @@ import math
 import os
 import pathlib
 
-import pandas as pd
+try:
+    import pandas as pd
+except ImportError:
+    pass
 
 from ..config import ToolkitConfig
 from ..utils import SimplifiedAsyncOpenAI, get_logger
@@ -90,7 +93,7 @@ class TabularDataToolkit(AsyncBaseToolkit):
         )
         return response
 
-    def _load_tabular_data(self, file_path: str) -> pd.DataFrame:
+    def _load_tabular_data(self, file_path: str) -> "pd.DataFrame":
         # Get file extension to determine how to read the file
         file_ext = pathlib.Path(file_path).suffix.lower()
 

@@ -1,6 +1,7 @@
 import copy
 import logging
 import random
+from copy import deepcopy
 
 import matplotlib
 from pptx.enum.shapes import MSO_SHAPE_TYPE
@@ -25,11 +26,23 @@ _color_palette = [
 ]
 
 
+# 常见 content-type -> reltype 映射（可扩展）
+CONTENT_TYPE_TO_RELTYPE = {
+    "image/jpeg": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
+    "image/png": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
+    "image/gif": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
+    "application/vnd.openxmlformats-officedocument.drawingml.chart+xml": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart",
+    "application/vnd.openxmlformats-officedocument.oleObject": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/oleObject",
+    # 根据需要添加更多映射
+}
+
+
 def inspect_ppt(prs):
     """
     Inspect the given presentation.
     """
     for slide in prs.slides:
+        print(f"==={slide.slide_layout.name}===")
         inspect_slide(slide)
 
 
@@ -40,7 +53,8 @@ def inspect_slide(slide):
 
     def _inspect_shape_list(shapes, indent=0):
         for shape in shapes:
-            print(" " * indent + shape.name)
+            shape_type_str = shape.shape_type.name
+            print(" " * indent + shape.name + "(" + shape_type_str + ")")
             if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
                 _inspect_shape_list(shape.shapes, indent + 2)
 
@@ -122,6 +136,7 @@ def find_shape_with_name_except(shapes, name, depth=0):
     if depth == 0:
         logging.info(f"Finding shape with name: {name}")
     for shape in shapes:
+        logging.debug(f"{depth * '  '} inspect shape: {shape.name}")
         if shape.name == name:
             return shape
         if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
@@ -131,39 +146,144 @@ def find_shape_with_name_except(shapes, name, depth=0):
     raise Exception(f"Shape with name {name} not found")
 
 
+def _get_reltype_for_part(part):
+    ctype = getattr(part, "content_type", None)
+    if not ctype:
+        return None
+    return CONTENT_TYPE_TO_RELTYPE.get(ctype)
+
+
+def _copy_and_fix_relations(original_slide, new_slide, new_el):
+    """
+    在 new_el 中查找所有 r:embed 和 r:id，尝试把对应的 part 从 original_slide 关联到 new_slide，
+    并替换成新的 rId。返回 True/False 表示是否成功（部分失败不致命）。
+    """
+    r_ns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+
+    # 查找所有可能带 r:embed 或 r:id 的元素（最常见：a:blip/@r:embed, c:chart/@r:id）
+    # 使用通配，遍历元素属性，找出属于 r namespace 的属性
+    for el in new_el.iter():
+        # el.attrib 是字典，key 可能是 '{namespace}attrname'
+        for attr_name in list(el.attrib.keys()):
+            if attr_name.startswith(f"{{{r_ns}}}"):
+                # attr_local = attr_name.split("}", 1)[1]
+                old_rId = el.attrib[attr_name]
+                if not old_rId:
+                    continue
+
+                # 如果已经处理过（某些模板会多次引用同一 rId），则复用映射（我们可以缓存）
+                # 先尝试从 original_slide.part 获取对应 part
+                try:
+                    part = original_slide.part.related_part(old_rId)
+                except Exception:
+                    part = None
+
+                if part is None:
+                    # 不能找到对应 part，跳过
+                    continue
+
+                # 决定新的 reltype
+                reltype = _get_reltype_for_part(part)
+                # fallback: 如果没映射到 reltype，使用 image 作为最后手段（保守策略）
+                if reltype is None:
+                    reltype = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+
+                # 在 new_slide 上建立到该 part 的关系（如果之前已建立，相同 part 会创建重复关系——可用缓存优化）
+                try:
+                    new_rId = new_slide.part.relate_to(part, reltype)
+                except Exception:
+                    # 有时 relate_to 会抛异常（例如 part 类型不支持），尝试用 image reltype 作为降级
+                    try:
+                        new_rId = new_slide.part.relate_to(
+                            part, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+                        )
+                    except Exception:
+                        new_rId = None
+
+                if new_rId:
+                    el.set(attr_name, new_rId)
+    return True
+
+
+def copy_background(source_slide, target_slide):
+    source_cSld = source_slide.element.cSld
+    target_cSld = target_slide.element.cSld
+
+    # 定义命名空间
+    ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main"}
+
+    # 移除目标背景（bg或bgPr）
+    for bg in target_cSld.findall(".//p:bg", namespaces=ns):
+        target_cSld.remove(bg)
+    for bgPr in target_cSld.findall(".//p:bgPr", namespaces=ns):
+        target_cSld.remove(bgPr)
+
+    # 复制源背景（必须插入到spTree之前）
+    source_bg = source_cSld.find(".//p:bg", namespaces=ns)
+    if source_bg is not None:
+        spTree = target_cSld.find(".//p:spTree", namespaces=ns)
+        target_cSld.insert(target_cSld.index(spTree), deepcopy(source_bg))
+
+
 def duplicate_slide(prs, slide):
     slide_layout = slide.slide_layout
     new_slide = prs.slides.add_slide(slide_layout)
+
+    copy_background(slide, new_slide)
 
     for shape in slide.shapes:
         el = shape.element
         new_el = copy.deepcopy(el)
 
-        # 处理图片 - 使用 python-pptx 内置命名空间
-        try:
-            blips = new_el.xpath(".//a:blip[@r:embed]")
+        # 先修复关系（图片/chart/ole 等）——使用 original slide 作为资源源
+        _copy_and_fix_relations(slide, new_slide, new_el)
 
-            for blip in blips:
-                old_rId = blip.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed")
-
-                if old_rId:
-                    # 获取原始图片
-                    old_image_part = slide.part.related_part(old_rId)
-
-                    # 在新幻灯片中建立关系
-                    new_rId = new_slide.part.relate_to(
-                        old_image_part, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
-                    )
-
-                    # 更新 rId
-                    blip.set("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed", new_rId)
-
-        except (KeyError, AttributeError):
-            pass
-
+        # 将 new_el 插入 new_slide 的 spTree，插入到 extLst 之前（与之前一致）
         new_slide.shapes._spTree.insert_element_before(new_el, "p:extLst")
 
     return new_slide
+
+
+# def duplicate_slide(prs, slide):
+#     slide_layout = slide.slide_layout
+#     new_slide = prs.slides.add_slide(slide_layout)
+
+#     parent = new_slide.background._element.getparent()
+#     # 找到当前background在父节点中的位置
+#     index = parent.index(new_slide.background._element)
+#     # 删除旧的，插入新的
+#     parent.remove(new_slide.background._element)
+#     parent.insert(index, copy.deepcopy(slide.background._element))
+
+#     for shape in slide.shapes:
+#         el = shape.element
+#         new_el = copy.deepcopy(el)
+
+#         # 处理图片 - 使用 python-pptx 内置命名空间
+#         try:
+#             blips = new_el.xpath(".//a:blip[@r:embed]")
+
+#             for blip in blips:
+#                 old_rId = blip.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed")
+
+#                 if old_rId:
+#                     # 获取原始图片
+#                     old_image_part = slide.part.related_part(old_rId)
+
+#                     # 在新幻灯片中建立关系
+#                     new_rId = new_slide.part.relate_to(
+#                         old_image_part, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+#                     )
+
+#                     # 更新 rId
+#                     blip.set("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed", new_rId)
+
+#         except (KeyError, AttributeError):
+#             pass
+
+#         new_slide.shapes._spTree.insert_element_before(new_el, "p:extLst")
+
+#     return new_slide
 
 
 def delete_slide_range(prs, index_range):
@@ -217,3 +337,22 @@ def replace_picture_keep_format(slide, shape_index, new_image_path):
         image_part._blob = f.read()
 
     return shape
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ppt", required=True)
+    parser.add_argument("--method", required=True)
+    args = parser.parse_args()
+
+    from pptx import Presentation
+
+    prs = Presentation(args.ppt)
+    if args.method == "inspect":
+        inspect_ppt(prs)
+    elif args.method == "to_svg":
+        to_svg(prs, args.ppt, "test.svg")
+    else:
+        raise ValueError(f"Unknown method: {args.method}")

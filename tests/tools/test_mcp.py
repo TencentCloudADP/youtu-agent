@@ -1,5 +1,5 @@
 from utu.config import ConfigLoader
-from utu.tools.utils import get_mcp_server, get_mcp_tools_schema
+from utu.tools.utils import AgentsMCPUtils
 
 
 async def test_mcp():
@@ -17,7 +17,7 @@ async def test_mcp():
     # action = [("add_memories", {"text": "I like to eat bagels"}), ("list_memories", {})]
 
     config = ConfigLoader.load_toolkit_config(config_name)
-    mcp_server = get_mcp_server(config)
+    mcp_server = AgentsMCPUtils.get_mcp_server(config)
     async with mcp_server:
         tools = await mcp_server.list_tools()
         print("Tools:", tools)
@@ -30,6 +30,6 @@ async def test_mcp():
 async def test_get_mcp_tools_schema():
     config_name = "mcp/github"
     config = ConfigLoader.load_toolkit_config(config_name)
-    tools_map = await get_mcp_tools_schema(config)
+    tools_map = await AgentsMCPUtils.get_mcp_tools_schema(config)
     for name, schema in tools_map.items():
         print(f"Tool: {name}, schema: {schema}")
