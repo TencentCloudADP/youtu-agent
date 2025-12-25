@@ -1006,22 +1006,21 @@ const App: React.FC = () => {
                 <i className="breathing-circle fa fa-circle"></i>
               </div>
             )}
-            
-            {!hideExampleQuery && exampleQuery.length > 0 && (
-              <div className="example-queries">
-                <div className="example-queries-title">{t('app.tryAsking')}</div>
-                {exampleQuery.map((query, idx) => (
-                  <div key={idx} className="example-query" onClick={() => {
-                    setInputValue(query);
-                    setHideExampleQuery(true);
-                  }}>
-                    {query}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
           
+          {!hideExampleQuery && exampleQuery.length > 0 && (
+            <div className="example-queries">
+              <div className="example-queries-title">{t('app.tryAsking')}</div>
+              {exampleQuery.map((query, idx) => (
+                <div key={idx} className="example-query" onClick={() => {
+                  setInputValue(query);
+                  setHideExampleQuery(true);
+                }}>
+                  {query}
+                </div>
+              ))}
+            </div>
+          )}
 
           <ChatInput
             inputValue={inputValue}

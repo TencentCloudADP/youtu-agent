@@ -84,4 +84,4 @@ max_turns: 100
 toolkits:
   BashTool:
     config:
-      workspace_root: /tmp/mock_files/
+      workspace_root: ~/

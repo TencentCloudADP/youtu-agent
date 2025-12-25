@@ -353,17 +353,16 @@ body {
 .example-queries {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 8px 16px;
-  margin-bottom: 8px;
-  max-width: 800px;
-  margin: 0 auto 8px;
+  margin: 0 2em 8px;
+  max-width: 900px;
 }
 
 .example-queries-title {
   width: 100%;
-  text-align: center;
+  text-align: left;
   color: var(--color-subtle-text);
   font-size: 0.9em;
   margin-bottom: 4px;

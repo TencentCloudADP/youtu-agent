@@ -1,13 +1,26 @@
 import json
 import logging
+import os
 import pathlib
 from logging.handlers import TimedRotatingFileHandler
 from typing import Literal
 
 from colorlog import ColoredFormatter
 
-DIR_LOGS = pathlib.Path(__file__).parent.parent.parent / "logs"
-DIR_LOGS.mkdir(exist_ok=True)
+
+def _resolve_log_dir() -> pathlib.Path:
+    """Prefer UTU_LOG_DIR or fall back到用户目录，避免在打包产物内写日志破坏签名。"""
+    env_dir = os.environ.get("UTU_LOG_DIR")
+    if env_dir:
+        target = pathlib.Path(env_dir).expanduser()
+        target.mkdir(parents=True, exist_ok=True)
+        return target
+    default_dir = pathlib.Path.home() / ".tip" / "logs"
+    default_dir.mkdir(parents=True, exist_ok=True)
+    return default_dir
+
+
+DIR_LOGS = _resolve_log_dir()
 
 # Flag to track if logging has been set up
 _LOGGING_INITIALIZED = False

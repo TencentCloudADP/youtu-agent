@@ -2,6 +2,7 @@ import pytest
 
 from utu.config import ConfigLoader
 from utu.tools import DocumentToolkit
+from utu.utils import DIR_ROOT
 
 
 @pytest.fixture
@@ -16,3 +17,11 @@ async def test_document_toolkit(document_toolkit: DocumentToolkit):
     print(result)
     result = await document_toolkit.document_qa(document_path="https://arxiv.org/pdf/2107.14339.pdf")
     print(result)
+
+
+async def test_document_toolkit_parse(document_toolkit: DocumentToolkit):
+    test_dir = DIR_ROOT / "data/parse_raw"
+    for filename in test_dir.iterdir():
+        print("-" * 80 + f"\n{filename}\n")
+        res = await document_toolkit.document_parse(document_path=str(filename))
+        print(res)

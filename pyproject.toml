@@ -71,7 +71,9 @@ documents = [
     "chunkr-ai>=0.3.7",
     "openpyxl>=3.1.5",
     "pymupdf>=1.26.4",
+    "python-magic>=0.4.27",
     "python-pptx>=1.0.2",
+    "unstructured[docx,pptx]>=0.18.14",
 ]
 image = [
     "pillow>=11.3.0",

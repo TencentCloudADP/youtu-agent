@@ -3,6 +3,7 @@ https://github.com/pexpect/pexpect
 @ii-agent/src/ii_agent/tools/bash_tool.py
 """
 
+import os
 import re
 import sys
 
@@ -35,11 +36,16 @@ class PexpectBash:
             child.sendline(f"prompt {custom_prompt}")
             child.expect(custom_prompt)
         else:
-            child = pexpect.spawn("/bin/bash", encoding="utf-8", echo=False, timeout=timeout)
+            env = os.environ.copy()
+            # Ensure UTF-8 locale so Bash outputs (including Chinese) are not coerced to '?'
+            for key in ("LC_ALL", "LANG", "LC_CTYPE"):
+                env.setdefault(key, "en_US.UTF-8")
+            child = pexpect.spawn("/bin/bash", encoding="utf-8", echo=False, timeout=timeout, env=env)
             # Set a known, unique prompt
             # We use a random string that is unlikely to appear otherwise
             # so we can detect the prompt reliably.
             custom_prompt = "PEXPECT_PROMPT>> "
+            child.sendline("export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_CTYPE=en_US.UTF-8")
             child.sendline("stty -onlcr")
             child.sendline("unset PROMPT_COMMAND")
             child.sendline(f"PS1='{custom_prompt}'")
