@@ -61,7 +61,12 @@ class DocumentToolkit(AsyncBaseToolkit):
         # normalize local path (expand ~, make absolute) before hashing
         local_path = pathlib.Path(path_or_url).expanduser()
         if not local_path.is_absolute():
-            local_path = pathlib.Path.cwd() / local_path
+            base_dir = self.config.config.get("workspace_root") or pathlib.Path.home()
+            try:
+                base_dir_path = pathlib.Path(base_dir).expanduser()
+            except TypeError:
+                base_dir_path = pathlib.Path.home()
+            local_path = base_dir_path / local_path
         local_path = local_path.resolve()
 
         md5 = FileUtils.get_file_md5(str(local_path))
