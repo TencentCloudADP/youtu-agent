@@ -1,0 +1,63 @@
+# ===========================================================================================
+# Example config for simple agent with full yaml configuration,
+#   this file is the same as the simpilfied version in ./agent_with_hydra.yaml
+# reference config data structure: utu/config/agent_config.py
+# ============================================================================================
+
+# -------------------------------------------------------------------------------------------
+# basic configs
+type: simple  # agent type, support `simple | orchestrator` for now
+max_turns: 50  # max number of turns
+
+# -------------------------------------------------------------------------------------------
+# model configs
+model:
+  # config for your LLM provider
+  model_provider:
+    type: ${oc.env:UTU_LLM_TYPE}
+    model: ${oc.env:UTU_LLM_MODEL}
+    base_url: ${oc.env:UTU_LLM_BASE_URL}
+    api_key: ${oc.env:UTU_LLM_API_KEY}
+  # model settings. ref: https://openai.github.io/openai-agents-python/ref/model_settings/
+  # Leave it blank to use default settings by model provider
+  model_settings:
+    temperature: null
+    top_p: null
+    max_tokens: null
+    include_usage: True
+  # max tokens for the model, used in truncation logic
+  termination_max_tokens: 100_000
+
+# -------------------------------------------------------------------------------------------
+# basic agent profile, you can tune your prompt here
+agent:
+  name: utu-base
+  instructions: "You are a helpful assistant."
+
+# -------------------------------------------------------------------------------------------
+# context manager configs, e.g., inject browser context dynamically. Leave it blank if you don't need it
+context_manager:
+  name: dummy
+  config: {}
+
+# -------------------------------------------------------------------------------------------
+# environment configs, e.g., e2b for code execution. Leave it blank if you don't need it
+# Doc: https://tencentcloudadp.github.io/youtu-agent/env/
+env:
+  name: base # e2b
+  config: {}
+
+# -------------------------------------------------------------------------------------------
+# toolkits configs, see full configs in ./toolkit_builtin.yaml
+# Doc: https://tencentcloudadp.github.io/youtu-agent/tools/
+toolkits:
+  name: search
+  mode: builtin
+  activated_tools: null  # set activated_tools to null if you want to use all tools
+  config:  # toolkit's customize config
+    search_engine: google
+    crawl_engine: jina
+  config_llm:  # LLM used within toolkit, same structure as "model configs" above
+    model_provider:
+      type: ${oc.env:UTU_LLM_TYPE}
+      model: ${oc.env:UTU_LLM_MODEL}

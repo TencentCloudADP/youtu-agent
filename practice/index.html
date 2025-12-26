@@ -1,0 +1,3310 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://tencentcloudadp.github.io/youtu-agent/practice/">
+      
+      
+        <link rel="prev" href="../eval/">
+      
+      
+        <link rel="next" href="../frontend/">
+      
+      
+      <link rel="icon" href="../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Agent Practice - Youtu-Agent</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-1DEBDNWPB5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-1DEBDNWPB5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-1DEBDNWPB5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agent-practice-with-training-free-grpo" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Youtu-Agent" class="md-header__button md-logo" aria-label="Youtu-Agent" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Youtu-Agent
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent Practice
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Toggle to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Toggle to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Toggle to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Toggle to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TencentCloudADP/youtu-agent" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Youtu-Agent
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Intro
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../quickstart_beginner/" class="md-tabs__link">
+          
+  
+  
+  Quickstart
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../howto/eval/" class="md-tabs__link">
+          
+  
+  
+  Howto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../config/" class="md-tabs__link">
+          
+  
+  
+  Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../examples/" class="md-tabs__link">
+          
+  
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ref/agents/simple_agent/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Youtu-Agent" class="md-nav__button md-logo" aria-label="Youtu-Agent" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    Youtu-Agent
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TencentCloudADP/youtu-agent" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Youtu-Agent
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Intro
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Intro
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Quickstart
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Quickstart
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart_beginner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    QuickStart (for beginner)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    QuickStart
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Start with Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Howto
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Howto
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/eval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Evaluate an Agent
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Customize an YAML Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../environment_variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environment Variables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../env/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Environments
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Agent Practice
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Practice
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Hierarchy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Components
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Preparation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-from-huggingface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload from HuggingFace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload-custom-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Custom Datasets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verification Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-verification-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Built-in Verification Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Practice
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evaluate-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate Baseline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-training-free-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execute Training-Free GRPO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restart Behavior
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate-enhanced-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate Enhanced Agent
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Workflows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example Workflows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#math-reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Math Reasoning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-searching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Searching
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracing-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing &amp; Monitoring
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Topics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-reward-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Reward Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-stage-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Stage Practice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperparameter-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperparameter Tuning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Citation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WebUI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auto_generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Automatic Generation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Examples Output
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Examples Output
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples_output/deep_research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deep Research
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples_output/wide_research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Wide Research
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Agents
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Agents
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/agents/simple_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SimpleAgent
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/agents/orchestra_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OrchestraAgent
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tools
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/base_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BaseToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/search_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SearchToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/document_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DocumentToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/image_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ImageToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/video_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    VideoToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/codesnip_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CodesnipToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/bash_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BashToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/tool/python_executor_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PythonExecutorToolkit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Environments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Environments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/env/base_env/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BaseEnv
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/env/browser_env/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BrowserEnv
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Evaluation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Evaluation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/eval/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DataManager
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/eval/processor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Processer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/eval/benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BaseBenchmark
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Utils
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/utils/openai_utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenAIUtils
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/utils/agents_utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AgentsUtils
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            Config
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/config/base_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BaseConfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/config/loader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Loader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/config/model_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ModelConfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/config/agent_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AgentConfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ref/config/eval_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EvalConfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Hierarchy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Components
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Preparation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upload-from-huggingface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload from HuggingFace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload-custom-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload Custom Datasets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verification Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-verification-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Built-in Verification Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Practice
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evaluate-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate Baseline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-training-free-grpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execute Training-Free GRPO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restart Behavior
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practice-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate-enhanced-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate Enhanced Agent
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Workflows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example Workflows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#math-reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Math Reasoning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-searching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web Searching
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracing-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracing &amp; Monitoring
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Topics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-reward-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Reward Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-stage-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Stage Practice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperparameter-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperparameter Tuning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Citation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agent-practice-with-training-free-grpo">Agent Practice with Training-Free GRPO</h1>
+<p><a href=https://arxiv.org/abs/2510.08191><img src=https://img.shields.io/badge/arXiv-2510.08191-b31b1b.svg></a></p>
+<p>This guide covers the agent practice functionality in Youtu-Agent, powered by Training-Free Group Relative Policy Optimization (GRPO). Training-Free GRPO is a cost-effective solution that enhances agent performance without LLM parameter updates by leveraging group relative semantic advantages and iteratively distilling high-quality experiential knowledge.</p>
+<h2 id="overview">Overview</h2>
+<p>The practice module provides core functionality for:</p>
+<ul>
+<li><strong>Training-Free Learning</strong>: Improve agent performance without fine-tuning model parameters</li>
+<li><strong>Experience Distillation</strong>: Extract and integrate high-quality experiential knowledge</li>
+<li><strong>Flexible Evaluation</strong>: Configurable reward calculation through custom verification functions</li>
+<li><strong>Domain Adaptation</strong>: Support for diverse tasks from math reasoning to web search</li>
+</ul>
+<h2 id="module-structure">Module Structure</h2>
+<div class="highlight"><pre><span></span><code>utu/practice/
+├── __init__.py                 # Module exports
+├── training_free_grpo.py       # Main orchestrator
+├── rollout_manager.py          # Rollout execution and batch processing
+├── experience_updater.py       # Experience processing and integration
+├── data_manager.py             # Dataset management
+├── utils.py                    # Configuration parsing and utilities
+├── dataset/                    # Dataset storage directory
+└── verify/                     # Verification functions
+    ├── math.py                 # Math verification
+    └── webwalker.py            # Web search verification
+</code></pre></div>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before starting, ensure you have:</p>
+<ol>
+<li>Completed the <a href="../quickstart/">QuickStart</a> guide for environment setup</li>
+<li>Installed all dependencies: <code>uv sync --all-extras</code></li>
+<li>Activated the virtual environment: <code>source .venv/bin/activate</code></li>
+<li>Configured API keys in <code>.env</code> file</li>
+</ol>
+<h3 id="basic-workflow">Basic Workflow</h3>
+<p>The practice process follows these steps:</p>
+<ol>
+<li><strong>Data Preparation</strong>: Upload datasets for practice and evaluation</li>
+<li><strong>Verification Setup</strong>: Configure domain-specific verification functions</li>
+<li><strong>Configuration</strong>: Prepare agent, evaluation, and practice configs</li>
+<li><strong>Baseline Evaluation</strong>: Evaluate initial agent performance</li>
+<li><strong>Run Training-Free GRPO</strong>: Execute the practice process</li>
+<li><strong>Evaluate Enhanced Agent</strong>: Assess improved performance</li>
+</ol>
+<h2 id="configuration-system">Configuration System</h2>
+<p>The practice module uses a hierarchical configuration approach:</p>
+<h3 id="configuration-hierarchy">Configuration Hierarchy</h3>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">configs/</span>
+<span class="l l-Scalar l-Scalar-Plain">├── agents/practice/</span><span class="w">              </span><span class="c1"># Agent configurations</span>
+<span class="l l-Scalar l-Scalar-Plain">│   ├── math_agent.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">│   ├── math_practice_agent.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">│   ├── web_agent.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">│   └── web_practice_agent.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">├── eval/</span><span class="w">                         </span><span class="c1"># Evaluation configurations</span>
+<span class="l l-Scalar l-Scalar-Plain">│   ├── math/</span>
+<span class="l l-Scalar l-Scalar-Plain">│   │   ├── math_AIME24.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">│   │   └── math_AIME25.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">│   └── web/</span>
+<span class="l l-Scalar l-Scalar-Plain">│       ├── web.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">│       └── web_practice.yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">└── practice/</span><span class="w">                     </span><span class="c1"># Practice configurations</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">├── math_reasoning.yaml</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">└── web_search.yaml</span>
+</code></pre></div>
+<h3 id="configuration-components">Configuration Components</h3>
+<p><strong>TrainingFreeGRPOConfig</strong>: Unified configuration class with:</p>
+<ul>
+<li><code>exp_id</code>: Experiment identifier</li>
+<li><code>PracticeArguments</code>: Practice-specific parameters (epochs, batch size, GRPO settings)</li>
+<li><code>DataArguments</code>: Data processing parameters</li>
+<li><code>EvalConfig</code>: Evaluation configuration reference</li>
+</ul>
+<p><strong>Utilities</strong>:</p>
+<ul>
+<li><code>TaskRecorder</code>: Records practice progress, experiences, and statistics</li>
+<li><code>parse_training_free_grpo_config()</code>: Configuration parser with YAML files and command-line overrides</li>
+</ul>
+<h2 id="data-preparation">Data Preparation</h2>
+<h3 id="upload-from-huggingface">Upload from HuggingFace</h3>
+<p>Use the provided script to load built-in datasets:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/data/process_training_free_GRPO_data.py
+</code></pre></div>
+<p>Built-in datasets include:</p>
+<ul>
+<li><strong>AIME24/AIME25</strong>: AIME competition problems</li>
+<li><strong>DAPO-Math-17k</strong>: Math problems from DAPO dataset</li>
+<li><strong>AFM_web_RL</strong>: Web agent reinforcement learning dataset</li>
+<li><strong>WebWalkerQA</strong>: Web navigation question-answering dataset</li>
+</ul>
+<h3 id="upload-custom-datasets">Upload Custom Datasets</h3>
+<p>Upload your own datasets from local files:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/data/upload_dataset.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--file_path<span class="w"> </span>path/to/your_dataset.jsonl<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset_name<span class="w"> </span>YourDataset
+</code></pre></div>
+<p><strong>Required fields</strong> for each sample:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;dataset&quot;</span><span class="p">:</span> <span class="s2">&quot;YourDataset&quot;</span><span class="p">,</span>           <span class="c1"># Dataset name</span>
+    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;training_free_grpo&quot;</span><span class="p">,</span>     <span class="c1"># Must be &quot;training_free_grpo&quot;</span>
+    <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;What is 2+2?&quot;</span><span class="p">,</span>         <span class="c1"># The question/prompt</span>
+    <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span>                       <span class="c1"># Expected answer (or None)</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="verification-functions">Verification Functions</h2>
+<p>Verification functions are the core of the reward calculation system, providing domain-specific evaluation criteria.</p>
+<h3 id="function-interface">Function Interface</h3>
+<p>Create verification functions in <code>utu/practice/verify/</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">utu.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationSample</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">verify_func</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">EvaluationSample</span><span class="p">,</span> <span class="n">timeout_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify the correctness of an agent response.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample: EvaluationSample containing:</span>
+<span class="sd">            - raw_question: Original question</span>
+<span class="sd">            - correct_answer: Ground truth answer</span>
+<span class="sd">            - response: Agent&#39;s final response</span>
+<span class="sd">            - other metadata fields</span>
+<span class="sd">        timeout_score: Score for timeout cases</span>
+<span class="sd">        **kwargs: Additional arguments including:</span>
+<span class="sd">            - llm: LLM client for verification requiring judgment</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: {</span>
+<span class="sd">          &quot;reward&quot;: float,          # ranges from 0.0 to 1.0</span>
+<span class="sd">          &quot;reasoning&quot;: str | None   # extra details for experience extraction</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Your verification logic here</span>
+    <span class="k">pass</span>
+</code></pre></div>
+<h3 id="built-in-verification-functions">Built-in Verification Functions</h3>
+<p><strong>Math Verification</strong> (<code>utu/practice/verify/math.py</code>):</p>
+<ul>
+<li>Uses symbolic math verification</li>
+<li>Compares extracted expressions with ground truth</li>
+<li>Requires <code>math-verify</code> package: <code>uv pip install math-verify</code></li>
+</ul>
+<p><strong>Web Search Verification</strong> (<code>utu/practice/verify/webwalker.py</code>):</p>
+<ul>
+<li>LLM-based judgment for web search responses</li>
+<li>Compares agent response with ground truth using judge LLM</li>
+<li>Access judge via <code>kwargs['llm']</code></li>
+</ul>
+<h3 id="custom-verification">Custom Verification</h3>
+<p>Example for simple string matching:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># utu/practice/verify/str_match.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utu.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationSample</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">string_match_verify</span><span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="n">EvaluationSample</span><span class="p">,</span> <span class="n">timeout_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple string matching verification.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sample</span><span class="o">.</span><span class="n">correct_answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">sample</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;reward&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;reward&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="configuration-files">Configuration Files</h2>
+<h3 id="agent-configuration">Agent Configuration</h3>
+<p>Create or use existing agent configs in <code>configs/agents/practice/</code>. See <a href="../agents/">Agents</a> for detailed configuration options.</p>
+<h3 id="evaluation-configuration">Evaluation Configuration</h3>
+<p>Create evaluation config in <code>configs/eval/</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># configs/eval/my_domain/my_eval.yaml</span>
+<span class="c1"># @package _global_</span>
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/agents/practice/my_agent@agent</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span>
+
+<span class="nt">exp_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_eval&quot;</span>
+
+<span class="c1"># Evaluation dataset</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dataset</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MyEvalDataset&quot;</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;single&quot;</span>
+
+<span class="c1"># Evaluation settings</span>
+<span class="nt">concurrency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">64</span>
+<span class="nt">pass_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+
+<span class="c1"># Verification function</span>
+<span class="nt">verify_filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_verify.py&quot;</span>
+<span class="nt">verify_func_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_verify_func&quot;</span>
+
+<span class="c1"># Optional: Judge model for LLM-based verification</span>
+<span class="nt">judge_model</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">model_provider</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.env:JUDGE_LLM_TYPE}</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.env:JUDGE_LLM_MODEL}</span>
+<span class="w">    </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.env:JUDGE_LLM_BASE_URL}</span>
+<span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${oc.env:JUDGE_LLM_API_KEY}</span>
+<span class="w">  </span><span class="nt">model_params</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+</code></pre></div>
+<h3 id="practice-configuration">Practice Configuration</h3>
+<p>Create practice config in <code>configs/practice/</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># configs/practice/my_practice.yaml</span>
+<span class="c1"># @package _global_</span>
+<span class="nt">defaults</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/eval/my_domain/my_eval@evaluation</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_self_</span>
+
+<span class="nt">exp_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my_practice&quot;</span>
+
+<span class="c1"># Practice Arguments</span>
+<span class="nt">practice</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32</span>
+<span class="w">  </span><span class="nt">grpo_n</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">rollout_concurrency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">64</span>
+<span class="w">  </span><span class="nt">rollout_temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+<span class="w">  </span><span class="nt">task_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="w">  </span><span class="nt">do_eval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">eval_strategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;epoch&quot;</span>
+<span class="w">  </span><span class="nt">restart_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">agent_objective</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">input: Description of input</span>
+<span class="w">    </span><span class="no">output: Description of expected output</span>
+<span class="w">  </span><span class="nt">learning_objective</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">Description of learning goals and expected experiences</span>
+<span class="w">  </span><span class="nt">num_experiences_per_query</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+
+<span class="c1"># Data Arguments</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">practice_dataset_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MyPracticeDataset&quot;</span>
+</code></pre></div>
+<h2 id="running-practice">Running Practice</h2>
+<h3 id="evaluate-baseline">Evaluate Baseline</h3>
+<p>First, evaluate the baseline agent:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_domain/my_eval
+</code></pre></div>
+<h3 id="execute-training-free-grpo">Execute Training-Free GRPO</h3>
+<p>Run the practice process:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Using configuration file</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_practice
+
+<span class="c1"># With parameter overrides</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_practice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--experiment_name<span class="w"> </span>my_practice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--epochs<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--batch_size<span class="w"> </span><span class="m">64</span>
+</code></pre></div>
+<h3 id="restart-behavior">Restart Behavior</h3>
+<p>Control caching and restart with <code>--restart_step</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Complete restart (no caching)</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_practice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--restart_step<span class="w"> </span><span class="m">0</span>
+
+<span class="c1"># Resume from cached results (default)</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_practice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--restart_step<span class="w"> </span>null
+
+<span class="c1"># Partial restart: cache steps 0-2, restart from step 3</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_practice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--restart_step<span class="w"> </span><span class="m">3</span>
+</code></pre></div>
+<h3 id="practice-output">Practice Output</h3>
+<p>The practice process generates:</p>
+<ol>
+<li><strong>Enhanced Agent Configuration</strong>: YAML file with integrated experiences</li>
+<li><strong>Tracing Logs</strong>: Detailed logs via Phoenix (if enabled):</li>
+<li>Rollout trajectories</li>
+<li>Experience extraction steps</li>
+<li>Statistics at each step</li>
+<li>Evaluation performance (if <code>do_eval</code> enabled)</li>
+<li><strong>Experience Records</strong>: Structured records in database</li>
+</ol>
+<h3 id="evaluate-enhanced-agent">Evaluate Enhanced Agent</h3>
+<p>After practice completes, evaluate the enhanced agent:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config_name<span class="w"> </span>my_domain/my_practice
+</code></pre></div>
+<h2 id="example-workflows">Example Workflows</h2>
+<h3 id="math-reasoning">Math Reasoning</h3>
+<p>Complete workflow for math reasoning tasks:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install dependencies</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>math-verify
+
+<span class="c1"># Prepare data</span>
+python<span class="w"> </span>scripts/data/process_training_free_GRPO_data.py
+
+<span class="c1"># Evaluate baseline</span>
+python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span>--config_name<span class="w"> </span>math/math_AIME24
+python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span>--config_name<span class="w"> </span>math/math_AIME25
+
+<span class="c1"># Run practice</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span>--config_name<span class="w"> </span>math_reasoning
+
+<span class="c1"># Evaluate enhanced agent</span>
+python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span>--config_name<span class="w"> </span>math/math_practice_AIME24
+python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span>--config_name<span class="w"> </span>math/math_practice_AIME25
+</code></pre></div>
+<h3 id="web-searching">Web Searching</h3>
+<p>Complete workflow for web search tasks:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Setup environment variables in .env</span>
+<span class="nv">SERPER_API_KEY</span><span class="o">=</span>your-serper-api-key
+<span class="nv">JINA_API_KEY</span><span class="o">=</span>your-jina-api-key
+
+<span class="c1"># Prepare data</span>
+python<span class="w"> </span>scripts/data/process_training_free_GRPO_data.py
+
+<span class="c1"># Evaluate baseline</span>
+python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span>--config_name<span class="w"> </span>web/web
+
+<span class="c1"># Run practice</span>
+python<span class="w"> </span>scripts/run_training_free_GRPO.py<span class="w"> </span>--config_name<span class="w"> </span>web_search
+
+<span class="c1"># Evaluate enhanced agent</span>
+python<span class="w"> </span>scripts/run_eval.py<span class="w"> </span>--config_name<span class="w"> </span>web/web_practice
+</code></pre></div>
+<h2 id="tracing-monitoring">Tracing &amp; Monitoring</h2>
+<p>Enable Phoenix tracing for detailed monitoring:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install Phoenix</span>
+pip<span class="w"> </span>install<span class="w"> </span>arize-phoenix
+
+<span class="c1"># Start Phoenix server</span>
+phoenix<span class="w"> </span>serve
+
+<span class="c1"># Configure in .env</span>
+<span class="nv">PHOENIX_ENDPOINT</span><span class="o">=</span>http://127.0.0.1:6006/v1/traces
+<span class="nv">PHOENIX_PROJECT_NAME</span><span class="o">=</span>Youtu-Agent
+</code></pre></div>
+<p>Phoenix provides visibility into:</p>
+<ul>
+<li>Rollout trajectories and agent decisions</li>
+<li>Experience extraction process</li>
+<li>Practice progress and statistics</li>
+<li>Evaluation metrics over time</li>
+</ul>
+<h2 id="advanced-topics">Advanced Topics</h2>
+<h3 id="custom-reward-functions">Custom Reward Functions</h3>
+<p>For complex domains, you can create sophisticated verification functions that:</p>
+<ul>
+<li>Combine multiple evaluation criteria</li>
+<li>Use LLM judges for nuanced assessment</li>
+<li>Implement domain-specific metrics</li>
+<li>Provide detailed reasoning for experience extraction</li>
+</ul>
+<h3 id="multi-stage-practice">Multi-Stage Practice</h3>
+<p>For iterative improvement, you can:</p>
+<ol>
+<li>Run initial practice on simpler datasets</li>
+<li>Evaluate on progressively harder benchmarks</li>
+<li>Continue practice with harder examples</li>
+<li>Use <code>restart_step</code> to build on previous results</li>
+</ol>
+<h3 id="hyperparameter-tuning">Hyperparameter Tuning</h3>
+<p>Key parameters to optimize:</p>
+<ul>
+<li><code>batch_size</code>: Samples per batch (affects memory and speed)</li>
+<li><code>grpo_n</code>: Rollouts per group (higher = better but slower)</li>
+<li><code>rollout_temperature</code>: LLM temperature during rollouts</li>
+<li><code>num_experiences_per_query</code>: Experiences extracted per query</li>
+</ul>
+<h2 id="api-reference">API Reference</h2>
+<p>For detailed API documentation, see:</p>
+<ul>
+<li><a href="../ref/eval/data/">Evaluation Data</a></li>
+<li><a href="../ref/eval/processor/">Evaluation Processor</a></li>
+<li><a href="../ref/eval/benchmarks/">Benchmarks</a></li>
+</ul>
+<h2 id="citation">Citation</h2>
+<p>If you find this work useful, please consider citing:</p>
+<div class="highlight"><pre><span></span><code><span class="nc">@misc</span><span class="p">{</span><span class="nl">training_free_grpo</span><span class="p">,</span>
+<span class="w">      </span><span class="na">title</span><span class="p">=</span><span class="s">{Training-Free Group Relative Policy Optimization}</span><span class="p">,</span>
+<span class="w">      </span><span class="na">author</span><span class="p">=</span><span class="s">{Tencent Youtu Lab}</span><span class="p">,</span>
+<span class="w">      </span><span class="na">year</span><span class="p">=</span><span class="s">{2025}</span><span class="p">,</span>
+<span class="w">      </span><span class="na">eprint</span><span class="p">=</span><span class="s">{2510.08191}</span><span class="p">,</span>
+<span class="w">      </span><span class="na">archivePrefix</span><span class="p">=</span><span class="s">{arXiv}</span><span class="p">,</span>
+<span class="w">      </span><span class="na">primaryClass</span><span class="p">=</span><span class="s">{cs.CL}</span><span class="p">,</span>
+<span class="w">      </span><span class="na">url</span><span class="p">=</span><span class="s">{https://arxiv.org/abs/2510.08191}</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nc">@misc</span><span class="p">{</span><span class="nl">youtu-agent-2025</span><span class="p">,</span>
+<span class="w">  </span><span class="na">title</span><span class="p">=</span><span class="s">{Youtu-agent: A Simple yet Powerful Agent Framework}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">author</span><span class="p">=</span><span class="s">{Tencent Youtu Lab}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">year</span><span class="p">=</span><span class="s">{2025}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">publisher</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{GitHub}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">journal</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{GitHub repository}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">howpublished</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{\url{https://github.com/TencentCloudADP/youtu-agent}}</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback! Help us improve this page by using our <a href="https://doc.weixin.qq.com/smartsheet/form/1_wpkSFfCgAAIzkZ-F0ncReQFci0uBXXig_a04906" target="_blank" rel="noopener">feedback form</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "content.code.select", "navigation.sections", "navigation.tabs", "content.code.annotate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
