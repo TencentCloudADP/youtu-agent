@@ -1,6 +1,15 @@
-from typing import Any
+from typing import Any, Literal
 
-from agents import Agent, AgentOutputSchemaBase, Runner, RunResultStreaming, TResponseInputItem, trace
+from agents import (
+    Agent,
+    AgentOutputSchemaBase,
+    Runner,
+    RunResultStreaming,
+    StopAtTools,
+    Tool,
+    TResponseInputItem,
+    trace,
+)
 
 from ..config import ConfigLoader, ModelConfigs
 from ..utils import AgentsUtils, get_logger
@@ -17,7 +26,9 @@ class LLMAgent:
         model_config: ModelConfigs = None,
         name: str = None,
         instructions: str = None,
+        tools: list[Tool] = None,
         output_type: type[Any] | AgentOutputSchemaBase | None = None,
+        tool_use_behavior: Literal["run_llm_again", "stop_on_first_tool"] | StopAtTools = "run_llm_again",
     ):
         model_config = model_config or ConfigLoader.load_model_config("base")
         self.agent = Agent(
@@ -25,6 +36,8 @@ class LLMAgent:
             instructions=instructions,
             model=AgentsUtils.get_agents_model(**model_config.model_provider.model_dump()),
             model_settings=model_config.model_settings,
+            tools=tools or [],
+            tool_use_behavior=tool_use_behavior,
             output_type=output_type,
         )
 
