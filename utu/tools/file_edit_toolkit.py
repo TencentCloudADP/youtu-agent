@@ -5,6 +5,7 @@
 """
 
 from ..config import ToolkitConfig
+from ..env import ShellLocalEnv
 from ..utils import get_logger
 from .base import AsyncBaseToolkit, register_tool
 
@@ -19,11 +20,18 @@ class FileEditToolkit(AsyncBaseToolkit):
             from .local_env.file_edit import FileEditLocal
 
             self.file_editor = FileEditLocal(config)
+            self.setup_workspace()
 
-    def setup_workspace(self, workspace_root: str):
+    def setup_workspace(self, workspace_root: str = None):
         if self.env_mode != "local":
             logger.warning(f"FileEditToolkit should not setup workspace in env_mode {self.env_mode}!")
             return
+        if workspace_root is None:
+            # try to get workspace_root from env, or config
+            if isinstance(self.env, ShellLocalEnv):
+                workspace_root = self.env.workspace
+            else:
+                workspace_root = self.config.config.get("workspace_root", "/tmp/")
         self.file_editor.setup_workspace(workspace_root)
 
     @register_tool
@@ -45,7 +53,7 @@ class FileEditToolkit(AsyncBaseToolkit):
             return await self.file_editor.edit_file(path, diff)
         else:
             assert self.e2b_sandbox is not None, "E2B sandbox is not set up!"
-            return await self.e2b_env.files_edit_diff(path, diff)
+            return await self.env.files_edit_diff(path, diff)
 
     @register_tool
     async def write_file(self, path: str, file_text: str) -> str:
@@ -59,7 +67,7 @@ class FileEditToolkit(AsyncBaseToolkit):
             return await self.file_editor.write_file(path, file_text)
         else:
             assert self.e2b_sandbox is not None, "E2B sandbox is not set up!"
-            return await self.e2b_env.files_write(path, file_text)
+            return await self.env.files_write(path, file_text)
 
     @register_tool
     async def read_file(self, path: str) -> str:
@@ -72,4 +80,4 @@ class FileEditToolkit(AsyncBaseToolkit):
             return await self.file_editor.read_file(path)
         else:
             assert self.e2b_sandbox is not None, "E2B sandbox is not set up!"
-            return await self.e2b_env.files_read(path)
+            return await self.env.files_read(path)

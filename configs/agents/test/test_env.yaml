@@ -1,0 +1,15 @@
+# @package _global_
+defaults:
+  - /tools/bash@toolkits.BashTool
+  - /tools/python_executor@toolkits.python_executor
+  - /tools/file_edit@toolkits.file_edit
+  - _self_
+
+agent:
+  name: FileManagerAgent
+  instructions: You are a helpful assistant.
+
+env:
+  name: shell_local
+  config:
+    workspace_root: /tmp/mock_files/

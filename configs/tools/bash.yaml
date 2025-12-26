@@ -2,5 +2,5 @@ name: bash
 mode: builtin
 activated_tools: null
 config:
-    workspace_root: /tmp/
+    # workspace_root: /tmp/
     timeout: 60

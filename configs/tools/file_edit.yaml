@@ -1,8 +1,7 @@
 name: file_edit
 mode: builtin
 activated_tools: null
-config: {
-  "work_dir": "/tmp/",
-  "backup_enabled": False,
-  "default_encoding": "utf-8",
-}
+config:
+  # workspace_root: /tmp/
+  backup_enabled: False
+  default_encoding: utf-8

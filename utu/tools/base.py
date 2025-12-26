@@ -5,13 +5,13 @@ import mcp.types as types
 from agents import FunctionTool, function_tool
 
 from ..config import ToolkitConfig
-from ..utils import ChatCompletionConverter, FileUtils, get_logger
-from .utils import MCPConverter, register_tool as register_tool
+from ..utils import ChatCompletionConverter, FileUtils, MCPConverter, get_logger
+from .utils import register_tool as register_tool
 
 if TYPE_CHECKING:
     from e2b_code_interpreter import AsyncSandbox
 
-    from ..env import E2BEnv
+    from ..env import _BaseEnv
 
 logger = get_logger(__name__)
 
@@ -27,17 +27,21 @@ class AsyncBaseToolkit:
         self.config: ToolkitConfig = config
         self._tools_map: dict[str, Callable] = None
 
-        self.env_mode = self.config.env_mode
+        self.env: _BaseEnv = None
+        self.env_mode = self.config.env_mode  # TODO: deprecate it
         if self.env_mode == "e2b":
-            self.e2b_env: E2BEnv = None
             self.e2b_sandbox: AsyncSandbox = None
 
-    def setup_e2b_env(self, env: "E2BEnv") -> None:
-        if self.env_mode != "e2b":
-            logger.warning(f"Toolkit should not setup e2b sandbox in env_mode {self.env_mode}!")
-            return
-        self.e2b_env = env
-        self.e2b_sandbox = env.sandbox
+    def setup_env(self, env: "_BaseEnv") -> None:
+        """Setup env and workspace."""
+        self.env = env
+        if self.env_mode == "e2b":  # assert is E2BEnv
+            self.e2b_sandbox = env.sandbox
+        self.setup_workspace()
+
+    def setup_workspace(self, workspace_root: str = None):
+        """Setup workspace. Implemented inside specific toolkits."""
+        pass
 
     @property
     def tools_map(self) -> dict[str, Callable]:

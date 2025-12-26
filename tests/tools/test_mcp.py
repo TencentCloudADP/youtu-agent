@@ -1,5 +1,5 @@
 from utu.config import ConfigLoader
-from utu.tools.utils import AgentsMCPUtils
+from utu.utils import AgentsMCPUtils
 
 
 async def test_mcp():
@@ -17,6 +17,7 @@ async def test_mcp():
     # action = [("add_memories", {"text": "I like to eat bagels"}), ("list_memories", {})]
 
     config = ConfigLoader.load_toolkit_config(config_name)
+    config.activated_tools = None  # use all tools
     mcp_server = AgentsMCPUtils.get_mcp_server(config)
     async with mcp_server:
         tools = await mcp_server.list_tools()
@@ -33,3 +34,9 @@ async def test_get_mcp_tools_schema():
     tools_map = await AgentsMCPUtils.get_mcp_tools_schema(config)
     for name, schema in tools_map.items():
         print(f"Tool: {name}, schema: {schema}")
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(test_mcp())

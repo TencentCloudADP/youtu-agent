@@ -3,13 +3,13 @@ import logging
 from agents import Tool
 
 from ..config import ToolkitConfig
-from ..tools.utils import AgentsMCPUtils
-from .base_env import BasicEnv
+from ..utils import AgentsMCPUtils
+from .base_env import BaseEnv
 
 logger = logging.getLogger(__name__)
 
 
-class BrowserE2BEnv(BasicEnv):
+class BrowserE2BEnv(BaseEnv):
     """Browser environment extended from E2B (https://e2b.dev/docs).
     Here we used TencentCloud's agent sandbox service. https://cloud.tencent.com/product/agentsandbox
     Sample config: configs/agents/examples/browser_e2b/browser_e2b.yaml

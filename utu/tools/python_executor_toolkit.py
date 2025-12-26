@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 
 from ..config import ToolkitConfig
+from ..env import ShellLocalEnv
 from ..utils import get_logger
 from .base import AsyncBaseToolkit, register_tool
 from .local_env.python import execute_python_code_async
@@ -20,7 +21,7 @@ class PythonExecutorToolkit(AsyncBaseToolkit):
         super().__init__(config)
 
         if self.env_mode == "local":
-            self.setup_workspace(self.config.config.get("workspace_root", None))
+            self.setup_workspace()
         elif self.env_mode == "e2b":
             pass
         else:
@@ -31,9 +32,15 @@ class PythonExecutorToolkit(AsyncBaseToolkit):
             logger.warning(f"PythonExecutorToolkit should not setup workspace in env_mode {self.env_mode}!")
             return
         if workspace_root is None:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            unique_id = str(uuid.uuid4())[:8]
-            workspace_root = f"/tmp/utu/python_executor/{timestamp}_{unique_id}"
+            # try to get workspace_root from env, or config
+            if isinstance(self.env, ShellLocalEnv):
+                workspace_root = self.env.workspace
+            elif "workspace_root" in self.config.config:
+                workspace_root = self.config.config["workspace_root"]
+            else:
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                unique_id = str(uuid.uuid4())[:8]
+                workspace_root = f"/tmp/utu/python_executor/{timestamp}_{unique_id}"
         workspace_dir = pathlib.Path(workspace_root)
         workspace_dir.mkdir(parents=True, exist_ok=True)
         self.workspace_root = str(workspace_root)

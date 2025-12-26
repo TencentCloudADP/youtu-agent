@@ -1,3 +1,4 @@
+from ..utils import DIR_ROOT
 from .base_env import BaseEnv
 
 TEMPLATE = r"""<env>
@@ -12,7 +13,13 @@ TEMPLATE = r"""<env>
 class ShellLocalEnv(BaseEnv):
     workspace: str
 
-    def __init__(self, workspace: str):
+    def __init__(self, config: dict = None, trace_id: str = None):
+        config = config or {}
+        workspace = config.get("workspace_root")
+        if not workspace:
+            workspace = DIR_ROOT / "workspace" / trace_id
+            workspace.mkdir(parents=True, exist_ok=True)
+        print(f"> Workspace: {workspace}")
         self.workspace = workspace
 
     def get_state(self) -> str:

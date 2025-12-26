@@ -1,20 +1,24 @@
 import logging
 
-import pytest
-
 from utu.agents import SimpleAgent
 from utu.config import ConfigLoader
 
 
-@pytest.fixture
-async def agent():
-    agent = SimpleAgent(config=ConfigLoader.load_agent_config("simple/search_agent"))
-    await agent.build()
-    yield agent
-    await agent.cleanup()
+async def test_chat_streamed():
+    config = ConfigLoader.load_agent_config("test/test_env")
+    async with SimpleAgent(config=config) as agent:
+        tools = await agent.get_tools()
+        logging.info(f"Loaded {len(tools)} tools: {tools}")
+        for prompt in [
+            "please pwd",
+            "please use python to create an empty file `test.txt`",
+            "please use `edit_file` to add a line into the test file with one line `test line`",
+        ]:
+            print(prompt.center(80, "-"))
+            await agent.chat_streamed(prompt)
 
 
-async def test_chat_streamed(agent: SimpleAgent):
-    tools = await agent.get_tools()
-    logging.info(f"Loaded {len(tools)} tools: {tools}")
-    await agent.chat_streamed("That's the weather in Beijing today?")
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(test_chat_streamed())

@@ -81,7 +81,7 @@ agent:
     - Confirm completion with final directory listing
 max_turns: 100
 
-toolkits:
-  BashTool:
-    config:
-      workspace_root: /tmp/mock_files/
+env:
+  name: shell_local
+  config:
+    workspace_root: /tmp/mock_files/

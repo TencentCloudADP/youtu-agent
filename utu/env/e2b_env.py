@@ -1,12 +1,12 @@
 from typing import IO
 
 from ..utils import FileUtils, get_logger
-from .base_env import BasicEnv
+from .base_env import BaseEnv
 
 logger = get_logger(__name__)
 
 
-class E2BEnv(BasicEnv):
+class E2BEnv(BaseEnv):
     """E2B Code Interpreter Environment.
     Ref: https://e2b.dev/docs
     Sample config: configs/agents/examples/e2b/e2b_python.yaml

@@ -4,7 +4,7 @@ import datetime
 from agents import Tool
 
 
-class BaseEnv:
+class _BaseEnv:
     """Environment interface for agents."""
 
     @abc.abstractmethod
@@ -19,11 +19,9 @@ class BaseEnv:
 
     async def build(self):
         """Build the environment."""
-        pass
 
     async def cleanup(self):
         """Cleanup the environment."""
-        pass
 
     async def __aenter__(self):
         await self.build()
@@ -33,13 +31,14 @@ class BaseEnv:
         await self.cleanup()
 
 
-class BasicEnv(BaseEnv):
-    @staticmethod
-    def get_time() -> str:
-        return datetime.datetime.now().strftime(r"%Y-%m-%d %H:%M:%S")
-
+class BaseEnv(_BaseEnv):
     def get_state(self) -> str:
         return ""
 
     async def get_tools(self) -> list[Tool]:
         return []
+
+    # ------------------------------------------------------------------------
+    @staticmethod
+    def get_time() -> str:
+        return datetime.datetime.now().strftime(r"%Y-%m-%d %H:%M:%S")

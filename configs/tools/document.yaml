@@ -2,7 +2,7 @@ name: document
 mode: builtin
 activated_tools: null
 config:
-  parser: pymupdf  # pymupdf | chunkr
+  parser: unstructured  # pymupdf | chunkr | unstructured
   # -- for chunkr
   # high_resolution: true
   # CHUNKR_API_KEY: ${oc.env:CHUNKR_API_KEY}

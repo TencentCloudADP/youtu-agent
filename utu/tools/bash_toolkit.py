@@ -13,6 +13,7 @@ Run commands in a bash shell\n
 import pathlib
 
 from ..config import ToolkitConfig
+from ..env import ShellLocalEnv
 from ..utils import get_logger
 from .base import AsyncBaseToolkit, register_tool
 from .utils import E2BUtils
@@ -29,12 +30,18 @@ class BashToolkit(AsyncBaseToolkit):
             from .local_env.bash_pexpect import PexpectBash
 
             self.bash_runner = PexpectBash(timeout=self.timeout)
-            self.setup_workspace(self.config.config.get("workspace_root", "/tmp/"))
+            self.setup_workspace()
 
-    def setup_workspace(self, workspace_root: str):
+    def setup_workspace(self, workspace_root: str = None):
         if self.env_mode != "local":
             logger.warning(f"BashToolkit should not setup workspace in env_mode {self.env_mode}!")
             return
+        if workspace_root is None:
+            # try to get workspace_root from env, or config
+            if isinstance(self.env, ShellLocalEnv):
+                workspace_root = self.env.workspace
+            else:
+                workspace_root = self.config.config.get("workspace_root", "/tmp/")
         workspace_dir = pathlib.Path(workspace_root)
         workspace_dir.mkdir(parents=True, exist_ok=True)
         self.workspace_root = workspace_root

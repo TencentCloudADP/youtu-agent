@@ -18,8 +18,8 @@ from ..agents import LLMAgent, SimpleAgent
 from ..agents.common import DataClassWithStreamEvents, QueueCompleteSentinel
 from ..config import ConfigLoader
 from ..tools import TOOLKIT_MAP, UserInteractionToolkit
-from ..tools.utils import AgentsMCPUtils, get_tools_schema
-from ..utils import DIR_ROOT, AgentsUtils, FileUtils, LLMOutputParser, StringUtils, get_logger
+from ..tools.utils import get_tools_schema
+from ..utils import DIR_ROOT, AgentsMCPUtils, AgentsUtils, FileUtils, LLMOutputParser, StringUtils, get_logger
 from .tool_generator_mcp import ToolGenerator
 
 logger = get_logger(__name__)
