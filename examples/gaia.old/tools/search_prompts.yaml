@@ -54,22 +54,3 @@ SP_ANALYSIS: |
 
 SP_PARALLEL: |
   Your task is to provide comprehensive answers based on search engine snippets from multiple queries. You will receive multiple search queries and their corresponding search results, and your goal is to extract and summarize the most essential information to answer the common question.
-
-SINGLE_DEEP_FINAL: |
-  Based on the following web search results from a comprehensive search query, please answer the question: "{question}"
-
-  <search_query>
-  Combined Query: {combined_query}
-  Original Queries: {original_queries}
-  </search_query>
-
-  {formatted_content}
-
-  Please provide a comprehensive answer to the question based on the information found in the web content above. If the information is not sufficient to answer the question, please indicate what additional information might be needed.
-
-  <question>
-  Question: {question}
-  </question>
-
-SP_SINGLE_ANALYSIS: |
-  Your task is to provide comprehensive answers based on search engine results from a single comprehensive search query. You will receive webpage content from a comprehensive search and a specific question, and your goal is to extract and synthesize the most essential information to answer the question.

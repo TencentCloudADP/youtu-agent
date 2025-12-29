@@ -18,7 +18,7 @@ from collections.abc import Callable
 
 import pandas as pd
 
-from utu.tools import AsyncBaseToolkit, register_tool
+from utu.tools import AsyncBaseToolkit
 from utu.utils import get_logger
 
 logger = get_logger(__name__)
@@ -39,7 +39,6 @@ class ExcelToolkit(AsyncBaseToolkit):
         md_table = tabulate(df, headers="keys", tablefmt="pipe")
         return str(md_table)
 
-    @register_tool
     async def extract_excel_content(self, document_path: str, max_char_length=5000, return_cell_info=False) -> str:
         r"""Extract detailed cell information from an Excel file, including
         multiple sheets.
@@ -162,3 +161,8 @@ class ExcelToolkit(AsyncBaseToolkit):
                 """
 
         return result_str
+
+    async def get_tools_map(self) -> dict[str, Callable]:
+        return {
+            "extract_excel_content": self.extract_excel_content,
+        }

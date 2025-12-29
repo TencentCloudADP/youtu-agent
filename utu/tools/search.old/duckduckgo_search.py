@@ -37,22 +37,6 @@ class DuckDuckGoSearch:
         msg = "\n".join(formatted_results)
         return msg
 
-
-    async def search_duckduckgo_googlestyle(self, query: str, num_results: int = 5) -> str:
-        """standard search interface."""
-        res = await self.search_duckduckgo(query)
-        # filter
-        if self.content_filter:
-            results = self.content_filter.filter_results(res, num_results, key="href")
-        else:
-            results = res[:num_results]
-            
-        formatted_results_dict = {
-            "organic": results
-        }
-        return formatted_results_dict
-
-
     async def search_duckduckgo(self, query: str) -> list:
         """Use DuckDuckGo search engine to search for information on the given query.
 

@@ -1,12 +1,11 @@
 import asyncio
+
 from examples.gaia.tools.audio_analysis_toolkit import AudioAnalysisToolkit
-from examples.gaia.tools.browser_toolkit import BrowserToolkit
 from examples.gaia.tools.code_execution_toolkit import CodeExecutionToolkit
 from examples.gaia.tools.document_processing_toolkit import DocumentProcessingToolkit
 from examples.gaia.tools.excel_toolkit import ExcelToolkit
 from examples.gaia.tools.image_analysis_toolkit import ImageAnalysisToolkit
 from examples.gaia.tools.search_toolkit import SearchToolkit
-from utu.tools.search.jina_crawl import JinaCrawl
 from utu.config import ConfigLoader
 
 
@@ -81,7 +80,7 @@ async def test_document_processing_toolkit():
 
 
 async def test_search_toolkit():
-    config = ConfigLoader.load_toolkit_config("search")
+    config = ConfigLoader.load_toolkit_config("arxiv")
     search_toolkit = SearchToolkit(config)
 
     res = await search_toolkit.search_google("What is the capital of France?")
@@ -90,34 +89,16 @@ async def test_search_toolkit():
     print(f"> res: {res}")
     res = await search_toolkit.parallel_search(["France", "capital France"], "What is the capital of France?")
     print(f"> res: {res}")
-    res = await search_toolkit.single_query_deep_search("capital France", "What is the capital of France?")
-    print(f"> res: {res}")
 
 
-async def test_browser_toolkit():
-    config = ConfigLoader.load_toolkit_config("document")
-    browser_toolkit = BrowserToolkit(config)
-
-    res = await browser_toolkit.browser_open()
-    print(f"> res: {res}")
-    res = await browser_toolkit.browser_visit_page("https://github.com/TencentCloudADP/Youtu-agent")
-    print(f"> res: {res}")
-
-async def test_jina_crawl():
-    jina_crawl = JinaCrawl()
-    result = await jina_crawl.crawl("https://www.linkedin.com/posts/ganeshjagadeesan_berts-architecture-details-layers-activity-7201806870687223808-6qIZ")
-    print(result)
-
-async def main():
+async def test_main():
     # await test_excel_toolkit()
     # await test_code_execution_toolkit()
     # await test_image_analysis_toolkit()
     # await test_audio_analysis_toolkit()
     # await test_document_processing_toolkit()
     await test_search_toolkit()
-    # await test_browser_toolkit()
-    # await test_jina_crawl()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(test_main())

@@ -18,25 +18,16 @@ import os
 import sys
 import tempfile
 import subprocess
-import random
 from collections.abc import Callable
 from typing import Literal, Any, ClassVar
 from pathlib import Path
 from colorama import Fore
-from requests.exceptions import Timeout
-
-from sandbox_fusion import run_code, RunCodeRequest, RunStatus
 
 from utu.config import ToolkitConfig
 from utu.tools import AsyncBaseToolkit
 from utu.utils import get_logger
 
 logger = get_logger(__name__)
-
-# Sandbox Fusion endpoints configuration
-SANDBOX_FUSION_ENDPOINTS = ["http://10.16.24.192:80"]
-if 'SANDBOX_FUSION_ENDPOINT' in os.environ:
-    SANDBOX_FUSION_ENDPOINTS = os.environ['SANDBOX_FUSION_ENDPOINT'].split(',')
 
 
 class InterpreterError(Exception):
@@ -250,14 +241,14 @@ class SubprocessInterpreter:
             except Exception as e:
                 logger.warning(f"Failed to cleanup temporary file: {e}")
 
-        # if self.print_stdout and stdout:
-        #     print("======stdout======")
-        #     print(Fore.GREEN + stdout + Fore.RESET)
-        #     print("==================")
-        # if self.print_stderr and stderr:
-        #     print("======stderr======")
-        #     print(Fore.RED + stderr + Fore.RESET)
-        #     print("==================")
+        if self.print_stdout and stdout:
+            print("======stdout======")
+            print(Fore.GREEN + stdout + Fore.RESET)
+            print("==================")
+        if self.print_stderr and stderr:
+            print("======stderr======")
+            print(Fore.RED + stderr + Fore.RESET)
+            print("==================")
 
         # Build the execution result
         exec_result = ""
@@ -444,95 +435,25 @@ class CodeExecutionToolkit(AsyncBaseToolkit):
     def __init__(self, config: ToolkitConfig = None) -> None:
         super().__init__(config)
         # sandbox: Literal["subprocess"] = "subprocess",  # "internal_python", "jupyter", "docker", "e2b"
-        self.verbose: bool = False
+        self.verbose: bool = True
         self.unsafe_mode: bool = False
         self.import_white_list: list[str] | None = []
         self.require_confirm: bool = False
-        self.timeout: float | None = 50  # Default timeout for sandbox_fusion
+        self.timeout: float | None = None
 
-        # Get sandbox endpoints from config if available
-        if self.config and self.config.config:
-            self.sandbox_endpoints = self.config.config.get("sandbox_endpoints", SANDBOX_FUSION_ENDPOINTS)
-        else:
-            self.sandbox_endpoints = SANDBOX_FUSION_ENDPOINTS
-        
-        # Validate and filter out empty endpoints
-        self.sandbox_endpoints = [ep for ep in self.sandbox_endpoints if ep and ep.strip()]
-        
-        # Ensure we have at least one valid endpoint
-        if not self.sandbox_endpoints:
-            logger.warning(f"No valid sandbox endpoints found, using default: {SANDBOX_FUSION_ENDPOINTS}")
-            self.sandbox_endpoints = SANDBOX_FUSION_ENDPOINTS
-        
-        logger.info(f"CodeExecutionToolkit initialized with sandbox_endpoints: {self.sandbox_endpoints}")
-        
-        # FIX: Initialize tools_map directly in __init__
-        self._tools_map = {"execute_code": self.execute_code}
+        working_dir = self.config.config.get("working_dir")
+        if working_dir:
+            os.makedirs(working_dir, exist_ok=True)
 
-    def _run_single_code(self, code: str, timeout: int = 50) -> str:
-        """Run Python code using sandbox_fusion with retry mechanism.
-        
-        Args:
-            code (str): The Python code to execute.
-            timeout (int): Maximum execution time in seconds.
-            
-        Returns:
-            str: Execution results including stdout, stderr, and any error messages.
-        """
-        try:
-            last_error = None
-            max_attempts = 8
-            for attempt in range(max_attempts):
-                try:
-                    # Randomly sample an endpoint for each attempt
-                    endpoint = random.choice(self.sandbox_endpoints)
-                    
-                    # Validate endpoint before using
-                    if not endpoint or not endpoint.strip():
-                        raise ValueError(f"Invalid endpoint: {endpoint!r}. Available endpoints: {self.sandbox_endpoints}")
-                    
-                    logger.info(f"Attempt {attempt + 1}/{max_attempts} using endpoint: {endpoint}")
-                    logger.debug(f"Calling run_code with endpoint={endpoint!r}, timeout={timeout}")
-                    
-                    code_result = run_code(
-                        RunCodeRequest(code=code, language='python', run_timeout=timeout),
-                        max_attempts=1,
-                        client_timeout=timeout,
-                        endpoint=endpoint
-                    )
-                    logger.info(f"[Python] Code Result: {code_result}")
-                    result = []
-                    if code_result.run_result.stdout:
-                        result.append(f"stdout:\n{code_result.run_result.stdout}")
-                    if code_result.run_result.stderr:
-                        result.append(f"stderr:\n{code_result.run_result.stderr}")
-                    if code_result.run_result.execution_time >= timeout - 1:
-                        result.append(f"[PythonInterpreter Error] TimeoutError: Execution timed out.")
-                    result = '\n'.join(result)
-                    logger.info('SUCCESS RUNNING TOOL')
-                    return result if result.strip() else 'Finished execution.'
-
-                except Timeout as e:
-                    last_error = f'[Python Interpreter Error] TimeoutError: Execution timed out on endpoint {endpoint}.'
-                    logger.warning(f"Timeout on attempt {attempt + 1}: {last_error}")
-                    if attempt == max_attempts - 1:  # Last attempt
-                        return last_error
-                    continue
-                
-                except Exception as e:
-                    last_error = f'[Python Interpreter Error]: {str(e)} on endpoint {endpoint}'
-                    logger.warning(f"Error on attempt {attempt + 1}: {last_error}")
-                    if attempt == max_attempts - 1:  # Last attempt
-                        return last_error
-                    continue
-
-            return last_error if last_error else '[Python Interpreter Error]: All attempts failed.'
-
-        except Exception as e:
-            return f"[Python Interpreter Error]: {str(e)}"
+        self.interpreter = SubprocessInterpreter(
+            require_confirm=self.require_confirm,
+            print_stdout=self.verbose,
+            print_stderr=self.verbose,
+            working_dir=working_dir,
+        )
 
     async def execute_code(self, code: str) -> str:
-        r"""Execute Python code in a secure sandbox environment using sandbox_fusion.
+        r"""Execute Python code in a secure sandbox environment.
 
         This tool provides a Python interpreter for executing code safely. Use it to run
         calculations, data processing, analysis, and other computational tasks.
@@ -547,12 +468,11 @@ class CodeExecutionToolkit(AsyncBaseToolkit):
             str: Execution results including any printed output, return values, or error messages.
 
         Security Notes:
-            - Code is executed in a remote sandbox environment
-            - Multiple endpoint retry mechanism for reliability
-            - Timeout protection to prevent hanging executions
+            - Only execute trusted code
+            - Avoid potentially harmful operations
+            - File system access is restricted to the working directory
         """
-        timeout = int(self.timeout) if self.timeout else 50
-        output = self._run_single_code(code, timeout=timeout)
+        output = self.interpreter.run(code, "python")
         # ruff: noqa: E501
         # content = f"Executed the code below:\n```py\n{code}\n```\n> Executed Results:\n{output}"
         content = f"> Executed Results:\n{output}"
@@ -561,7 +481,7 @@ class CodeExecutionToolkit(AsyncBaseToolkit):
             print(content)
         return content
 
-    async def execute_code_file(self, file_path: str) -> str:
+    def execute_code_file(self, file_path: str) -> str:
         r"""Execute a given code file.
 
         Args:
@@ -571,6 +491,7 @@ class CodeExecutionToolkit(AsyncBaseToolkit):
         with open(file_path) as f:
             code = f.read()
         f.close()
-        return await self.execute_code(code)
+        return self.execute_code(code)
 
-    # Removed async get_tools_map() - tools are now registered in __init__
+    async def get_tools_map(self) -> dict[str, Callable]:
+        return {"execute_code": self.execute_code}

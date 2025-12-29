@@ -23,8 +23,6 @@ class JinaSearch:
         self.search_params = config.get("search_params", {})
         search_banned_sites = config.get("search_banned_sites", [])
         self.content_filter = ContentFilter(search_banned_sites) if search_banned_sites else None
-        # Default timeout: 600 seconds (10 minutes), can be configured via config
-        self.timeout = config.get("jina_timeout", 600)
 
     async def search(self, query: str, num_results: int = 5) -> str:
         """standard search interface."""
@@ -42,7 +40,7 @@ class JinaSearch:
         msg = "\n".join(formatted_results)
         return msg
 
-    @async_file_cache(cache_dir="/cfs_turbo/bobshunli/jina_search_cache", expire_time=None)
+    @async_file_cache(expire_time=None)
     async def search_jina(self, query: str) -> dict:
         """Call the Jina API and cache the results.
 
@@ -60,8 +58,7 @@ class JinaSearch:
             }
         """
         params = {"q": query, **self.search_params}
-        timeout = aiohttp.ClientTimeout(total=self.timeout)
-        async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with aiohttp.ClientSession() as session:
             async with session.get(self.jina_url, headers=self.jina_header, params=params) as response:
                 response.raise_for_status()
                 results = await response.json()

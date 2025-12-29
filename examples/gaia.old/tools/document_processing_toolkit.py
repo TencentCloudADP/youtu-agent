@@ -29,7 +29,7 @@ from examples.gaia.tools.image_analysis_toolkit import ImageAnalysisToolkit
 from examples.gaia.tools.audio_analysis_toolkit import AudioAnalysisToolkit
 
 from utu.config import ToolkitConfig, ConfigLoader
-from utu.tools import AsyncBaseToolkit, register_tool
+from utu.tools import AsyncBaseToolkit
 from utu.tools.search.jina_crawl import JinaCrawl
 from utu.utils import get_logger, SimplifiedAsyncOpenAI, FileUtils
 
@@ -47,15 +47,10 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
         self.audio_tool = AudioAnalysisToolkit(ConfigLoader.load_toolkit_config("audio"))
         self.excel_tool = ExcelToolkit()
         self.crawler = JinaCrawl()
-        if self.config.config_llm:
-            model_config = self.config.config_llm.model_provider.model_dump()
-        else:
-            model_config = {}
-        # ---------------------------------------------------- 定制化Bob工具使用默认的qwen3-4b ----------------------------------------------------- #
-        model_config["base_url"] = "https://ms-d2chnwst-100034032793-sw.gw.ap-zhongwei.ti.tencentcs.com/ms-d2chnwst/v1"
+
         # llm for web_qa
         self.llm = SimplifiedAsyncOpenAI(
-            **model_config
+            **self.config.config_llm.model_provider.model_dump() if self.config.config_llm else {}
         )
 
         self.headers = {
@@ -65,7 +60,6 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
         self.cache_dir = "workspace/"
         os.makedirs(os.path.join(self.cache_dir, "docx_cache"), exist_ok=True)
 
-    @register_tool
     async def extract_document_content(self, document_path: str, query: Optional[str] = None) -> str:
         r"""Extract the content of a given document and return the processed text.
         It may filter out some information, resulting in inaccurate content.
@@ -196,8 +190,6 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
             extracted_text = [item.text for item in extracted_text]
             return extracted_text
 
-
-    @register_tool
     async def extract_web_content(self, url: str, query: str) -> str:
         r"""Extract and analyze webpage content given a webpage URL and a query, and return the processed text based on the query.
 
@@ -236,9 +228,7 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
         r"""Process the extracted content with Q&A using LLM."""
         prompt = PROMPTS["FINAL_QA"].format(content=content, query=query)
         logger.debug(f"Processing Q&A with content length: {len(content)}")
-        # return await self.llm.query_one(messages=prompt)
-        # ---------------------------------------------------- 定制化Bob工具使用默认的qwen3-4b ----------------------------------------------------- #
-        return await self.llm.query_one(messages=prompt, model="Qwen3-4B")
+        return await self.llm.query_one(messages=prompt)
 
     async def _post_process_result(self, result: str, query: Optional[str]) -> str:
         r"""Identify whether the result is too long. If so, split it into multiple parts, and leverage a model to identify which part contains the relevant information."""
@@ -246,16 +236,12 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
         async def _identify_relevant_part_async(part_idx: int, part: str, query: str) -> Tuple[bool, int, str]:
             logger.debug(f"Doc understanding with length {len(part)}, query: {query}")
             prompt = PROMPTS["POSTPROCESS_QA_RELEVANCE"].format(part=part, query=query)
-            # response = await self.llm.query_one(messages=prompt)
-            # ---------------------------------------------------- 定制化Bob工具使用默认的qwen3-4b ----------------------------------------------------- #
-            response = await self.llm.query_one(messages=prompt, model="Qwen3-4B")
+            response = await self.llm.query_one(messages=prompt)
             flag = "true" in response.lower()
             return flag, part_idx, part
 
-        # max_length = 100000
-        # split_length = 40000
-        max_length = 20000
-        split_length = 20000
+        max_length = 100000
+        split_length = 40000
         max_truncate_length = 500000
 
         # Truncate result if it exceeds max_truncate_length
@@ -304,7 +290,6 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
         else:
             return result
 
-
     async def _post_process_result_pro(self, result: str, query: str) -> str:
         r"""Advanced post-processing that performs progressive Q&A on document chunks.
         Unlike _post_process_result, this method not only identifies relevant chunks but also
@@ -313,18 +298,12 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
 
         async def _identify_relevant_part(part_idx: int, part: str, query: str) -> Tuple[bool, int, str]:
             logger.debug(f"Doc understanding with length {len(part)}, query: {query}")
+
             prompt = PROMPTS["POSTPROCESS_QA_RELEVANCE"].format(part=part, query=query)
-            # response = await self.llm.query_one(messages=prompt)
-            # ---------------------------------------------------- 定制化Bob工具使用默认的qwen3-4b ----------------------------------------------------- #
-            response = await self.llm.query_one(messages=prompt, model="Qwen3-4B")
+
+            response = await self.llm.query_one(messages=prompt)
             flag = "true" in response.lower()
             return flag, part_idx, part
-
-
-        async def _identify_relevant_part_semaphore(semaphore: asyncio.Semaphore, part_idx: int, part: str, query: str) -> Tuple[bool, int, str]:
-            async with semaphore:
-                return await _identify_relevant_part(part_idx, part, query)
-
 
         async def _progressive_qa(part: str, query: str, previous_answer: str) -> str:
             """Perform Q&A on a document part, considering previous answers"""
@@ -335,13 +314,11 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
             else:
                 prompt = PROMPTS["POSTPROCESS_QA_FIRST"].format(part=part, query=query)
 
-            # return await self.llm.query_one(messages=prompt)
-            # ---------------------------------------------------- 定制化Bob工具使用默认的qwen3-4b ----------------------------------------------------- #
-            return await self.llm.query_one(messages=prompt, model="Qwen3-4B")
+            return await self.llm.query_one(messages=prompt)
 
-        max_length = 20000  # 超过20K就给我切分
-        max_cut_length = 200000   # 最长不能超过200K
-        split_length = 20000  # 切分长度先默认等于max_length
+        max_length = 100000
+        max_cut_length = 200000
+        split_length = 40000
 
         if len(result) > max_length:
             # Split the result into multiple parts
@@ -355,17 +332,10 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
             relevant_parts = {}
 
             # First, identify all relevant parts using async
-            # ------------------------------------------ 定制化逻辑 请求handle不住，需要加并发控制->放弃 还是串行吧 ------------------------------------------
-            # num_semaphore = 4
-            # semaphore = asyncio.Semaphore(num_semaphore)
-            # tasks = [_identify_relevant_part_semaphore(semaphore, part_idx, part, query) for part_idx, part in enumerate(parts)]
-            # tasks = [_identify_relevant_part(part_idx, part, query) for part_idx, part in enumerate(parts)]
+            tasks = [_identify_relevant_part(part_idx, part, query) for part_idx, part in enumerate(parts)]
+
             try:
-                results = []
-                for part_idx, part in enumerate(parts):
-                    result_item = await _identify_relevant_part(part_idx, part, query)
-                    results.append(result_item)
-                # results = await asyncio.gather(*tasks, return_exceptions=True)
+                results = await asyncio.gather(*tasks, return_exceptions=True)
                 for result_item in results:
                     if isinstance(result_item, Exception):
                         logger.error(f"Error in parallel processing: {result_item}")
@@ -406,9 +376,7 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
             # For shorter documents, perform single Q&A
             logger.debug("Document is short enough, performing single Q&A")
             prompt = PROMPTS["POSTPROCESS_QA_SHORT"].format(result=result, query=query)
-            # return await self.llm.query_one(messages=prompt)
-            # ---------------------------------------------------- 定制化Bob工具使用默认的qwen3-4b ----------------------------------------------------- #
-            return await self.llm.query_one(messages=prompt, model="Qwen3-4B")
+            return await self.llm.query_one(messages=prompt)
 
     def _is_webpage(self, url: str) -> bool:
         r"""Judge whether the given URL is a webpage."""
@@ -455,3 +423,9 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
                 extracted_files.append(os.path.join(root, file))
 
         return extracted_files
+
+    async def get_tools_map(self) -> dict[str, Callable]:
+        return {
+            "extract_document_content": self.extract_document_content,
+            "extract_web_content": self.extract_web_content,
+        }

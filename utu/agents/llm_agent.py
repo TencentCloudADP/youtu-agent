@@ -9,6 +9,7 @@ from .common import TaskRecorder
 logger = get_logger(__name__)
 
 
+
 class LLMAgent:
     """Minimal agent that wraps a model."""
 

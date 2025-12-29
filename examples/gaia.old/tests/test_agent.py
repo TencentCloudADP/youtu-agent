@@ -4,11 +4,10 @@ import asyncio
 
 from utu.agents import SimpleAgent, WorkforceAgent
 from utu.config import ConfigLoader
-from utu.eval.benchmarks import BaseBenchmark
 
 
 async def test_reasoning_coding_agent():
-    agent = SimpleAgent(config=ConfigLoader.load_agent_config("simple_agents/gaia_reasoning_coding.yaml"))
+    agent = SimpleAgent(config=ConfigLoader.load_agent_config("simple/gaia_reasoning_coding.yaml"))
     await agent.build()
     print(f"agent with tools: {agent.tools}")
     # await agent.chat_streamed("What tools do you have?")
@@ -18,7 +17,7 @@ async def test_reasoning_coding_agent():
 
 
 async def test_web_search_agent():
-    agent = SimpleAgent(config=ConfigLoader.load_agent_config("simple_agents/gaia_web_search.yaml"))
+    agent = SimpleAgent(config=ConfigLoader.load_agent_config("simple/gaia_web_search.yaml"))
     await agent.build()
     print(f"agent with tools: {agent.tools}")
     await agent.chat_streamed("What tools do you have?")
@@ -29,38 +28,17 @@ async def test_web_search_agent():
 
 
 async def test_agent():
-    agent = WorkforceAgent(config=ConfigLoader.load_agent_config("examples/gaia"))
+    agent = WorkforceAgent(config=ConfigLoader.load_agent_config("gaia"))
     task = "It's May 2023, and I'm about to drive across the U.S. from California to Maine. I always recycle my water bottles at the end of a trip, and I drink 5 12-ounce water bottles for every 100 miles I travel, rounded to the nearest 100. Assuming I follow I-40 from Los Angeles to Cincinnati, then take I-90 from Cincinnati to Augusta, how many dollars will I get back according to Wikipedia?"
     recorder = await agent.run(task)
     print(recorder)
 
 
-async def test_browse_agent():
-    agent = SimpleAgent(config=ConfigLoader.load_agent_config("simple_agents/gaia_web_browsing.yaml"))
-    await agent.build()
-    print(f"agent with tools: {agent.tools}")
-    await agent.chat_streamed("What tools do you have?")
-    await agent.chat_streamed("总结 Anthropic 博客中关于 How to implement tool use 的内容")
-    await agent.cleanup()
-
-
-async def test_benchmark():
-    config = ConfigLoader.load_eval_config("gaia")
-    config.exp_id = "gaia_test_0916"
-    benchmark = BaseBenchmark(config)
-    benchmark.preprocess()
-    sample = benchmark.dataset.get_samples(limit=1)[0]
-    res = await benchmark.rollout_one(sample)
-    print(res.as_dict())
-
-
-async def main():
+async def test_main():
     # await test_reasoning_coding_agent()
     # await test_web_search_agent()
-    # await test_agent()
-    await test_browse_agent()
-    # await test_benchmark()
+    await test_agent()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(test_main())

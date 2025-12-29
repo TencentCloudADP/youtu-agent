@@ -1,0 +1,46 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+  name: qa_wiki
+  instructions: You are a Web Information Seeking Master.
+
+
+toolkits:
+  wiki:
+    name: wiki
+    mode: customized
+    customized_filepath: examples/rl_train/wiki_tool.py
+    customized_classname: WikiToolkit
+    activated_tools: ["search_wiki"]
+  search:
+    name: search_toolkit
+    mode: customized
+    customized_filepath: examples/gaia/tools/search_toolkit.py
+    customized_classname: SearchToolkit
+    activated_tools: ["search_google"]
+      # - multi_query_deep_search
+      # - single_query_deep_search
+      # - search_google
+  document_processing:
+    name: document_processing_toolkit
+    mode: customized
+    customized_filepath: examples/gaia/tools/document_processing_toolkit.py
+    customized_classname: DocumentProcessingToolkit
+    activated_tools: ["extract_web_content"]
+  code_execution:
+    name: code_execution_toolkit
+    mode: customized
+    customized_filepath: examples/gaia/tools/code_execution_toolkit.py
+    customized_classname: CodeExecutionToolkit
+    activated_tools: ["execute_code"]
+  math:
+    name: math_toolkit
+    mode: customized
+    customized_filepath: examples/gaia/tools/math_toolkit.py
+    customized_classname: MathToolkit
+    activated_tools: ["calculator"]
+
+

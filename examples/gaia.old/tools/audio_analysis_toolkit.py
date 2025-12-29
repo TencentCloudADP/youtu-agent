@@ -16,13 +16,14 @@
 
 import base64
 import os
+from collections.abc import Callable
 from urllib.parse import urlparse
 
 import requests
 from pydub.utils import mediainfo
 
 from utu.config import ToolkitConfig
-from utu.tools import AsyncBaseToolkit, register_tool
+from utu.tools import AsyncBaseToolkit
 from utu.utils import EnvUtils, SimplifiedAsyncOpenAI, get_logger
 
 logger = get_logger(__name__)
@@ -47,7 +48,6 @@ class AudioAnalysisToolkit(AsyncBaseToolkit):
         duration = float(info["duration"])
         return duration
 
-    @register_tool
     async def ask_question_about_audio(self, audio_path: str, question: str) -> str:
         r"""Ask any question about the audio and get the answer using
             multimodal model.
@@ -123,3 +123,8 @@ class AudioAnalysisToolkit(AsyncBaseToolkit):
 
         logger.debug(f"Response: {response}")
         return response
+
+    async def get_tools_map(self) -> dict[str, Callable]:
+        return {
+            "ask_question_about_audio": self.ask_question_about_audio,
+        }
