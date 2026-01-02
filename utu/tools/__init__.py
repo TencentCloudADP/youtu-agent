@@ -19,7 +19,7 @@ from .video_toolkit import VideoToolkit
 from .wikipedia_toolkit import WikipediaSearchTool
 from .wikilocal_toolkit import WikiToolkit
 from .document_processing_toolkit import DocumentProcessingToolkit
-
+from .base_gen_toolkit import BaseGeneratorToolkit
 
 
 
@@ -42,6 +42,7 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "tabular": TabularDataToolkit,
     "memory_simple": SimpleMemoryToolkit,
     "user_interaction": UserInteractionToolkit,
+    "direct_reply": BaseGeneratorToolkit,
 }
 
 

@@ -202,12 +202,13 @@ Previous Steps (context): {previous_steps}"""
 
 
 TOOLKIT_NAME_TO_TOOLS = {
+    "direct_reply": ["direct_reply"],
     #### "search": ["search", "web_qa"],
     #### "python_executor": ["execute_python_code"],
-    "search": ["search_web"],
-    "extract_web_content": ["extract_web_content"],
-    "wikilocal": ["search_wiki"],
-    "codesnip": ["code_interpreter"],
+    # "search": ["search_web"],
+    # "extract_web_content": ["extract_web_content"],
+    # "wikilocal": ["search_wiki"],
+    # "codesnip": ["code_interpreter"],
 }
 
 
@@ -235,10 +236,20 @@ async def get_tools(selected_tool_name: list[str]) -> list[FunctionTool]:
 async def summarize_memory(query, memory_evolver, system_prompt, memory, window_size=3):
     """
     Summarize your previous steps in the memory
+    Args:
+        query: the query
+        memory_evolver: the memory evolver agent
+        system_prompt: the system prompt
+        memory: the memory (list of dicts)
+        window_size: the window size
+    Returns:
+        messages_memory: the messages memory
+        summary_dict: the summary dictionary
     """
     num_total_steps = len(memory)
     summary_dict = {}
     if len(memory) > window_size:
+        # 如果记忆长度大于窗口大小，则总结窗口大小的记忆
         memory_summary = memory[:-window_size]
         _input = T_MEMORY_EVOLVER.format(query=query, previous_steps=json.dumps(memory_summary, ensure_ascii=False, indent=4))
         summaryagent_res = await memory_evolver.run(_input)
@@ -248,18 +259,32 @@ async def summarize_memory(query, memory_evolver, system_prompt, memory, window_
         messages_memory = Converter.items_to_messages(summaryagent_res.to_input_list())
         summary_dict[f"Step_1-Step_{num_total_steps - window_size}"] = summaryagent_output["summary"]
         messages_memory.insert(0, {"role": "system", "content": system_prompt})
-    else:
-        messages_memory = []
+        # 保留最新的window_size步记忆
+        memory_complete = memory[-window_size:]
+        for mem_idx, mem in enumerate(memory_complete):
+            summary_dict[f"Step_{num_total_steps - window_size + mem_idx + 1}"] = mem
 
-    memory_complete = memory[-window_size:]
-    for mem_idx, mem in enumerate(memory_complete):
-        summary_dict[f"Step_{num_total_steps - window_size + mem_idx + 1}"] = mem
+    else:
+        # 如果记忆长度小于等于窗口大小，则不总结
+        messages_memory = []
+        # 保留所有记忆不做删除
+        memory_complete = memory
+        for mem_idx, mem in enumerate(memory_complete):
+            summary_dict[f"Step_{mem_idx + 1}"] = mem
     return messages_memory, summary_dict
 
 
 
 
-async def main_agent_loop(query: str):
+async def main_agent_loop(query: str, debug_mode: bool = False):
+    """
+    Args:
+        query: the query
+        debug_mode: whether to print debug information
+    Returns:
+        messages_by_turns: the messages by turns
+        final_answer: the final answer
+    """
     with trace("Customized planner agent loop"):
         model_config = ConfigLoader.load_model_config("base")
 
@@ -277,6 +302,7 @@ async def main_agent_loop(query: str):
             available_tools.append(tool_str)
         available_tools = "\n\n" + "\n".join(available_tools) + "\n\n"
         print("> Available tools:", available_tools)
+        # 裸记忆，不进行总结
         previous_steps = []  # memory
         stop_flag = False
         # message turn by turn
@@ -284,17 +310,23 @@ async def main_agent_loop(query: str):
         print(f"--- Starting agent loop ---\n{query}\n")
 
         for i in range(max_turns):
+            # 记录当前轮的所有内容，包括memory、planner、tool_executor、verifier、answerer
+            if debug_mode:
+                for previous_step in previous_steps:
+                    assert isinstance(previous_step, dict)
+                for message_by_turn in messages_by_turns:
+                    assert isinstance(message_by_turn, dict)
             messages_current_turn = {}
             if stop_flag:
                 break
             print(f"--- Turn {i + 1} ---")
             # ---------------------------   首先处理memory --------------------------- #
             messages_memory, mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=3)
-            # 无tools
-            messages_current_turn["memory"] = {"tools":[], "messages": messages_memory}
-            current_step = {}
-            mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
-            # import pdb;pdb.set_trace();
+            # 无tools 深拷贝messages_memory，避免后续修改影响原始memory
+            messages_current_turn["memory"] = {"tools":[], "messages": deepcopy(messages_memory)}
+            if debug_mode:
+                print(f"> Memory history dict [initialization summary {i+1} turn]:", mem_history_dict)
+                import pdb;pdb.set_trace();
             # ---------------------------   执行planner --------------------------- #
             _input = T_PLANNER.format(query=query, available_tools=available_tools, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
             planner_res = await planner.run(_input)
@@ -307,9 +339,14 @@ async def main_agent_loop(query: str):
             print("> Planner output:", messages_planner)
             assert all(k in planner_output for k in ["justification", "context", "subgoal", "tools"])
             # ---------------------------   planner输出->历史队列 --------------------------- #
+            current_step = {}
+            # place-holder 当前的记忆内容
             current_step["subgoal"] = planner_output["subgoal"]
             current_step["tools"] = planner_output["tools"]
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
+            if debug_mode:
+                print(f"> Memory history dict [planner output {i+1} turn]:", mem_history_dict)
+                import pdb;pdb.set_trace();         
             # ---------------------------   执行tool executor --------------------------- #
             model = AgentsUtils.get_agents_model(**model_config.model_provider.model_dump())
             tools = await get_tools(planner_output["tools"])
@@ -339,7 +376,10 @@ async def main_agent_loop(query: str):
             sub_agent_messages_tools = [m for m in sub_agent_messages if ("role" in m) and (m["role"] in ["assistant", "tool"])]
             # ---------------------------   tool executor输出->历史队列 --------------------------- #
             current_step["tool_calls_and_responses"] = sub_agent_messages_tools
-            mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
+            mem_history_dict[f"Step_{len(previous_steps)+1}"] = deepcopy(current_step)
+            if debug_mode:
+                print(f"> Memory history dict [tool executor output {i+1} turn]:", mem_history_dict)
+                import pdb;pdb.set_trace();
             print("> Tool executor output:", sub_agent_messages_tools)
             # ---------------------------   执行verifier --------------------------- #
             _input = T_VERIFIER.format(query=query, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
@@ -354,13 +394,16 @@ async def main_agent_loop(query: str):
             # ---------------------------   verifier输出->历史队列 --------------------------- #
             current_step["verification_status"] = verifier_output["justification"]
             current_step["final_determination"] = verifier_output["conclusion"]
-            mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
+            mem_history_dict[f"Step_{len(previous_steps)+1}"] = deepcopy(current_step)
+            if debug_mode:
+                print(f"> Memory history dict [verifier output {i+1} turn]:", mem_history_dict)
+                import pdb;pdb.set_trace();
             print("> Verifier output:", verifier_output)
             if verifier_output["conclusion"].upper() == "STOP":
                 # 停止下一轮
                 stop_flag = True
-            previous_steps.append(current_step)
-            messages_by_turns.append(messages_current_turn)
+            previous_steps.append(deepcopy(current_step))
+            messages_by_turns.append(deepcopy(messages_current_turn))
 
         if stop_flag:
             print("--- Early stop triggered by Stop flag ---")
@@ -368,7 +411,10 @@ async def main_agent_loop(query: str):
             print("--- Max turns reached ---")
         # ---------------------------   执行answerer --------------------------- #
         # 存储所有历史记录 直接返回
-        mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=len(previous_steps))
+        messages_memory, mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=len(previous_steps))
+        if debug_mode:
+            print(f"> Memory history dict [answerer input {i+1} turn]:", mem_history_dict)
+            import pdb;pdb.set_trace();
         _input = T_ANSWERER.format(query=query, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
         answerer_res = await answerer.run(_input)
         answerer_res_output = parse_answerer_response(response_text=answerer_res.final_output)
@@ -376,8 +422,8 @@ async def main_agent_loop(query: str):
         # ---------------------------   包装answerer输出内容 --------------------------- #
         answerer_messages = Converter.items_to_messages(answerer_res.to_input_list())
         answerer_messages.insert(0, {"role": "system", "content": P_ANSWERER})
-        # 无tools
-        messages_by_turns.append({"answerer": {"tools": [], "messages": answerer_messages}})
+        # 无tools 直接存储最后一轮输出
+        messages_by_turns.append({"answerer": {"tools": [], "messages": deepcopy(answerer_messages)}})
         print("> Final Answer:", answerer_res_output)
         return messages_by_turns, answerer_res_output["answer"]
 
@@ -445,13 +491,13 @@ To provide current weather information for Tokyo, web search is required, but it
     print(">>> 总结后的历史记录:\n", mem_history)
     """
 
-    # query = "Write a Python function to compute the Fibonacci sequence up to n, and then use it to find the 10th Fibonacci number."
+    query = "Write a Python function to compute the Fibonacci sequence up to n, and then use it to find the 10th Fibonacci number."
     # query = "What is the middle name of Donald Trump?"
-    query = "What is the weather in Shanghai now?"
+    # query = "What is the weather in Shanghai now?"
     print("Question:\n", query)
-    messages_by_turns, final_answer = asyncio.run(main_agent_loop(query))
+    messages_by_turns, final_answer = asyncio.run(main_agent_loop(query, debug_mode=False))
     print("Answer:\n", final_answer)
-    save_jsonl_path = "/cfs_turbo/yuleiqin/Research/youtu-agent/examples/in_the_flow/debug.jsonl"
+    save_jsonl_path = "/cfs_turbo/yuleiqin/Research/youtu-agent/examples/in_the_flow/debug_messages.json"
     with open(save_jsonl_path, "w") as fw:
-        fw.write(json.dumps(messages_by_turns, ensure_ascii=False)+"\n")
+        json.dump({"messages_by_turns": messages_by_turns, "final_answer": final_answer}, fw, ensure_ascii=False)
 

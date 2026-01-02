@@ -30,8 +30,10 @@ from examples.gaia.tools.audio_analysis_toolkit import AudioAnalysisToolkit
 
 from utu.config import ToolkitConfig, ConfigLoader
 from utu.tools import AsyncBaseToolkit, register_tool
-from utu.tools.search.jina_crawl import JinaCrawl
+from utu.tools.search.jina_crawl import JinaCrawl as JinaCrawlOriginal
+from utu.tools.search.jina_crawl_ian import JinaCrawl
 from utu.utils import get_logger, SimplifiedAsyncOpenAI, FileUtils
+
 
 logger = get_logger(__name__)
 PROMPTS = FileUtils.load_prompts(pathlib.Path(__file__).parent / "document_processing_prompts.yaml")
@@ -46,7 +48,8 @@ class DocumentProcessingToolkit(AsyncBaseToolkit):
         self.image_tool = ImageAnalysisToolkit(ConfigLoader.load_toolkit_config("image"))
         self.audio_tool = AudioAnalysisToolkit(ConfigLoader.load_toolkit_config("audio"))
         self.excel_tool = ExcelToolkit()
-        self.crawler = JinaCrawl()
+        # self.crawler = JinaCrawl()
+        self.crawler = JinaCrawlOriginal()
         if self.config.config_llm:
             model_config = self.config.config_llm.model_provider.model_dump()
         else:
