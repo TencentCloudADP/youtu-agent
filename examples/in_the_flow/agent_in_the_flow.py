@@ -207,8 +207,8 @@ TOOLKIT_NAME_TO_TOOLS = {
     #### "python_executor": ["execute_python_code"],
     # "search": ["search_web"],
     # "extract_web_content": ["extract_web_content"],
-    # "wikilocal": ["search_wiki"],
-    # "codesnip": ["code_interpreter"],
+    "wikilocal": ["search_wiki"],
+    "codesnip": ["code_interpreter"],
 }
 
 
