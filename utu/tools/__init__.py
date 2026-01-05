@@ -20,7 +20,7 @@ from .wikipedia_toolkit import WikipediaSearchTool
 from .wikilocal_toolkit import WikiToolkit
 from .document_processing_toolkit import DocumentProcessingToolkit
 from .base_gen_toolkit import BaseGeneratorToolkit
-
+from .math_toolkit import MathToolkit
 
 
 TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
@@ -43,6 +43,7 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "memory_simple": SimpleMemoryToolkit,
     "user_interaction": UserInteractionToolkit,
     "direct_reply": BaseGeneratorToolkit,
+    "calculator": MathToolkit
 }
 
 

@@ -108,7 +108,7 @@ Rules:
 - Select only one tool per step.
 - The Sub-Goal must be directly and solely achievable with the selected tool.
 - The Context section must contain all information the tool needs; do not assume implicit knowledge.
-- The final response must end with the <justification> ... </justification>\n<context> ... </context>\n<subgoal> ... </subgoal>\n<tools> ... <tools> in that order. No additional text should follow.
+- The final response must end with the <justification> ... </justification>\n<context> ... </context>\n<subgoal> ... </subgoal>\n<tools> ... </tools> in that order. No additional text should follow.
 """.strip()
 
 
@@ -209,6 +209,7 @@ TOOLKIT_NAME_TO_TOOLS = {
     # "extract_web_content": ["extract_web_content"],
     "wikilocal": ["search_wiki"],
     "codesnip": ["code_interpreter"],
+    "calculator": ["calculator"],
 }
 
 
@@ -224,6 +225,7 @@ async def get_tools(selected_tool_name: list[str]) -> list[FunctionTool]:
         tk_name = tool_name_to_toolkit[name]
         selected_toolkits[tk_name].append(name)
     tools = []
+    assert(selected_toolkits is not None)
     for tk_name, tool_names in selected_toolkits.items():
         tk_config = ConfigLoader.load_toolkit_config(tk_name)
         tk_config.activated_tools = tool_names
@@ -276,9 +278,10 @@ async def summarize_memory(query, memory_evolver, system_prompt, memory, window_
 
 
 
-async def main_agent_loop(query: str, debug_mode: bool = False):
+async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
     """
     Args:
+        model_config: the model config, must contain all the necessary tools
         query: the query
         debug_mode: whether to print debug information
     Returns:
@@ -286,16 +289,15 @@ async def main_agent_loop(query: str, debug_mode: bool = False):
         final_answer: the final answer
     """
     with trace("Customized planner agent loop"):
-        model_config = ConfigLoader.load_model_config("base")
-
         planner = LLMAgent(model_config=model_config, name="custom_planner", instructions=P_PLANNER)
         verifier = LLMAgent(model_config=model_config, name="custom_verifier", instructions=P_VERIFIER)
         answerer = LLMAgent(model_config=model_config, name="custom_answergenerator", instructions=P_ANSWERER)
         memory_evolver = LLMAgent(model_config=model_config, name="custom_memory_evolver", instructions=P_MEMORY_EVOLVER)
 
-        max_turns = 10
+        max_turns = 30
         available_tools_names = list(itertools.chain.from_iterable(TOOLKIT_NAME_TO_TOOLS.values()))
         available_tools_schemas = await get_tools(available_tools_names)
+
         available_tools = []
         for available_tool_schema_idx, available_tool_schema in enumerate(available_tools_schemas):
             tool_str = f"<tool{available_tool_schema_idx+1}>\nname: {available_tool_schema.name}\ndescription: {available_tool_schema.description}\n</tool{available_tool_schema_idx+1}>\n"
@@ -346,7 +348,12 @@ async def main_agent_loop(query: str, debug_mode: bool = False):
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
             if debug_mode:
                 print(f"> Memory history dict [planner output {i+1} turn]:", mem_history_dict)
-                import pdb;pdb.set_trace();         
+                import pdb;pdb.set_trace();
+            # 如果tools为空，则跳过tool_executor直接结束=>
+            if planner_output["tools"] is None or len(planner_output["tools"]) == 0:
+                print("🔥 Warning: Planner selected tools:", planner_output["tools"],\
+                    " Empty Tools Parsed from", planner_res.final_output)
+                break
             # ---------------------------   执行tool executor --------------------------- #
             model = AgentsUtils.get_agents_model(**model_config.model_provider.model_dump())
             tools = await get_tools(planner_output["tools"])
@@ -432,72 +439,24 @@ async def main_agent_loop(query: str, debug_mode: bool = False):
 
 if __name__ == "__main__":
     print()
-    """
-    response_text = '''
-<justification>
-The user is asking for current weather information in Tokyo, which is a real-time data request that falls outside my training knowledge. The web_search tool is specifically designed to retrieve up-to-date information like weather, news, or live data from the internet. Since the web features are disabled by the user, I must first inform them to enable the toggle before proceeding with the search.
-</justification>
-
-<context>
-The user has manually disabled web features (Search & Open Url) in the input box settings. To fulfill the request for current Tokyo weather, the user needs to re-enable these features so that web_search can be used to retrieve live weather data.
-</context>
-
-<subgoal>
-Inform the user that web features are currently disabled and request them to enable the toggle so that web_search can be used to fetch the current weather in Tokyo.
-</subgoal>
-
-<tools>
-None (inform user to enable web features)
-<tools>'''.strip()
-    print(parse_planner_response(response_text=response_text))
-
-    response_text = '''
-<justification>
-The query asks for current weather in Tokyo. No previous context or data about Tokyo's weather has been provided. To answer accurately, up-to-date external information is required. The web_search tool is designed for retrieving current data like weather, and it is currently disabled per user settings. Without any weather data available, the query cannot be satisfied.
-Conclusion: CONTINUE
-</justification>
-<conclusion>CONTINUE</conclusion>'''.strip()
-    print(parse_verifier_response(response_text=response_text))
-
-    response_text = '''<summary>
-No previous steps were taken; the query is being asked for the first time.
-</summary>
-<answer>
-To provide current weather information for Tokyo, web search is required, but it is currently disabled in your settings. Please enable web features and ask again.
-</answer>'''.strip()
-    print(parse_answerer_response(response_text=response_text))
-    # mimic the summarization process
-    memory1 = []
-    memory2 = []
-    memory3 = []
-
-    for step_idx in range(10):
-        current_step = {}
-        current_step["subgoal"] = f"subgoal_{step_idx+1}"
-        current_step["tools"] = f"tools_{step_idx+1}"
-        current_step["tool_calls_and_responses"] = f"tool_calls_and_responses_{step_idx+1}"
-        current_step["verification_status"] = f"verification_status_{step_idx+1}"
-        current_step["final_determination"] = f"final_determination_{step_idx+1}"
-        if step_idx < 2:
-            memory1.append(current_step)
-        if step_idx <= 2:
-            memory2.append(current_step)
-        memory3.append(current_step)
-    
-    query = "This is a test example about subgoal decomposition."
-    model_config = ConfigLoader.load_model_config("base")
-    memory_evolver = LLMAgent(model_config=model_config, name="custom_memory_evolver", instructions=P_MEMORY_EVOLVER)
-    mem_history = asyncio.run(summarize_memory(query, memory_evolver, memory3, window_size=len(memory3)))
-    print(">>> 总结后的历史记录:\n", mem_history)
-    """
+    model_config = ConfigLoader.load_model_config("base")    
+    # 判断model_config是否有model元素
+    if hasattr(model_config, 'model') and hasattr(model_config.model, 'model_provider'):
+        model_config.model.model_provider.model = "Qwen3-235B-A22B-FP8"
+        model_config.model.model_provider.base_url = "http://10.16.2.149/ms-84b2h7zx/v1"
+        model_config.model.model_provider.api_key = "sk-NNSp7gzG_Aui-sM9USSNFWQ3AGPT66pG"
+    else:
+        model_config.model_provider.model = "Qwen3-235B-A22B-FP8"
+        model_config.model_provider.base_url = "http://10.16.2.149/ms-84b2h7zx/v1"
+        model_config.model_provider.api_key = "sk-NNSp7gzG_Aui-sM9USSNFWQ3AGPT66pG"
 
     query = "Write a Python function to compute the Fibonacci sequence up to n, and then use it to find the 10th Fibonacci number."
     # query = "What is the middle name of Donald Trump?"
     # query = "What is the weather in Shanghai now?"
     print("Question:\n", query)
-    messages_by_turns, final_answer = asyncio.run(main_agent_loop(query, debug_mode=False))
+    messages_by_turns, final_answer = asyncio.run(main_agent_loop(model_config, query, debug_mode=True))
     print("Answer:\n", final_answer)
-    save_jsonl_path = "/cfs_turbo/yuleiqin/Research/youtu-agent/examples/in_the_flow/debug_messages.json"
+    save_jsonl_path = "/cfs_turbo/yuleiqin/Research/agent-lightning/examples_train_w_youtu/agentintheflow/debug_messages.json"
     with open(save_jsonl_path, "w") as fw:
         json.dump({"messages_by_turns": messages_by_turns, "final_answer": final_answer}, fw, ensure_ascii=False)
 
