@@ -230,7 +230,7 @@ class SimpleAgent:
 
     # wrap `Runner` apis in @openai-agents
     async def run(
-        self, input: str | list[TResponseInputItem], trace_id: str = None, save: bool = False, log_to_db: bool = True
+        self, input: str | list[TResponseInputItem], trace_id: str = None, save: bool = False, log_to_db: bool = False
     ) -> TaskRecorder:
         """Entrypoint for running the agent
 
@@ -271,7 +271,7 @@ class SimpleAgent:
         return recorder
 
     def run_streamed(
-        self, input: str | list[TResponseInputItem], trace_id: str = None, save: bool = False, log_to_db: bool = True
+        self, input: str | list[TResponseInputItem], trace_id: str = None, save: bool = False, log_to_db: bool = False
     ) -> TaskRecorder:
         """Entrypoint for running the agent streamly
 
@@ -291,7 +291,7 @@ class SimpleAgent:
         recorder._run_impl_task = asyncio.create_task(self._start_streaming(recorder, save, log_to_db))
         return recorder
 
-    async def _start_streaming(self, recorder: TaskRecorder, save: bool = False, log_to_db: bool = True):
+    async def _start_streaming(self, recorder: TaskRecorder, save: bool = False, log_to_db: bool = False):
         if not self._initialized:
             await self.build(recorder.trace_id)
         try:

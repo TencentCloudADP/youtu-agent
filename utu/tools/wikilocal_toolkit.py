@@ -93,7 +93,7 @@ def call_search_api(
             )
 
             # Check for Gateway Timeout (504) and other server errors for retrying
-            if response.status_code in [500, 502, 503, 504]:
+            if response.status_code in [500, 502, 503, 504, 104]:
                 last_error = (
                     f"{log_prefix}API Request Error: Server Error ({response.status_code}) on attempt "
                     f"{attempt + 1}/{MAX_RETRIES}"
