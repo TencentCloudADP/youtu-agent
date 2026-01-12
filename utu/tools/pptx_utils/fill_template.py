@@ -20,6 +20,9 @@ def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_c
     if not isinstance(slides_data, list):
         raise ValueError("JSON data must contain a 'slides' list")
 
+    # Track selected indices for each slide type
+    selected_indices = {}
+
     for slide_data in slides_data:
         slide_type = slide_data.get("type")
         if not slide_type:
@@ -29,8 +32,21 @@ def fill_template_with_yaml_config(template_path, output_path, json_data, yaml_c
         if template_indices is None or len(template_indices) == 0:
             raise ValueError(f"No template found for slide type '{slide_type}'")
         
-        # Randomly select one index from the list
-        template_index = random.choice(template_indices)
+        # Initialize tracking for this slide type if not exists
+        if slide_type not in selected_indices:
+            selected_indices[slide_type] = set()
+        
+        # Get unselected indices
+        unselected_indices = [idx for idx in template_indices if idx not in selected_indices[slide_type]]
+        
+        # If all indices have been selected, reset and use all indices
+        if not unselected_indices:
+            selected_indices[slide_type] = set()
+            unselected_indices = template_indices
+        
+        # Randomly select one index from unselected indices
+        template_index = random.choice(unselected_indices)
+        selected_indices[slide_type].add(template_index)
         
         if template_index >= len(prs.slides):
             raise ValueError(f"Template index {template_index} out of range for slide type '{slide_type}'")
