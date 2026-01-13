@@ -350,13 +350,23 @@ def handle_replace_image(image_url: str, target_shape, slide):
 
 
 def handle_table(table_content: TableContent, target_shape, slide):
+    from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+
     left, top, width, height = target_shape.left, target_shape.top, target_shape.width, target_shape.height
     table = slide.shapes.add_table(table_content.n_rows + 1, table_content.n_cols, left, top, width, height).table
     for i, header_text in enumerate(table_content.header):
-        table.cell(0, i).text = header_text
+        cell = table.cell(0, i)
+        cell.text = header_text
+        # Center text horizontally and vertically
+        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
     for i, row in enumerate(table_content.rows):
         for j, cell_text in enumerate(row):
-            table.cell(i + 1, j).text = cell_text
+            cell = table.cell(i + 1, j)
+            cell.text = cell_text
+            # Center text horizontally and vertically
+            cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+            cell.vertical_anchor = MSO_ANCHOR.MIDDLE
     table.auto_fit = True
 
     # remove the placeholder
