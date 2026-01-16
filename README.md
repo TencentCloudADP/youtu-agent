@@ -2,6 +2,10 @@
 
 # Training Youtu-Agent with Ease: Hands-On Guide for End-to-End Reinforcement Learning
 
+<div align="center">
+<a href="https://huggingface.co/collections/yolay/youtu-agent-rl"><img src=https://img.shields.io/badge/🤗%20HuggingFace-Youtu%20Agent%20RL-ffc107.svg></a>
+</div>
+
 <img src="docs/assets/youtu-agl-mascot.png" alt="Youtu-Agent x Agent Lightning logo" width="200" align="left" style="margin-right:20px;">
 
 This repository allows you to train your agents built by Youtu-Agent. We have **verified the performace** of code/math (ReTool) and search (SearchR1) tasks with multi-node training on **128 GPUs**.
@@ -10,7 +14,7 @@ This repository allows you to train your agents built by Youtu-Agent. We have **
 
 [**Agent Lightning**](https://github.com/microsoft/agent-lightning/tree/contrib/youtu-agent-lightning) is a framework for training LLM-based agents via popular training backends. In the present implementation, we use the VeRL library for RL training.
 
-Checkout our blog post at [**Meidum**](https://medium.com/@yuleiqin/stop-wrestling-with-your-agent-rl-how-youtu-agent-achieved-stable-128-gpu-scaling-without-e6a765a3e92b) and [**Notion**](https://spotted-coconut-df8.notion.site/Stop-Wrestling-with-Your-Agent-RL-How-Youtu-Agent-Achieved-Stable-128-GPU-Scaling-Without-Breaking-2ca5e8f089ba80539a98c582b65e0233) for detailed explanations on how we achieve the 128 GPU scaling of RL without breaking.
+Checkout our blog post at [**Medium**](https://medium.com/@yuleiqin/stop-wrestling-with-your-agent-rl-how-youtu-agent-achieved-stable-128-gpu-scaling-without-e6a765a3e92b) and [**Notion**](https://spotted-coconut-df8.notion.site/Stop-Wrestling-with-Your-Agent-RL-How-Youtu-Agent-Achieved-Stable-128-GPU-Scaling-Without-Breaking-2ca5e8f089ba80539a98c582b65e0233) for detailed explanations on how we achieve the 128 GPU scaling of RL without breaking. The model checkpoints are available at [**HuggingFace**](https://huggingface.co/collections/yolay/youtu-agent-rl).
 
 
 ## 1. Verified Training Performance
@@ -114,14 +118,14 @@ For the detailed training and testing, please refer to this directory `examples_
 
 Download the training and testing datasets from the huggingface and save to `${PROJECT_DIR}/datasets` (e.g., datasets/BytedTsinghua-SIA/DAPO-Math-17k).
 
-* Training Dataset 🤗 [https://huggingface.co/datasets/BytedTsinghua-SIA/DAPO-Math-17k]
-* Testing Dataset 🤗 [https://huggingface.co/datasets/BytedTsinghua-SIA/AIME-2024]
+- Training Dataset 🤗 [https://huggingface.co/datasets/BytedTsinghua-SIA/DAPO-Math-17k]
+- Testing Dataset 🤗 [https://huggingface.co/datasets/BytedTsinghua-SIA/AIME-2024]
 
 
 #### Step 2
 
 Download the SandboxFusion docker and launch the sandbox service:
-* Sandbox Service ⌨️ [https://github.com/bytedance/SandboxFusion]
+- Sandbox Service ⌨️ [https://github.com/bytedance/SandboxFusion]
 
 
 #### Step 3
@@ -154,7 +158,7 @@ bash run_ray.sh examples_train_w_youtu/retool_youtu/run_qwen2.5_7b.sh
 
 (Optional) Debugging and Testing
 
-* Deployment of vLLM service
+- Deployment of vLLM service
 
 **Prerequisites:** Before starting the agent, please ensure that you have installed youtu-agent, and that the `retool` directory from `examples_train_w_youtu/retool_youtu/retool` is placed in `youtu-agent/configs/agents/retool`.
 
@@ -169,7 +173,7 @@ export CODESNIP_SERVER_URL="YOUR_SANDBOX_URL"
 python calc_sandbox_agent_youtu.py
 ```
 
-* Deployment of Store and Runner service
+- Deployment of Store and Runner service
 1. Store
 
 ```bash
@@ -198,8 +202,8 @@ For the detailed training and testing, please refer to this directory `examples_
 
 Download the training and testing datasets from the huggingface and save to `${PROJECT_DIR}/datasets/asearcher_data/` (e.g., datasets/asearcher_data/ASearcher-train-data/base).
 
-* Training Dataset 🤗 [https://huggingface.co/datasets/inclusionAI/ASearcher-train-data]
-* Testing Dataset 🤗 [https://huggingface.co/datasets/inclusionAI/ASearcher-test-data]
+- Training Dataset 🤗 [https://huggingface.co/datasets/inclusionAI/ASearcher-train-data]
+- Testing Dataset 🤗 [https://huggingface.co/datasets/inclusionAI/ASearcher-test-data]
 
 Run the following script for data preprocessing:
 
@@ -212,7 +216,7 @@ bash examples_train_w_youtu/search_r1_youtu/data_preprocess/run_preprocess.sh
 
 Download the retrieval service materials (e.g., the wiki18.json, embedding model, and index files) and launch the retrieval service (make sure you download the complete json/index/embedding files properly):
 
-* Retrieval Service 🔍 [https://github.com/inclusionAI/ASearcher/blob/main/scripts/launch_local_server.sh]
+- Retrieval Service 🔍 [https://github.com/inclusionAI/ASearcher/blob/main/scripts/launch_local_server.sh]
 
 #### Step 3
 
@@ -240,20 +244,21 @@ bash run_ray.sh examples_train_w_youtu/search_r1_youtu/trainer32b_utu_onpolicy.s
 
 We sincerely appreciate the efforts from the following projects:
 
-* Youtu-Agent
+- Youtu-Agent
 ```
-@misc{youtu-agent-2025,
-  title={Youtu-Agent: A Simple yet Powerful Agent Framework},
-  author={Tencent Youtu Lab},
-  year={2025},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/TencentCloudADP/youtu-agent}},
+@misc{youtu_agent,
+      title={Youtu-Agent: Scaling Agent Productivity with Automated Generation and Hybrid Policy Optimization}, 
+      author={Yuchen Shi and Yuzheng Cai and Siqi Cai and Zihan Xu and Lichao Chen and Yulei Qin and Zhijian Zhou and Xiang Fei and Chaofan Qiu and Xiaoyu Tan and Gang Li and Zongyi Li and Haojia Lin and Guocan Cai and Yong Mao and Yunsheng Wu and Ke Li and Xing Sun},
+      year={2025},
+      eprint={2512.24615},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2512.24615}, 
 }
 ```
 
 
-* AgentLightning
+- AgentLightning
 ```
 @misc{luo2025agentlightningtrainai,
       title={Agent Lightning: Train ANY AI Agents with Reinforcement Learning},
@@ -266,7 +271,7 @@ We sincerely appreciate the efforts from the following projects:
 }
 ```
 
-* VeRL
+- VeRL
 ```
 @article{sheng2024hybridflow,
   title   = {HybridFlow: A Flexible and Efficient RLHF Framework},
