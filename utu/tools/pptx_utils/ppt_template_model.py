@@ -15,6 +15,11 @@ from PIL import Image
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pydantic import BaseModel
 from .utils import delete_shape, find_shape_with_name_except, replace_picture_keep_format
+from .pyecharts_utils import (
+    inject_chinese_font_into_html,
+    check_playwright_available,
+    playwright_snapshot,
+)
 
 
 class BaseContent(BaseModel):
@@ -54,6 +59,15 @@ class TableContent(BaseContent):
     caption: Optional[str] = None  # be very concise within 20 words
     n_rows: int  # no more than 7
     n_cols: int  # no more than 10
+
+
+class PyEchartsContent(BaseContent):
+    content_type: Literal["pyecharts"] = "pyecharts"
+    chart_type: str  # e.g., "bar", "line", "pie", "scatter", "radar", etc.
+    chart_data: Dict[str, Any]  # chart configuration and data
+    width: Optional[str] = "800px"  # chart width
+    height: Optional[str] = "600px"  # chart height
+    caption: Optional[str] = None  # be very concise within 20 words
 
 
 # font awesome 4 only
@@ -212,6 +226,8 @@ class PageConfig:
             return ImageContent(**content_value)
         if content_type == "table":
             return TableContent(**content_value)
+        if content_type == "pyecharts":
+            return PyEchartsContent(**content_value)
 
         raise ValueError(f"Unsupported content type: {content_type}")
 
@@ -409,6 +425,8 @@ def handle_content(content: BaseContent, target_shape, slide):
         handle_image(content.image_url, target_shape, slide)
     elif content.content_type == "table":
         handle_table(content, target_shape, slide)
+    elif content.content_type == "pyecharts":
+        handle_pyecharts(content, target_shape, slide)
     else:
         raise ValueError(f"Unsupported content type: {content.content_type}")
 
@@ -424,6 +442,236 @@ def handle_item(item: Item, item_index: int, slide, index_start_from_one=True):
 
     handle_pure_text(item.title, item_title_shape, slide)
     handle_pure_text(item.content, item_content_shape, slide)
+
+
+def handle_pyecharts(pyecharts_content: "PyEchartsContent", target_shape, slide):
+    """
+    Handle PyEcharts chart content by rendering it to an image and inserting into the slide.
+    
+    Uses Playwright for rendering. Install with: pip install playwright && playwright install chromium
+    
+    Args:
+        pyecharts_content: PyEchartsContent instance containing chart configuration
+        target_shape: Target shape placeholder in the slide
+        slide: The slide object to add the chart to
+    """
+    try:
+        from pyecharts.charts import (
+            Bar, Line, Pie, Scatter, Radar, Funnel, Gauge, 
+            WordCloud, HeatMap, Kline, Map, Geo, Graph, Tree,
+            Sunburst, Sankey, ThemeRiver, Calendar, Boxplot,
+            EffectScatter, Parallel, Polar, Liquid
+        )
+        from pyecharts import options as opts
+    except ImportError as e:
+        logging.error(f"Failed to import pyecharts: {e}")
+        raise ImportError(
+            "PyEcharts support requires 'pyecharts'. "
+            "Install with: pip install pyecharts"
+        )
+
+    # Map chart type string to chart class
+    chart_type_map = {
+        "bar": Bar,
+        "line": Line,
+        "pie": Pie,
+        "scatter": Scatter,
+        "radar": Radar,
+        "funnel": Funnel,
+        "gauge": Gauge,
+        "wordcloud": WordCloud,
+        "heatmap": HeatMap,
+        "kline": Kline,
+        "map": Map,
+        "geo": Geo,
+        "graph": Graph,
+        "tree": Tree,
+        "sunburst": Sunburst,
+        "sankey": Sankey,
+        "themeriver": ThemeRiver,
+        "calendar": Calendar,
+        "boxplot": Boxplot,
+        "effectscatter": EffectScatter,
+        "parallel": Parallel,
+        "polar": Polar,
+        "liquid": Liquid,
+    }
+
+    chart_type = pyecharts_content.chart_type.lower()
+    if chart_type not in chart_type_map:
+        raise ValueError(
+            f"Unsupported chart type: {chart_type}. "
+            f"Supported types: {list(chart_type_map.keys())}"
+        )
+
+    chart_data = pyecharts_content.chart_data
+    width = pyecharts_content.width
+    height = pyecharts_content.height
+
+    # Generate unique filenames for temporary files
+    temp_html_path = f"{uuid.uuid4()}_pyecharts.html"
+    temp_image_path = f"{uuid.uuid4()}_pyecharts.png"
+
+    try:
+        # Create chart instance with specified dimensions and transparent background
+        # Use a Chinese-compatible font to avoid garbled text on Linux servers
+        chart_class = chart_type_map[chart_type]
+        chart = chart_class(init_opts=opts.InitOpts(
+            width=width, 
+            height=height,
+            bg_color="rgba(0,0,0,0)",  # Transparent background for better PPT integration
+        ))
+        
+        # Set global font to support Chinese characters
+        # Use common fonts that are available on most systems
+        chinese_font = "Microsoft YaHei, SimHei, PingFang SC, Noto Sans SC, WenQuanYi Micro Hei, sans-serif"
+        chart.set_global_opts(
+            title_opts=opts.TitleOpts(
+                title_textstyle_opts=opts.TextStyleOpts(font_family=chinese_font)
+            ),
+            legend_opts=opts.LegendOpts(
+                textstyle_opts=opts.TextStyleOpts(font_family=chinese_font),
+                item_gap=20,  # Increase gap between legend items to avoid overlap
+                orient="vertical",  # Vertical layout to avoid text overlap
+                pos_left="right",  # Position legend on the right side of chart
+                pos_top="middle",  # Vertically center the legend
+            ),
+            xaxis_opts=opts.AxisOpts(
+                axislabel_opts=opts.LabelOpts(font_family=chinese_font)
+            ),
+            yaxis_opts=opts.AxisOpts(
+                axislabel_opts=opts.LabelOpts(font_family=chinese_font)
+            ),
+        )
+
+        # Apply chart configuration from chart_data
+        if "x_axis" in chart_data:
+            chart.add_xaxis(chart_data["x_axis"])
+        
+        if "y_axis" in chart_data:
+            # For bar/line charts, y_axis contains series data
+            if isinstance(chart_data["y_axis"], list):
+                if chart_type in ["bar", "line"]:
+                    for series in chart_data["y_axis"]:
+                        if isinstance(series, dict):
+                            series_name = series.get("name", "")
+                            series_data = series.get("data", [])
+                            chart.add_yaxis(
+                                series_name, 
+                                series_data,
+                                label_opts=opts.LabelOpts(font_family=chinese_font)
+                            )
+                        else:
+                            chart.add_yaxis(
+                                "", 
+                                series,
+                                label_opts=opts.LabelOpts(font_family=chinese_font)
+                            )
+                else:
+                    chart.add_yaxis(chart_data["y_axis"])
+        
+        # For pie chart
+        if "data_pair" in chart_data:
+            chart.add(
+                "", 
+                chart_data["data_pair"],
+                label_opts=opts.LabelOpts(font_family=chinese_font)
+            )
+        
+        # For radar chart
+        if "schema" in chart_data:
+            chart.add_schema(schema=chart_data["schema"])
+        if "series_data" in chart_data:
+            for series in chart_data["series_data"]:
+                series_name = series.get("name", "")
+                series_values = series.get("value", [])
+                chart.add(
+                    series_name, 
+                    series_values,
+                    label_opts=opts.LabelOpts(font_family=chinese_font)
+                )
+        
+        # Apply global options if provided (merge with existing Chinese font settings)
+        global_opts_kwargs = {}
+        
+        if "title" in chart_data:
+            global_opts_kwargs['title_opts'] = opts.TitleOpts(
+                title=chart_data["title"],
+                title_textstyle_opts=opts.TextStyleOpts(font_family=chinese_font)
+            )
+        
+        if "legend" in chart_data:
+            legend_config = chart_data["legend"].copy() if isinstance(chart_data["legend"], dict) else {}
+            legend_config['textstyle_opts'] = opts.TextStyleOpts(font_family=chinese_font)
+            # Set default values to avoid legend overlap if not specified
+            legend_config.setdefault('item_gap', 20)  # Gap between legend items
+            legend_config.setdefault('orient', 'vertical')  # Vertical layout to avoid text overlap
+            legend_config.setdefault('pos_left', 'right')  # Position legend on the right side
+            legend_config.setdefault('pos_top', 'middle')  # Vertically center the legend
+            global_opts_kwargs['legend_opts'] = opts.LegendOpts(**legend_config)
+        
+        if global_opts_kwargs:
+            chart.set_global_opts(**global_opts_kwargs)
+
+        # Render chart to HTML file first
+        chart.render(temp_html_path)
+        logging.info(f"PyEcharts chart rendered to HTML: {temp_html_path}")
+        
+        # Inject web font CSS into the HTML to ensure Chinese characters display correctly
+        inject_chinese_font_into_html(temp_html_path, chinese_font)
+        
+        # Check if Playwright is available
+        is_available, error_msg = check_playwright_available()
+        if not is_available:
+            raise ImportError(error_msg)
+        
+        # Use Playwright to take snapshot
+        try:
+            logging.info("Taking snapshot with Playwright...")
+            playwright_snapshot(temp_html_path, temp_image_path)
+            logging.info(f"PyEcharts chart snapshot saved to: {temp_image_path}")
+        except Exception as e:
+            error_str = str(e).lower()
+            # Provide helpful error message for common issues
+            if "playwright install" in error_str or "executable doesn't exist" in error_str:
+                raise RuntimeError(
+                    f"Playwright browser not installed. Please run: playwright install chromium\n"
+                    f"Original error: {e}"
+                )
+            elif "no usable sandbox" in error_str or "running as root" in error_str:
+                raise RuntimeError(
+                    f"Playwright sandbox error. Try running with --no-sandbox flag or as non-root user.\n"
+                    f"Original error: {e}"
+                )
+            elif "cannot open display" in error_str or "display" in error_str:
+                raise RuntimeError(
+                    f"Display not available. Ensure headless mode is enabled or X server is running.\n"
+                    f"Original error: {e}"
+                )
+            else:
+                raise RuntimeError(
+                    f"Failed to take snapshot with Playwright: {e}\n"
+                    "Troubleshooting tips:\n"
+                    "  1. Ensure browser is installed: playwright install chromium\n"
+                    "  2. Check system dependencies: playwright install-deps chromium\n"
+                    "  3. On Linux, you may need additional libraries - see Playwright docs"
+                )
+        
+        # Use existing handle_image function to insert the chart image
+        handle_image(temp_image_path, target_shape, slide)
+        
+    except Exception as e:
+        logging.error(f"Failed to render PyEcharts chart: {e}")
+        traceback.print_exc()
+        raise
+    finally:
+        # Clean up temporary files
+        for temp_file in [temp_html_path, temp_image_path]:
+            try:
+                if os.path.exists(temp_file):
+                    os.remove(temp_file)
+            except Exception as cleanup_error:
+                logging.warning(f"Failed to clean up temporary file {temp_file}: {cleanup_error}")
 
 
 def handle_font_awesome_icon(icon: FontAwesomeIcon, target_shape, slide, prs):

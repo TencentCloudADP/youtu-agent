@@ -192,12 +192,13 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                         "text": "#/$defs/TextContent",
                         "image": "#/$defs/ImageContent",
                         "table": "#/$defs/TableContent",
+                        "pyecharts": "#/$defs/PyEchartsContent",
                     },
                 },
                 "properties": {
                     "content_type": {
                         "type": "string",
-                        "enum": ["text", "image", "table"],
+                        "enum": ["text", "image", "table", "pyecharts"],
                     }
                 },
                 "required": ["content_type"],
@@ -290,6 +291,89 @@ def build_schema(yaml_root: dict[str, Any]) -> dict[str, Any]:
                             "n_cols": {"type": "integer", "minimum": 1, "maximum": 10},
                         },
                         "required": ["header", "rows", "n_rows", "n_cols"],
+                    },
+                ]
+            },
+            "PyEchartsContent": {
+                "allOf": [
+                    {"$ref": "#/$defs/BaseContent"},
+                    {
+                        "type": "object",
+                        "properties": {
+                            "chart_type": {
+                                "type": "string",
+                                "enum": ["bar", "line", "pie", "scatter", "radar", "funnel", "gauge", 
+                                         "wordcloud", "heatmap", "kline", "map", "geo", "graph", 
+                                         "tree", "sunburst", "sankey", "themeriver", "calendar", 
+                                         "boxplot", "effectscatter", "parallel", "polar", "liquid"],
+                                "description": "Type of PyEcharts chart to render"
+                            },
+                            "chart_data": {
+                                "type": "object",
+                                "description": "Chart configuration and data, structure depends on chart_type",
+                                "properties": {
+                                    "title": {"type": "string", "description": "Chart title"},
+                                    "x_axis": {
+                                        "type": "array", 
+                                        "items": {"type": "string"},
+                                        "description": "X-axis labels for bar/line charts"
+                                    },
+                                    "y_axis": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {"type": "string"},
+                                                "data": {"type": "array", "items": {"type": "number"}}
+                                            },
+                                            "required": ["name", "data"]
+                                        },
+                                        "description": "Y-axis series data for bar/line charts"
+                                    },
+                                    "data_pair": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "array",
+                                            "items": [{"type": "string"}, {"type": "number"}],
+                                            "minItems": 2,
+                                            "maxItems": 2
+                                        },
+                                        "description": "Data pairs for pie charts [(name, value), ...]"
+                                    },
+                                    "schema": {
+                                        "type": "array",
+                                        "description": "Schema definition for radar charts"
+                                    },
+                                    "series_data": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {"type": "string"},
+                                                "value": {"type": "array", "items": {"type": "number"}}
+                                            }
+                                        },
+                                        "description": "Series data for radar charts"
+                                    },
+                                    "legend": {
+                                        "type": "object",
+                                        "description": "Legend configuration options"
+                                    }
+                                }
+                            },
+                            "width": {
+                                "type": "string", 
+                                "default": "800px",
+                                "description": "Chart width (e.g., '800px', '100%')"
+                            },
+                            "height": {
+                                "type": "string", 
+                                "default": "600px",
+                                "description": "Chart height (e.g., '600px', '100%')"
+                            },
+                            "caption": {"type": "string", "maxLength": 20, "description": "Optional caption for the chart"}
+                        },
+                        "required": ["chart_type", "chart_data"],
                     },
                 ]
             },

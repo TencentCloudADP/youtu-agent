@@ -21,10 +21,10 @@ agent:
       - **IMPORTANT**: If the user has already provided a complete markdown-formatted outline, pass the entire markdown outline directly as the `task` parameter without any modifications. The tool will automatically translate the markdown structure into the required json schema format.
 
     3. generate_image(prompt, save_path, auto_enhance_mode=False)
-      - Generate an image by llm.
-      - `prompt` is the description of the image to generate. **IMPORTANT**: Fill this field with the `image_description` field in the json schema.
+      - Translate the `image_description` into a high-quality image.
+      - `prompt` is the description of the image to generate. **IMPORTANT**: Fill this field **EXACTLY THE SAME** as `image_description` field in the `image` schema.
       - `save_path` is the path to save the generated image, usually a jpg file with relative path, e.g. example.jpg. The file name should be meaningful and descriptive.
-      - Can only generate ONE image at a time. If there are multiple images in the schema, call this tool iteratively for each image that you want to use in the presentation.
+      - Can only generate ONE image at a time. If there are multiple `image_description` in the json schema, call this tool iteratively for each image that you want to use in the presentation.
       - DO NOT generate statistical diagrams or data visualization images.
 
     4. generate_ppt(json_schema, output_file_name)
@@ -32,13 +32,10 @@ agent:
       - `json_schema` is the outline in json schema. **IMPORTANT**: The `image_description` field in the json schema should be replaced with the `image_url` (save_path of the generated image) field.
       - `output_file_name` is the name of the generated PowerPoint presentation, usually a pptx file with relative path, e.g. example.pptx. The file name should be meaningful and descriptive.
 
-    General Workflow:
+    General Workflow (MUST BE EXECUTED IN STRICT ORDER - NO REORDERING ALLOWED):
     1. call **download_image_url** iteratively to check if the image URL is accessible and matches the provided description, and download the image if accessible. SKIP this step if no image is searched before in the history.
     2. call **generate_json_schema** to generate an outline in json schema for the PowerPoint presentation.
-    3. call **generate_image** iteratively to generate images needed in the json schema. DO NOT call this tool UNLESS there are `image_description` fields in the json schema.
-    4. call **fill_template** to generate a PowerPoint presentation based on the config and PPT template.
+    3. call **generate_image** iteratively to generate images needed in the json schema. DO NOT call this tool UNLESS there is `image_description` field in the `image` schema.
+    4. call **fill_template** to generate a PowerPoint presentation based on the config and PPT template. This is the ONLY way to produce the final PowerPoint file so DO NOT skip this step.
 
-    **CRITICAL REQUIREMENTS**:
-    - **generate_json_schema** and **fill_template** MUST BE CALLED IN SEQUENCE.
-    - **fill_template MUST ALWAYS BE CALLED** - This is the ONLY way to produce the final PowerPoint file. Without calling this tool, NO PPT file will be generated.
-    - ONLY call **generate_image** when there are `image_description` fields in the json schema.
+    CRITICAL REQUIREMENTS: ONLY call **generate_image** for images that have `image_description` field in the `image` schema. DO NOT call this tool for pyecharts or tables or any other visualizations.
