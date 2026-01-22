@@ -7,6 +7,7 @@ import traceback
 import uuid
 import random
 import os
+import re
 from typing import Any, Literal, Tuple, Dict, List, Union, Optional
 
 import requests
@@ -20,6 +21,140 @@ from .pyecharts_utils import (
     check_playwright_available,
     playwright_snapshot,
 )
+
+# ============== Security Validation for PyEcharts ==============
+
+# Dangerous patterns that may indicate malicious JavaScript code
+DANGEROUS_PATTERNS = [
+    r'<script[^>]*>',           # script tag
+    r'javascript:',              # javascript protocol
+    r'on\w+\s*=',               # event handlers (onclick, onerror, etc.)
+    r'eval\s*\(',               # eval call
+    r'Function\s*\(',           # Function constructor
+    r'setTimeout\s*\(',         # setTimeout
+    r'setInterval\s*\(',        # setInterval
+    r'document\.',              # document object access
+    r'window\.',                # window object access
+    r'\.innerHTML',             # innerHTML manipulation
+    r'\.outerHTML',             # outerHTML manipulation
+    r'String\.fromCharCode',    # character encoding bypass
+    r'\\u00',                   # Unicode escape
+    r'&#',                      # HTML entity encoding
+    r'fetch\s*\(',              # fetch API
+    r'XMLHttpRequest',          # XHR
+    r'\.cookie',                # cookie access
+    r'localStorage',            # localStorage access
+    r'sessionStorage',          # sessionStorage access
+    r'importScripts',           # Web Worker imports
+    r'new\s+Worker',            # Web Worker creation
+]
+
+
+def contains_dangerous_pattern(value: str) -> bool:
+    """
+    Check if a string contains dangerous patterns that may indicate malicious code.
+    
+    Args:
+        value: The string to check
+        
+    Returns:
+        True if dangerous pattern is found, False otherwise
+    """
+    if not isinstance(value, str):
+        return False
+    for pattern in DANGEROUS_PATTERNS:
+        if re.search(pattern, value, re.IGNORECASE):
+            return True
+    return False
+
+
+def sanitize_chart_data(data: Any, path: str = "root") -> Any:
+    """
+    Recursively validate and sanitize chart_data to ensure it doesn't contain malicious code.
+    
+    Args:
+        data: The data to validate
+        path: Current data path (for error reporting)
+    
+    Returns:
+        The sanitized data
+    
+    Raises:
+        ValueError: If dangerous content is detected
+    """
+    if data is None:
+        return None
+    
+    if isinstance(data, bool):
+        return data
+    
+    if isinstance(data, (int, float)):
+        return data
+    
+    if isinstance(data, str):
+        # Check for dangerous patterns
+        if contains_dangerous_pattern(data):
+            raise ValueError(f"Dangerous pattern detected in {path}: {data[:100]}...")
+        return data
+    
+    if isinstance(data, list):
+        return [sanitize_chart_data(item, f"{path}[{i}]") for i, item in enumerate(data)]
+    
+    if isinstance(data, dict):
+        # Forbid keys that might contain JavaScript code
+        forbidden_keys = {'js_code', 'jscode', 'callback', 'js_func', 'function', 'js'}
+        for key in data.keys():
+            key_lower = key.lower()
+            if key_lower in forbidden_keys:
+                raise ValueError(f"Forbidden key '{key}' detected in {path}")
+            # Also check if the key itself contains dangerous patterns
+            if contains_dangerous_pattern(key):
+                raise ValueError(f"Dangerous key name detected in {path}: {key}")
+        
+        return {k: sanitize_chart_data(v, f"{path}.{k}") for k, v in data.items()}
+    
+    # Reject other types (e.g., object instances that might be JsCode)
+    type_name = type(data).__name__
+    # Allow some common types that might be used
+    if type_name in ('tuple',):
+        return tuple(sanitize_chart_data(item, f"{path}[{i}]") for i, item in enumerate(data))
+    
+    raise ValueError(f"Unsupported data type {type_name} at {path}")
+
+
+def reject_jscode_objects(data: Any, path: str = "root") -> None:
+    """
+    Recursively check and reject JsCode objects which can execute arbitrary JavaScript.
+    
+    Args:
+        data: The data to check
+        path: Current data path (for error reporting)
+        
+    Raises:
+        ValueError: If JsCode object is detected
+    """
+    try:
+        from pyecharts.commons.utils import JsCode
+        js_code_class = JsCode
+    except ImportError:
+        return  # If can't import, skip the check
+    
+    if isinstance(data, js_code_class):
+        raise ValueError(f"JsCode objects are not allowed for security reasons at {path}")
+    
+    # Check the type name as a fallback (in case of different import paths)
+    type_name = type(data).__name__
+    if type_name == 'JsCode':
+        raise ValueError(f"JsCode objects are not allowed for security reasons at {path}")
+    
+    if isinstance(data, dict):
+        for k, v in data.items():
+            reject_jscode_objects(v, f"{path}.{k}")
+    elif isinstance(data, (list, tuple)):
+        for i, item in enumerate(data):
+            reject_jscode_objects(item, f"{path}[{i}]")
+
+# ============== End of Security Validation ==============
 
 
 class BaseContent(BaseModel):
@@ -455,6 +590,20 @@ def handle_pyecharts(pyecharts_content: "PyEchartsContent", target_shape, slide)
         target_shape: Target shape placeholder in the slide
         slide: The slide object to add the chart to
     """
+    # === Security Check: Validate chart_data to prevent XSS/code injection ===
+    try:
+        # First, reject any JsCode objects
+        reject_jscode_objects(pyecharts_content.chart_data, "chart_data")
+        # Then, sanitize all data recursively
+        sanitized_data = sanitize_chart_data(pyecharts_content.chart_data, "chart_data")
+    except ValueError as e:
+        logging.error(f"Security check failed for chart_data: {e}")
+        raise ValueError(f"Invalid chart data - security check failed: {e}")
+    
+    # Use sanitized data for chart generation
+    chart_data = sanitized_data
+    # === End of Security Check ===
+
     try:
         from pyecharts.charts import (
             Bar, Line, Pie, Scatter, Radar, Funnel, Gauge, 
@@ -504,7 +653,7 @@ def handle_pyecharts(pyecharts_content: "PyEchartsContent", target_shape, slide)
             f"Supported types: {list(chart_type_map.keys())}"
         )
 
-    chart_data = pyecharts_content.chart_data
+    # Note: chart_data is now the sanitized version
     width = pyecharts_content.width
     height = pyecharts_content.height
 
