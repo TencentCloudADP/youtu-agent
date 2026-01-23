@@ -17,6 +17,9 @@ from utu.agents import LLMAgent, SimpleAgent
 from utu.config import ConfigLoader
 from utu.tools import TOOLKIT_MAP
 from utu.utils import LLMOutputParser, AgentsUtils
+from utu.config import ModelSettingsConfig
+from utu.config import ModelConfigs
+
 
 import re
 from typing import Dict, Optional
@@ -214,7 +217,7 @@ TOOLKIT_NAME_TO_TOOLS = {
 
 
 
-async def get_tools(selected_tool_name: list[str]) -> list[FunctionTool]:
+async def get_tools(selected_tool_name: list[str], model_provider=None) -> list[FunctionTool]:
     """Get FunctionTools based on selected tool names."""
     tool_name_to_toolkit = {}
     for tk_name, tools in TOOLKIT_NAME_TO_TOOLS.items():
@@ -229,6 +232,10 @@ async def get_tools(selected_tool_name: list[str]) -> list[FunctionTool]:
     for tk_name, tool_names in selected_toolkits.items():
         tk_config = ConfigLoader.load_toolkit_config(tk_name)
         tk_config.activated_tools = tool_names
+        if tk_config.config_llm is None:
+            tk_config.config_llm = ModelConfigs()
+        tk_config.config_llm.model_provider = model_provider
+        print(tk_name, tk_config)
         toolkit_instance = TOOLKIT_MAP[tk_name](config=tk_config)
         tools.extend(toolkit_instance.get_tools_in_agents())
     return tools
@@ -278,7 +285,7 @@ async def summarize_memory(query, memory_evolver, system_prompt, memory, window_
 
 
 
-async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
+async def main_agent_loop(model_config, query: str, max_turns: int = 5, debug_mode: bool = False):
     """
     Args:
         model_config: the model config, must contain all the necessary tools
@@ -289,28 +296,39 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
         final_answer: the final answer
     """
     with trace("Customized planner agent loop"):
+        # 如果想全部训练LLM的所有能力
+        model_provider = deepcopy(model_config.model_provider)
+        print(model_provider)
+        model = AgentsUtils.get_agents_model(**model_config.model_provider.model_dump())
+        
+        planner = SimpleAgent(model=model, name="custom_planner", instructions=P_PLANNER, model_settings=model_config.model_settings)
+        verifier = SimpleAgent(model=model, name="custom_verifier", instructions=P_VERIFIER, model_settings=model_config.model_settings)
+        answerer = SimpleAgent(model=model, name="custom_answergenerator", instructions=P_ANSWERER, model_settings=model_config.model_settings)
+        memory_evolver = SimpleAgent(model=model, name="custom_memory_evolver", instructions=P_MEMORY_EVOLVER, model_settings=model_config.model_settings)
+        
+        # 如果不想训练LLM的这些能力就用以下实现方式 default DeepSeek API
+        '''
         planner = LLMAgent(model_config=model_config, name="custom_planner", instructions=P_PLANNER)
         verifier = LLMAgent(model_config=model_config, name="custom_verifier", instructions=P_VERIFIER)
         answerer = LLMAgent(model_config=model_config, name="custom_answergenerator", instructions=P_ANSWERER)
         memory_evolver = LLMAgent(model_config=model_config, name="custom_memory_evolver", instructions=P_MEMORY_EVOLVER)
-
-        max_turns = 30
+        '''
         available_tools_names = list(itertools.chain.from_iterable(TOOLKIT_NAME_TO_TOOLS.values()))
-        available_tools_schemas = await get_tools(available_tools_names)
-
+        available_tools_schemas = await get_tools(available_tools_names, model_provider=model_provider)
         available_tools = []
         for available_tool_schema_idx, available_tool_schema in enumerate(available_tools_schemas):
             tool_str = f"<tool{available_tool_schema_idx+1}>\nname: {available_tool_schema.name}\ndescription: {available_tool_schema.description}\n</tool{available_tool_schema_idx+1}>\n"
             available_tools.append(tool_str)
         available_tools = "\n\n" + "\n".join(available_tools) + "\n\n"
-        print("> Available tools:", available_tools)
+        if debug_mode:
+            print("> Available tools:", available_tools)
         # 裸记忆，不进行总结
         previous_steps = []  # memory
         stop_flag = False
         # message turn by turn
         messages_by_turns = []
-        print(f"--- Starting agent loop ---\n{query}\n")
-
+        if debug_mode:
+            print(f"--- Starting agent loop ---\n{query}\n")
         for i in range(max_turns):
             # 记录当前轮的所有内容，包括memory、planner、tool_executor、verifier、answerer
             if debug_mode:
@@ -321,14 +339,15 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
             messages_current_turn = {}
             if stop_flag:
                 break
-            print(f"--- Turn {i + 1} ---")
+            if debug_mode:
+                print(f"--- Turn {i + 1} ---")
             # ---------------------------   首先处理memory --------------------------- #
             messages_memory, mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=3)
             # 无tools 深拷贝messages_memory，避免后续修改影响原始memory
             messages_current_turn["memory"] = {"tools":[], "messages": deepcopy(messages_memory)}
             if debug_mode:
                 print(f"> Memory history dict [initialization summary {i+1} turn]:", mem_history_dict)
-                import pdb;pdb.set_trace();
+                # import pdb;pdb.set_trace();
             # ---------------------------   执行planner --------------------------- #
             _input = T_PLANNER.format(query=query, available_tools=available_tools, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
             planner_res = await planner.run(_input)
@@ -338,7 +357,8 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
             messages_planner.insert(0, {"role": "system", "content": P_PLANNER})
             # 无tools
             messages_current_turn["planner"] = {"tools": [], "messages": messages_planner}
-            print("> Planner output:", messages_planner)
+            if debug_mode:
+                print("> Planner output:", messages_planner)
             assert all(k in planner_output for k in ["justification", "context", "subgoal", "tools"])
             # ---------------------------   planner输出->历史队列 --------------------------- #
             current_step = {}
@@ -348,15 +368,14 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = current_step
             if debug_mode:
                 print(f"> Memory history dict [planner output {i+1} turn]:", mem_history_dict)
-                import pdb;pdb.set_trace();
+                # import pdb;pdb.set_trace();
             # 如果tools为空，则跳过tool_executor直接结束=>
             if planner_output["tools"] is None or len(planner_output["tools"]) == 0:
                 print("🔥 Warning: Planner selected tools:", planner_output["tools"],\
                     " Empty Tools Parsed from", planner_res.final_output)
                 break
             # ---------------------------   执行tool executor --------------------------- #
-            model = AgentsUtils.get_agents_model(**model_config.model_provider.model_dump())
-            tools = await get_tools(planner_output["tools"])
+            tools = await get_tools(planner_output["tools"], model_provider=model_provider)
             # ---------------------------   包装tools json格式 --------------------------- #
             tools_schema = []
             for tool in tools:
@@ -371,10 +390,11 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
                         }
                     }
                     tools_schema.append(tool_schema)
-            print("> Planner selected tools:", tools_schema)
-            subagent = SimpleAgent(model=model, name="tool_executor", instructions=None, tools=tools, tool_use_behavior="stop_on_first_tool")
+            if debug_mode:
+                print("> Planner selected tools:", tools_schema)
+            tool_executor = SimpleAgent(model=model, name="tool_executor", instructions=None, tools=tools, tool_use_behavior="stop_on_first_tool", model_settings=model_config.model_settings)
             _input = T_SUBAGENT.format(task=planner_output["subgoal"], context=planner_output["context"])
-            subagent_res = await subagent.run(_input)
+            subagent_res = await tool_executor.run(_input)
             subagent_output = subagent_res.final_output
             # ---------------------------   包装tools输出内容 --------------------------- #
             sub_agent_messages = Converter.items_to_messages(subagent_res.to_input_list())
@@ -386,8 +406,8 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = deepcopy(current_step)
             if debug_mode:
                 print(f"> Memory history dict [tool executor output {i+1} turn]:", mem_history_dict)
-                import pdb;pdb.set_trace();
-            print("> Tool executor output:", sub_agent_messages_tools)
+                print("> Tool executor output:", sub_agent_messages_tools)
+                # import pdb;pdb.set_trace();
             # ---------------------------   执行verifier --------------------------- #
             _input = T_VERIFIER.format(query=query, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
             verifier_res = await verifier.run(_input)
@@ -404,24 +424,24 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
             mem_history_dict[f"Step_{len(previous_steps)+1}"] = deepcopy(current_step)
             if debug_mode:
                 print(f"> Memory history dict [verifier output {i+1} turn]:", mem_history_dict)
-                import pdb;pdb.set_trace();
-            print("> Verifier output:", verifier_output)
-            if verifier_output["conclusion"].upper() == "STOP":
+                print("> Verifier output:", verifier_output)
+                # import pdb;pdb.set_trace();
+            if verifier_output["conclusion"] is None or verifier_output["conclusion"].upper() == "STOP":
                 # 停止下一轮
                 stop_flag = True
             previous_steps.append(deepcopy(current_step))
             messages_by_turns.append(deepcopy(messages_current_turn))
-
-        if stop_flag:
-            print("--- Early stop triggered by Stop flag ---")
-        else:
-            print("--- Max turns reached ---")
+        if debug_mode:
+            if stop_flag:
+                print("--- Early stop triggered by Stop flag ---")
+            else:
+                print("--- Max turns reached ---")
         # ---------------------------   执行answerer --------------------------- #
         # 存储所有历史记录 直接返回
         messages_memory, mem_history_dict = await summarize_memory(query, memory_evolver, P_MEMORY_EVOLVER, previous_steps, window_size=len(previous_steps))
         if debug_mode:
             print(f"> Memory history dict [answerer input {i+1} turn]:", mem_history_dict)
-            import pdb;pdb.set_trace();
+            # import pdb;pdb.set_trace();
         _input = T_ANSWERER.format(query=query, previous_steps=json.dumps(mem_history_dict, ensure_ascii=False, indent=4))
         answerer_res = await answerer.run(_input)
         answerer_res_output = parse_answerer_response(response_text=answerer_res.final_output)
@@ -431,7 +451,8 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
         answerer_messages.insert(0, {"role": "system", "content": P_ANSWERER})
         # 无tools 直接存储最后一轮输出
         messages_by_turns.append({"answerer": {"tools": [], "messages": deepcopy(answerer_messages)}})
-        print("> Final Answer:", answerer_res_output)
+        if debug_mode:
+            print("> Final Answer:", answerer_res_output)
         return messages_by_turns, answerer_res_output["answer"]
 
 
@@ -439,22 +460,34 @@ async def main_agent_loop(model_config, query: str, debug_mode: bool = False):
 
 if __name__ == "__main__":
     print()
+    AGENT_RUN_TIMEOUT = 2400
     model_config = ConfigLoader.load_model_config("base")    
     # 判断model_config是否有model元素
-    if hasattr(model_config, 'model') and hasattr(model_config.model, 'model_provider'):
-        model_config.model.model_provider.model = "Qwen3-235B-A22B-FP8"
-        model_config.model.model_provider.base_url = "http://10.16.2.149/ms-84b2h7zx/v1"
-        model_config.model.model_provider.api_key = "sk-NNSp7gzG_Aui-sM9USSNFWQ3AGPT66pG"
-    else:
-        model_config.model_provider.model = "Qwen3-235B-A22B-FP8"
-        model_config.model_provider.base_url = "http://10.16.2.149/ms-84b2h7zx/v1"
-        model_config.model_provider.api_key = "sk-NNSp7gzG_Aui-sM9USSNFWQ3AGPT66pG"
+    # BASE_URL = "http://10.16.2.149/ms-84b2h7zx/v1"
+    # MODEL_NAME = "Qwen3-235B-A22B-FP8"
+    # API_KEY = "sk-NNSp7gzG_Aui-sM9USSNFWQ3AGPT66pG"
 
-    query = "Write a Python function to compute the Fibonacci sequence up to n, and then use it to find the 10th Fibonacci number."
+    BASE_URL = "https://ms-8x5bx6cw-100034032793-sw.gw.ap-zhongwei.ti.tencentcs.com/ms-8x5bx6cw/v1"
+    MODEL_NAME = "qwen30B_A3B"
+    API_KEY = "xxx"
+
+    if hasattr(model_config, 'model') and hasattr(model_config.model, 'model_provider'):
+        model_config.model.model_provider.model = MODEL_NAME
+        model_config.model.model_provider.base_url = BASE_URL
+        model_config.model.model_provider.api_key = API_KEY
+    else:
+        model_config.model_provider.model = MODEL_NAME
+        model_config.model_provider.base_url = BASE_URL
+        model_config.model_provider.api_key = API_KEY
+    model_config.model_settings.temperature = 1.0
+    model_config.model_settings.top_p = 1.0
+    max_turns = 30
+    # query = "Write a Python function to compute the Fibonacci sequence up to n, and then use it to find the 10th Fibonacci number."
     # query = "What is the middle name of Donald Trump?"
     # query = "What is the weather in Shanghai now?"
+    query = "hi~how are you"
     print("Question:\n", query)
-    messages_by_turns, final_answer = asyncio.run(main_agent_loop(model_config, query, debug_mode=True))
+    messages_by_turns, final_answer = asyncio.run(main_agent_loop(model_config, query, max_turns, debug_mode=True))
     print("Answer:\n", final_answer)
     save_jsonl_path = "/cfs_turbo/yuleiqin/Research/agent-lightning/examples_train_w_youtu/agentintheflow/debug_messages.json"
     with open(save_jsonl_path, "w") as fw:
