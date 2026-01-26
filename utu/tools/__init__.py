@@ -19,6 +19,7 @@ from .video_toolkit import VideoToolkit
 from .wikipedia_toolkit import WikipediaSearchTool
 from .writing_toolkit import WritingToolkit
 from .ppt_toolkit import PPTToolkit
+from .ppt_html_based_toolkit import PPTHtmlBasedToolkit
 from .image_gen_toolkit import ImageGenToolkit
 
 TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
@@ -40,6 +41,7 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "user_interaction": UserInteractionToolkit,
     "writing_toolkit": WritingToolkit,
     "ppt_toolkit": PPTToolkit,
+    "ppt_html_based_toolkit": PPTHtmlBasedToolkit,
     "image_gen": ImageGenToolkit,
 }
 

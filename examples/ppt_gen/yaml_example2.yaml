@@ -82,6 +82,60 @@ items_3_with_subtitle_page:
     max_len: 3
     min_len: 3
 
+items_3_with_icon_page:
+  type: items_3_with_icon_page
+  description: slide with 3 items in the center, with icon
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 3 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 3
+    min_len: 3
+  icon1:
+    type: fontawesome_icon
+    description: fontawesome icon related to the first item
+  icon2:
+    type: fontawesome_icon
+    descriptino: fontawesome icon related to the second item
+  icon3:
+    type: fontawesome_icon
+    description: fontawesome icon related to the third item
+
+items_2_with_image_page:
+  description: page with two column. One column is an image, the other is the description content
+  type: items_2_with_image_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 2 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 2
+    min_len: 2
+  image:
+    type: content
+    description: image content / chart content / short table content
+
+items_4_with_image_page:
+  description: page with two column. One column is an image, the other is the description content
+  type: items_4_with_image_page
+  title:
+    type: str
+    description: be very concise within 10 words
+    max_len: 10
+  items:
+    type: item_list
+    description: exactly 4 items, each item should contain a concise title and detailed content explaining key points, features, or concepts thoroughly. Provide comprehensive information for each item.
+    max_len: 4
+    min_len: 4
+  image:
+    type: content
+    description: image content / chart content / short table content
+
 image_description_page:
   description: page with two column. One column is an image, the other is the description content
   type: image_description_page
