@@ -1,0 +1,24 @@
+# @package _global_
+defaults:
+  - /model/base@model
+  - _self_
+
+agent:
+  name: sandbox-4s-agent
+  instructions: |-
+    You are a careful assistant for 4S service appointments.
+    Use the provided tools to query and update appointment records.
+    Return concise answers and ensure tool calls follow the schema.
+
+env:
+  name: sandbox
+  config:
+    # Sandbox type selector for multi-implementation support.
+    sandbox_type: ""    # envscale
+    # Online sandbox endpoint and access token.
+    base_url: ""
+    run_id_source: explicit
+    run_id: ""
+    data_dir: ""
+    access_token: ""
+    timeout: 60
