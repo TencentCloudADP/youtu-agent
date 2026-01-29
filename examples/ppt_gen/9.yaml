@@ -1,0 +1,59 @@
+type_map:
+  - title_page: [0]
+  - section_title_page: [2]
+  - section_title_without_subtitle_page: [11]
+  - image_description_page: [3]
+  # - two_column_content_page: [4]
+  - items_2_page: [5, 6, 17, 18]  # 两栏内容页id
+  # - items_2_with_subtitle_page: [7]  # 两栏+子标题内容页id
+  - items_3_page: [9]  # 三栏内容页id，屏蔽id=[1]
+  - items_3_without_title_page: [8]  # 三栏无标题内容页id
+  - items_3_with_subtitle_page: [10, 13, 21]  # 三栏+子标题内容页id
+  - items_3_with_icon_page: [20]  # 三栏图标内容页id
+  - items_4_page: [19]
+  - items_4_with_subtitle_page: [14]
+  # - items_5_page: [15]
+  # - items_6_page: [16]
+  - items_6_timeline_without_title_page: [12]
+  - acknowledgement_page: [22]
+
+
+section_title_without_subtitle_page:
+  type: section_title_without_subtitle_page
+  description: slide with big section title in the center, but without subtitle
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 10
+
+items_3_without_title_page:
+  type: item_3_without_title_page
+  description: slide with 3 items in the center, but without title
+  items:
+    type: item_list
+    description: list of items
+    max_len: 3
+
+items_3_with_subtitle_page_alt:
+  type: items_3_with_subtitle_page_alt
+  description: slide with 3 items in the center, with subtitle
+  title:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 10
+  subtitle:
+    type: str
+    description: be very concise within 7 words                   
+    max_len: 10
+  items:
+    type: item_list
+    description: list of items
+    max_len: 3
+
+items_6_timeline_without_title_page:
+  type: items_6_timeline_without_title_page
+  description: slide with 6 items in the center, but without title
+  items:
+    type: item_list
+    description: list of items
+    max_len: 6
