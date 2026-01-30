@@ -81,5 +81,6 @@ def setup_db_tracing() -> None:
 
 
 def setup_tracing() -> None:
-    setup_otel_tracing()
-    setup_db_tracing()
+    # setup_otel_tracing()
+    # setup_db_tracing()
+    set_tracing_disabled(True)
