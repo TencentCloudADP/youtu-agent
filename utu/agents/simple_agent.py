@@ -305,9 +305,9 @@ class SimpleAgent:
         return recorder
 
     async def _start_streaming(self, recorder: TaskRecorder, save: bool = False, log_to_db: bool = True):
-        if not self._initialized:
-            await self.build(recorder.trace_id)
         try:
+            if not self._initialized:
+                await self.build(recorder.trace_id)
             input = recorder.input
             if isinstance(input, str):  # only add history when input is str?
                 input = self.input_items + [{"content": input, "role": "user"}]
