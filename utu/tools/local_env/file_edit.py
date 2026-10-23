@@ -47,12 +47,12 @@ class FileEditLocal:
 
     async def read_file(self, path: str) -> str:
         path_obj = self._resolve_filepath(path)
-        return path_obj.read_text()
+        return path_obj.read_text(encoding=self.default_encoding)
 
     async def write_file(self, path: str, file_text: str) -> str:
         path_obj = self._resolve_filepath(path)
         path_obj.parent.mkdir(parents=True, exist_ok=True)
-        path_obj.write_text(file_text)
+        path_obj.write_text(file_text, encoding=self.default_encoding)
         return f"Successfully wrote file: {path_obj}"
 
     async def edit_file(self, path: str, diff: str) -> str:
