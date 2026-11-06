@@ -125,6 +125,15 @@ Used to configure the address and port for the front-end interface.
 UTU_WEBUI_PORT=8848
 # IP address for the frontend service to listen on
 UTU_WEBUI_IP=127.0.0.1
+# Access token. When set, open http://<host>:<port>/?token=<token> once; the browser keeps it in a cookie
+# Required when UTU_WEBUI_IP is not a loopback address, otherwise the server refuses to start
+UTU_WEBUI_TOKEN=
+# Set to true to start on a non-loopback address without a token (only behind an authenticating reverse proxy)
+UTU_WEBUI_ALLOW_INSECURE=false
+# Extra origins allowed to connect to /ws and /upload, comma separated (default: same origin only)
+UTU_WEBUI_ALLOWED_ORIGINS=
 # Whether to enable auto reload for tornado server
 UTU_WEBUI_AUTOLOAD=false
 ```
+
+> **Security**: the WebUI runs agents that can execute shell commands. It refuses to listen on a non-loopback address without `UTU_WEBUI_TOKEN` unless `UTU_WEBUI_ALLOW_INSECURE=true`.

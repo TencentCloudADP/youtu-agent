@@ -107,3 +107,11 @@ The frontend (in `utu/ui/frontend`, or installed as `utu_agent_ui` package) is a
 You can customize the port and IP of `WebUIAgents` by setting the `UTU_WEBUI_PORT` and `UTU_WEBUI_IP` environment variables (default: `127.0.0.1:8848`). The default WebSocket URL is `ws://localhost:8848/ws`, and you can find and modify this setting in the right top corner of the frontend page.
 
 For development, you can set `UTU_WEBUI_AUTOLOAD=true` to enable auto reload for tornado server.
+
+### Security
+
+The WebUI runs agents that may execute shell commands, so treat access to it as access to the host.
+
+- `/ws` and `/upload` only accept requests from the page's own origin. To use a frontend served elsewhere (e.g. the Vite dev server), list it in `UTU_WEBUI_ALLOWED_ORIGINS` (comma separated).
+- `switch_agent` only accepts configs listed by `list_agents` (`configs/agents/{examples,simple,orchestra,orchestrator,generated}/*.yaml`).
+- When the server listens on a non-loopback address, `UTU_WEBUI_TOKEN` is required: without it the server refuses to start, unless `UTU_WEBUI_ALLOW_INSECURE=true` (only behind an authenticating reverse proxy). Open `http://<host>:<port>/?token=<token>` once; the server stores the token in an HttpOnly cookie and then requires it on every request (the `X-UTU-WebUI-Token` header also works).

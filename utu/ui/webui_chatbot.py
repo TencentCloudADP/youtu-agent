@@ -24,6 +24,7 @@ from .common import (
     handle_raw_stream_events,
     handle_tool_call_output,
 )
+from .security import ProtectedStaticFileHandler, ensure_safe_bind, is_origin_allowed, require_token
 
 # Add a visible deprecation warning that will be shown when the module is imported
 warnings.simplefilter("always", DeprecationWarning)  # Ensure deprecation warnings are shown
@@ -48,9 +49,11 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         self.history = None  # recorder for multi-turn chat. Now only used for OrchestraAgent
         self.example_query = example_query
 
+    def prepare(self):
+        require_token(self)
+
     def check_origin(self, origin):
-        # Allow all origins to connect
-        return True
+        return is_origin_allowed(self, origin)
 
     def open(self):
         # print("WebSocket opened")
@@ -175,7 +178,7 @@ class WebUIChatbot:
                 ),
                 (
                     r"/(.*)",
-                    tornado.web.StaticFileHandler,
+                    ProtectedStaticFileHandler,
                     {"path": self.static_path, "default_filename": "index.html"},
                 ),
             ],
@@ -185,6 +188,7 @@ class WebUIChatbot:
     async def __launch(self, port: int = 8848, ip: str = "127.0.0.1", autoload: bool | None = None):
         if hasattr(self.agent, "build"):
             await self.agent.build()
+        ensure_safe_bind(ip)
         app = self.make_app()
         app.listen(port, address=ip)
         print(f"Server started at http://{ip}:{port}/")

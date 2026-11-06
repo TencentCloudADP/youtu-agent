@@ -41,9 +41,34 @@ from .common import (
     handle_raw_stream_events,
     handle_tool_call_output,
 )
+from .security import ProtectedStaticFileHandler, ensure_safe_bind, is_origin_allowed, require_token
 
 CONFIG_PATH = DIR_ROOT / "configs" / "agents"
 WORKSPACE_ROOT = "/tmp/utu_webui_workspace"
+# Sub-directories of configs/agents that clients may switch to. An agent config can start processes (MCP stdio)
+# and import code (customized toolkits), so clients must never be able to point at any other file.
+SWITCHABLE_AGENT_DIRS = ("examples", "simple", "orchestra", "orchestrator", "generated")
+MAX_UPLOAD_SIZE = 100 * 1024 * 1024
+
+
+def list_switchable_agents() -> list[str]:
+    config_path = Path(CONFIG_PATH).resolve()
+    agents = []
+    for sub_dir in SWITCHABLE_AGENT_DIRS:
+        for file in sorted(config_path.glob(f"{sub_dir}/*.yaml")):
+            if file.resolve().is_relative_to(config_path):
+                agents.append(str(file.relative_to(config_path)))
+    return agents
+
+
+def resolve_switchable_agent(config_file: str) -> str:
+    """Map a client-supplied config name to an entry of ``list_switchable_agents``, or raise ValueError."""
+    name = config_file.removeprefix("agents/")
+    if not name.endswith(".yaml"):
+        name += ".yaml"
+    if name not in list_switchable_agents():
+        raise ValueError(f"Agent config not allowed: {config_file!r}")
+    return name
 
 
 class Session:
@@ -76,6 +101,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         self.example_query = example_query
 
     async def prepare(self):
+        require_token(self)
+        if not is_origin_allowed(self, self.request.headers.get("Origin")):
+            raise tornado.web.HTTPError(403, reason="Cross origin websockets not allowed")
         if self.default_config_filename:
             logging.info("instantiate default agent")
             self.default_config = ConfigLoader.load_agent_config(self.default_config_filename)
@@ -93,8 +121,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         session.clean_up_workspace()
 
     def check_origin(self, origin):
-        # Allow all origins to connect
-        return True
+        return is_origin_allowed(self, origin)
 
     def _get_config_name(self):
         return os.path.relpath(self.default_config_filename)
@@ -211,21 +238,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             self.agent.current_agent = stream.last_agent
 
     async def _handle_list_agents_noexcept(self):
-        config_path = Path(CONFIG_PATH).resolve()
-        example_config_files = config_path.glob("examples/*.yaml")
-        simple_agent_config_files = config_path.glob("simple/*.yaml")
-        orchestra_agent_config_files = config_path.glob("orchestra/*.yaml")
-        orchestrator_agent_config_files = config_path.glob("orchestrator/*.yaml")
-        generated_agent_config_files = config_path.glob("generated/*.yaml")
-
-        config_files = (
-            list(example_config_files)
-            + list(simple_agent_config_files)
-            + list(orchestra_agent_config_files)
-            + list(orchestrator_agent_config_files)
-            + list(generated_agent_config_files)
-        )
-        agents = [str(file.relative_to(config_path)) for file in config_files]
+        agents = list_switchable_agents()
         await self.send_event(
             Event(
                 type="list_agents",
@@ -248,7 +261,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             raise ValueError(f"Unsupported agent type: {config.type}")
 
     async def _handle_switch_agent_noexcept(self, switch_agent_request: SwitchAgentRequest):
-        config = ConfigLoader.load_agent_config(switch_agent_request.config_file)
+        config = ConfigLoader.load_agent_config(resolve_switchable_agent(switch_agent_request.config_file))
 
         # set workdir for bash tool
         for key, value in config.toolkits.items():
@@ -292,10 +305,17 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         except Exception as e:
             logging.error(f"Error processing switch agent: {str(e)}")
             logging.error(traceback.format_exc())
+            content = self._get_current_agent_content()
             await self.send_event(
                 Event(
                     type="switch_agent",
-                    data=SwitchAgentContent(type="switch_agent", ok=False, name=switch_agent_request.config_file),
+                    data=SwitchAgentContent(
+                        type="switch_agent",
+                        ok=False,
+                        name=switch_agent_request.config_file,
+                        agent_type=content["agent_type"],
+                        sub_agents=content["sub_agents"],
+                    ),
                 )
             )
 
@@ -363,11 +383,17 @@ class FileUploadHandler(tornado.web.RequestHandler):
     def initialize(self, workspace: str):
         self.workspace = workspace
 
-    def set_default_headers(self):
-        # Allow CORS from any origin
-        self.set_header("Access-Control-Allow-Origin", "*")
-        self.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.set_header("Access-Control-Allow-Headers", "*")
+    def prepare(self):
+        if self.request.method != "OPTIONS":
+            require_token(self)
+        origin = self.request.headers.get("Origin")
+        if not is_origin_allowed(self, origin):
+            raise tornado.web.HTTPError(403, reason="Cross origin upload not allowed")
+        if origin:
+            self.set_header("Access-Control-Allow-Origin", origin)
+            self.set_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+            self.set_header("Access-Control-Allow-Headers", "*")
+            self.set_header("Vary", "Origin")
 
     def options(self):
         # CORS preflight
@@ -375,12 +401,22 @@ class FileUploadHandler(tornado.web.RequestHandler):
         self.finish()
 
     def post(self):
-        file = self.request.files["file"][0]
-        timestamp = time.time()
-        filename = f"{timestamp}_{file['filename']}"
-        with open(os.path.join(self.workspace, filename), "wb") as f:
+        files = self.request.files.get("file")
+        if not files:
+            raise tornado.web.HTTPError(400, reason="Missing file")
+        file = files[0]
+        if len(file["body"]) > MAX_UPLOAD_SIZE:
+            raise tornado.web.HTTPError(413, reason="File too large")
+        basename = os.path.basename(file["filename"].replace("\\", "/"))
+        if basename in ("", ".", ".."):
+            raise tornado.web.HTTPError(400, reason="Invalid filename")
+        workspace = os.path.realpath(self.workspace)
+        path = os.path.realpath(os.path.join(workspace, f"{time.time()}_{basename}"))
+        if os.path.dirname(path) != workspace:
+            raise tornado.web.HTTPError(400, reason="Invalid filename")
+        with open(path, "wb") as f:
             f.write(file["body"])
-        self.write({"filename": os.path.join(self.workspace, filename)})
+        self.write({"filename": path})
 
 
 class WebUIAgents:
@@ -413,14 +449,16 @@ class WebUIAgents:
                 (r"/upload", FileUploadHandler, {"workspace": self.workspace}),
                 (
                     r"/(.*)",
-                    tornado.web.StaticFileHandler,
+                    ProtectedStaticFileHandler,
                     {"path": self.static_path, "default_filename": "index.html"},
                 ),
             ],
             debug=autoload,
+            max_body_size=MAX_UPLOAD_SIZE + 1024 * 1024,
         )
 
     async def __launch(self, port: int = 8848, ip: str = "127.0.0.1", autoload: bool | None = None):
+        ensure_safe_bind(ip)
         app = self.make_app(autoload=autoload)
         app.listen(port, address=ip)
         logging.info(f"Server started at http://{ip}:{port}/")

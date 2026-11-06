@@ -54,7 +54,13 @@ SERPER_API_KEY=<your-serper-key>
 # Note: IP must be 0.0.0.0 for Docker container port forwarding
 UTU_WEBUI_PORT=8848
 UTU_WEBUI_IP=0.0.0.0
+# Access token (required, the server refuses to start on 0.0.0.0 without it): open http://127.0.0.1:8848/?token=<token> once
+UTU_WEBUI_TOKEN=<a-long-random-string>
 ```
+
+> **Security**: the WebUI runs agents that can execute shell commands inside the container (as root).
+> Generate the token with e.g. `openssl rand -hex 32`. The commands below also publish the port on `127.0.0.1` only;
+> publish it on other interfaces only when you need remote access.
 
 ### Step 4. Launch the Service
 
@@ -64,7 +70,7 @@ Replace /path/to/your/.env with the actual path to your .env file, then run:
 
 ```bash
 docker run -it \
-    -p 8848:8848 \
+    -p 127.0.0.1:8848:8848 \
     -v "/path/to/your/.env:/youtu-agent/.env" \
     youtu-agent
 ```
@@ -77,7 +83,7 @@ To run other examples or custom configurations by replacing the `/path/to/your/.
 
 ```bash
 docker run -it \
-    -p 8848:8848 \
+    -p 127.0.0.1:8848:8848 \
     -v "/path/to/your/.env:/youtu-agent/.env" \
     youtu-agent \
     bash
