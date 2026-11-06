@@ -65,12 +65,6 @@ documents = [
 image = ["pillow>=11.3.0"]
 video = ["google-genai>=1.38.0"]
 utils = ["docker>=7.1.0", "tiktoken>=0.11.0"]
-swerex = [
-    # AGS-patched fork of swe-rex (adds swerex.deployment.ags + swerex.runtime.ags)
-    "swe-rex @ git+https://github.com/csjgg/ags-cookbook.git@feat/sweagent#subdirectory=examples/swe-agent/SWE-ReX",
-    "tencentcloud-sdk-python-ags",
-    "tencentcloud-sdk-python-common",
-]
 # PPT generation example dependencies
 ppt-gen = [
     "pillow>=11.3.0",
@@ -81,6 +75,13 @@ ppt-gen = [
 
 
 [dependency-groups]
+swerex = [
+    # A dependency group, not an extra: PyPI rejects git dependencies in package metadata.
+    # AGS-patched fork of swe-rex (adds swerex.deployment.ags + swerex.runtime.ags)
+    "swe-rex @ git+https://github.com/csjgg/ags-cookbook.git@feat/sweagent#subdirectory=examples/swe-agent/SWE-ReX",
+    "tencentcloud-sdk-python-ags",
+    "tencentcloud-sdk-python-common",
+]
 dev = [
     "arize-phoenix-client>=1.14.1",
     "arize-phoenix-otel>=0.11.0",

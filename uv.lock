@@ -7132,11 +7132,6 @@ scholar = [
 search = [
     { name = "crawl4ai" },
 ]
-swerex = [
-    { name = "swe-rex" },
-    { name = "tencentcloud-sdk-python-ags" },
-    { name = "tencentcloud-sdk-python-common" },
-]
 utils = [
     { name = "docker" },
     { name = "tiktoken" },
@@ -7183,6 +7178,11 @@ rl = [
     { name = "aiolimiter" },
     { name = "tencentcloud-sdk-python" },
 ]
+swerex = [
+    { name = "swe-rex" },
+    { name = "tencentcloud-sdk-python-ags" },
+    { name = "tencentcloud-sdk-python-common" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -7225,14 +7225,11 @@ requires-dist = [
     { name = "scipy", marker = "extra == 'local-python'", specifier = ">=1.15.3" },
     { name = "seaborn", marker = "extra == 'local-python'", specifier = ">=0.13.2" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
-    { name = "swe-rex", marker = "extra == 'swerex'", git = "https://github.com/csjgg/ags-cookbook.git?subdirectory=examples%2Fswe-agent%2FSWE-ReX&rev=feat%2Fsweagent" },
-    { name = "tencentcloud-sdk-python-ags", marker = "extra == 'swerex'" },
-    { name = "tencentcloud-sdk-python-common", marker = "extra == 'swerex'" },
     { name = "tiktoken", marker = "extra == 'utils'", specifier = ">=0.11.0" },
     { name = "unstructured", extras = ["all-docs"], marker = "extra == 'documents'", specifier = ">=0.18.14" },
     { name = "wikipedia-api", marker = "extra == 'wiki'", specifier = ">=0.8.1" },
 ]
-provides-extras = ["litllm", "search", "scholar", "wiki", "e2b", "local-python", "local-bash", "documents", "image", "video", "utils", "swerex", "ppt-gen"]
+provides-extras = ["litllm", "search", "scholar", "wiki", "e2b", "local-python", "local-bash", "documents", "image", "video", "utils", "ppt-gen"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -7268,6 +7265,11 @@ gaia = [
 rl = [
     { name = "aiolimiter", specifier = ">=1.2.1" },
     { name = "tencentcloud-sdk-python", specifier = ">=3.0.1474" },
+]
+swerex = [
+    { name = "swe-rex", git = "https://github.com/csjgg/ags-cookbook.git?subdirectory=examples%2Fswe-agent%2FSWE-ReX&rev=feat%2Fsweagent" },
+    { name = "tencentcloud-sdk-python-ags" },
+    { name = "tencentcloud-sdk-python-common" },
 ]
 
 [[package]]
