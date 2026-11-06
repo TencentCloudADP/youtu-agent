@@ -13,7 +13,7 @@ class LLMOutputParser:
     @staticmethod
     def extract_code_blocks(s: str) -> list[tuple[str, str]]:
         """Parse all code blocks (language, code) from the given string."""
-        pattern = re.compile(r"```(\w*)\n(.*?)```", re.DOTALL)
+        pattern = re.compile(r"```(\w*)\r?\n(.*?)```", re.DOTALL)
         code_blocks = []
         for match in pattern.finditer(s):
             language = match.group(1).strip()
