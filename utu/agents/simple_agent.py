@@ -59,7 +59,8 @@ class SimpleAgent:
             tool_use_behavior = StopAtTools(stop_at_tool_names=self.config.stop_at_tool_names)
         self.model = self._get_model(self.config, model)
         self.model_settings = self._get_model_settings(self.config, model_settings)
-        self.tools: list[Tool] = tools or []
+        self._provided_tools: list[Tool] = tools or []
+        self.tools: list[Tool] = self._provided_tools
         self.toolkits: list[str] = toolkits or []
         self.output_type: type[Any] | AgentOutputSchemaBase | None = output_type
         self.tool_use_behavior: Literal["run_llm_again", "stop_on_first_tool"] | StopAtTools = tool_use_behavior
@@ -132,6 +133,7 @@ class SimpleAgent:
         self._toolkits = {}
         logger.info("Cleaning up env...")
         await self.env.cleanup()
+        self.tools = self._provided_tools
         self._initialized = False
 
     def setup_workspace(self, workspace_dir: str | pathlib.Path):
