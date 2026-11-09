@@ -35,7 +35,7 @@ class LLMAgent:
     async def run(self, input: str | list[TResponseInputItem], trace_id: str = None) -> TaskRecorder:
         # TODO: customized the agent name
         trace_id = trace_id or AgentsUtils.gen_trace_id()
-        task_recorder = TaskRecorder(input, trace_id)
+        task_recorder = TaskRecorder(task=input if isinstance(input, str) else "", input=input, trace_id=trace_id)
 
         if AgentsUtils.get_current_trace():
             run_result = await Runner.run(self.agent, input)
