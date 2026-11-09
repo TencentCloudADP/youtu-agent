@@ -2,6 +2,7 @@
 https://docs.github.com/en/rest?apiVersion=2022-11-28
 """
 
+import asyncio
 from urllib.parse import urlparse
 
 import requests
@@ -25,6 +26,9 @@ class GitHubToolkit(AsyncBaseToolkit):
 
         Returns:
             dict: The info of the specified github repo"""
+        return await asyncio.to_thread(self._get_repo_info, github_url)
+
+    def _get_repo_info(self, github_url) -> dict:
         parsed_url = urlparse(github_url)
         path_parts = parsed_url.path.strip("/").split("/")
         if len(path_parts) < 2:
