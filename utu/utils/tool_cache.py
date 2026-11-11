@@ -72,29 +72,35 @@ def create_cached_db(expire_time: int | None = None):
             cache_key = hashlib.md5(args_str.encode()).hexdigest()
 
             with SQLModelUtils.create_session() as session:
-                if USE_CACHE:
-                    stmt = select(ToolCacheModel).where(
-                        ToolCacheModel.function == func_name, ToolCacheModel.cache_key == cache_key
-                    )
-                    if_exist = session.exec(stmt).first()  # one_or_none
-                    if if_exist and (expire_time is None or (time.time() - if_exist.timestamp) < expire_time):
-                        logger.debug(f"🔄 Using cached result for {func_name} from db")
-                        return if_exist.result
+                stmt = (
+                    select(ToolCacheModel)
+                    .where(ToolCacheModel.function == func_name, ToolCacheModel.cache_key == cache_key)
+                    .order_by(ToolCacheModel.timestamp.desc(), ToolCacheModel.id.desc())
+                    .limit(1)
+                )
+                cached = session.exec(stmt).first()
+                if USE_CACHE and cached and (expire_time is None or (time.time() - cached.timestamp) < expire_time):
+                    logger.debug(f"🔄 Using cached result for {func_name} from db")
+                    return cached.result
 
                 start_time = time.time()
                 result = await func(*args, **kwargs)
                 execution_time = time.time() - start_time
-                data = ToolCacheModel(
-                    function=func_name,
-                    args=args_str,
-                    kwargs=str(kwargs),
-                    result=result,
-                    cache_key=cache_key,
-                    execution_time=execution_time,
-                    timestamp=time.time(),
-                    datetime=datetime.now().isoformat(),
-                )
-                session.add(data)
+                data = {
+                    "function": func_name,
+                    "args": args_str,
+                    "kwargs": str(kwargs),
+                    "result": result,
+                    "cache_key": cache_key,
+                    "execution_time": execution_time,
+                    "timestamp": time.time(),
+                    "datetime": datetime.now().isoformat(),
+                }
+                if cached:
+                    cached.sqlmodel_update(data)
+                    session.add(cached)
+                else:
+                    session.add(ToolCacheModel(**data))
                 session.commit()
                 logger.debug(f"💾 Cached result for {func_name} to db")
                 return result
