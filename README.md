@@ -303,7 +303,7 @@ agent:
 You can launch an interactive CLI chatbot with this agent by running:
 
 ```bash
-# NOTE: You need to set `SERPER_API_KEY` and `JINA_API_KEY` in `.env` for web search access.
+# NOTE: You need to set `SERPER_API_KEY`, `SPECSTREAM_API_KEY` and `JINA_API_KEY` in `.env` for web search access.
 # (We plan to replace these with free alternatives in the future)
 python scripts/cli_chat.py --config simple/base_search
 # To avoid using the search toolkit, you can run:
