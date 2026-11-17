@@ -12,6 +12,7 @@ from .memory_toolkit import SimpleMemoryToolkit
 from .python_executor_toolkit import PythonExecutorToolkit
 from .search_toolkit import SearchToolkit
 from .serper_toolkit import SerperToolkit
+from .specstream_toolkit import SpecStreamToolkit
 from .tabular_data_toolkit import TabularDataToolkit
 from .user_interaction_toolkit import UserInteractionToolkit
 from .utils import get_tools_map as get_tools_map, get_tools_schema as get_tools_schema, register_tool as register_tool
@@ -32,6 +33,7 @@ TOOLKIT_MAP: dict[str, type[AsyncBaseToolkit]] = {
     "video": VideoToolkit,
     "audio": AudioToolkit,
     "serper": SerperToolkit,
+    "specstream": SpecStreamToolkit,
     "tabular": TabularDataToolkit,
     "memory_simple": SimpleMemoryToolkit,
     "user_interaction": UserInteractionToolkit,
