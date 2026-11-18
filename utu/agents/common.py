@@ -35,6 +35,8 @@ class DataClassWithStreamEvents:
         # Optionally, clear the event queue to prevent processing stale events
         while not self._event_queue.empty():
             self._event_queue.get_nowait()
+        # Wake a consumer that is already waiting in stream_events().
+        self._event_queue.put_nowait(QueueCompleteSentinel())
 
     async def stream_events(self) -> AsyncIterator[StreamEvent]:
         while True:
@@ -73,7 +75,7 @@ class DataClassWithStreamEvents:
 
     def _check_errors(self):
         # Check the tasks for any exceptions
-        if self._run_impl_task and self._run_impl_task.done():
+        if self._run_impl_task and self._run_impl_task.done() and not self._run_impl_task.cancelled():
             run_impl_exc = self._run_impl_task.exception()
             if run_impl_exc and isinstance(run_impl_exc, Exception):
                 # if isinstance(run_impl_exc, AgentsException) and run_impl_exc.run_data is None:
