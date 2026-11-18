@@ -1,6 +1,6 @@
 import asyncio
 
-from utu.agents.common import DataClassWithStreamEvents, QueueCompleteSentinel
+from utu.agents.common import DataClassWithStreamEvents, QueueCompleteSentinel, TaskRecorder
 
 
 async def test_stream_events():
@@ -27,3 +27,32 @@ async def test_stream_events():
     except Exception as e:
         print(f"Exception: {e}")
     print(f"data: {data_with_stream}")
+
+
+async def test_cancel_wakes_waiting_stream():
+    recorder = TaskRecorder()
+    recorder._run_impl_task = asyncio.create_task(asyncio.Event().wait())
+    received = []
+
+    async def consume():
+        async for event in recorder.stream_events():
+            received.append(event)
+
+    consumer = asyncio.create_task(consume())
+    await asyncio.sleep(0)
+
+    recorder.cancel()
+    await asyncio.wait_for(consumer, timeout=1)
+
+    assert received == []
+    assert recorder._stored_exception is None
+
+
+async def test_stream_events_after_cancel_returns_immediately():
+    recorder = TaskRecorder()
+    recorder._run_impl_task = asyncio.create_task(asyncio.Event().wait())
+
+    recorder.cancel()
+
+    events = [event async for event in recorder.stream_events()]
+    assert events == []
