@@ -1,5 +1,8 @@
 import asyncio
 
+import pytest
+
+from utu.agents import SimpleAgent
 from utu.agents.common import DataClassWithStreamEvents, QueueCompleteSentinel
 
 
@@ -27,3 +30,18 @@ async def test_stream_events():
     except Exception as e:
         print(f"Exception: {e}")
     print(f"data: {data_with_stream}")
+
+
+async def test_streamed_run_propagates_build_failure():
+    class BuildFailureAgent(SimpleAgent):
+        def __init__(self):
+            self._initialized = False
+
+        async def build(self, trace_id: str = None):
+            raise RuntimeError("failed to initialize MCP")
+
+    recorder = BuildFailureAgent().run_streamed("hello")
+
+    with pytest.raises(RuntimeError, match="failed to initialize MCP"):
+        async for _ in recorder.stream_events():
+            pass
