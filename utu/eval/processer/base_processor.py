@@ -20,8 +20,15 @@ class BaseProcesser:
         self.config = config
 
     @abc.abstractmethod
-    def preprocess_one(self, sample: EvaluationSample) -> EvaluationSample:
-        """Preprocess a single sample."""
+    def preprocess_one(self, sample: EvaluationSample, recorder=None) -> EvaluationSample:
+        """Preprocess a single sample.
+
+        Args:
+            sample: EvaluationSample to preprocess
+            recorder: Optional practice TaskRecorder. Ignored by evaluation
+                processors; TrainingFreeGRPOProcesser uses it to attach experiences.
+                RolloutManager always passes this argument.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod

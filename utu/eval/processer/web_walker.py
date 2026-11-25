@@ -10,7 +10,8 @@ class WebWalkerQAProcesser(BaseLLMJudgeProcesser):
 
     name: str = "WebWalkerQA"
 
-    def preprocess_one(self, sample: EvaluationSample) -> EvaluationSample:
+    def preprocess_one(self, sample: EvaluationSample, recorder=None) -> EvaluationSample:
+        _ = recorder
         # MODE 1: use root_url
         # aug_question = f"{sample.raw_question}\nReference url: {sample.meta['root_url']}"
         # MODE 2: w/o

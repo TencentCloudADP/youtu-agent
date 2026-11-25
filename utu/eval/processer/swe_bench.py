@@ -30,8 +30,9 @@ class SWEBenchProcesser(BaseProcesser):
 
     name: str = "SWEBench"
 
-    def preprocess_one(self, sample: EvaluationSample) -> EvaluationSample:
+    def preprocess_one(self, sample: EvaluationSample, recorder=None) -> EvaluationSample:
         """Build the augmented question with repo context."""
+        _ = recorder
         meta = sample.meta or {}
         augmented = _SWE_BENCH_PROMPT.format(
             repo=meta.get("repo", "unknown"),
@@ -52,11 +53,7 @@ class SWEBenchProcesser(BaseProcesser):
         if total == 0:
             return {"total": 0, "patch_count": 0, "patch_rate": 0.0}
 
-        patch_count = sum(
-            1
-            for s in samples
-            if s.extracted_final_answer and s.extracted_final_answer.strip()
-        )
+        patch_count = sum(1 for s in samples if s.extracted_final_answer and s.extracted_final_answer.strip())
         return {
             "total": total,
             "patch_count": patch_count,
