@@ -11,8 +11,9 @@ class GAIAProcesser(BaseLLMJudgeProcesser):
 
     name: str = "GAIA"
 
-    def preprocess_one(self, sample: EvaluationSample) -> EvaluationSample:
+    def preprocess_one(self, sample: EvaluationSample, recorder=None) -> EvaluationSample:
         """Preprocess a single sample."""
+        _ = recorder
         question_with_files = sample.raw_question + self._get_file_prompt(sample.file_name)
         augmented_question = AUGMENTATION_PROMPTS["GAIA"].format(question=question_with_files)
         sample.update(

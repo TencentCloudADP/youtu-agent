@@ -29,8 +29,13 @@ class BaseLLMJudgeProcesser(BaseProcesser):
         super().__init__(config)
         self.judge_client = SimplifiedAsyncOpenAI(**config.judge_model.model_provider.model_dump())
 
-    def preprocess_one(self, sample: EvaluationSample) -> EvaluationSample:
-        """Preprocess a single sample."""
+    def preprocess_one(self, sample: EvaluationSample, recorder=None) -> EvaluationSample:
+        """Preprocess a single sample.
+
+        recorder is accepted for API compatibility with RolloutManager; evaluation
+        processors do not use it.
+        """
+        _ = recorder
         question = sample.raw_question
         template = AUGMENTATION_PROMPTS.get(self.name, AUGMENTATION_PROMPTS["default"])
         augmented_question = template.format(question=question)
